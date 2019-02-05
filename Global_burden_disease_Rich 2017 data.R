@@ -1,19 +1,14 @@
 
+# Load useful libraries
 library(plyr) 
-library(dplyr)
 library(tidyverse)
-library(ggplot2)
 library(ggpol)
-library(grid)
-library(gridExtra)
 library(readxl)
 library(readr)
-library(lubridate)
 library(scales)
 library(lemon)
 library(fingertipsR)
 library(r2d3)  
-
 
 stack_theme = function(){
   theme( 
@@ -63,7 +58,6 @@ slope_theme = function(){
 
 # You cannot sum risk factor values across causes, but you can sum cause values across risk factors
 
-
 # Nearest neighbours #### 
 
 LAD <- read_csv(url("https://opendata.arcgis.com/datasets/a267b55f601a4319a9955b0197e3cb81_0.csv"), col_types = cols(LAD17CD = col_character(),LAD17NM = col_character(),  LAD17NMW = col_character(),  FID = col_integer()))
@@ -110,7 +104,8 @@ WSx_NN <- data.frame(Area_Code = nearest_neighbours(AreaCode = "E10000032", Area
 # http://www.who.int/quantifying_ehimpacts/publications/en/9241546204chap3.pdf
 
 if(file.exists("./GBD") == FALSE){
-dir.create("./GBD")
+dir.create("./GBD")}
+if(!(file.exists("./GBD/IHME_GBD_2017_CAUSE_HIERARCHY_Y2018M11D18.xlsx"))){
 download.file("http://ghdx.healthdata.org/sites/default/files/ihme_query_tool/IHME_GBD_2017_CODEBOOK.zip", "./GBD/Codebook.zip", mode = "wb")
 unzip("./GBD/Codebook.zip", exdir = "./GBD")
 file.remove("./GBD/Codebook.zip")
@@ -127,19 +122,21 @@ gbd_rei_hierarchy <- read_excel("./GBD/IHME_GBD_2017_REI_HIERARCHY_Y2018M11D18.x
 # Cause Data ####
 # All causes, 2002, 2007, 2012-17, all ages and age standardised, deaths, YLL, YLD, DALYs, West Sussex and cipfa neighbours
 
-# download.file("http://s3.healthdata.org/gbd-api-2017-public/919f4e677e2a36af230836fbb53bbb8c_files/IHME-GBD_2017_DATA-919f4e67-1.zip", "./GBD/Query_1_1.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2017-public/919f4e677e2a36af230836fbb53bbb8c_files/IHME-GBD_2017_DATA-919f4e67-2.zip", "./GBD/Query_1_2.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2017-public/919f4e677e2a36af230836fbb53bbb8c_files/IHME-GBD_2017_DATA-919f4e67-3.zip", "./GBD/Query_1_3.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2017-public/919f4e677e2a36af230836fbb53bbb8c_files/IHME-GBD_2017_DATA-919f4e67-4.zip", "./GBD/Query_1_4.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2017-public/919f4e677e2a36af230836fbb53bbb8c_files/IHME-GBD_2017_DATA-919f4e67-5.zip", "./GBD/Query_1_5.zip", mode = "wb")
+if(!(file.exists("./GBD/IHME-GBD_2017_DATA-919f4e67-1.csv"))){
+download.file("http://s3.healthdata.org/gbd-api-2017-public/919f4e677e2a36af230836fbb53bbb8c_files/IHME-GBD_2017_DATA-919f4e67-1.zip", "./GBD/Query_1_1.zip", mode = "wb")
+download.file("http://s3.healthdata.org/gbd-api-2017-public/919f4e677e2a36af230836fbb53bbb8c_files/IHME-GBD_2017_DATA-919f4e67-2.zip", "./GBD/Query_1_2.zip", mode = "wb")
+download.file("http://s3.healthdata.org/gbd-api-2017-public/919f4e677e2a36af230836fbb53bbb8c_files/IHME-GBD_2017_DATA-919f4e67-3.zip", "./GBD/Query_1_3.zip", mode = "wb")
+download.file("http://s3.healthdata.org/gbd-api-2017-public/919f4e677e2a36af230836fbb53bbb8c_files/IHME-GBD_2017_DATA-919f4e67-4.zip", "./GBD/Query_1_4.zip", mode = "wb")
+download.file("http://s3.healthdata.org/gbd-api-2017-public/919f4e677e2a36af230836fbb53bbb8c_files/IHME-GBD_2017_DATA-919f4e67-5.zip", "./GBD/Query_1_5.zip", mode = "wb")
 
-# unzip("./GBD/Query_1_1.zip", exdir = "./GBD")
-# unzip("./GBD/Query_1_2.zip", exdir = "./GBD")
-# unzip("./GBD/Query_1_3.zip", exdir = "./GBD")
-# unzip("./GBD/Query_1_4.zip", exdir = "./GBD")
-# unzip("./GBD/Query_1_5.zip", exdir = "./GBD")
- 
-# file.remove(c("./GBD/Query_1_1.zip","./GBD/Query_1_2.zip","./GBD/Query_1_3.zip","./GBD/Query_1_4.zip", "./GBD/Query_1_5.zip"))
+ unzip("./GBD/Query_1_1.zip", exdir = "./GBD")
+ unzip("./GBD/Query_1_2.zip", exdir = "./GBD")
+ unzip("./GBD/Query_1_3.zip", exdir = "./GBD")
+ unzip("./GBD/Query_1_4.zip", exdir = "./GBD")
+ unzip("./GBD/Query_1_5.zip", exdir = "./GBD")
+
+file.remove(c("./GBD/Query_1_1.zip","./GBD/Query_1_2.zip","./GBD/Query_1_3.zip","./GBD/Query_1_4.zip", "./GBD/Query_1_5.zip"))
+}
 
 GBD_cause_data <- read_csv("./GBD/IHME-GBD_2017_DATA-919f4e67-1.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number())) %>%
   bind_rows(read_csv("./GBD/IHME-GBD_2017_DATA-919f4e67-2.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number())))%>%
