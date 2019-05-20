@@ -123,10 +123,15 @@ GBD_cause_codebook <- read_csv("~/GBD data downloads/IHME_GBD_2017_CODEBOOK_Y201
 
 gbd_rei_hierarchy <- read_excel("~/GBD data downloads/IHME_GBD_2017_REI_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric"))
 
-# GBD_cause_group_lv1 <- GBD_2017_cause_hierarchy %>% 
-#   filter(level == 1)
-# GBD_cause_group_lv2 <- GBD_2017_cause_hierarchy %>% 
-#   filter(level == 2)
+GBD_cause_group_lv1 <- GBD_2017_cause_hierarchy %>% 
+   filter(level == 1)
+
+non_com <- GBD_2017_cause_hierarchy %>%
+  filter(level == 2) %>% 
+  filter(substr(cause_outline, 1,1) == "B")
+
+non_com$cause_name
+
 # GBD_cause_group_lv3 <- GBD_2017_cause_hierarchy %>% 
 #   filter(level == 3)
 # GBD_cause_group_lv4 <- GBD_2017_cause_hierarchy %>% 
@@ -233,6 +238,11 @@ Deaths_x <- Area_x_cause_number %>%
 
 write.csv(Deaths_x, "~/GBD/Latest_deaths_cause_x.csv", row.names = FALSE)
 
+Deaths_x_sex <- Area_x_cause_number %>% 
+  filter(sex != "Both") %>% 
+  filter(level == 3)
+
+write.csv(Deaths_x_sex, "~/GBD/Deaths_cause_x_sex_years.csv", row.names = FALSE)
 
 # Years of life lost ####
 
