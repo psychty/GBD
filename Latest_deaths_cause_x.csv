@@ -1,0 +1,180 @@
+"location","sex","age","cause","metric","year","cause_outline","cause_id","parent_id","level","Parent_cause","DALYs (Disability-Adjusted Life Years)","Deaths","Incidence","Prevalence","YLDs (Years Lived with Disability)","YLLs (Years of Life Lost)"
+"West Sussex","Both","All Ages","HIV/AIDS","Number",2017,"A.1.1","298","955","3","HIV/AIDS and sexually transmitted infections",171.230524707803,2.564210536568,61.6178657261,896.734096982,67.2924397157,103.938084992129
+"West Sussex","Both","All Ages","Sexually transmitted infections
+excluding HIV","Number",2017,"A.1.2","393","955","3","HIV/AIDS and sexually transmitted infections",126.787581001553,1.05074256188439,56919.5587043,111907.178721,100.388067002,26.3995139996216
+"West Sussex","Both","All Ages","Tuberculosis","Number",2017,"A.2.1","297","956","3","Respiratory infections and tuberculosis",95.1170015602014,5.08846208436706,64.7350767291,75471.570981,11.5489936555,83.5680079047482
+"West Sussex","Both","All Ages","Lower respiratory infections","Number",2017,"A.2.2","322","956","3","Respiratory infections and tuberculosis",5670.01051010226,617.311594638488,19503.6055526,413.774548299,24.291199637,5645.71931046523
+"West Sussex","Both","All Ages","Upper respiratory infections","Number",2017,"A.2.3","328","956","3","Respiratory infections and tuberculosis",881.943925421277,0.36846840733681,2567499.54196,35362.1868312,869.855712029,12.0882133924087
+"West Sussex","Both","All Ages","Otitis media","Number",2017,"A.2.4","329","956","3","Respiratory infections and tuberculosis",152.694800497182,0.0892386757337063,37486.8106959,7883.78923637,150.061393217,2.63340728004007
+"West Sussex","Both","All Ages","Diarrheal diseases","Number",2017,"A.3.1","302","957","3","Enteric infections",729.823926896843,17.0759049739089,331255.315825,5234.17313073,563.308293105,166.515633791687
+"West Sussex","Both","All Ages","Typhoid and paratyphoid","Number",2017,"A.3.2","958","957","3","Enteric infections",0.0764403263867864,0.00197006785844264,3.53756262201,0,0.0159710459303,0.0604692804565345
+"West Sussex","Both","All Ages","Invasive Non-typhoidal Salmonella (iNTS)
+","Number",2017,"A.3.3","959","957","3","Enteric infections",14.149569628907,0.546754047425576,6.8349151805,0.261646901117,0.0347926852898,14.1147769436172
+"West Sussex","Both","All Ages","Other intestinal infectious diseases","Number",2017,"A.3.5","321","957","3","Enteric infections",0.873611436709263,0.0428853763131266,NA,NA,0.000581022072923,0.873030414636341
+"West Sussex","Both","All Ages","Malaria","Number",2017,"A.4.1","345","344","3","Neglected tropical diseases and malaria",0,0,0,0,0,0
+"West Sussex","Both","All Ages","Trachoma","Number",2017,"A.4.10","356","344","3","Neglected tropical diseases and malaria",0,NA,NA,0,0,NA
+"West Sussex","Both","All Ages","Dengue","Number",2017,"A.4.11","357","344","3","Neglected tropical diseases and malaria",1.83912233756246,0.0435827728120439,0,0,0,1.83912233756246
+"West Sussex","Both","All Ages","Yellow fever","Number",2017,"A.4.12","358","344","3","Neglected tropical diseases and malaria",0,0,0,0,0,0
+"West Sussex","Both","All Ages","Rabies","Number",2017,"A.4.13","359","344","3","Neglected tropical diseases and malaria",1.45690165592801,0.0338735155149503,0.0389666578262,0.0014987176087,0.000199800751599,1.45670185517641
+"West Sussex","Both","All Ages","Intestinal nematode infections","Number",2017,"A.4.14","360","344","3","Neglected tropical diseases and malaria",0.0290925625524636,0.00128688966329958,NA,0,0,0.0290925625524636
+"West Sussex","Both","All Ages","Food-borne trematodiases","Number",2017,"A.4.15","364","344","3","Neglected tropical diseases and malaria",0,NA,0,0,0,NA
+"West Sussex","Both","All Ages","Leprosy","Number",2017,"A.4.16","405","344","3","Neglected tropical diseases and malaria",0.000173381295097004,NA,0,0.00258763066034,0.000173381295097,NA
+"West Sussex","Both","All Ages","Ebola","Number",2017,"A.4.17","843","344","3","Neglected tropical diseases and malaria",0,0,0,0,0,0
+"West Sussex","Both","All Ages","Zika virus","Number",2017,"A.4.18","935","344","3","Neglected tropical diseases and malaria",0,0,0,0,0,0
+"West Sussex","Both","All Ages","Guinea worm disease","Number",2017,"A.4.19","936","344","3","Neglected tropical diseases and malaria",0,NA,0,0,0,NA
+"West Sussex","Both","All Ages","Chagas disease","Number",2017,"A.4.2","346","344","3","Neglected tropical diseases and malaria",0,0,0,0,0,0
+"West Sussex","Both","All Ages","Other neglected tropical diseases","Number",2017,"A.4.20","365","344","3","Neglected tropical diseases and malaria",1.4387928888777,0.0340158062531081,NA,0,0.000028168350439,1.43876472052726
+"West Sussex","Both","All Ages","Leishmaniasis","Number",2017,"A.4.3","347","344","3","Neglected tropical diseases and malaria",0,0,0,0,0,0
+"West Sussex","Both","All Ages","African trypanosomiasis","Number",2017,"A.4.4","350","344","3","Neglected tropical diseases and malaria",0,0,0,0,0,0
+"West Sussex","Both","All Ages","Schistosomiasis","Number",2017,"A.4.5","351","344","3","Neglected tropical diseases and malaria",0,0,NA,0,0,0
+"West Sussex","Both","All Ages","Cysticercosis","Number",2017,"A.4.6","352","344","3","Neglected tropical diseases and malaria",183.868025186428,0.00643578187276394,NA,866.190780021,183.69412572,0.173899466561512
+"West Sussex","Both","All Ages","Cystic echinococcosis","Number",2017,"A.4.7","353","344","3","Neglected tropical diseases and malaria",0.268010858457518,0.0142207966905435,0,0,0,0.268010858457518
+"West Sussex","Both","All Ages","Lymphatic filariasis","Number",2017,"A.4.8","354","344","3","Neglected tropical diseases and malaria",0,NA,NA,0,0,NA
+"West Sussex","Both","All Ages","Onchocerciasis","Number",2017,"A.4.9","355","344","3","Neglected tropical diseases and malaria",0,NA,NA,0,0,NA
+"West Sussex","Both","All Ages","Meningitis","Number",2017,"A.5.1","332","961","3","Other infectious diseases",163.876112835686,3.92932790893881,175.704972842,334.77223252,29.9814188762,133.894693959479
+"West Sussex","Both","All Ages","Encephalitis","Number",2017,"A.5.2","337","961","3","Other infectious diseases",76.7797980750148,2.9355591628696,76.4898282116,163.721097077,12.4738166431,64.3059814318888
+"West Sussex","Both","All Ages","Diphtheria","Number",2017,"A.5.3","338","961","3","Other infectious diseases",0.146511979159035,0.00229669540808654,0.0122888848016,0.00092412637522,0.000069685467054,0.146442293691981
+"West Sussex","Both","All Ages","Whooping cough","Number",2017,"A.5.4","339","961","3","Other infectious diseases",4.53996213675896,0.011110606192719,525.054182006,71.9252304118,3.61098518923,0.928976947525426
+"West Sussex","Both","All Ages","Tetanus","Number",2017,"A.5.5","340","961","3","Other infectious diseases",0.143596502000785,0.00854884613905025,0.0130930855607,0.00132866655958,0.000106036968838,0.143490465031948
+"West Sussex","Both","All Ages","Measles","Number",2017,"A.5.6","341","961","3","Other infectious diseases",0.908534866025669,0.0126324215505211,0.35707955807,0.00978300159095,0.000912843737939,0.907622022287731
+"West Sussex","Both","All Ages","Varicella and herpes zoster","Number",2017,"A.5.7","342","961","3","Other infectious diseases",62.0769355794084,1.79531915156015,8384.40856765,834.353098736,40.5806004369,21.4963351424616
+"West Sussex","Both","All Ages","Acute hepatitis","Number",2017,"A.5.8","400","961","3","Other infectious diseases",53.8247855326148,0.967068614999531,11163.950135,962.95461417,25.3284745316,28.4963110010101
+"West Sussex","Both","All Ages","Other unspecified infectious diseases","Number",2017,"A.5.9","408","961","3","Other infectious diseases",217.120567081448,6.58760871853295,0,2612.2245353,62.6798472753,154.440719806152
+"West Sussex","Both","All Ages","Maternal disorders","Number",2017,"A.6.1","366","962","3","Maternal and neonatal disorders",60.0955869074847,0.563133646974458,4439.57434641,503.146590164,29.834671032,30.260915875505
+"West Sussex","Both","All Ages","Neonatal disorders","Number",2017,"A.6.2","380","962","3","Maternal and neonatal disorders",4001.03356189527,14.5673410840199,1078.97077841,13895.6623156,2722.21525594,1278.81830595737
+"West Sussex","Both","All Ages","Protein-energy malnutrition","Number",2017,"A.7.1","387","386","3","Nutritional deficiencies",17.5094014958988,1.34325315093251,5222.37821029,5155.47944402,0.0369254153771,17.4724760805217
+"West Sussex","Both","All Ages","Iodine deficiency","Number",2017,"A.7.2","388","386","3","Nutritional deficiencies",102.833497978681,NA,142.308674945,9779.04695001,102.833497979,NA
+"West Sussex","Both","All Ages","Vitamin A deficiency","Number",2017,"A.7.3","389","386","3","Nutritional deficiencies",31.3980648962553,NA,17097.6480111,10861.9787562,31.3980648963,NA
+"West Sussex","Both","All Ages","Dietary iron deficiency","Number",2017,"A.7.4","390","386","3","Nutritional deficiencies",858.187331095116,NA,NA,56692.8535578,858.187331095,NA
+"West Sussex","Both","All Ages","Other nutritional deficiencies","Number",2017,"A.7.5","391","386","3","Nutritional deficiencies",5.1716180737072,0.413164007069327,NA,NA,0.00219275220046,5.16942532150675
+"West Sussex","Both","All Ages","Lip and oral cavity cancer","Number",2017,"B.1.1","444","410","3","Neoplasms",511.742939175461,25.2820976816653,83.7037688275,404.45237382,37.7952809201,473.94765825536
+"West Sussex","Both","All Ages","Larynx cancer","Number",2017,"B.1.10","423","410","3","Neoplasms",197.742375465942,9.86445949464091,33.794582349,219.718998089,20.8580971572,176.884278308741
+"West Sussex","Both","All Ages","Tracheal, bronchus, and lung cancer","Number",2017,"B.1.11","426","410","3","Neoplasms",8764.04294810891,511.686720612434,683.025388912,1396.66532035,180.396939862,8583.64600824684
+"West Sussex","Both","All Ages","Malignant skin melanoma","Number",2017,"B.1.12","459","410","3","Neoplasms",1240.84950092891,52.6205312550813,446.425251018,3560.15014382,207.347718201,1033.50178272833
+"West Sussex","Both","All Ages","Non-melanoma skin cancer","Number",2017,"B.1.13","462","410","3","Neoplasms",283.321192101336,20.9393914038521,3166.50770644,700.846304768,22.9292500503,260.391942051031
+"West Sussex","Both","All Ages","Breast cancer","Number",2017,"B.1.14","429","410","3","Neoplasms",5127.90407683336,246.160793579171,1022.50944592,8954.47438088,719.96103601,4407.9430408232
+"West Sussex","Both","All Ages","Cervical cancer","Number",2017,"B.1.15","432","410","3","Neoplasms",503.135721761471,23.0476756956463,54.8459522115,340.313534886,27.019135979,476.116585782452
+"West Sussex","Both","All Ages","Uterine cancer","Number",2017,"B.1.16","435","410","3","Neoplasms",540.648208334215,28.5291443215436,165.455209907,1244.5624076,84.3502305274,456.297977806855
+"West Sussex","Both","All Ages","Ovarian cancer","Number",2017,"B.1.17","465","410","3","Neoplasms",1579.13419355776,84.695819152013,119.638080122,496.271190397,66.2226519535,1512.91154160428
+"West Sussex","Both","All Ages","Prostate cancer","Number",2017,"B.1.18","438","410","3","Neoplasms",3151.9288639165,223.682745851391,839.643062899,6431.87936608,550.568710016,2601.36015390032
+"West Sussex","Both","All Ages","Testicular cancer","Number",2017,"B.1.19","468","410","3","Neoplasms",51.2523678271475,0.907305967363012,33.9198084774,306.062821748,18.0317296481,33.2206381790763
+"West Sussex","Both","All Ages","Nasopharynx cancer","Number",2017,"B.1.2","447","410","3","Neoplasms",171.774558874009,9.32703243164954,9.93463056567,39.7579458285,4.52390918867,167.250649685342
+"West Sussex","Both","All Ages","Kidney cancer","Number",2017,"B.1.20","471","410","3","Neoplasms",1263.24018566599,71.6724238431319,155.69160264,734.212368132,51.1998721003,1212.04031356567
+"West Sussex","Both","All Ages","Bladder cancer","Number",2017,"B.1.21","474","410","3","Neoplasms",1312.28997567085,98.3141765727366,198.441240476,966.261503003,93.0383089602,1219.25166671064
+"West Sussex","Both","All Ages","Brain and nervous system cancer","Number",2017,"B.1.22","477","410","3","Neoplasms",1800.15273642492,69.4628538490204,170.344804911,861.303353675,75.526933026,1724.62580339891
+"West Sussex","Both","All Ages","Thyroid cancer","Number",2017,"B.1.23","480","410","3","Neoplasms",137.01032175403,6.86051044899134,49.3300693542,414.384211796,25.5889987094,111.421323044676
+"West Sussex","Both","All Ages","Mesothelioma","Number",2017,"B.1.24","483","410","3","Neoplasms",738.693275432086,44.59088021321,52.3184836089,120.851348557,21.3242405638,717.369034868279
+"West Sussex","Both","All Ages","Hodgkin lymphoma","Number",2017,"B.1.25","484","410","3","Neoplasms",146.224845896117,4.89112565162777,40.5511944127,326.745170962,22.7624700994,123.462375796745
+"West Sussex","Both","All Ages","Non-Hodgkin lymphoma","Number",2017,"B.1.26","485","410","3","Neoplasms",1605.40507514171,92.1358634975227,283.364432564,1622.41969395,118.89074778,1486.51432736148
+"West Sussex","Both","All Ages","Multiple myeloma","Number",2017,"B.1.27","486","410","3","Neoplasms",930.775691754666,57.0631162752633,106.114134693,429.893967883,78.7568776817,852.018814072943
+"West Sussex","Both","All Ages","Leukemia","Number",2017,"B.1.28","487","410","3","Neoplasms",1906.25701128139,110.17845256637,235.120921636,977.088502948,128.354335137,1777.90267614454
+"West Sussex","Both","All Ages","Other malignant neoplasms","Number",2017,"B.1.29","489","410","3","Neoplasms",1868.57976562578,65.9115541799422,217.138023995,8602.04573248,614.632655844,1253.94710978184
+"West Sussex","Both","All Ages","Other pharynx cancer","Number",2017,"B.1.3","450","410","3","Neoplasms",293.593383591055,12.1740616355511,39.2671974759,156.003590522,16.1655471366,277.427836454487
+"West Sussex","Both","All Ages","Other neoplasms","Number",2017,"B.1.30","490","410","3","Neoplasms",577.909737536905,39.5883556079413,1847.53090532,2651.7105544,31.7834189686,546.126318568348
+"West Sussex","Both","All Ages","Esophageal cancer","Number",2017,"B.1.4","411","410","3","Neoplasms",2368.88845327796,137.745243743316,144.119877351,206.700671918,36.3789450607,2332.50950821721
+"West Sussex","Both","All Ages","Stomach cancer","Number",2017,"B.1.5","414","410","3","Neoplasms",1571.4122910684,105.475121421213,184.442911266,479.860695832,54.1704884334,1517.24180263497
+"West Sussex","Both","All Ages","Colon and rectum cancer","Number",2017,"B.1.6","441","410","3","Neoplasms",5162.78624260736,318.114932265225,846.458421223,4656.32631354,431.455293225,4731.33094938258
+"West Sussex","Both","All Ages","Liver cancer","Number",2017,"B.1.7","417","410","3","Neoplasms",1079.9226346024,63.3328374815349,81.5327081352,48.5346073398,21.0957229939,1058.82691160854
+"West Sussex","Both","All Ages","Gallbladder and biliary tract cancer","Number",2017,"B.1.8","453","410","3","Neoplasms",433.000160928059,29.4914269548683,42.8452876862,48.6976903938,10.0230609537,422.977099974346
+"West Sussex","Both","All Ages","Pancreatic cancer","Number",2017,"B.1.9","456","410","3","Neoplasms",3084.57350534181,188.662680647311,191.532902676,140.234627013,36.2862365034,3048.28726883837
+"West Sussex","Both","All Ages","Blindness and vision impairment","Number",2017,"B.10.1","981","669","3","Sense organ diseases",2640.72722657869,NA,NA,67215.186384,2640.72722658,NA
+"West Sussex","Both","All Ages","Age-related and other hearing loss","Number",2017,"B.10.2","674","669","3","Sense organ diseases",5041.26293725177,NA,NA,180622.979145,5041.26293725,NA
+"West Sussex","Both","All Ages","Other sense organ diseases","Number",2017,"B.10.3","679","669","3","Sense organ diseases",441.385038060029,NA,0,18563.327029,441.38503806,NA
+"West Sussex","Both","All Ages","Rheumatoid arthritis","Number",2017,"B.11.1","627","626","3","Musculoskeletal disorders",1022.28001826788,14.3223317603762,309.829656689,6472.66077688,839.82507992,182.454938348206
+"West Sussex","Both","All Ages","Osteoarthritis","Number",2017,"B.11.2","628","626","3","Musculoskeletal disorders",2282.47586631883,NA,3014.47690073,72883.5202791,2282.47586632,NA
+"West Sussex","Both","All Ages","Low back pain","Number",2017,"B.11.3","630","626","3","Musculoskeletal disorders",16065.602650513,NA,58076.4485968,143760.714899,16065.6026505,NA
+"West Sussex","Both","All Ages","Neck pain","Number",2017,"B.11.4","631","626","3","Musculoskeletal disorders",5978.3972924938,NA,11345.5000476,61191.0312165,5978.39729249,NA
+"West Sussex","Both","All Ages","Gout","Number",2017,"B.11.5","632","626","3","Musculoskeletal disorders",364.233706751977,NA,1627.66766888,11934.8376112,364.233706752,NA
+"West Sussex","Both","All Ages","Other musculoskeletal disorders","Number",2017,"B.11.6","639","626","3","Musculoskeletal disorders",3941.63375945482,55.9327201062847,NA,39697.3925715,3331.51529543,610.118464026305
+"West Sussex","Both","All Ages","Congenital birth defects","Number",2017,"B.12.1","641","640","3","Other non-communicable diseases",2605.69244450813,17.1368699432392,327.152777892,15899.8087343,1529.57146969,1076.12097482271
+"West Sussex","Both","All Ages","Urinary diseases and male infertility","Number",2017,"B.12.2","594","640","3","Other non-communicable diseases",1632.54151409462,117.600474978532,51760.4374501,17571.6833105,571.07608484,1061.46542925444
+"West Sussex","Both","All Ages","Gynecological diseases","Number",2017,"B.12.3","603","640","3","Other non-communicable diseases",1715.71480213905,0.47211282801035,19712.3813287,95721.6100313,1706.91359327,8.80120887095724
+"West Sussex","Both","All Ages","Hemoglobinopathies and hemolytic anemias
+","Number",2017,"B.12.4","613","640","3","Other non-communicable diseases",212.453608044386,7.89853990983012,1370.33430163,132802.277311,110.497793821,101.95581422303
+"West Sussex","Both","All Ages","Endocrine, metabolic, blood, and immune
+disorders","Number",2017,"B.12.5","619","640","3","Other non-communicable diseases",936.741363470058,28.0419931240032,0,10992.216043,302.390639122,634.350724347887
+"West Sussex","Both","All Ages","Oral disorders","Number",2017,"B.12.6","680","640","3","Other non-communicable diseases",2953.74012499749,NA,301635.07533,384814.68692,2953.740125,NA
+"West Sussex","Both","All Ages","Sudden infant death syndrome","Number",2017,"B.12.7","686","640","3","Other non-communicable diseases",167.850692730223,1.91923528857867,NA,NA,NA,167.850692730223
+"West Sussex","Both","All Ages","Rheumatic heart disease","Number",2017,"B.2.1","492","491","3","Cardiovascular diseases",260.175460332466,21.0982245896342,27.9026774109,55.1711127517,4.4602989174,255.715161415064
+"West Sussex","Both","All Ages","Endocarditis","Number",2017,"B.2.10","503","491","3","Cardiovascular diseases",347.157847772857,26.1277909375813,182.008378958,146.489287026,11.8481943875,335.309653385341
+"West Sussex","Both","All Ages","Other cardiovascular and circulatory
+diseases","Number",2017,"B.2.11","507","491","3","Cardiovascular diseases",2934.38791925192,125.55938722139,NA,22464.778466,1151.91550289,1782.47241635811
+"West Sussex","Both","All Ages","Ischemic heart disease","Number",2017,"B.2.2","493","491","3","Cardiovascular diseases",16610.5180785529,1291.53992837577,4329.05153502,32116.0114393,879.340157538,15731.1779210146
+"West Sussex","Both","All Ages","Stroke","Number",2017,"B.2.3","494","491","3","Cardiovascular diseases",9802.98331050305,753.778840934703,1582.00705869,13653.8829952,2176.84592468,7626.1373858259
+"West Sussex","Both","All Ages","Hypertensive heart disease","Number",2017,"B.2.4","498","491","3","Cardiovascular diseases",851.969704628654,61.8321296940592,NA,1250.69477667,101.698695768,750.271008860577
+"West Sussex","Both","All Ages","Non-rheumatic valvular heart disease","Number",2017,"B.2.5","504","491","3","Cardiovascular diseases",1214.32092965544,100.274975895939,15077.5605506,14614.210817,220.307308234,994.013621421922
+"West Sussex","Both","All Ages","Cardiomyopathy and myocarditis","Number",2017,"B.2.6","499","491","3","Cardiovascular diseases",1825.2421236059,114.740170464842,491.997276121,1963.22570971,182.016378924,1643.225744682
+"West Sussex","Both","All Ages","Atrial fibrillation and flutter","Number",2017,"B.2.7","500","491","3","Cardiovascular diseases",2744.87027620255,167.906533270706,1186.15830304,17110.6904183,1323.70359565,1421.1666805477
+"West Sussex","Both","All Ages","Aortic aneurysm","Number",2017,"B.2.8","501","491","3","Cardiovascular diseases",1689.7219884718,141.044543471271,NA,NA,NA,1689.7219884718
+"West Sussex","Both","All Ages","Peripheral artery disease","Number",2017,"B.2.9","502","491","3","Cardiovascular diseases",455.55114563547,35.9640781128508,2051.77980984,27293.0865107,111.639073782,343.91207185331
+"West Sussex","Both","All Ages","Chronic obstructive pulmonary disease","Number",2017,"B.3.1","509","508","3","Chronic respiratory diseases",10859.2458135829,530.275115590911,3684.02288818,75194.1040575,4587.06872093,6272.17709264825
+"West Sussex","Both","All Ages","Pneumoconiosis","Number",2017,"B.3.2","510","508","3","Chronic respiratory diseases",31.1221107077113,1.51833697741057,9.55123623247,91.8241470105,14.0585118989,17.0635988088512
+"West Sussex","Both","All Ages","Asthma","Number",2017,"B.3.3","515","508","3","Chronic respiratory diseases",3226.83197455951,18.5197348043451,3680.33324703,76863.1238042,2961.42242166,265.409552898626
+"West Sussex","Both","All Ages","Interstitial lung disease and pulmonary
+sarcoidosis","Number",2017,"B.3.4","516","508","3","Chronic respiratory diseases",1234.16841830301,79.8796528498162,150.71397391,1755.83357004,181.823855042,1052.34456326094
+"West Sussex","Both","All Ages","Other chronic respiratory diseases","Number",2017,"B.3.5","520","508","3","Chronic respiratory diseases",253.578622413137,3.61474043159955,NA,NA,183.701063072,69.8775593415084
+"West Sussex","Both","All Ages","Cirrhosis and other chronic liver
+diseases","Number",2017,"B.4.1","521","526","3","Digestive diseases",3066.77967514134,117.001417330814,352.827878842,119454.559691,221.175469685,2845.60420545628
+"West Sussex","Both","All Ages","Other digestive diseases","Number",2017,"B.4.10","541","526","3","Digestive diseases",870.334324632629,70.0849040367738,NA,NA,129.626029612,740.708295021107
+"West Sussex","Both","All Ages","Upper digestive system diseases","Number",2017,"B.4.2","992","526","3","Digestive diseases",2072.39806513233,51.5357180690616,52842.7613362,117679.283746,1427.28871814,645.109346988452
+"West Sussex","Both","All Ages","Appendicitis","Number",2017,"B.4.3","529","526","3","Digestive diseases",50.3453087327132,2.85735789333742,618.39810318,23.6548213782,7.67095285327,42.6743558794456
+"West Sussex","Both","All Ages","Paralytic ileus and intestinal
+obstruction","Number",2017,"B.4.4","530","526","3","Digestive diseases",478.541221567565,44.6699709983881,462.3950067,16.1972638257,5.15236455765,473.38885700991
+"West Sussex","Both","All Ages","Inguinal, femoral, and abdominal hernia","Number",2017,"B.4.5","531","526","3","Digestive diseases",487.38117953406,16.6105185309959,12627.4827356,3339.82668174,313.823767572,173.55741196217
+"West Sussex","Both","All Ages","Inflammatory bowel disease","Number",2017,"B.4.6","532","526","3","Digestive diseases",1068.77057145768,23.2823217381226,452.890373727,5344.7821784,784.634766055,284.135805403119
+"West Sussex","Both","All Ages","Vascular intestinal disorders","Number",2017,"B.4.7","533","526","3","Digestive diseases",533.364147886179,44.0390887071132,164.735480727,29.9486928351,8.7304673452,524.633680540979
+"West Sussex","Both","All Ages","Gallbladder and biliary diseases","Number",2017,"B.4.8","534","526","3","Digestive diseases",363.577966608412,35.2711661082446,1061.29781707,6142.31182447,4.975776944,358.602189664411
+"West Sussex","Both","All Ages","Pancreatitis","Number",2017,"B.4.9","535","526","3","Digestive diseases",411.573785980918,17.2904774586216,371.076313712,1931.46170347,110.905046513,300.6687394682
+"West Sussex","Both","All Ages","Alzheimer's disease and other dementias","Number",2017,"B.5.1","543","542","3","Neurological disorders",10794.0775858165,1146.30035758311,2307.50331764,14017.5766842,2122.16854978,8671.90903603889
+"West Sussex","Both","All Ages","Parkinson's disease","Number",2017,"B.5.2","544","542","3","Neurological disorders",1606.19826617767,121.536066318287,265.351146,2201.513802,310.393440056,1295.80482612139
+"West Sussex","Both","All Ages","Epilepsy","Number",2017,"B.5.3","545","542","3","Neurological disorders",1087.1078793293,12.9246958808217,300.787431852,3035.41426691,682.085544158,405.022335171477
+"West Sussex","Both","All Ages","Multiple sclerosis","Number",2017,"B.5.4","546","542","3","Neurological disorders",826.068465554225,20.8468128874831,27.1951600636,1227.0819335,306.123293917,519.945171637
+"West Sussex","Both","All Ages","Motor neuron disease","Number",2017,"B.5.5","554","542","3","Neurological disorders",785.237868196358,40.1843188497298,42.8464348606,127.148153764,27.0132667612,758.224601435174
+"West Sussex","Both","All Ages","Headache disorders","Number",2017,"B.5.6","972","542","3","Neurological disorders",7421.639068588,NA,123579.716387,393342.731856,7421.63906859,NA
+"West Sussex","Both","All Ages","Other neurological disorders","Number",2017,"B.5.7","557","542","3","Neurological disorders",743.357225361781,25.9579906233233,0,3.57412729937,167.393546346,575.96367901581
+"West Sussex","Both","All Ages","Schizophrenia","Number",2017,"B.6.1","559","558","3","Mental disorders",1554.26687387788,NA,92.5515254971,2483.70554296,1554.26687388,NA
+"West Sussex","Both","All Ages","Other mental disorders","Number",2017,"B.6.10","585","558","3","Mental disorders",1444.49431609922,NA,0,19826.0201225,1444.4943161,NA
+"West Sussex","Both","All Ages","Depressive disorders","Number",2017,"B.6.2","567","558","3","Mental disorders",6052.48754613445,NA,36137.947244,37585.1245944,6052.48754613,NA
+"West Sussex","Both","All Ages","Bipolar disorder","Number",2017,"B.6.3","570","558","3","Mental disorders",1779.59860900682,NA,564.747088019,8862.07635106,1779.59860901,NA
+"West Sussex","Both","All Ages","Anxiety disorders","Number",2017,"B.6.4","571","558","3","Mental disorders",3429.15037653014,NA,4622.23304092,36531.196656,3429.15037653,NA
+"West Sussex","Both","All Ages","Eating disorders","Number",2017,"B.6.5","572","558","3","Mental disorders",708.288383219626,0.121098806092937,1060.75066085,3350.31156243,701.865238801,6.4231444184376
+"West Sussex","Both","All Ages","Autism spectrum disorders","Number",2017,"B.6.6","575","558","3","Mental disorders",737.793160153473,NA,61.6696600457,4946.72045684,737.793160153,NA
+"West Sussex","Both","All Ages","Attention-deficit/hyperactivity disorder
+","Number",2017,"B.6.7","578","558","3","Mental disorders",70.3045620801634,NA,296.482462672,5799.81295423,70.3045620802,NA
+"West Sussex","Both","All Ages","Conduct disorder","Number",2017,"B.6.8","579","558","3","Mental disorders",503.015733545966,NA,1309.62202265,4147.78236003,503.015733546,NA
+"West Sussex","Both","All Ages","Idiopathic developmental intellectual
+disability","Number",2017,"B.6.9","582","558","3","Mental disorders",113.398191871446,NA,NA,2562.47408896,113.398191871,NA
+"West Sussex","Both","All Ages","Alcohol use disorders","Number",2017,"B.7.1","560","973","3","Substance use disorders",2245.20660792457,26.2273965729848,4873.57249398,12764.2507403,1266.03207752,979.174530399723
+"West Sussex","Both","All Ages","Drug use disorders","Number",2017,"B.7.2","561","973","3","Substance use disorders",3797.72612965518,29.2321506843686,890.941811838,11150.2090779,2472.64460036,1325.08152929334
+"West Sussex","Both","All Ages","Diabetes mellitus","Number",2017,"B.8.1","587","974","3","Diabetes and kidney diseases",5819.14357173479,73.2307018040966,3257.40600886,76283.7699469,4887.11992535,932.023646384949
+"West Sussex","Both","All Ages","Chronic kidney disease","Number",2017,"B.8.2","589","974","3","Diabetes and kidney diseases",1928.97082060803,97.1234817125,3687.73681228,81771.0613603,937.372115961,991.598704647029
+"West Sussex","Both","All Ages","Acute glomerulonephritis","Number",2017,"B.8.3","588","974","3","Diabetes and kidney diseases",9.97841255537254,0.871164421682563,32.9877745745,2.24666396933,0.113670561742,9.86474199363019
+"West Sussex","Both","All Ages","Dermatitis","Number",2017,"B.9.1","654","653","3","Skin and subcutaneous diseases",2374.62054294112,NA,39616.7982074,59429.9866949,2374.62054294,NA
+"West Sussex","Both","All Ages","Urticaria","Number",2017,"B.9.10","664","653","3","Skin and subcutaneous diseases",358.69346023564,NA,10710.2780259,6106.39851813,358.693460236,NA
+"West Sussex","Both","All Ages","Decubitus ulcer","Number",2017,"B.9.11","665","653","3","Skin and subcutaneous diseases",89.8360113115934,3.12491186716371,1384.72113577,379.977943747,59.2972679355,30.538743376092
+"West Sussex","Both","All Ages","Other skin and subcutaneous diseases","Number",2017,"B.9.12","668","653","3","Skin and subcutaneous diseases",643.078487210067,1.89247357903024,119952.077806,115990.787288,623.797662235,19.2808249755317
+"West Sussex","Both","All Ages","Psoriasis","Number",2017,"B.9.2","655","653","3","Skin and subcutaneous diseases",1571.11309701839,NA,1545.77489594,18538.3882228,1571.11309702,NA
+"West Sussex","Both","All Ages","Bacterial skin diseases","Number",2017,"B.9.3","980","653","3","Skin and subcutaneous diseases",396.398266123999,30.1606748642196,62208.5127475,2368.92589701,60.1810303576,336.217235766363
+"West Sussex","Both","All Ages","Scabies","Number",2017,"B.9.4","658","653","3","Skin and subcutaneous diseases",22.2979271919452,NA,2634.4523759,872.915619758,22.2979271919,NA
+"West Sussex","Both","All Ages","Fungal skin diseases","Number",2017,"B.9.5","659","653","3","Skin and subcutaneous diseases",573.257179059148,NA,314644.860345,105454.665678,573.257179059,NA
+"West Sussex","Both","All Ages","Viral skin diseases","Number",2017,"B.9.6","660","653","3","Skin and subcutaneous diseases",362.868105102516,NA,7391.12075129,11845.1516022,362.868105103,NA
+"West Sussex","Both","All Ages","Acne vulgaris","Number",2017,"B.9.7","661","653","3","Skin and subcutaneous diseases",530.802089930248,NA,12227.0855582,24959.5666862,530.80208993,NA
+"West Sussex","Both","All Ages","Alopecia areata","Number",2017,"B.9.8","662","653","3","Skin and subcutaneous diseases",86.1903360374977,NA,4662.29994884,2663.28903366,86.1903360375,NA
+"West Sussex","Both","All Ages","Pruritus","Number",2017,"B.9.9","663","653","3","Skin and subcutaneous diseases",89.3182130744635,NA,6650.117626,8552.76792344,89.3182130745,NA
+"West Sussex","Both","All Ages","Road injuries","Number",2017,"C.1.1","689","688","3","Transport injuries",2587.44755984763,37.5150332724165,5061.29070682,23363.3821922,1217.74724834,1369.70031150351
+"West Sussex","Both","All Ages","Other transport injuries","Number",2017,"C.1.2","695","688","3","Transport injuries",312.463488655829,3.02712707833892,510.631240029,3661.03813159,191.396329106,121.067159550292
+"West Sussex","Both","All Ages","Falls","Number",2017,"C.2.1","697","696","3","Unintentional injuries",5996.50854693369,99.9292861987827,40985.0519579,111874.738059,4877.37727243,1119.13127450836
+"West Sussex","Both","All Ages","Exposure to forces of nature","Number",2017,"C.2.10","729","696","3","Unintentional injuries",0.53159901679087,0,0,18.5432839481,0.531599016791,0
+"West Sussex","Both","All Ages","Other unintentional injuries","Number",2017,"C.2.11","716","696","3","Unintentional injuries",1633.69623640893,0.872807719649072,15293.6498541,52384.9852041,1604.24553853,29.4506978805657
+"West Sussex","Both","All Ages","Drowning","Number",2017,"C.2.2","698","696","3","Unintentional injuries",165.980907327976,4.1766930890883,19.4534340099,174.047692651,9.09906686242,156.881840465561
+"West Sussex","Both","All Ages","Fire, heat, and hot substances","Number",2017,"C.2.3","699","696","3","Unintentional injuries",423.594986407501,7.77824585112766,923.502759418,12903.7043037,293.481993638,130.112992769968
+"West Sussex","Both","All Ages","Poisonings","Number",2017,"C.2.4","700","696","3","Unintentional injuries",182.146977169204,1.43523955019454,777.372018853,1259.53086162,129.201122308,52.9458548612903
+"West Sussex","Both","All Ages","Exposure to mechanical forces","Number",2017,"C.2.5","704","696","3","Unintentional injuries",1060.35374056216,5.33158355976511,10624.4346693,39915.4576527,947.723270407,112.630470155267
+"West Sussex","Both","All Ages","Adverse effects of medical treatment","Number",2017,"C.2.6","708","696","3","Unintentional injuries",284.748777074315,17.7316046474899,2270.11401182,173.725616687,23.1736291506,261.575147923698
+"West Sussex","Both","All Ages","Animal contact","Number",2017,"C.2.7","709","696","3","Unintentional injuries",71.744425469483,0.708338910603705,1896.64523801,2169.63144754,49.7946364746,21.949788994908
+"West Sussex","Both","All Ages","Foreign body","Number",2017,"C.2.8","712","696","3","Unintentional injuries",372.600302399334,13.4239450945909,1972.51402161,2274.25907659,93.3720698804,279.228232518976
+"West Sussex","Both","All Ages","Environmental heat and cold exposure","Number",2017,"C.2.9","842","696","3","Unintentional injuries",129.772855497824,4.2003251808338,421.383412536,1970.6883828,74.0114725721,55.7613829256761
+"West Sussex","Both","All Ages","Self-harm","Number",2017,"C.3.1","718","717","3","Self-harm and interpersonal violence",3255.07116948799,78.9669735821201,888.47151949,3433.85865519,145.400176567,3109.67099292135
+"West Sussex","Both","All Ages","Interpersonal violence","Number",2017,"C.3.2","724","717","3","Self-harm and interpersonal violence",434.75242635931,3.36962499641542,1340.28440009,16242.2644831,287.659414699,147.093011660719
+"West Sussex","Both","All Ages","Conflict and terrorism","Number",2017,"C.3.3","945","717","3","Self-harm and interpersonal violence",10.3179375847171,0,0,279.089149897,10.3179375847,0
+"West Sussex","Both","All Ages","Executions and police conflict","Number",2017,"C.3.4","854","717","3","Self-harm and interpersonal violence",5.06896090217836,0.0798323103741584,11.6239627675,51.7740941004,1.59710014152,3.47186076065962
