@@ -238,11 +238,13 @@ Deaths_x <- Area_x_cause_number %>%
 
 write.csv(Deaths_x, "~/GBD/Latest_deaths_cause_x.csv", row.names = FALSE)
 
-Deaths_x_sex <- Area_x_cause_number %>% 
-  filter(sex != "Both") %>% 
-  filter(level == 3)
+unique(Deaths_x_sex$Parent_cause)
 
-write.csv(Deaths_x_sex, "~/GBD/Deaths_cause_x_sex_years.csv", row.names = FALSE)
+Deaths_x_sex <- Area_x_cause_number %>% 
+  filter(level == 3)
+  
+write.csv(Deaths_x_sex, "~/GBD/Deaths_cause_x_sex_years.csv", row.names = FALSE, na = "0")
+
 
 # Years of life lost ####
 

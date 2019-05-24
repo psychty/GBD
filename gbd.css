@@ -1,6 +1,146 @@
 
+.main {
+  max-width: 900px;
+}
+
+h1 {
+    font-size: 1.25rem;
+    color: #151f6d;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 1rem;
+    color: #151f6d;
+    font-weight: bold;
+  }
+
+p{
+  font-size: .8rem;
+}
+
+tr {
+  /* background-color: #FF8448; */
+  text-align: right;
+}
+
+td {
+  /* background-color: #0099FF; */
+}
+table {
+  font-size: .8rem;
+  color: #000000;
+}
+
+
+/* Style for hovering over bubbles */
+.node:hover {
+  stroke: black;
+}
+
+.footer {
+  font-size: .75rem;
+  float: right;
+}
+
 .line {
   fill: none;
   stroke: #EF5285;
   stroke-width: 2px;
+}
+
+.tooltip {
+  max-width: 150px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: .8rem;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 5px;
+  border: 1px solid #000;
+}
+
+p.tooltip {
+  font-size: .8rem;
+  color: "#ccc000";
+}
+
+.wrapper {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+/* We tell all items to be 100% width, via flex-basis */
+.wrapper > * {
+  flex: 1 100%;
+}
+
+svg {
+  background: #ffffff;
+}
+
+button{
+  display: block;
+  padding: 0.5em 0.5em;
+  border: none;
+  color: #000000;
+  background: #ffffff;
+  width: 100%;
+  font-family: sans-serif;
+  font-size: .75em;
+  cursor: pointer;
+  text-align: left;
+  margin: 0 0 3px;
+  min-height: 20px;
+  border-left: 8px solid #ccc;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+button:hover{
+  background: #ccc;
+}
+
+
+/* Medium screens */
+@media all and (min-width: 400px) {
+  /* We tell both sidebars to share a row */
+  .main {
+    flex: 4 0px;
+    margin: auto;
+  }
+
+  .aside-1 {
+    flex: 1 auto;
+    max-width: 400px;
+  padding-right: 15px;}
+
+  .aside-2 {
+    flex: 1 auto;
+    max-width: 400px;
+  padding-right: 15px;}
+}
+
+
+/* Large screens */
+@media all and (min-width: 900px) {
+  /* We invert order of first sidebar and main
+   * And tell the main element to take twice as much width as the other two sidebars
+   */
+
+  .aside-1 {
+    order: 1;
+    max-width: 250px;
+  }
+  .main    {
+    flex: 4 0px;
+    order: 2;
+  }
+  .aside-2 {
+    order: 3;
+    max-width: 250px;
+  }
+  .footer  {
+    order: 4;
+  }
 }
