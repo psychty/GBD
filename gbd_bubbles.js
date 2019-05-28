@@ -11,14 +11,14 @@ var sex_x = "Male";
 var width = 600;
 var height = 500;
 
-var parent_cause_categories = ["HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis","Enteric infections","Neglected tropical diseases and malaria", "Other infectious diseases","Maternal and neonatal disorders","Nutritional deficiencies","Neoplasms","Sense organ diseases","Musculoskeletal disorders", "Other non-communicable diseases","Cardiovascular diseases", "Chronic respiratory diseases","Digestive diseases","Neurological disorders","Mental disorders","Substance use disorders","Diabetes and kidney diseases", "Skin and subcutaneous diseases","Transport injuries","Unintentional injuries","Self-harm and interpersonal violence"]
+// var cats_available = [];
 
-console.log(parent_cause_categories)
+var parent_cause_categories = ["Cardiovascular diseases","Chronic respiratory diseases","Diabetes and kidney diseases","Digestive diseases","Enteric infections","HIV/AIDS and sexually transmitted infections","Maternal and neonatal disorders","Mental disorders","Musculoskeletal disorders","Neglected tropical diseases and malaria","Neoplasms","Neurological disorders","Nutritional deficiencies","Other infectious diseases","Other non-communicable diseases","Respiratory infections and tuberculosis","Self-harm and interpersonal violence","Sense organ diseases","Skin and subcutaneous diseases","Substance use disorders","Transport injuries","Unintentional injuries"]
 
 // Color palette for continents?
 var color_p_cause = d3.scaleOrdinal()
   .domain(parent_cause_categories)
-  .range(["#8eb145","#a25dce","#52bb55","#c94eb1","#c4aa35","#616bdb","#e28637","#46aed7","#d54637","#50b696","#d44886","#4d7f3e","#cd415f","#8196de","#a9572d","#6563a9","#cca467","#9a4c7b","#826f2c","#d889c3","#cd726e"]);
+  .range(["#e48874","#50bd54","#a35cce","#7eb233","#d24aa4","#5bc187","#dd4973","#3c803b","#656ec9","#bcb034","#994e8b","#8eac5b","#d48ecb","#6c6e26","#5e97d1","#db9037","#45c7c8","#ce4933","#3d9275","#a74b5b","#bba360","#9b5e2c"]);
 
 // append the svg object to the body of the page
 var svg = d3.select("#my_dataviz")
@@ -37,12 +37,11 @@ var tooltip = d3.select("#my_dataviz")
 // Read and use data
 d3.csv("Deaths_cause_x_sex_years.csv", function(data) {
 
-
 data = data.filter(function(d){ // Add any filters
     return d.sex === sex_x &
     +d.year === year_x}) // Unfortunately, it seems that if your filter removes a row and there are no other parent causes the color_p_cause function changes the color returned (although it should do the same for the legend). This will be problematic if switching using filters.
 
-console.log(data)
+data = data.sort(function (a,b) {return d3.ascending(a.Parent_cause, b.Parent_cause);});
 
 // Grab the lowest number of deaths
 var min_deaths = d3.min(data, function(d){
@@ -65,10 +64,6 @@ var mousemove = function(d) {
     .style("left",(event.pageX+10)+"px")
       }
 
-// parent_cause_categories = create_parent_cause_categories(data);
-
-
-
 // Initialize the circle
 var node = svg.append("g")
     .selectAll("circle")
@@ -89,16 +84,14 @@ var node = svg.append("g")
          .on("drag", dragged)
          .on("end", dragended));
 
-
-
   // Features of the forces applied to the nodes:
   var simulation = d3.forceSimulation()
-    .force("center", d3.forceCenter().x(width / 2).y(300)) // Attraction to the middle of the svg area and 400 px down
+    .force("center", d3.forceCenter().x(width / 2).y(150)) // Attraction to the middle of the svg area and 200 px down
     .force("charge", d3.forceManyBody().strength(.1)) // Nodes are attracted one each other of value is > 0
     .force("collide", d3.forceCollide().strength(.2).radius(function(d){ return (size(d.Deaths)+3) }).iterations(1)) // Force that avoids circle overlapping
 
-      // Apply these forces to the nodes and update their positions.
-      // Once the force algorithm is happy with positions ('alpha' value is low enough), simulations will stop.
+  // Apply these forces to the nodes and update their positions.
+  // Once the force algorithm is happy with positions ('alpha' value is low enough), simulations will stop.
       simulation
           .nodes(data)
           .on("tick", function(d){
@@ -189,25 +182,52 @@ function create_parent_cause_categories (data){
                     })
                     return cats; // Once all datapoints have been examined, the result returned should be an array containing all the unique values of BNF_chapter in the data
                 }
-// console.log(parent_cause_categories)
+
+var cats_available = create_parent_cause_categories(data)
+
+//sort data by items
 
 
-})
-// This function builds a menu by creating a button for every value in the cause_categories array.
 function buildMenu(){
-  parent_cause_categories.forEach(function(item, index){ // The index is the position of the loop, which can be used later for the border colour
+  cats_available.forEach(function(item, index){ // The index is the position of the loop, which can be used later for the border colour
     var button = document.createElement("button");
     button.innerHTML = item;
     button.className = 'filterButton';
     button.style.borderColor = color_p_cause(index);
 
-    var div = document.getElementById("parent_cause_categories");
+    var div = document.getElementById("cause_categories");
     div.appendChild(button); // This appends the button to the div
 
 // This says listen for which value is clicked, for whatever is clicked, the following actions should take place.
     button.addEventListener('click', function(e){
-      selected_cause = e.target.innerHTML;
+      selected_chapter = e.target.innerHTML;
+      console.log(selected_chapter)
+    })
 
-        })
-        })
-                    }
+  })
+}
+
+buildMenu();
+
+
+})
+
+
+// This function builds a menu by creating a button for every value in the cause_categories array.
+// function buildMenu(){
+//   parent_cause_categories.forEach(function(item, index){ // The index is the position of the loop, which can be used later for the border colour
+//     var button = document.createElement("button");
+//     button.innerHTML = item;
+//     button.className = 'filterButton';
+//     button.style.borderColor = color_p_cause(index);
+//
+//     var div = document.getElementById("parent_cause_categories");
+//     div.appendChild(button); // This appends the button to the div
+//
+// // This says listen for which value is clicked, for whatever is clicked, the following actions should take place.
+//     button.addEventListener('click', function(e){
+//       selected_cause = e.target.innerHTML;
+//
+//         })
+//         })
+//                     }

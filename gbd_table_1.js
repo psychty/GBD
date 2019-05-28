@@ -47,7 +47,6 @@ var myArray = []; // Create an empty array
         myArray.push([d.Parent_cause, d.cause, d.cause_outline, d.Deaths]);
     });
 
-
 //sort data by items
 myArray.sort(function (a, b) {
     return b[3]-a[3]; // a - b is ascending, b - a is descending [x] x is the column position
