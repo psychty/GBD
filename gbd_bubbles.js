@@ -11,8 +11,16 @@ var sex_x = "Male";
 var width = 600;
 var height = 500;
 
-// var cats_available = [];
+var sex_dropdown = ["Male", "Female"],
+j = 0; // Create the drop down data, with 0 (Male) as the default. I think 0 is the default
 
+
+
+
+  // When a button change, I run the update_sex function
+   // d3.selectAll(".sex_dropdown").on("change",update_sex);
+
+   // update_sex()
 var parent_cause_categories = ["Cardiovascular diseases","Chronic respiratory diseases","Diabetes and kidney diseases","Digestive diseases","Enteric infections","HIV/AIDS and sexually transmitted infections","Maternal and neonatal disorders","Mental disorders","Musculoskeletal disorders","Neglected tropical diseases and malaria","Neoplasms","Neurological disorders","Nutritional deficiencies","Other infectious diseases","Other non-communicable diseases","Respiratory infections and tuberculosis","Self-harm and interpersonal violence","Sense organ diseases","Skin and subcutaneous diseases","Substance use disorders","Transport injuries","Unintentional injuries"]
 
 // Color palette for continents?
@@ -28,11 +36,37 @@ var svg = d3.select("#my_dataviz")
 
 // Create functions to show, move, and hide the tooltip
 var tooltip = d3.select("#my_dataviz")
-          .append("div")
-          .attr("class", "tooltip")
-          .style("position", "absolute")
-          .style("z-index", "10")
-          .style("visibility", "hidden");
+  .append("div")
+    .attr("class", "tooltip")
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("visibility", "hidden");
+
+// Initialize the sex filter button
+var dropdownButton_sex = d3.select("#sexdropdownbutton")
+    .append('select') // add a select input
+    .attr("id", "select_sex") // Give the filter an id
+
+labels = dropdownButton_sex.selectAll("label")
+    .data(sex_dropdown)
+    .enter()
+    .append("option")
+    .text(function(d) {
+      return d;
+      })
+    .attr("value", function(d, i) {
+      return d;
+      });
+
+d3.select("#selected-dropdown").text("This figure is currently showing deaths for " + sex_x + "s in West Sussex in " + year_x);
+
+d3.select("select")
+      .on("change",function(d){
+var sex_x = d3.select("#select_sex").node().value;
+    console.log(sex_x);
+
+d3.select("#selected-dropdown").text("This figure is currently showing deaths for " + sex_x + "s in West Sussex in " + year_x);
+    })
 
 // Read and use data
 d3.csv("Deaths_cause_x_sex_years.csv", function(data) {
@@ -184,9 +218,6 @@ function create_parent_cause_categories (data){
                 }
 
 var cats_available = create_parent_cause_categories(data)
-
-//sort data by items
-
 
 function buildMenu(){
   cats_available.forEach(function(item, index){ // The index is the position of the loop, which can be used later for the border colour

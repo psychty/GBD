@@ -17,42 +17,47 @@
         <h1>Global Burden of Disease modelling - West Sussex</h1>
         <p>The Global Burden of Disease Study (GBD) is one of the most comprehensive worldwide epidemiological collaborations describing mortality and morbidity from major diseases and injuries and risk factors to health at global, national, regional, and local levels. Data are available for every year between 1990 and 2017 and each year new data and methodological innovations are fed into the models, revising annual estimates for 360 diseases and injuries and 85 risk factors.</p>
         <p>Where possible, local observational data (e.g. mortality and GP records or local studies) are included in the estimates but for a large number of diseases there is simply no recorded information on prevalence. The GBD ethos is that an uncertain estimate, even when data are sparse or not available, is preferable to no estimate at all.</p>
-        <p>The 2017 overview for England is available <a href = "http://www.healthdata.org/united-kingdom-england" target = "blank">here</a href></p>
-
-
+        <p>The 2017 overview for England is available <a href = "http://www.healthdata.org/united-kingdom-england" target = "_blank">here</a href></p>
     </div>
 
+<article class = "main">
 
+      <p id="selected-dropdown"></p>
+      <div id = "sexdropdownbutton"></div>
 
-    <article class = "main">
       <div id = "my_dataviz"></div>
       <div id = "deaths_time_chart"></div>
 
         <h2>Top 10 sections</h2>
         <div id = "top_table"></div>
-    </article>
+</article>
 
-    <aside class = "aside aside-1">
+<aside class = "aside aside-1">
         <h2>Exploring causes</h2>
         <p>Use the buttons below to select a group of causes and hover over a circle to see more.</p>
         <div id="cause_categories"></div>
 
-    </aside>
+</aside>
 
-    <aside class="aside aside-2">
+<aside class="aside aside-2">
     <h2>Notes:</h2>
-    <p>Data downloaded from the <a href = "http://ghdx.healthdata.org/gbd-results-tool">GBD online results tool;</a href> Institute for Health Metrics and Evaluation (IHME). Findings from the Global Burden of Disease Study 2017. Seattle, WA: IHME, 2018</p>
+    <p>Data downloaded from the <a href = "http://ghdx.healthdata.org/gbd-results-tool", target="_blank">GBD online results tool;</a href> Institute for Health Metrics and Evaluation (IHME). Findings from the Global Burden of Disease Study 2017. Seattle, WA: IHME, 2018</p>
     <p>The size of the circle represents the number of deaths. Items are grouped by the broad disease group.</p>
-
     <h2>Size key</h2>
-
     <div id = "chart_legend"> </div>
     </aside>
-    <footer class="footer">M4de by Dr Rich Tyler <a href = https://github.com/psychty>github/psychty</a> May 2019</footer>
+
+<footer class="footer">M4de by Dr Rich Tyler <a href = "https://github.com/psychty", target = "_blank">github/psychty</a> May 2019</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
 <script src = "gbd_bubbles.js"></script>
 <script src = "gbd_table_1.js"></script>
+<script src = "gbd_slope.js"></script>
+<script src="https://d3js.org/d3-format.v1.min.js"></script>
+
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> -->
+
 <!-- <script src = "Deaths_over_time.js"></script> -->
 </body>
 </html>

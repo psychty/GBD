@@ -41,6 +41,7 @@ table {
 .footer {
   font-size: .75rem;
   float: right;
+  text-align: center;
 }
 
 .line {
@@ -88,11 +89,13 @@ button.filterButton {
   /* width: 100%; */
   cursor: pointer;
   text-align: left;
+  font-size: .8rem;
+  font-family: inherit;
   margin: 0 0 3px;
-  min-height: 18px;
+  /* min-height: 18px; */
   border-left: 8px solid #ccc;
-  -webkit-transition-duration: 0.4s; /* Safari */
-  transition-duration: 0.4s;
+  /* -webkit-transition-duration: 0.4s; /* Safari */
+  /* transition-duration: 0.4s; */
 }
 
 button.filterButton:hover{
