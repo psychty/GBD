@@ -8,13 +8,11 @@
 var year_x = 2017;
 var sex_x = "Male";
 
-var width = 600;
-var height = 500;
+var width = 650;
+var height = 850;
 
 var sex_dropdown = ["Male", "Female"],
 j = 0; // Create the drop down data, with 0 (Male) as the default. I think 0 is the default
-
-
 
 
   // When a button change, I run the update_sex function
@@ -27,6 +25,10 @@ var parent_cause_categories = ["Cardiovascular diseases","Chronic respiratory di
 var color_p_cause = d3.scaleOrdinal()
   .domain(parent_cause_categories)
   .range(["#e48874","#50bd54","#a35cce","#7eb233","#d24aa4","#5bc187","#dd4973","#3c803b","#656ec9","#bcb034","#994e8b","#8eac5b","#d48ecb","#6c6e26","#5e97d1","#db9037","#45c7c8","#ce4933","#3d9275","#a74b5b","#bba360","#9b5e2c"]);
+
+// var y = d3.scaleOrdinal()
+//   .domain(parent_cause_categories)
+//   .range([40,80,120,160,200,240,280,320,360,400,440,480,520,560,600,640,680,720,760,800,840])
 
 // append the svg object to the body of the page
 var svg = d3.select("#my_dataviz")
@@ -120,7 +122,9 @@ var node = svg.append("g")
 
   // Features of the forces applied to the nodes:
   var simulation = d3.forceSimulation()
-    .force("center", d3.forceCenter().x(width / 2).y(150)) // Attraction to the middle of the svg area and 200 px down
+    // .force("x", d3.forceX().strength(0.5).x( 200))
+    // .force("y", d3.forceY().strength(0.1).y( function(d){ return y(d.Parent_cause) } ))
+    .force("center", d3.forceCenter().x(width / 2).y(150)) // Attraction to the middle of the svg area and 150 px down
     .force("charge", d3.forceManyBody().strength(.1)) // Nodes are attracted one each other of value is > 0
     .force("collide", d3.forceCollide().strength(.2).radius(function(d){ return (size(d.Deaths)+3) }).iterations(1)) // Force that avoids circle overlapping
 
@@ -240,25 +244,4 @@ function buildMenu(){
 
 buildMenu();
 
-
 })
-
-
-// This function builds a menu by creating a button for every value in the cause_categories array.
-// function buildMenu(){
-//   parent_cause_categories.forEach(function(item, index){ // The index is the position of the loop, which can be used later for the border colour
-//     var button = document.createElement("button");
-//     button.innerHTML = item;
-//     button.className = 'filterButton';
-//     button.style.borderColor = color_p_cause(index);
-//
-//     var div = document.getElementById("parent_cause_categories");
-//     div.appendChild(button); // This appends the button to the div
-//
-// // This says listen for which value is clicked, for whatever is clicked, the following actions should take place.
-//     button.addEventListener('click', function(e){
-//       selected_cause = e.target.innerHTML;
-//
-//         })
-//         })
-//                     }
