@@ -22,9 +22,7 @@ var sex_dropdown = ["Male", "Female"],
       return d;
     });
 
-let dataload = new Promise(function(resolve, reject) => {
-   resolve {
-d3.csv("./Deaths_cause_x_sex_years.csv", function(error, data) {
+d3.csv("./Deaths_cause_x_sex_years.csv",function(error, data) {
 if (error) {
 	} else {
 
@@ -47,12 +45,8 @@ if (error) {
           });
         }
 });
-}
-  reject {}
-});
 
-
-dataload.then(function(){ // We need to let the data load first and then run the code below
+setTimeout(function(){ // We need to let the data load first and then run the code below
 
 d3.select("#selected-dropdown").text("This figure is currently showing deaths for " + sex_x.toLowerCase() + "s in West Sussex in " + year_x);
 
@@ -70,7 +64,7 @@ d3.select("select")
     console.log(rawGBD_chosen);
       })
 
-});
+},200);
 
 // https://www.d3-graph-gallery.com/graph/parallel_basic.html
 

@@ -60,14 +60,12 @@ for(i in 1:mortality_wsx_files){
 # mortality_df <- unique(list.files("~/GBD data downloads")[grepl("0f1da8e2", list.files("~/GBD data downloads/")) == TRUE]) %>% 
 #   map_df(~read_csv(paste0("~/GBD data downloads/",.)))
 
-
-
-if(!(file.exists("~/GBD data downloads/IHME-GBD_2017_DATA-b475904c-22.csv"))){
+if(!(file.exists("./GBD data downloads/IHME-GBD_2017_DATA-b475904c-22.csv"))){
 risk_files = 22
 for(i in 1:risk_files){
   download.file(paste0("http://s3.healthdata.org/gbd-api-2017-public/b475904cadeca9cccc4b12c1a7a72197_files/IHME-GBD_2017_DATA-b475904c-", i , ".zip"), paste0("~/GBD data downloads/risk_files",i,".zip"), mode = "wb")
-  unzip(paste0("~/GBD data downloads/risk_files",i,".zip"), exdir = "~/GBD data downloads")
-  file.remove(paste0("~/GBD data downloads/risk_files",i,".zip"))
+  unzip(paste0("./GBD data downloads/risk_files",i,".zip"), exdir = "./GBD data downloads")
+  file.remove(paste0("./GBD data downloads/risk_files",i,".zip"))
 }
 }
 

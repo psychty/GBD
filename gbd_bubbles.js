@@ -4,14 +4,16 @@
 
 // https://www.d3-graph-gallery.com/graph/basic_datamanipulation.html
 
+
+
 var year_x = 2017;
 var sex_x = "Male";
 
 var width = 650;
 var height = 850;
 
-var sex_dropdown = ["Male", "Female"],
-  j = 0; // Create the drop down data, with 0 (Male) as the default. I think 0 is the default
+// var sex_dropdown = ["Male", "Female"],
+//   j = 0; // Create the drop down data, with 0 (Male) as the default. I think 0 is the default
 
 
 // When a button change, I run the update_sex function
@@ -43,31 +45,31 @@ var tooltip = d3.select("#my_dataviz")
   .style("z-index", "10")
   .style("visibility", "hidden");
 
-// Initialize the sex filter button
-var dropdownButton_sex = d3.select("#sexdropdownbutton")
-  .append('select') // add a select input
-  .attr("id", "select_sex") // Give the filter an id
-
-labels = dropdownButton_sex.selectAll("label")
-  .data(sex_dropdown)
-  .enter()
-  .append("option")
-  .text(function(d) {
-    return d;
-  })
-  .attr("value", function(d, i) {
-    return d;
-  });
-
-d3.select("#selected-dropdown").text("This figure is currently showing deaths for " + sex_x + "s in West Sussex in " + year_x);
-
-d3.select("select")
-  .on("change", function(d) {
-    var sex_x = d3.select("#select_sex").node().value;
-    console.log(sex_x);
-
-    d3.select("#selected-dropdown").text("This figure is currently showing deaths for " + sex_x + "s in West Sussex in " + year_x);
-  })
+// // Initialize the sex filter button
+// var dropdownButton_sex = d3.select("#sexdropdownbutton")
+//   .append('select') // add a select input
+//   .attr("id", "select_sex") // Give the filter an id
+//
+// labels = dropdownButton_sex.selectAll("label")
+//   .data(sex_dropdown)
+//   .enter()
+//   .append("option")
+//   .text(function(d) {
+//     return d;
+//   })
+//   .attr("value", function(d, i) {
+//     return d;
+//   });
+//
+// d3.select("#selected-dropdown").text("This figure is currently showing deaths for " + sex_x + "s in West Sussex in " + year_x);
+//
+// d3.select("select")
+//   .on("change", function(d) {
+//     var sex_x = d3.select("#select_sex").node().value;
+//     console.log(sex_x);
+//
+//     d3.select("#selected-dropdown").text("This figure is currently showing deaths for " + sex_x + "s in West Sussex in " + year_x);
+//   })
 
 // Read and use data
 d3.csv("./Deaths_cause_x_sex_years.csv", function(data) {

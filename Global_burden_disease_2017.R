@@ -67,13 +67,15 @@ slope_theme = function(){
 
 # Nearest neighbours #### 
 
-if(!(file.exists("~/GBD/Area_lookup_table.csv") & file.exists("~/GBD/Area_types_table.csv"))){
+if(!(file.exists("~/Documents/Repositories/GBD/Area_lookup_table.csv") & file.exists("~/Documents/Repositories/GBD/Area_types_table.csv"))){
   LAD <- read_csv(url("https://opendata.arcgis.com/datasets/a267b55f601a4319a9955b0197e3cb81_0.csv"), col_types = cols(LAD17CD = col_character(),LAD17NM = col_character(),  LAD17NMW = col_character(),  FID = col_integer()))
   
   Counties <- read_csv(url("https://opendata.arcgis.com/datasets/7e6bfb3858454ba79f5ab3c7b9162ee7_0.csv"), col_types = cols(CTY17CD = col_character(),  CTY17NM = col_character(),  Column2 = col_character(),  Column3 = col_character(),  FID = col_integer()))
   
   lookup <- read_csv(url("https://opendata.arcgis.com/datasets/41828627a5ae4f65961b0e741258d210_0.csv"), col_types = cols(LTLA17CD = col_character(),  LTLA17NM = col_character(),  UTLA17CD = col_character(),  UTLA17NM = col_character(),  FID = col_integer()))
-  # This is a lower tier LA to upper tier LA lookup
+  
+
+    # This is a lower tier LA to upper tier LA lookup
   UA <- subset(lookup, LTLA17NM == UTLA17NM)
   
   CCG <- read_csv(url("https://opendata.arcgis.com/datasets/4010cd6fc6ce42c29581c4654618e294_0.csv"), col_types = cols(CCG18CD = col_character(),CCG18CDH = col_skip(),CCG18NM = col_character(), FID = col_skip())) %>% 
@@ -101,12 +103,12 @@ if(!(file.exists("~/GBD/Area_lookup_table.csv") & file.exists("~/GBD/Area_types_
   Areas <- rbind(LAD, CCG, Counties, Region, England)
   rm(LAD, CCG, Counties, Region, England, UA)
   
-  write.csv(lookup, "~/GBD/Area_lookup_table.csv", row.names = FALSE)
-  write.csv(Areas, "~/GBD/Area_types_table.csv", row.names = FALSE)
+  write.csv(lookup, "~/Documents/Repositories/GBD/Area_lookup_table.csv", row.names = FALSE)
+  write.csv(Areas, "~/Documents/Repositories/GBD/Area_types_table.csv", row.names = FALSE)
 }
 
-Lookup <- read_csv("~/GBD/Area_lookup_table.csv", col_types = cols(LTLA17CD = col_character(),LTLA17NM = col_character(), UTLA17CD = col_character(),  UTLA17NM = col_character(), FID = col_character()))
-Areas <- read_csv("~/GBD/Area_types_table.csv", col_types = cols(Area_Code = col_character(), Area_Name = col_character(), Area_Type = col_character()))
+Lookup <- read_csv("~/Documents/Repositories/GBD/Area_lookup_table.csv", col_types = cols(LTLA17CD = col_character(),LTLA17NM = col_character(), UTLA17CD = col_character(),  UTLA17NM = col_character(), FID = col_character()))
+Areas <- read_csv("~/Documents/Repositories/GBD/Area_types_table.csv", col_types = cols(Area_Code = col_character(), Area_Name = col_character(), Area_Type = col_character()))
 
 WSx_NN <- data.frame(Area_Code = nearest_neighbours(AreaCode = "E10000032", AreaTypeID = "102", measure = "CIPFA")) %>%   mutate(Neighbour_rank = row_number()) %>% 
   left_join(Areas, by = "Area_Code") %>% 
@@ -116,7 +118,7 @@ WSx_NN <- data.frame(Area_Code = nearest_neighbours(AreaCode = "E10000032", Area
 # http://www.healthdata.org/united-kingdom
 # http://www.who.int/quantifying_ehimpacts/publications/en/9241546204chap3.pdf
 
-GBD_2017_cause_hierarchy <- read_excel("~/GBD data downloads/IHME_GBD_2017_CAUSE_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric", "text", "text"))
+GBD_2017_cause_hierarchy <- read_excel("./GBD data downloads/IHME_GBD_2017_CAUSE_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric", "text", "text"))
 
 GBD_cause_codebook <- read_csv("~/GBD data downloads/IHME_GBD_2017_CODEBOOK_Y2018M11D18.csv", col_types = cols_only(cause_id = col_character(), cause_name = col_character())) %>% 
   filter(cause_id != "Cause ID")
