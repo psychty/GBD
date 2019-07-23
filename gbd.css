@@ -63,7 +63,7 @@ table {
 
 p.tooltip {
   font-size: .8rem;
-  color: "#ccc000";
+  color: #ccc000;
 }
 
 .wrapper {
@@ -74,6 +74,28 @@ p.tooltip {
 /* We tell all items to be 100% width, via flex-basis */
 .wrapper > * {
   flex: 1 100%;
+}
+
+#reset {
+  display: block;
+  padding: 0.5em 0.5em;
+  border: none;
+  color: #000000;
+  background: #ffffff;
+  width: 300px;
+  font-size: .8em;
+  cursor: pointer;
+  text-align: left;
+  margin: 0 0 3px;
+  min-height: 20px;
+  border-left: 8px solid #ccc;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+
+#reset:hover{
+  background: #ccc;
 }
 
 svg {

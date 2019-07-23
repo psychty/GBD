@@ -4,32 +4,25 @@
 
 // https://www.d3-graph-gallery.com/graph/basic_datamanipulation.html
 
-
-
 var year_x = 2017;
-var sex_x = "Male";
+var sex_x = "Both";
 
 var width = 650;
 var height = 850;
 
-// var sex_dropdown = ["Male", "Female"],
-//   j = 0; // Create the drop down data, with 0 (Male) as the default. I think 0 is the default
+// Add a reload page (reload graphic) function
+  d3.select("#reset")
+  	.on("click", function(e) {
+      location.reload()
+      ;}
+    );
 
-
-// When a button change, I run the update_sex function
-// d3.selectAll(".sex_dropdown").on("change",update_sex);
-
-// update_sex()
 var parent_cause_categories = ["Cardiovascular diseases", "Chronic respiratory diseases", "Diabetes and kidney diseases", "Digestive diseases", "Enteric infections", "HIV/AIDS and sexually transmitted infections", "Maternal and neonatal disorders", "Mental disorders", "Musculoskeletal disorders", "Neglected tropical diseases and malaria", "Neoplasms", "Neurological disorders", "Nutritional deficiencies", "Other infectious diseases", "Other non-communicable diseases", "Respiratory infections and tuberculosis", "Self-harm and interpersonal violence", "Sense organ diseases", "Skin and subcutaneous diseases", "Substance use disorders", "Transport injuries", "Unintentional injuries"]
 
 // Color palette for continents?
 var color_p_cause = d3.scaleOrdinal()
   .domain(parent_cause_categories)
   .range(["#e48874", "#50bd54", "#a35cce", "#7eb233", "#d24aa4", "#5bc187", "#dd4973", "#3c803b", "#656ec9", "#bcb034", "#994e8b", "#8eac5b", "#d48ecb", "#6c6e26", "#5e97d1", "#db9037", "#45c7c8", "#ce4933", "#3d9275", "#a74b5b", "#bba360", "#9b5e2c"]);
-
-// var y = d3.scaleOrdinal()
-//   .domain(parent_cause_categories)
-//   .range([40,80,120,160,200,240,280,320,360,400,440,480,520,560,600,640,680,720,760,800,840])
 
 // append the svg object to the body of the page
 var svg = d3.select("#my_dataviz")
@@ -45,39 +38,15 @@ var tooltip = d3.select("#my_dataviz")
   .style("z-index", "10")
   .style("visibility", "hidden");
 
-// // Initialize the sex filter button
-// var dropdownButton_sex = d3.select("#sexdropdownbutton")
-//   .append('select') // add a select input
-//   .attr("id", "select_sex") // Give the filter an id
-//
-// labels = dropdownButton_sex.selectAll("label")
-//   .data(sex_dropdown)
-//   .enter()
-//   .append("option")
-//   .text(function(d) {
-//     return d;
-//   })
-//   .attr("value", function(d, i) {
-//     return d;
-//   });
-//
-// d3.select("#selected-dropdown").text("This figure is currently showing deaths for " + sex_x + "s in West Sussex in " + year_x);
-//
-// d3.select("select")
-//   .on("change", function(d) {
-//     var sex_x = d3.select("#select_sex").node().value;
-//     console.log(sex_x);
-//
-//     d3.select("#selected-dropdown").text("This figure is currently showing deaths for " + sex_x + "s in West Sussex in " + year_x);
-//   })
-
 // Read and use data
 d3.csv("./Deaths_cause_x_sex_years.csv", function(data) {
   // /Users/richtyler/Documents/Repositories/GBD/Deaths_cause_x_sex_years.csv
-  data = data.filter(function(d) { // Add any filters
+data = data.filter(function(d) { // Add any filters
     return d.sex === sex_x &
       +d.year === year_x
   }) // Unfortunately, it seems that if your filter removes a row and there are no other parent causes the color_p_cause function changes the color returned (although it should do the same for the legend). This will be problematic if switching using filters.
+
+console.log(data);
 
   data = data.sort(function(a, b) {
     return d3.ascending(a.Parent_cause, b.Parent_cause);
