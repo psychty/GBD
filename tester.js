@@ -6,6 +6,7 @@ request.send(null);
 var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
 
 var data = []; // data is used as the main store of data that you'll later render into D3
+var xAxisTitles = []; // used for the x Axis of a chart
 
 var filters = [
     {
@@ -158,13 +159,21 @@ function build_filter_sidebar() {
 
 }
 
+/**
+ * Make an array of the keys of the JSON object to use as xAxis on graphs, for example.
+ */
+function makeXAxisArray(){
+    let arr = json[0];
+    xAxisTitles = Object.keys(arr);
+    console.log(xAxisTitles);
+}
+
 // run all the setup methods to start processing and filtering data on page load
 
 (() => {
-
     prepare_data();
     prepare_filter_buttons();
     build_filter_sidebar();
-
+    makeXAxisArray();
 })();
 
