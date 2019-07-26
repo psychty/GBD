@@ -1,21 +1,24 @@
 // create the ajax request to grab the source JSON data
 var request = new XMLHttpRequest();
-request.open("GET", "./Deaths_area_x.json", false);
+request.open("GET", "./Deaths_cause_area_x_sex_years.json", false);
 request.send(null);
 
 var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
 
 var data = []; // data is used as the main store of data that you'll later render into D3
-var xAxisTitles = []; // used for the x Axis of a chart
 
 var filters = [
     {
         key: 'sex',
-        value: 'Male'
+        value: 'Both'
     },
     {
         key: 'Parent_cause',
-        value: 'All Causes'
+        value: 'HIV/AIDS and sexually transmitted infections'
+    },
+    {
+        key: 'year',
+        value: 2017
     }
 ]; // if you want to setup any default filter values, do that here. These will immediately filter the data var from above
 
@@ -94,10 +97,17 @@ function prepare_filter_buttons() {
 
         },
         {
+          name: 'Year',
+          key: 'year',
+          options:[
+            2016,2017
+          ]
+        },
+        {
             name: 'Parent Cause',
             key: 'Parent_cause',
             options: [
-                'All Causes', 'Foreign Body'
+                'HIV/AIDS and sexually transmitted infections', 'Respiratory infections and tuberculosis', 'Enteric infections','Neglected tropical diseases and malaria',  'Other infectious diseases', 'Maternal and neonatal disorders', 'Nutritional deficiencies','Neoplasms', 'Sense organ diseases', 'Musculoskeletal disorders', 'Other non-communicable diseases','Cardiovascular diseases','Chronic respiratory diseases', 'Digestive diseases','Neurological disorders','Mental disorders', 'Substance use disorders','Diabetes and kidney diseases','Skin and subcutaneous diseases', 'Transport injuries', 'Unintentional injuries', 'Self-harm and interpersonal violence'
             ]
         }
     ]
@@ -158,22 +168,13 @@ function build_filter_sidebar() {
 
 
 }
-
-/**
- * Make an array of the keys of the JSON object to use as xAxis on graphs, for example.
- */
-function makeXAxisArray(){
-    let arr = json[0];
-    xAxisTitles = Object.keys(arr);
-    console.log(xAxisTitles);
-}
-
 // run all the setup methods to start processing and filtering data on page load
 
 (() => {
     prepare_data();
     prepare_filter_buttons();
     build_filter_sidebar();
-    makeXAxisArray();
 })();
 
+
+// var tbody = document.getElementById('tbody');

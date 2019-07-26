@@ -17,7 +17,7 @@ Age_x <- "All Ages"
 
 library(easypackages)
 
-libraries(c("readxl", "readr", "plyr", "dplyr", "ggplot2", "png", "tidyverse", "reshape2", "scales", "viridis", "rgdal", "officer", "flextable", "tmaptools", "lemon", "fingertipsR", "PHEindicatormethods"))
+libraries(c("readxl", "readr", "plyr", "dplyr", "ggplot2", "png", "tidyverse", "reshape2", "scales", "viridis", "rgdal", "officer", "flextable", "tmaptools", "lemon", "fingertipsR", "PHEindicatormethods", "jsonlite"))
 
 stack_theme = function(){
   theme( 
@@ -118,12 +118,12 @@ WSx_NN <- data.frame(Area_Code = nearest_neighbours(AreaCode = "E10000032", Area
 # http://www.healthdata.org/united-kingdom
 # http://www.who.int/quantifying_ehimpacts/publications/en/9241546204chap3.pdf
 
-GBD_2017_cause_hierarchy <- read_excel("./GBD data downloads/IHME_GBD_2017_CAUSE_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric", "text", "text"))
+GBD_2017_cause_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2017_CAUSE_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric", "text", "text"))
 
-GBD_cause_codebook <- read_csv("~/GBD data downloads/IHME_GBD_2017_CODEBOOK_Y2018M11D18.csv", col_types = cols_only(cause_id = col_character(), cause_name = col_character())) %>% 
+GBD_cause_codebook <- read_csv("~/Documents/GBD_data_download/IHME_GBD_2017_CODEBOOK_Y2018M11D18.csv", col_types = cols_only(cause_id = col_character(), cause_name = col_character())) %>% 
   filter(cause_id != "Cause ID")
 
-gbd_rei_hierarchy <- read_excel("~/GBD data downloads/IHME_GBD_2017_REI_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric"))
+gbd_rei_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2017_REI_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric"))
 
 GBD_cause_group_lv1 <- GBD_2017_cause_hierarchy %>% 
    filter(level == 1)
@@ -131,8 +131,6 @@ GBD_cause_group_lv1 <- GBD_2017_cause_hierarchy %>%
 non_com <- GBD_2017_cause_hierarchy %>%
   filter(level == 2) %>% 
   filter(substr(cause_outline, 1,1) == "B")
-
-non_com$cause_name
 
 # GBD_cause_group_lv3 <- GBD_2017_cause_hierarchy %>% 
 #   filter(level == 3)
@@ -161,8 +159,8 @@ non_com$cause_name
 # Cause of mortality and morbidity ####
 # All causes, 2002, 2007-17, all ages and age standardised, deaths, YLL, YLD, DALYs, West Sussex and cipfa neighbours
 
-GBD_cause_data <- unique(list.files("~/GBD data downloads")[grepl("e004c73d", list.files("~/GBD data downloads/")) == TRUE]) %>% 
-  map_df(~read_csv(paste0("~/GBD data downloads/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number())))
+GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("e004c73d", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
+  map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number())))
 
 Measures_cause_number <- GBD_cause_data %>% 
   #filter(year %in% c(max(year)-10, max(year)-5, max(year))) %>% 
@@ -234,13 +232,15 @@ Area_x_cause_perc <- Measures_cause_perc %>%
 # Deaths by cause ####
 
 Deaths_x <- Area_x_cause_number %>% 
-  filter(sex == "Both") %>% 
+ # filter(sex == "Both") %>% 
   filter(level == 3) %>% 
-  filter(year == max(year))
+  filter(year %in% c(max(year)-10, max(year)-5, max(year)))
 
-write.csv(Deaths_x, "~/GBD/Latest_deaths_cause_x.csv", row.names = FALSE)
+Deaths_x %>% 
+  toJSON() %>% 
+  write_lines('/Users/richtyler/Documents/Repositories/GBD/Deaths_cause_area_x_sex_years.json')
 
-unique(Deaths_x_sex$Parent_cause)
+unique(Deaths_x$Parent_cause)
 
 Deaths_x_sex <- Area_x_cause_number %>% 
   filter(level == 3)
