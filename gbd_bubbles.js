@@ -8,7 +8,7 @@ var year_x = 2017;
 var sex_x = "Both";
 
 var width = 650;
-var height = 850;
+var height = 450;
 
 // Add a reload page (reload graphic) function
   d3.select("#reset")
@@ -46,7 +46,6 @@ data = data.filter(function(d) { // Add any filters
       +d.year === year_x
   }) // Unfortunately, it seems that if your filter removes a row and there are no other parent causes the color_p_cause function changes the color returned (although it should do the same for the legend). This will be problematic if switching using filters.
 
-console.log(data);
 
   data = data.sort(function(a, b) {
     return d3.ascending(a.Parent_cause, b.Parent_cause);
