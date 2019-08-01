@@ -6,4 +6,6 @@ The Global Burden of Disease Study (GBD) is one of the most comprehensive worldw
 
 Where possible, local observational data (e.g. mortality and GP records or local studies) are included in the estimates but for a large number of diseases there is simply no recorded information on prevalence. The GBD ethos is that an uncertain estimate, even when data are sparse or not available, is preferable to no estimate at all.
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/e6cc18e6-e430-443d-a5b1-6a027a289d2c/deploy-status)](https://app.netlify.com/sites/gbd-overview/deploys)
+You can view the site [here](https://gbd-overview.netlify.com).
+ 
+This version is hosted on netlify. [![Netlify Status](https://api.netlify.com/api/v1/badges/e6cc18e6-e430-443d-a5b1-6a027a289d2c/deploy-status)](https://app.netlify.com/sites/gbd-overview/deploys)
