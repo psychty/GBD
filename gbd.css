@@ -1,36 +1,65 @@
 
 .main {
-  max-width: 900px;
+  max-width: 800px;
 }
 
 h1 {
-    font-size: 1.25rem;
-    color: #151f6d;
+    font-size: 1.8rem;
+    font-family: "Garmond";
     font-weight: bold;
+    color: #256cb2;
+    /* font-family: "Verdana"; */
 }
 
 h2 {
-    font-size: 1rem;
-    color: #151f6d;
+    font-size: 1.2rem;
+    font-family: "Garmond";
     font-weight: bold;
+    color: #256cb2;
   }
 
-p{
+p {
   font-size: .8rem;
+  font-family: "Verdana";
 }
 
-tr {
-  /* background-color: #FF8448; */
-  text-align: right;
+a {
+  color: #cc0052;
 }
 
-td {
-  /* background-color: #0099FF; */
-}
+
 table {
-  font-size: .8rem;
-  color: #000000;
-}
+		width: 90%;
+		border-collapse: collapse;
+    font-family: "Verdana";
+    font-size: .8rem;
+    color: #000000;
+	}
+
+  tr:nth-of-type(odd) {
+		background: #d6ebff;
+	}
+
+	th {
+    background-color: #ffffff;
+		color: #256cb2;
+    font-size: 1.2rem;
+	}
+
+	td, th {
+		padding: 6px;
+		border: 1px solid #ffffff;
+		text-align: left;
+	}
+
+	/* th.des:after {
+      content: "\21E9";
+    }
+
+  th.aes:after {
+      content: "\21E7";
+    } */
+
 
 
 /* Style for hovering over bubbles */
@@ -39,10 +68,18 @@ table {
 }
 
 .footer {
-  font-size: .75rem;
-  float: right;
-  text-align: center;
+  font-family: "Garmond";
+  font-weight: bold;
+  background-color: #ffffff;
+  color: #256cb2;
+  font-size: 30px;
+  min-height: 60px;
+  padding-top: 10px;
+  padding-right: 25px;
+  padding-bottom: 20PX;
+  text-align: right;
 }
+
 
 .line {
   fill: none;
@@ -63,6 +100,7 @@ table {
 
 p.tooltip {
   font-size: .8rem;
+  font-family: "Verdana";
   color: #ccc000;
 }
 
@@ -146,7 +184,7 @@ button.filterButton:hover{
 
 
 /* Large screens */
-@media all and (min-width: 900px) {
+@media all and (min-width: 800px) {
   /* We invert order of first sidebar and main
    * And tell the main element to take twice as much width as the other two sidebars
    */
@@ -154,6 +192,9 @@ button.filterButton:hover{
   .aside-1 {
     order: 1;
     max-width: 250px;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
   }
   .main    {
     flex: 4 0px;
@@ -162,6 +203,9 @@ button.filterButton:hover{
   .aside-2 {
     order: 3;
     max-width: 250px;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
   }
   .footer  {
     order: 4;

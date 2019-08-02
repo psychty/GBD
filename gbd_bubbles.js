@@ -8,7 +8,7 @@ var year_x = 2017;
 var sex_x = "Both";
 
 var width = 650;
-var height = 450;
+var height = 600;
 
 // Add a reload page (reload graphic) function
   d3.select("#reset")
@@ -64,7 +64,7 @@ data = data.filter(function(d) { // Add any filters
   // Size scale for countries
   var size = d3.scaleLinear()
     .domain([0, max_deaths])
-    .range([1, 65]) // circle will be between 1 and 65 px wide
+    .range([1, 80]) // circle will be between 1 and 85 px wide
 
   // This creates the function for what to do when someone moves the mouse over a circle (e.g. move the tooltip in relation to the mouse cursor).
   var mousemove = function(d) {
@@ -85,7 +85,7 @@ data = data.filter(function(d) { // Add any filters
       return size(d.Deaths)
     })
     .attr("cx", width / 2)
-    .attr("cy", 300)
+    .attr("cy", height / 2)
     .style("fill", function(d) {
       return color_p_cause(d.Parent_cause)
     })
@@ -106,7 +106,7 @@ data = data.filter(function(d) { // Add any filters
   var simulation = d3.forceSimulation()
     // .force("x", d3.forceX().strength(0.5).x( 200))
     // .force("y", d3.forceY().strength(0.1).y( function(d){ return y(d.Parent_cause) } ))
-    .force("center", d3.forceCenter().x(width / 2).y(150)) // Attraction to the middle of the svg area and 150 px down
+    .force("center", d3.forceCenter().x(width / 2).y(height/2)) // Attraction to the middle of the svg area and 150 px down
     .force("charge", d3.forceManyBody().strength(.1)) // Nodes are attracted one each other of value is > 0
     .force("collide", d3.forceCollide().strength(.2).radius(function(d) {
       return (size(d.Deaths) + 3)
@@ -153,7 +153,7 @@ data = data.filter(function(d) { // Add any filters
   var svg_size_key = d3.select("#chart_legend")
     .append("svg")
     .attr("width", 350)
-    .attr("height", 200)
+    .attr("height", 350)
 
   svg_size_key
     .selectAll("legend")
