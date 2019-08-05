@@ -27,9 +27,8 @@ a {
   color: #cc0052;
 }
 
-
 table {
-		width: 90%;
+		width: 100%;
 		border-collapse: collapse;
     font-family: "Verdana";
     font-size: .8rem;
@@ -51,16 +50,6 @@ table {
 		border: 1px solid #ffffff;
 		text-align: left;
 	}
-
-	/* th.des:after {
-      content: "\21E9";
-    }
-
-  th.aes:after {
-      content: "\21E7";
-    } */
-
-
 
 /* Style for hovering over bubbles */
 .node:hover {
@@ -184,7 +173,7 @@ button.filterButton:hover{
 
 
 /* Large screens */
-@media all and (min-width: 800px) {
+@media all and (min-width: 600px) {
   /* We invert order of first sidebar and main
    * And tell the main element to take twice as much width as the other two sidebars
    */

@@ -9,7 +9,6 @@
 # Prevalence data published for 2017
 
 Area_x <- "West Sussex"
-Age_x <- "All Ages"
 
 # Load useful libraries
 
@@ -65,7 +64,7 @@ slope_theme = function(){
   )}
 
 
-# Nearest neighbours #### 
+# Area codes #### 
 
 if(!(file.exists("~/Documents/Repositories/GBD/Area_lookup_table.csv") & file.exists("~/Documents/Repositories/GBD/Area_types_table.csv"))){
   LAD <- read_csv(url("https://opendata.arcgis.com/datasets/a267b55f601a4319a9955b0197e3cb81_0.csv"), col_types = cols(LAD17CD = col_character(),LAD17NM = col_character(),  LAD17NMW = col_character(),  FID = col_integer()))
@@ -118,19 +117,24 @@ WSx_NN <- data.frame(Area_Code = nearest_neighbours(AreaCode = "E10000032", Area
 # http://www.healthdata.org/united-kingdom
 # http://www.who.int/quantifying_ehimpacts/publications/en/9241546204chap3.pdf
 
-GBD_2017_cause_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2017_CAUSE_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric", "text", "text"))
+GBD_2017_cause_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2017_CAUSE_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric", "text", "text")) %>% 
+  rename(Cause_name = cause_name,
+         Cause_id = cause_id,
+         Parent_id = parent_id,
+         Cause_outline = cause_outline,
+         Level = level)
 
-GBD_cause_codebook <- read_csv("~/Documents/GBD_data_download/IHME_GBD_2017_CODEBOOK_Y2018M11D18.csv", col_types = cols_only(cause_id = col_character(), cause_name = col_character())) %>% 
-  filter(cause_id != "Cause ID")
+# GBD_cause_codebook <- read_csv("~/Documents/GBD_data_download/IHME_GBD_2017_CODEBOOK_Y2018M11D18.csv", col_types = cols_only(cause_id = col_character(), cause_name = col_character())) %>% 
+#   filter(cause_id != "Cause ID")
 
-gbd_rei_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2017_REI_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric"))
+GBD_2017_rei_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2017_REI_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric"))
 
-GBD_cause_group_lv1 <- GBD_2017_cause_hierarchy %>% 
-   filter(level == 1)
-
-non_com <- GBD_2017_cause_hierarchy %>%
-  filter(level == 2) %>% 
-  filter(substr(cause_outline, 1,1) == "B")
+# GBD_cause_group_lv1 <- GBD_2017_cause_hierarchy %>% 
+#    filter(level == 1)
+# 
+# non_com <- GBD_2017_cause_hierarchy %>%
+#   filter(level == 2) %>% 
+#   filter(substr(cause_outline, 1,1) == "B")
 
 # GBD_cause_group_lv3 <- GBD_2017_cause_hierarchy %>% 
 #   filter(level == 3)
@@ -159,75 +163,94 @@ non_com <- GBD_2017_cause_hierarchy %>%
 # Cause of mortality and morbidity ####
 # All causes, 2002, 2007-17, all ages and age standardised, deaths, YLL, YLD, DALYs, West Sussex and cipfa neighbours
 
-GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("e004c73d", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
-  map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number())))
+options(scipen = 99)
 
-Measures_cause_number <- GBD_cause_data %>% 
-  #filter(year %in% c(max(year)-10, max(year)-5, max(year))) %>% 
-  filter(metric == "Number",
-         age == Age_x) %>% 
-  left_join(GBD_2017_cause_hierarchy[c("cause_name", "cause_outline", "cause_id", "parent_id", "level")], by = c("cause" = "cause_name")) %>% 
-  left_join(GBD_2017_cause_hierarchy[c("cause_name", "cause_id")], by = c("parent_id" = "cause_id")) %>% 
-  rename(Parent_cause = cause_name) %>% 
-  arrange(cause_outline) %>% 
-  mutate(cause = ifelse(nchar(cause) < 40, cause, sub('(.{1,40})(\\s|$)', '\\1\n', cause))) %>%
-  mutate(cause = factor(cause, levels =  unique(cause))) %>% 
-  group_by(measure, year, location, sex, age) %>%   
-  select(-c(lower, upper)) %>% 
-  spread(measure, val) %>% 
+# Age_standardised_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("e004c73d", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
+#   map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>% 
+#   filter(age == 'Age-standardized') %>% 
+#   rename(Area = location,
+#          Lower_estimate = lower,
+#          Upper_estimate = upper,
+#          Estimate = val,
+#          Year = year,
+#          Sex = sex,
+#          Age = age) %>% 
+#   mutate(metric = ifelse(metric == "Rate", "Rate per 100,000 population", metric))
+
+# This is 3.5 million records
+  
+All_ages_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("e004c73d", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
+  map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>% 
+  filter(age != 'Age-standardized') %>% 
+  rename(Area = location,
+         Lower_estimate = lower,
+         Upper_estimate = upper,
+         Estimate = val,
+         Year = year,
+         Sex = sex,
+         Age = age,
+         Cause = cause) %>% 
+  mutate(metric = ifelse(metric == "Rate", "Rate per 100,000 population", ifelse(metric == "Percent", "Proportion of total burden caused by this condition", metric))) %>% 
+  left_join(GBD_2017_cause_hierarchy[c("Cause_name", "Cause_outline", "Cause_id", "Parent_id", "Level")], by = c("Cause" = "Cause_name")) %>% 
+  left_join(GBD_2017_cause_hierarchy[c("Cause_name", "Cause_id")], by = c("Parent_id" = "Cause_id")) %>% 
+  rename(Parent_cause = Cause_name) %>% 
+  mutate(Cause = ifelse(nchar(Cause) < 40, Cause, sub('(.{1,40})(\\s|$)', '\\1\n', Cause))) %>%
+  mutate(Cause = factor(Cause, levels =  unique(Cause))) %>% 
+  select(Area, Sex, Year, Cause, Cause_outline, Cause_id, Level, Estimate, Lower_estimate, Upper_estimate, Parent_cause, Parent_id, measure, metric)
+
+Cause_number <- All_ages_GBD_cause_data %>% 
+  filter(metric == "Number") %>% 
+  group_by(measure, Year, Area, Sex) %>%   
+  select(-c(Lower_estimate, Upper_estimate)) %>% 
+  spread(measure, Estimate) %>% 
   ungroup() 
 
-Measures_cause_rate <- GBD_cause_data %>% 
- # filter(year %in% c(max(year)-10, max(year)-5, max(year))) %>% 
-  filter(metric == "Rate",
-         age == Age_x) %>% 
-  left_join(GBD_2017_cause_hierarchy[c("cause_name", "cause_outline", "cause_id", "parent_id", "level")], by = c("cause" = "cause_name")) %>% 
-  left_join(GBD_2017_cause_hierarchy[c("cause_name", "cause_id")], by = c("parent_id" = "cause_id")) %>% 
-  rename(Parent_cause = cause_name) %>% 
-  arrange(cause_outline) %>% 
-  mutate(cause = ifelse(nchar(cause) < 40, cause, sub('(.{1,40})(\\s|$)', '\\1\n', cause))) %>%
-  mutate(cause = factor(cause, levels =  unique(cause))) %>% 
-  group_by(measure, year, location, sex, age) %>%   
-  select(-c(lower, upper)) %>% 
-  spread(measure, val) %>% 
+Cause_rate <- All_ages_GBD_cause_data %>% 
+  filter(metric == "Rate per 100,000 population") %>% 
+  group_by(measure, Year, Area, Sex) %>%   
+  select(-c(Lower_estimate, Upper_estimate)) %>% 
+  spread(measure, Estimate) %>% 
   ungroup() 
 
 # Proportions of morbidity, mortality and dalys due to particular causes ####
-Measures_cause_perc <- GBD_cause_data %>% 
- # filter(year %in% c(max(year)-10, max(year)-5, max(year))) %>% 
-  filter(metric == "Percent",
-         age == Age_x) %>% 
-  filter(!(measure %in% c("Incidence", "Prevalence"))) %>% 
-  left_join(GBD_2017_cause_hierarchy[c("cause_name", "cause_outline", "cause_id", "parent_id", "level")], by = c("cause" = "cause_name")) %>% 
-  left_join(GBD_2017_cause_hierarchy[c("cause_name", "cause_id")], by = c("parent_id" = "cause_id")) %>% 
-  rename(Parent_cause = cause_name) %>% 
-  arrange(cause_outline) %>% 
-  mutate(cause = ifelse(nchar(cause) < 40, cause, sub('(.{1,40})(\\s|$)', '\\1\n', cause))) %>%
-  mutate(cause = factor(cause, levels =  unique(cause))) %>% 
-  group_by(measure, year, location, sex, age) %>%   
-  select(-c(lower, upper)) %>% 
-  spread(measure, val) %>% 
-  ungroup() %>% 
-  rename(Percent_DALYs = `DALYs (Disability-Adjusted Life Years)`) %>% 
-  rename(Percent_Deaths = Deaths) %>% 
-  rename(Percent_YLD = `YLDs (Years Lived with Disability)`) %>% 
-  rename(Percent_YLL = `YLLs (Years of Life Lost)`)
+Cause_perc <- All_ages_GBD_cause_data %>% 
+  filter(metric == "Proportion of total burden caused by this condition") %>% 
+  group_by(measure, Year, Area, Sex) %>%   
+  select(-c(Lower_estimate, Upper_estimate)) %>% 
+  spread(measure, Estimate) %>% 
+  ungroup()
 
 # Rate is per 100,000 population
 # Percent is the proportion of the deaths in the given location for the given sex, year, and level.
 # Number is the count of deaths
 
-Area_x_cause_number <- Measures_cause_number %>% 
-  filter(location == Area_x) %>% 
-  arrange(sex, year, cause_outline)
+Area_x_cause_number <- Cause_number %>% 
+  filter(Area == Area_x) %>% 
+  arrange(Sex, Year, Cause_outline) 
 
-Area_x_cause_rate <- Measures_cause_rate %>% 
-  filter(location == Area_x) %>% 
-  arrange(sex, year, cause_outline)
+Area_x_cause_rate <- Cause_rate %>% 
+  filter(Area == Area_x) %>% 
+  arrange(Sex, Year, Cause_outline)
 
-Area_x_cause_perc <- Measures_cause_perc %>% 
-  filter(location == Area_x) %>% 
-  arrange(sex, year, cause_outline)
+Area_x_cause_perc <- Cause_perc %>% 
+  filter(Area == Area_x) %>% 
+  arrange(Sex, Year, Cause_outline)
+
+Area_x_cause <- Area_x_cause_number %>% 
+  bind_rows(Area_x_cause_rate) %>% 
+  bind_rows(Area_x_cause_perc)
+
+Area_x_cause %>% 
+  toJSON() %>% 
+  write_lines('/Users/richtyler/Documents/Repositories/GBD/Deaths_cause_area_x.json')
+
+
+
+Area_x_cause %>% 
+  filter(Cause == "Ischemic heart disease") %>% 
+  filter(Year == '2017') %>% 
+  filter(Sex == 'Both') %>% 
+  View()
 
 # Deaths by cause ####
 

@@ -38,14 +38,27 @@ var tooltip = d3.select("#my_dataviz")
   .style("z-index", "10")
   .style("visibility", "hidden");
 
+// var request = new XMLHttpRequest();
+//   request.open("GET", "./Deaths_cause_area_x.json", false);
+//   request.send(null);
+// var data_1 = JSON.parse(request.responseText); // parse the fetched json data into a variable
+//
+// data_1 = data_1.filter(function(d){
+//   	    return d.Sex === "Both" &
+//   			+d.Year === 2017 &
+//   			d.metric === "Number" &
+//   			d.Area === "West Sussex" &
+//   			d.Cause !== "All causes"
+//   			& d.Level === '3'})
+
+// console.table(data_1.slice(0,5))
+
 // Read and use data
 d3.csv("./Deaths_cause_x_sex_years.csv", function(data) {
-  // /Users/richtyler/Documents/Repositories/GBD/Deaths_cause_x_sex_years.csv
 data = data.filter(function(d) { // Add any filters
     return d.sex === sex_x &
       +d.year === year_x
   }) // Unfortunately, it seems that if your filter removes a row and there are no other parent causes the color_p_cause function changes the color returned (although it should do the same for the legend). This will be problematic if switching using filters.
-
 
   data = data.sort(function(a, b) {
     return d3.ascending(a.Parent_cause, b.Parent_cause);
