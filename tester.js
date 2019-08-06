@@ -37,11 +37,11 @@ var filters = [
 // This will prepare 'data' and filter accordingly - it is activated on pageload as well as when a filter item is changed.
 function prepare_data() {
      data = filter_data(json, filters);
-     // console.table(data);
+// console.table(data);
 
- // // Create the table
+ // Create the table
  selectedTable = tabulate(data, ['Area','Cause', 'Deaths']);
- // //  choose which fields to tabulate, data.slice(0,10) says give me records 1:10
+ // choose which fields to tabulate, data.slice(0,10) says give me records 1:10
 
  }
 

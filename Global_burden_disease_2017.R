@@ -10,6 +10,7 @@
 
 Area_x <- "West Sussex"
 
+options(scipen = 999)
 # Load useful libraries
 
 # This uses the easypackages package to load several libraries at once. Note: it should only be used when you are confident that all packages are installed as it will be more difficult to spot load errors compared to loading each one individually.
@@ -163,8 +164,6 @@ GBD_2017_rei_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_201
 # Cause of mortality and morbidity ####
 # All causes, 2002, 2007-17, all ages and age standardised, deaths, YLL, YLD, DALYs, West Sussex and cipfa neighbours
 
-options(scipen = 99)
-
 # Age_standardised_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("e004c73d", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
 #   map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>% 
 #   filter(age == 'Age-standardized') %>% 
@@ -238,30 +237,35 @@ Area_x_cause_perc <- Cause_perc %>%
 
 Area_x_cause <- Area_x_cause_number %>% 
   bind_rows(Area_x_cause_rate) %>% 
-  bind_rows(Area_x_cause_perc)
+  bind_rows(Area_x_cause_perc) %>% 
+  mutate(Deaths = replace_na(Deaths, 0)) %>% 
+  mutate(Incidence = replace_na(Incidence, 0)) %>% 
+  mutate(Prevalence = replace_na(Prevalence, 0)) %>% 
+  mutate(`YLDs (Years Lived with Disability)` = replace_na(`YLDs (Years Lived with Disability)`, 0)) %>% 
+  mutate(`YLLs (Years of Life Lost)` = replace_na(`YLLs (Years of Life Lost)`, 0))
 
 Area_x_cause %>% 
   toJSON() %>% 
   write_lines('/Users/richtyler/Documents/Repositories/GBD/Deaths_cause_area_x.json')
 
+write.csv(Area_x_cause, '/Users/richtyler/Documents/Repositories/GBD/Deaths_cause_area_x.csv')
 
-
-Area_x_cause %>% 
-  filter(Cause == "Ischemic heart disease") %>% 
-  filter(Year == '2017') %>% 
-  filter(Sex == 'Both') %>% 
-  View()
+# Area_x_cause %>% 
+#   filter(Cause == "Ischemic heart disease") %>% 
+#   filter(Year == '2017') %>% 
+#   filter(Sex == 'Both') %>% 
+#   View()
 
 # Deaths by cause ####
 
-Deaths_x <- Area_x_cause_number %>% 
- # filter(sex == "Both") %>% 
-  filter(level == 3) %>% 
-  filter(year %in% c(max(year)-10, max(year)-5, max(year)))
-
-Deaths_x %>% 
-  toJSON() %>% 
-  write_lines('/Users/richtyler/Documents/Repositories/GBD/Deaths_cause_area_x_sex_years.json')
+# Deaths_x <- Area_x_cause_number %>% 
+#  # filter(sex == "Both") %>% 
+#   filter(level == 3) %>% 
+#   filter(year %in% c(max(year)-10, max(year)-5, max(year)))
+# 
+# Deaths_x %>% 
+#   toJSON() %>% 
+#   write_lines('/Users/richtyler/Documents/Repositories/GBD/Deaths_cause_area_x_sex_years.json')
 
 unique(Deaths_x$Parent_cause)
 
