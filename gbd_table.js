@@ -3,7 +3,6 @@ request.open("GET", "./Deaths_cause_area_x.json", false);
 request.send(null);
 var data = JSON.parse(request.responseText); // parse the fetched json data into a variable
 
-
 data = data.filter(function(d){
 	    return d.Sex === "Both" &
 			+d.Year === 2017 &
@@ -20,13 +19,19 @@ data.forEach(function(elem){
 	  elem.Incidence=parseFloat(elem.Incidence);
 			});
 
-			console.table(data.slice(0,10))
+		console.table(data.slice(0,10))
 
-
-
+// data_str = data.filter(function(d){
+// 				return d.Sex == "Both" & d.metric == "Number" & d.Level == '3' & d.Cause == "Stroke"})
+//
 // data_isc = data.filter(function(d){
-// 	return d.Sex == "Both" & d.metric == "Number" & d.Level == '3' & d.Cause == "Stroke"})
+// 	return d.Sex == "Both" & d.metric == "Number" & d.Level == '3' & d.Cause == "Ischemic heart disease"})
 
+		// console.table(data_str, ['Cause', 'Deaths'])
+		// console.table(data_isc, ['Cause', 'Deaths'])
+		// console.table(data.slice(0,2), ['Cause', 'Deaths'])
+
+// Sort - This is not including Ischemic heart disease at the top (1,292 deaths), it is 45th or something.
 data = data.sort(function(a, b) {
 			return d3.descending(a.Deaths, b.Deaths)})
 
@@ -69,6 +74,7 @@ function tabulate(data, columns) {
 
 // Create the table
 var topTable =	tabulate(data.slice(0,10), ['Area','Cause', 'Deaths','Incidence','Prevalence']); //  choose which fields to tabulate, data.slice(0,10) says give me records 1:10
+
 
 // console.table(data_isc, ['Cause', 'Deaths'])
 // console.log(data_isc, ["Cause", "Deaths"])
