@@ -164,18 +164,6 @@ GBD_2017_rei_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_201
 # Cause of mortality and morbidity ####
 # All causes, 2002, 2007-17, all ages and age standardised, deaths, YLL, YLD, DALYs, West Sussex and cipfa neighbours
 
-# Age_standardised_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("e004c73d", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
-#   map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>% 
-#   filter(age == 'Age-standardized') %>% 
-#   rename(Area = location,
-#          Lower_estimate = lower,
-#          Upper_estimate = upper,
-#          Estimate = val,
-#          Year = year,
-#          Sex = sex,
-#          Age = age) %>% 
-#   mutate(metric = ifelse(metric == "Rate", "Rate per 100,000 population", metric))
-
 # This is 3.5 million records
   
 All_ages_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("e004c73d", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
@@ -204,7 +192,71 @@ Cause_number <- All_ages_GBD_cause_data %>%
   spread(measure, Estimate) %>% 
   ungroup() 
 
-Cause_rate <- All_ages_GBD_cause_data %>% 
+# Cause_rate <- All_ages_GBD_cause_data %>% 
+#   filter(metric == "Rate per 100,000 population") %>% 
+#   group_by(measure, Year, Area, Sex) %>%   
+#   select(-c(Lower_estimate, Upper_estimate)) %>% 
+#   spread(measure, Estimate) %>% 
+#   ungroup() 
+
+# Proportions of morbidity, mortality and dalys due to particular causes ####
+Cause_perc <- All_ages_GBD_cause_data %>% 
+  filter(metric == "Proportion of total burden caused by this condition") %>% 
+  group_by(measure, Year, Area, Sex) %>%   
+  select(-c(Lower_estimate, Upper_estimate)) %>% 
+  spread(measure, Estimate) %>% 
+  ungroup()
+
+# Rate is per 100,000 population
+# Percent is the proportion of the deaths in the given location for the given sex, year, and level.
+# Number is the count of deaths
+
+Area_x_cause_number <- Cause_number %>% 
+  filter(Area == Area_x) %>% 
+  arrange(Sex, Year, Cause_outline) 
+
+# Area_x_cause_rate <- Cause_rate %>% 
+#   filter(Area == Area_x) %>% 
+#   arrange(Sex, Year, Cause_outline)
+
+Area_x_cause_perc <- Cause_perc %>% 
+  filter(Area == Area_x) %>% 
+  arrange(Sex, Year, Cause_outline)
+
+Area_x_cause <- Area_x_cause_number %>% 
+  bind_rows(Area_x_cause_perc) %>% 
+  mutate(Deaths = replace_na(Deaths, 0)) %>% 
+  mutate(Incidence = replace_na(Incidence, 0)) %>% 
+  mutate(Prevalence = replace_na(Prevalence, 0)) %>% 
+  mutate(`YLDs (Years Lived with Disability)` = replace_na(`YLDs (Years Lived with Disability)`, 0)) %>% 
+  mutate(`YLLs (Years of Life Lost)` = replace_na(`YLLs (Years of Life Lost)`, 0))
+
+Area_x_cause <- Area_x_cause %>% 
+  filter(Level != 4)
+
+Area_x_cause %>% 
+  toJSON() %>% 
+  write_lines('/Users/richtyler/Documents/Repositories/GBD/Number_proportion_cause_area_x.json')
+
+write.csv(Area_x_cause, '/Users/richtyler/Documents/Repositories/GBD/Number_proportion_cause_area_x.csv', row.names = FALSE)
+
+# To compare over areas or time we could use age_standardised data
+
+Age_standardised_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("e004c73d", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
+  map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>%
+  filter(age == 'Age-standardized') %>%
+  rename(Area = location,
+         Lower_estimate = lower,
+         Upper_estimate = upper,
+         Estimate = val,
+         Year = year,
+         Sex = sex,
+         Age = age) %>%
+  mutate(metric = ifelse(metric == "Rate", "Rate per 100,000 population", metric))
+
+# There are no raw counts in the standardised set - only rates
+
+Cause_rate_age_standardised <- Age_standardised_GBD_cause_data %>% 
   filter(metric == "Rate per 100,000 population") %>% 
   group_by(measure, Year, Area, Sex) %>%   
   select(-c(Lower_estimate, Upper_estimate)) %>% 
@@ -244,69 +296,29 @@ Area_x_cause <- Area_x_cause_number %>%
   mutate(`YLDs (Years Lived with Disability)` = replace_na(`YLDs (Years Lived with Disability)`, 0)) %>% 
   mutate(`YLLs (Years of Life Lost)` = replace_na(`YLLs (Years of Life Lost)`, 0))
 
+Area_x_cause <- Area_x_cause %>% 
+  filter(Level != 4)
+
 Area_x_cause %>% 
   toJSON() %>% 
   write_lines('/Users/richtyler/Documents/Repositories/GBD/Deaths_cause_area_x.json')
 
 write.csv(Area_x_cause, '/Users/richtyler/Documents/Repositories/GBD/Deaths_cause_area_x.csv')
 
-# Area_x_cause %>% 
-#   filter(Cause == "Ischemic heart disease") %>% 
-#   filter(Year == '2017') %>% 
-#   filter(Sex == 'Both') %>% 
-#   View()
-
-# Deaths by cause ####
-
-# Deaths_x <- Area_x_cause_number %>% 
-#  # filter(sex == "Both") %>% 
-#   filter(level == 3) %>% 
-#   filter(year %in% c(max(year)-10, max(year)-5, max(year)))
-# 
-# Deaths_x %>% 
-#   toJSON() %>% 
-#   write_lines('/Users/richtyler/Documents/Repositories/GBD/Deaths_cause_area_x_sex_years.json')
-
-unique(Deaths_x$Parent_cause)
-
-Deaths_x_sex <- Area_x_cause_number %>% 
-  filter(level == 3)
-  
-write.csv(Deaths_x_sex, "~/GBD/Deaths_cause_x_sex_years.csv", row.names = FALSE, na = "0")
-
-
 # Years of life lost ####
 
 # YLL is a measure of premature mortality within a group of people. YLLs are calculated by starting with the life expectancy of a given age group in a given year, then subtracting the age at which a person in that age group dies. Greater emphasis is  placed on deaths of younger people.
 
-YLL_area_x <- GBD_cause_data %>% 
-  filter(year %in% max(GBD_cause_data$year),
-         measure == "YLLs (Years of Life Lost)",
-         metric == "Number",
-         age == "All Ages",
-         location == Area_x) %>%  
-  left_join(GBD_2017_cause_hierarchy[c("cause_name", "cause_outline", "cause_id", "parent_id", "level")], by = c("cause" = "cause_name")) %>% 
-  left_join(GBD_2017_cause_hierarchy[c("cause_name", "cause_id")], by = c("parent_id" = "cause_id")) %>% 
-  rename(Parent_cause = cause_name) %>% 
- # mutate(cause = capwords(cause, strict = TRUE)) %>% 
- # mutate(Parent_cause = capwords(Parent_cause, strict = TRUE)) %>% 
-  select(location, sex, Parent_cause, year, age, cause, cause_outline, val, lower, upper) %>% 
-  rename(Years_of_life_lost = val) %>% 
-  arrange(desc(Years_of_life_lost))
-
-write.csv(Deaths_area_x, "~/GBD/Deaths_area_x.csv", row.names = FALSE)
-
-r2d3(data = YLL_wsx_js, script = "./Javascripts/gbd_cause_yll_bubbles.js")
-
 # Note - this is age-standardised
 
-YLL_rate_rank <- GBD_cause_data %>% 
-  filter(year %in% c(2007,2017),
+
+
+YLL_rate_rank <- Age_standardised_GBD_cause_data %>% 
+  filter(Year %in% c(2007,2017),
          measure == "YLLs (Years of Life Lost)",
-         age == "Age-standardized",
-         metric == "Rate") %>%  
-  select(location, sex, age, year, val, cause) %>% 
-  spread(year, val) %>% 
+         metric == "Rate per 100,000 population") %>%  
+  select(Area, Sex, Year, Estimate, Cause) %>% 
+  spread(Year, Estimate) %>% 
   mutate(change = (`2017`-`2007`)/`2007`) %>% 
   gather(`2007`:`2017`, key = year, value = val) %>% 
   left_join(GBD_2017_cause_hierarchy, by = c("cause" = "cause_name")) %>% 

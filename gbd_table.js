@@ -1,5 +1,5 @@
 var request = new XMLHttpRequest();
-request.open("GET", "./Deaths_cause_area_x.json", false);
+request.open("GET", "./Number_proportion_cause_area_x.json", false);
 request.send(null);
 var data = JSON.parse(request.responseText); // parse the fetched json data into a variable
 

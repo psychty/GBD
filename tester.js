@@ -1,9 +1,12 @@
 // create the ajax request to grab the source JSON data
 var request = new XMLHttpRequest();
-request.open("GET", "./Deaths_cause_area_x.json", false);
+request.open("GET", "./Number_proportion_cause_area_x.json", false);
 request.send(null);
 
 var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
+
+json = json.filter(function(d){
+	    return d.metric === "Number"})
 
 // We want to coerce some fields to be integers
 json.forEach(function(elem){
@@ -27,10 +30,6 @@ var filters = [
     {
         key: 'Year',
         value: 2017
-    },
-    {
-        key: 'metric',
-        value: "Number"
     }
 ];
 
@@ -124,13 +123,6 @@ function tabulate(data, columns) {
 function prepare_filter_buttons() {
 
     let options = [
-      {
-          name: 'What would you like to show?',
-          key: 'metric',
-          options: [
-              'Number', 'Rate per 100,000 population'
-          ]
-      },
         {
             name: 'Sex',
             key: 'Sex',
