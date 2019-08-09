@@ -1,21 +1,11 @@
-// var injury = ["Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"]
-// var non_communicable = ["Neoplasms", "Cardiovascular diseases","Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases",  "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases"]
-// var communicable_neo_nutr = ["HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases","Maternal and neonatal disorders", "Nutritional deficiencies"]
 
-// https://www.d3-graph-gallery.com/graph/basic_datamanipulation.html
+
+
+var width = 700;
+var height = 600;
 
 var year_x = 2017;
 var sex_x = "Both";
-
-var width = 650;
-var height = 600;
-
-// Add a reload page (reload graphic) function
-  d3.select("#reset")
-  	.on("click", function(e) {
-      location.reload()
-      ;}
-    );
 
 var parent_cause_categories = ["Cardiovascular diseases", "Chronic respiratory diseases", "Diabetes and kidney diseases", "Digestive diseases", "Enteric infections", "HIV/AIDS and sexually transmitted infections", "Maternal and neonatal disorders", "Mental disorders", "Musculoskeletal disorders", "Neglected tropical diseases and malaria", "Neoplasms", "Neurological disorders", "Nutritional deficiencies", "Other infectious diseases", "Other non-communicable diseases", "Respiratory infections and tuberculosis", "Self-harm and interpersonal violence", "Sense organ diseases", "Skin and subcutaneous diseases", "Substance use disorders", "Transport injuries", "Unintentional injuries"]
 

@@ -1,6 +1,6 @@
 // create the ajax request to grab the source JSON data
 var request = new XMLHttpRequest();
-request.open("GET", "./Number_proportion_cause_area_x.json", false);
+request.open("GET", "./Number_proportion_cause_west_sussex.json", false);
 request.send(null);
 
 var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
@@ -39,7 +39,7 @@ function prepare_data() {
 // console.table(data);
 
  // Create the table
- selectedTable = tabulate(data, ['Area','Cause', 'Deaths']);
+ selectedTable = tabulate(data, ['Cause', 'Deaths','YLLs (Years of Life Lost)', 'DALYs (Disability-Adjusted Life Years)']);
  // choose which fields to tabulate, data.slice(0,10) says give me records 1:10
 
  }
@@ -113,6 +113,7 @@ function tabulate(data, columns) {
 					if(i == 2) return d3.format(",.0f")(d.value); // + " items"; // Hurrah d3.format() works!
 					else if (i == 3) return d3.format(",.0f")(d.value); // comma separators and round values
 					else if (i == 4) return d3.format(",.0f")(d.value);
+					else if (i == 5) return d3.format(",.0f")(d.value);
 										 return d.value; });
 	  return table;
 	}

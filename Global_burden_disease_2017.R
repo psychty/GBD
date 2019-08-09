@@ -180,10 +180,10 @@ All_ages_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[g
   mutate(metric = ifelse(metric == "Rate", "Rate per 100,000 population", ifelse(metric == "Percent", "Proportion of total burden caused by this condition", metric))) %>% 
   left_join(GBD_2017_cause_hierarchy[c("Cause_name", "Cause_outline", "Cause_id", "Parent_id", "Level")], by = c("Cause" = "Cause_name")) %>% 
   left_join(GBD_2017_cause_hierarchy[c("Cause_name", "Cause_id")], by = c("Parent_id" = "Cause_id")) %>% 
-  rename(Parent_cause = Cause_name) %>% 
+  rename(`Cause group` = Cause_name) %>% 
   mutate(Cause = ifelse(nchar(Cause) < 40, Cause, sub('(.{1,40})(\\s|$)', '\\1\n', Cause))) %>%
   mutate(Cause = factor(Cause, levels =  unique(Cause))) %>% 
-  select(Area, Sex, Year, Cause, Cause_outline, Cause_id, Level, Estimate, Lower_estimate, Upper_estimate, Parent_cause, Parent_id, measure, metric)
+  select(Area, Sex, Year, Cause, Cause_outline, Cause_id, Level, Estimate, Lower_estimate, Upper_estimate, `Cause group`, Parent_id, measure, metric)
 
 Cause_number <- All_ages_GBD_cause_data %>% 
   filter(metric == "Number") %>% 
@@ -191,13 +191,6 @@ Cause_number <- All_ages_GBD_cause_data %>%
   select(-c(Lower_estimate, Upper_estimate)) %>% 
   spread(measure, Estimate) %>% 
   ungroup() 
-
-# Cause_rate <- All_ages_GBD_cause_data %>% 
-#   filter(metric == "Rate per 100,000 population") %>% 
-#   group_by(measure, Year, Area, Sex) %>%   
-#   select(-c(Lower_estimate, Upper_estimate)) %>% 
-#   spread(measure, Estimate) %>% 
-#   ungroup() 
 
 # Proportions of morbidity, mortality and dalys due to particular causes ####
 Cause_perc <- All_ages_GBD_cause_data %>% 
@@ -215,10 +208,6 @@ Area_x_cause_number <- Cause_number %>%
   filter(Area == Area_x) %>% 
   arrange(Sex, Year, Cause_outline) 
 
-# Area_x_cause_rate <- Cause_rate %>% 
-#   filter(Area == Area_x) %>% 
-#   arrange(Sex, Year, Cause_outline)
-
 Area_x_cause_perc <- Cause_perc %>% 
   filter(Area == Area_x) %>% 
   arrange(Sex, Year, Cause_outline)
@@ -231,16 +220,45 @@ Area_x_cause <- Area_x_cause_number %>%
   mutate(`YLDs (Years Lived with Disability)` = replace_na(`YLDs (Years Lived with Disability)`, 0)) %>% 
   mutate(`YLLs (Years of Life Lost)` = replace_na(`YLLs (Years of Life Lost)`, 0))
 
-Area_x_cause <- Area_x_cause %>% 
-  filter(Level != 4)
+Total_deaths_area_x <- Area_x_cause %>% 
+  filter(Level == 0) %>%
+  filter(Year == max(Year)) %>% 
+  filter(metric == "Number") %>% 
+  select(Sex, Cause, Deaths, `YLLs (Years of Life Lost)`)
 
-Area_x_cause %>% 
+Total_deaths_area_x %>% 
   toJSON() %>% 
-  write_lines('/Users/richtyler/Documents/Repositories/GBD/Number_proportion_cause_area_x.json')
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Deaths_YLL_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
-write.csv(Area_x_cause, '/Users/richtyler/Documents/Repositories/GBD/Number_proportion_cause_area_x.csv', row.names = FALSE)
+Area_x_cause <- Area_x_cause %>% 
+  filter(Level %in% c(1,2,3)) %>% 
+  select(-c(Area, Cause_outline, Cause_id, Parent_id))
+
+# This exports the last five years of data for our chosen area to a JSON file. This is the easiest way to read in data to a javascript visualisation.
+# We have to try and keep the file size down so I have excluded data prior to 2013.
+Area_x_cause %>% 
+  filter(Year %in% seq(max(Year)-5,max(Year),1)) %>% # Last 5 years
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Number_proportion_cause_', gsub(" ", "_", tolower(Area_x)), '.json'))
+
+# We can keep more data in the csv file as this won't be loaded into the webpage.
+write.csv(Area_x_cause, paste0('/Users/richtyler/Documents/Repositories/GBD/Number_proportion_cause_', gsub(" ", "_", tolower(Area_x)), '.csv'), row.names = FALSE)
+
+lev_2 <- Area_x_cause %>% 
+  filter(Level == 2,
+         Year == 2017) %>%
+  group_by(Sex) %>% 
+  mutate(Death_rank =  rank(-Deaths, ties.method = "first")) %>% # The - indicates descending order
+  mutate(YLL_rank =  rank(-`YLLs (Years of Life Lost)`, ties.method = "first")) %>% 
+  mutate(DALY_rank =  rank(-`DALYs (Disability-Adjusted Life Years)`, ties.method = "first"))
+
+lev_2 %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Number_cause_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
 # To compare over areas or time we could use age_standardised data
+
+# My thoughts are to do the analysis here, include columns for % change compared to 5 years (2012), 10 years (2007), and compared to 20 years (1997).
 
 Age_standardised_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("e004c73d", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
   map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>%

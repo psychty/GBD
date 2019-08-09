@@ -13,21 +13,41 @@
 
   <div class = "wrapper">
     <div class = "header">
-        <h1>Global Burden of Disease modelling - West Sussex</h1>
-        <p>The Global Burden of Disease Study (GBD) is one of the most comprehensive worldwide epidemiological collaborations describing mortality and morbidity from major diseases and injuries and risk factors to health at global, national, regional, and local levels. Data are available for every year between 1990 and 2017 and each year new data and methodological innovations are fed into the models, revising annual estimates for 360 diseases and injuries and 85 risk factors.</p>
-        <p>Where possible, local observational data (e.g. mortality and GP records or local studies) are included in the estimates but for a large number of diseases there is simply no recorded information on prevalence. The GBD ethos is that an uncertain estimate, even when data are sparse or not available, is preferable to no estimate at all.</p>
+        <h1>Burden of disease in West Sussex</h1>
+        <p>The Global Burden of Disease Study (GBD) is one of the most comprehensive worldwide epidemiological collaborations describing mortality and morbidity from major diseases and injuries and risk factors to health at global, national, regional, and local levels. It provides a standardised approach to estimating incidence (new cases) and prevalence (total number of cases) of ill health and death as well as a measure of the number of potential years lost due to disability, ill health and death.</p>
+        <p>Data are available for every year between 1990 and 2017 and each year new data and methodological innovations are fed into models, revising annual estimates for 360 diseases and injuries and 85 risk factors.</p>
+        <p>Where possible, local observational data (e.g. mortality and GP records or local studies) are included in the estimates but for a large number of diseases there is simply no recorded information on prevalence. The GBD ethos is that an uncertain estimate, even when data are sparse or not available, is preferable to no estimate at all. As a result, you should consider that there is a <b>margin of error when interpreting these results as they are simply estimates or <i>'best guesses'</i></b>.</p>
         <p>The 2017 overview for England is available <a href = "http://www.healthdata.org/united-kingdom-england" target = "_blank">here</a href></p>
-        <div id = "reset">Reload the page</div>
     </div>
 
 <article class = "main">
 
+<h2 id = "total_death_string"></h2>
 <div id = "my_dataviz"> </div>
 
 <h2>Top 10 causes of death</h2>
-<p>The leading causes of death in West Sussex in 2017 are given in the table below. As well as the number of deaths, the incidence (estimated number of new cases of the condition in the past 12 months) and the prevalence (estimated number of people currently living with the condition) are also given.</p>
-
+<p>The leading causes of death in West Sussex in 2017 are given in the table below. These are the 'level three' causes;  As well as the number of deaths, the incidence (estimated number of new cases of the condition in the past 12 months) and the prevalence (estimated number of people currently living with the condition) are also given.</p>
 <div id = "top_10_table"> </div>
+
+<p>We can measure mortality not just by counting the number of deaths but also the years of life lost, as a measure of the burden of disease on premature mortality.</p>
+
+<h2>Years of life lost</h2>
+
+<h2>Disability adjusted life-years (DALYs) lost</h2>
+<p>So far we have looked at the estimates for mortality, that is, what kills people. However, as you might have noticed from the prevalence and incidence analyses, there are many people who continue to live with certain conditions to a greater or lesser extent of disability. Whilst the biggest contributers to mortality are generally the biggest contributers to disability and ill health, some conditions which have fairly low mortality rates can cause significant levels of disability.</p>
+
+<!-- A good example of this is Musculoskeletal disorders which cause -->
+
+<p>In the next section we focus on the three disease groups which contributed the most disability adjusted life-years lost in West Sussex in 2017 (Cancers (neoplasms), Cardiovascular diseases and Musculoskeletal disorders).</p>
+
+<h2>Cancers (neoplasms)</h2>
+
+<h2>Cardiovascular diseases</h2>
+
+<h2>Musculoskeletal disorders</h2>
+
+<h2>Exploring conditions in more detail</h2>
+<p>It is not possible to provide a commentary on all 360 diseases/conditions but you can use the drop down boxes below to explore more detail on conditions.</p>
 
 </article>
 
@@ -39,7 +59,9 @@
 </aside>
 
 <aside class="aside aside-2">
-    <h2>Notes:</h2>
+    <h2>Further information:</h2>
+    <p>The GBD 2017 diseases/conditions are split and aggregated into four hierarchical levels. Level 1 contains three broad cause groups (communicable, maternal, neonatal and nutirional diseases (CMNN), non-communicable diseases (NCD) and injuries). These are then split into 22 Level 2 cause groups, 169 level 3 diseases/conditions and 293 level 4 diseases/conditions.</p>
+    <p>For this analysis we explore levels 1,2, and 3.</p>
     <p>Data downloaded from the <a href = "http://ghdx.healthdata.org/gbd-results-tool", target="_blank">GBD online results tool;</a href> Institute for Health Metrics and Evaluation (IHME). Findings from the Global Burden of Disease Study 2017. Seattle, WA: IHME, 2018</p>
     <p>The size of the circle represents the number of deaths. Items are grouped by the broad disease group.</p>
     <h2>Size key</h2>
