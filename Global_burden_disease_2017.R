@@ -137,6 +137,21 @@ GBD_2017_rei_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_201
 #   filter(level == 2) %>% 
 #   filter(substr(cause_outline, 1,1) == "B")
 
+lev2 <- GBD_2017_cause_hierarchy %>%
+    filter(Level == 2)
+
+lev3 <- GBD_2017_cause_hierarchy %>%
+  filter(Level == 3)
+
+lev4 <- GBD_2017_cause_hierarchy %>%
+  filter(Level == 4)
+
+GBD_2017_cause_hierarchy %>% 
+  select(Level) %>% 
+  group_by(Level) %>% 
+  summarise(n())
+
+
 # GBD_cause_group_lv3 <- GBD_2017_cause_hierarchy %>% 
 #   filter(level == 3)
 # GBD_cause_group_lv4 <- GBD_2017_cause_hierarchy %>% 
