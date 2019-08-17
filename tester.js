@@ -5,14 +5,15 @@ request.send(null);
 
 var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
 
-json = json.filter(function(d){
-	    return d.metric === "Number"})
-
 // We want to coerce some fields to be integers
 json.forEach(function(elem){
 		elem.Year = parseInt(elem.Year);
     elem.Cause_id = parseInt(elem.Cause_id); // Cause_id does not need to be an integer but it shows that it is working in console.log
 			});
+
+json = json.filter(function(d){
+	    return d.metric === "Number" &
+	      +d.Year === 2017})
 
 var data = []; // 'data' is used as the main store of data that we'll render into D3
 var filter_button_options = []; // this is used to build up the sidebar
@@ -24,12 +25,8 @@ var filters = [
         value: 'Both'
     },
     {
-        key: 'Parent_cause',
+        key: 'Cause group',
         value: 'HIV/AIDS and sexually transmitted infections'
-    },
-    {
-        key: 'Year',
-        value: 2017
     }
 ];
 
@@ -77,8 +74,6 @@ function toggleFilter(key, value) {
 
     prepare_data();
 }
-
-
 
 // Create a function for tabulating the data
 function tabulate(data, columns) {
@@ -132,15 +127,8 @@ function prepare_filter_buttons() {
             ]
         },
         {
-          name: 'Year',
-          key: 'Year',
-          options:[
-            2015,2016,2017
-          ]
-        },
-        {
-            name: 'Parent Cause',
-            key: 'Parent_cause',
+            name: 'Cause group',
+            key: 'Cause group',
             options: [
                 'HIV/AIDS and sexually transmitted infections', 'Respiratory infections and tuberculosis', 'Enteric infections','Neglected tropical diseases and malaria',  'Other infectious diseases', 'Maternal and neonatal disorders', 'Nutritional deficiencies','Neoplasms', 'Sense organ diseases', 'Musculoskeletal disorders', 'Other non-communicable diseases','Cardiovascular diseases','Chronic respiratory diseases', 'Digestive diseases','Neurological disorders','Mental disorders', 'Substance use disorders','Diabetes and kidney diseases','Skin and subcutaneous diseases', 'Transport injuries', 'Unintentional injuries', 'Self-harm and interpersonal violence'
             ]
@@ -197,5 +185,6 @@ function build_filter_sidebar() {
     prepare_filter_buttons();
     build_filter_sidebar();
 
+		console.table(data);
 
 })();
