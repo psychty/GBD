@@ -105,10 +105,10 @@ function tabulate(data, columns) {
 		  .enter()
 		  .append('td')
 				.text(function(d,i) {
-					if(i == 2) return d3.format(",.0f")(d.value); // + " items"; // Hurrah d3.format() works!
-					else if (i == 3) return d3.format(",.0f")(d.value); // comma separators and round values
+					if(i == 1) return d3.format(",.0f")(d.value); // + " items"; // Hurrah d3.format() works!
+					else if (i == 2) return d3.format(",.0f")(d.value); // comma separators and round values
+					else if (i == 3) return d3.format(",.0f")(d.value);
 					else if (i == 4) return d3.format(",.0f")(d.value);
-					else if (i == 5) return d3.format(",.0f")(d.value);
 										 return d.value; });
 	  return table;
 	}
