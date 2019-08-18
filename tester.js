@@ -1,6 +1,6 @@
 // create the ajax request to grab the source JSON data
 var request = new XMLHttpRequest();
-request.open("GET", "./Number_proportion_cause_west_sussex.json", false);
+request.open("GET", "./Number_proportion_cause_death_2017_west_sussex.json", false);
 request.send(null);
 
 var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
@@ -36,7 +36,7 @@ function prepare_data() {
 // console.table(data);
 
  // Create the table
- selectedTable = tabulate(data, ['Cause', 'Deaths','YLLs (Years of Life Lost)', 'DALYs (Disability-Adjusted Life Years)']);
+ selectedTable = tabulate(data, ['Cause', 'Deaths','Rank in 2017','Change since 2007', 'Rank in 2007']);
  // choose which fields to tabulate, data.slice(0,10) says give me records 1:10
 
  }

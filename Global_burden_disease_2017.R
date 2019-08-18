@@ -10,6 +10,7 @@
 
 Area_x <- "West Sussex"
 
+
 options(scipen = 999)
 # Load useful libraries
 
@@ -237,17 +238,27 @@ Area_x_cause <- Area_x_cause_number %>%
 
 Total_deaths_area_x <- Area_x_cause %>% 
   filter(Level == 0) %>%
-  filter(Year == max(Year)) %>% 
+  filter(Year %in% c(max(Year))) %>% 
   filter(metric == "Number") %>% 
-  select(Sex, Cause, Deaths, `YLLs (Years of Life Lost)`)
+  select(Year, Sex, Cause, Deaths, `YLLs (Years of Life Lost)`)
 
 Total_deaths_area_x %>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Deaths_YLL_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
 Area_x_cause <- Area_x_cause %>% 
-  filter(Level %in% c(1,2,3)) %>% 
+  filter(Level %in% c(2,3)) %>% 
   select(-c(Area, Cause_outline, Cause_id, Parent_id))
+
+Area_deaths_2017 <- Area_x_cause %>% 
+  filter(Year %in% c(1997, 2002, 2007, 2012, 2017)) %>% 
+  select(Sex, Year, Cause, Level,`Cause group`, metric, Deaths) %>% 
+  spread(Year, Deaths) %>% 
+  group_by(Sex, Level, metric) %>% 
+  mutate(Rank_1997 = rank(`1997`)) %>% 
+  mutate(Change_20 = ((`2017` - `1997`) / `1997`) * 100)
+
+names(Area_deaths_2017)
 
 # This exports the last five years of data for our chosen area to a JSON file. This is the easiest way to read in data to a javascript visualisation.
 # We have to try and keep the file size down so I have excluded data prior to 2013.
