@@ -2,7 +2,7 @@
 
 
 var width = 700;
-var height = 600;
+var height = 500;
 
 var year_x = 2017;
 var sex_x = "Both";

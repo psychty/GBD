@@ -29,9 +29,9 @@ function tabulate(top_10_data, columns) {
 		  .append('td')
 				.text(function(d,i) {
 					if(i == 1) return d3.format(",.0f")(d.value); // + " items"; // Hurrah d3.format() works!
-					else if (i == 2) return d3.format(",.0f")(d.value); // comma separators and round values
-					else if (i == 3) return d3.format(",.0f")(d.value);
-					else if (i == 4) return d3.format(",.0f")(d.value);
+					// else if (i == 2) return d3.format(",.0f")(d.value); // comma separators and round values
+					// else if (i == 3) return d3.format(",.0f")(d.value);
+					// else if (i == 4) return d3.format(",.0f")(d.value);
 										 return d.value; });
 	  return table;
 	}
@@ -51,7 +51,7 @@ d3.select("#total_death_string")
 	return "What caused the " + d3.format(",.0f")(d.Deaths) + " deaths in West Sussex in 2017" }); // Concatenate a string
 
 // Cause of death data
-request.open("GET", "./Number_proportion_cause_west_sussex.json", false);
+request.open("GET", "./Number_proportion_cause_death_2017_west_sussex.json", false);
 request.send(null);
 var data = JSON.parse(request.responseText); // parse the fetched json data into a variable
 
@@ -65,10 +65,10 @@ top_10_data = data.filter(function(d){
 
 // Sort top_10_data
 top_10_data = top_10_data.sort(function(a, b) {
-			return d3.descending(a.Deaths, b.Deaths)})
+			return d3.descending(a['Deaths in 2017'], b['Deaths in 2017'])})
 
 // Create the table
-var topTable =	tabulate(top_10_data.slice(0,10), ['Cause', 'Deaths','YLLs (Years of Life Lost)','Incidence','Prevalence','Cause group']); //  choose which fields to tabulate, data.slice(0,10) says give me records 1:10
+var topTable =	tabulate(top_10_data.slice(0,10), ['Cause', 'Deaths in 2017', 'Cause group']); //  choose which fields to tabulate, data.slice(0,10) says give me records 1:10
 
 // Capitalise each header name. This is quite a tidy little piece of script. You can see it selecting the headers (`selectAll("thead th")`), then the first character in each header (`column.charAt(0)`), changing it to upper-case (`.toUpperCase()`) and adding it back to the rest of the string (`+ column.substr(1)`).
 // From http://www.d3noob.org/2013/02/more-d3js-table-madness-sorting.html

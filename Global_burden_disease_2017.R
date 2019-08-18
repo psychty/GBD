@@ -247,25 +247,54 @@ Total_deaths_area_x %>%
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Deaths_YLL_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
 Area_x_cause <- Area_x_cause %>% 
-  filter(Level %in% c(2,3)) %>% 
   select(-c(Area, Cause_outline, Cause_id, Parent_id))
 
 Area_deaths_2017 <- Area_x_cause %>% 
+  filter(Level %in% c(2,3)) %>% 
+  filter(Year == 2017) %>% 
+  rename(Deaths_2017 = Deaths)
+
+Area_deaths_2017_a <- Area_x_cause %>% 
+  filter(Level %in% c(2,3)) %>% 
   filter(Year %in% c(1997, 2002, 2007, 2012, 2017)) %>% 
   select(Sex, Year, Cause, Level,`Cause group`, metric, Deaths) %>% 
-  spread(Year, Deaths) %>% 
   group_by(Sex, Level, metric) %>% 
-  mutate(Rank_1997 = rank(`1997`)) %>% 
-  mutate(Change_20 = ((`2017` - `1997`) / `1997`) * 100)
+  mutate(Rank = rank(-Deaths)) %>% 
+  left_join(Area_deaths_2017[c('Sex', 'Cause', 'Cause group', 'Level', 'metric','Deaths_2017')], by = c('Sex', 'Cause', 'Cause group','metric', 'Level')) %>% 
+  ungroup() %>% 
+  mutate(Change_to_2017 = ifelse(metric == 'Number', ((Deaths_2017 - Deaths) / Deaths)*100, ifelse(metric == 'Proportion of total burden caused by this condition', Deaths_2017 - Deaths, NA))) %>%
+  mutate(Change_label = paste0('Change since ', Year)) %>% 
+  mutate(Rank_label = paste0('Rank in ', Year)) %>% 
+  mutate(Death_label = paste0('Deaths in ', Year))
+  
+Area_deaths_2017_b <- Area_deaths_2017_a %>% 
+  select(Sex, Cause, metric, Change_to_2017, Change_label) %>% 
+  filter(Change_label != 'Change since 2017') %>% 
+  spread(Change_label, Change_to_2017)
 
-names(Area_deaths_2017)
+Area_deaths_2017_c <- Area_deaths_2017_a %>% 
+  select(Sex, Cause, metric, Rank, Rank_label) %>% 
+  spread(Rank_label, Rank)
+
+Area_deaths_2017_d <- Area_deaths_2017_a %>% 
+  select(Sex, Cause, metric, Deaths, Death_label) %>% 
+  spread(Death_label, Deaths)
+
+Area_deaths_2017 %>% 
+  left_join(Area_deaths_2017_b, by = c('Sex', 'Cause', 'metric')) %>% 
+  select(-c('DALYs (Disability-Adjusted Life Years)', "Incidence",'Prevalence','YLDs (Years Lived with Disability)', "YLLs (Years of Life Lost)")) %>% 
+  left_join(Area_deaths_2017_c, by = c('Sex', 'Cause', 'metric')) %>% 
+  left_join(Area_deaths_2017_d, by = c('Sex', 'Cause', 'metric')) %>% 
+  select(-Deaths_2017) %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Number_proportion_cause_death_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
 # This exports the last five years of data for our chosen area to a JSON file. This is the easiest way to read in data to a javascript visualisation.
 # We have to try and keep the file size down so I have excluded data prior to 2013.
-Area_x_cause %>% 
-  filter(Year %in% seq(max(Year)-5,max(Year),1)) %>% # Last 5 years
-  toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Number_proportion_cause_', gsub(" ", "_", tolower(Area_x)), '.json'))
+# Area_x_cause %>% 
+#   filter(Year %in% seq(max(Year)-5,max(Year),1)) %>% # Last 5 years
+#   toJSON() %>% 
+#   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Number_proportion_cause_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
 # We can keep more data in the csv file as this won't be loaded into the webpage.
 write.csv(Area_x_cause, paste0('/Users/richtyler/Documents/Repositories/GBD/Number_proportion_cause_', gsub(" ", "_", tolower(Area_x)), '.csv'), row.names = FALSE)

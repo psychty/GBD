@@ -36,7 +36,7 @@ function prepare_data() {
 // console.table(data);
 
  // Create the table
- selectedTable = tabulate(data, ['Cause', 'Deaths','Rank in 2017','Change since 2007', 'Rank in 2007']);
+ selectedTable = tabulate(data, ['Cause', 'Deaths in 2017','Rank in 2017','Deaths in 2007','Change since 2007', 'Rank in 2007']);
  // choose which fields to tabulate, data.slice(0,10) says give me records 1:10
 
  }
@@ -54,8 +54,6 @@ function filter_data(data, filters) {
     return filtered_data;
 
 }
-
-
 
 /**
  * This method allows you to hook up to buttons / interface elements to
