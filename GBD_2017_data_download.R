@@ -33,19 +33,21 @@ for(i in 1:mortality_files){
 }
 }
 
-# mortality_df <- unique(list.files("~/GBD data downloads")[grepl("e004c73d", list.files("~/GBD data downloads/")) == TRUE]) %>% 
+# mortality_df <- unique(list.files("~/GBD data downloads")[grepl("dce9e906", list.files("~/GBD data downloads/")) == TRUE]) %>% 
 #   map_df(~read_csv(paste0("~/GBD data downloads/",.)))
+http://s3.healthdata.org/gbd-api-2017-public/dce9e9067631bf55f9745237627df9c8_files/IHME-GBD_2017_DATA-dce9e906-
 
-if(!(file.exists("~/GBD data downloads/IHME-GBD_2017_DATA-24a46006-15.csv"))){
-  mortality_wsx_files = 15
-for(i in 1:mortality_wsx_files){
-  download.file(paste0("http://s3.healthdata.org/gbd-api-2017-public/24a4600648092a3e00cb6f752a2b8269_files/IHME-GBD_2017_DATA-24a46006-", i , ".zip"), paste0("~/GBD data downloads/mortality_wsx_files",i,".zip"), mode = "wb")
-  unzip(paste0("~/GBD data downloads/mortality_wsx_files",i,".zip"), exdir = "~/GBD data downloads")
-  file.remove(paste0("~/GBD data downloads/mortality_wsx_files",i,".zip"))
-}
-}
 
-# mortality_wsx_df <- unique(list.files("~/GBD data downloads")[grepl("24a46006", list.files("~/GBD data downloads/")) == TRUE]) %>% 
+# if(!(file.exists("~/GBD data downloads/IHME-GBD_2017_DATA-dce9e906-10.csv"))){
+#   mortality_wsx_files = 10
+# for(i in 3:mortality_wsx_files){
+#   download.file(paste0("http://s3.healthdata.org/gbd-api-2017-public/dce9e9067631bf55f9745237627df9c8_files/IHME-GBD_2017_DATA-dce9e906-", i , ".zip"), paste0("~/GBD data downloads/mortality_wsx_files",i,".zip"), mode = "wb")
+#   unzip(paste0("~/GBD data downloads/mortality_wsx_files",i,".zip"), exdir = "~/GBD data downloads")
+#   file.remove(paste0("~/GBD data downloads/mortality_wsx_files",i,".zip"))
+# }
+# }
+
+# mortality_wsx_df <- unique(list.files("~/GBD data downloads")[grepl("dce9e906", list.files("~/GBD data downloads/")) == TRUE]) %>% 
 #   map_df(~read_csv(paste0("~/GBD data downloads/",.)))
 
 # if(!(file.exists("~/GBD data downloads/IHME-GBD_2017_DATA-0f1da8e2-231.csv"))){

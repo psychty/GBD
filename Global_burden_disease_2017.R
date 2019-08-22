@@ -289,6 +289,65 @@ Area_deaths_2017 %>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Number_proportion_cause_death_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
+
+rm(Area_deaths_2017_a, Area_deaths_2017_b, Area_deaths_2017_c, Area_deaths_2017_d)
+
+
+# Burden of premature mortality and illness
+
+Deaths_10 <- Area_x_cause %>% 
+  filter(Year == 2017,
+         Level == 2,) %>%
+  group_by(Sex) %>% 
+  mutate(Rank = rank(-Deaths)) %>% 
+  filter(Rank <= 10) %>% 
+  rename(Deaths_causes = Cause) %>%
+  select(Sex, Rank, Deaths_causes, Deaths) %>% 
+  arrange(Sex,Rank)
+
+YLL_10 <- Area_x_cause %>% 
+  filter(Year == 2017,
+         Level == 2,) %>%
+  group_by(Sex) %>% 
+  mutate(Rank = rank(-`YLLs (Years of Life Lost)`)) %>% 
+  filter(Rank <= 10) %>% 
+  rename(Premature_YLL_causes = Cause) %>%
+  select(Sex, Rank, Premature_YLL_causes, `YLLs (Years of Life Lost)`) %>% 
+  arrange(Sex,Rank)
+
+YLD_10 <- Area_x_cause %>% 
+  filter(Year == 2017,
+         Level == 2,) %>%
+  group_by(Sex) %>% 
+  mutate(Rank = rank(-`YLDs (Years Lived with Disability)`)) %>% 
+  filter(Rank <= 10) %>% 
+  rename(YLD_causes = Cause) %>%
+  select(Sex, Rank, YLD_causes, `YLDs (Years Lived with Disability)`) %>% 
+  arrange(Sex, Rank)
+
+DALY_10 <- Area_x_cause %>% 
+  filter(Year == 2017,
+         Level == 2,) %>%
+  group_by(Sex) %>% 
+  mutate(Rank = rank(-`DALYs (Disability-Adjusted Life Years)`)) %>% 
+  filter(Rank <= 10) %>% 
+  rename(DALY_causes = Cause) %>%
+  select(Sex, Rank, DALY_causes, `DALYs (Disability-Adjusted Life Years)`) %>% 
+  arrange(Sex, Rank)
+
+WSx_top_10 <- Deaths_10 %>% 
+  left_join(YLL_10, by = c('Sex', 'Rank')) %>% 
+  left_join(YLD_10, by = c('Sex', 'Rank')) %>% 
+  left_join(DALY_10, by = c('Sex', 'Rank')) 
+
+WSx_top_10 %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Top_10_YLL_YLD_DALY_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
+  
+# Explore the top ten causes of death (numbers), YLL (numbers), YLDs (numbers) and DALYs.
+
+# Then look at DALYs in more detail by exploring age differences, changes over time, comparisons with other areas (using rates per 100,000).
+
 # This exports the last five years of data for our chosen area to a JSON file. This is the easiest way to read in data to a javascript visualisation.
 # We have to try and keep the file size down so I have excluded data prior to 2013.
 # Area_x_cause %>% 
@@ -875,17 +934,8 @@ write.csv(DALYs_rate_rank_table, "./GBD/DALYs_rate_rank_table.csv", row.names = 
 
 # Over the lifecourse - West Sussex 2006, 2011, 2016 ####
 
-# https://gbd2016.healthdata.org/gbd-search?params=gbd-api-2016-permalink/5fddda23d8d8f1a899a3ea8ee4be8a76
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/60faf82f867e12682f9c94d679142f98_files/IHME-GBD_2016_DATA-60faf82f-1.zip", "./GBD/UK_overlifecourse_part_1.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/60faf82f867e12682f9c94d679142f98_files/IHME-GBD_2016_DATA-60faf82f-2.zip", "./GBD/UK_overlifecourse_part_2.zip", mode = "wb")
-# 
-# unzip("./GBD/UK_overlifecourse_part_1.zip", exdir = "./GBD")
-# unzip("./GBD/UK_overlifecourse_part_2.zip", exdir = "./GBD")
-# 
-# file.remove(c("./GBD/UK_overlifecourse_part_1.zip", "./GBD/UK_overlifecourse_part_2.zip"))
-
-gbd_age_data <- read_csv("./GBD/IHME-GBD_2016_DATA-60faf82f-1.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number())) %>% 
-  bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-60faf82f-2.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number())))
+lifecourse_wsx_df <- unique(list.files("~/Documents/GBD_data_download")[grepl("2b4d76ab", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
+     map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(measure_id = col_double(),measure_name = col_character(),location_id = col_double(),location_name = col_character(),sex_id = col_double(),sex_name = col_character(),age_id = col_double(),age_name = col_character(),cause_id = col_double(),cause_name = col_character(),metric_id = col_double(),metric_name = col_character(),year = col_double(),val = col_double(),upper = col_double(),lower = col_double())))
 
 # http://www.healthdata.org/sites/default/files/files/infographics/Infographic_GBD2016-YLDs-Highlights_2018_Page_1.png
 
