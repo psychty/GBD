@@ -103,7 +103,7 @@ function tabulate(data, columns) {
 		  .enter()
 		  .append('td')
 				.text(function(d,i) {
-					if(i == 1) return d3.format(",.0f")(d.value); // + " items"; // Hurrah d3.format() works!
+					if(i == 1) return d3.format(",.0f")(d.value); // + " items";
 					else if (i == 2) return d3.format(",.0f")(d.value); // comma separators and round values
 					else if (i == 3) return d3.format(",.0f")(d.value);
 					else if (i == 4) return d3.format(",.0f")(d.value);
@@ -162,7 +162,6 @@ function build_filter_sidebar() {
     })
 
 // This block below will add a generic input listener to the entire page, because all the select boxes are dynamically created, and browsers are a bit lazy and only take note of the elements on the page when the page is originally loaded. Anything you add after the original pageload needs this sort of lazy event listening to work.
-
     document.body.addEventListener('input', function (event) {
         // the toggleFilter method is run ONLY if the target item that was changed and has the class 'filter_button'.
         if (event.srcElement.className === 'filter_button') {
@@ -172,17 +171,12 @@ function build_filter_sidebar() {
         }
         ;
     });
-
 }
 
-
 // run all the setup methods to start processing and filtering data on page load
-
 (() => {
     prepare_data();
     prepare_filter_buttons();
     build_filter_sidebar();
-
-		console.table(data);
-
+		// console.table(data);
 })();

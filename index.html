@@ -22,26 +22,33 @@
 
 <article class = "main">
 
+<h1>Exploring the burden of disease in West Sussex in 2017</h1>
 <h2>Top 10 in West Sussex</h2>
 <p>The leading burdens of disease in West Sussex in 2017 are given in the table below. These are the 'level two' cause groups. You'll notice there are actually four top 10s and these reflect the various ways conditions affect our health.</p>
-<p>We can measure mortality not just by counting the number of deaths (the far left of the table) but also the years of life lost, as a measure of the burden of disease on premature mortality. We can also estimate the number of years lived with disability for conditions which are not always fatal (at least not in the short term).</p>
 
 <div id = "top_10_table"> </div>
+<p>Discuss each of the metrics. What differences are there across top tens.</p>
+<p>Whilst the biggest contributers to mortality are generally the biggest contributers to disability and ill health, some conditions which have fairly low mortality rates can cause significant levels of disability.</p>
 
-<p>We now explore each of these four measures in more detail for West Sussex.</p>
-
-<!-- Perhaps we can get this graphic to either move when the causes are clicked, or perhaps highlighted, or perhaps have the cause groups cluster together -->
-<!-- Would be good to be able to split males vs females or change the year. -->
 <h2 id = "total_death_string"></h2>
 <p>The figure below shows the estimated number of deaths in West Sussex in 2017 by cause (level 3 causes). Causes are coloured by the 'cause group' (level 2 cause). Hover over a circle to see more information.
 <div id = "my_dataviz"> </div>
+<!-- Perhaps we can get this graphic to either move when the causes are clicked, or perhaps highlighted, or perhaps have the cause groups cluster together -->
+<!-- Would be good to be able to split males vs females or change the year. -->
 
-<h2>Years of life lost</h2>
+<h2>How does ill health affect people of different ages?</h2>
+<p>We have already looked at measures of premature mortality and morbidity, that is ill health that occurs earlier than naturally expected, but we can also look at which conditions impact people across the lifecourse.</p>
+<!-- x = condition (level 2) y = value, fill - age -->
+<!-- x = age y = value, fill = condition (level 2)-->
 
-<h2>Disability adjusted life-years (DALYs) lost</h2>
+<h1>Exploring changes over time and across areas</h1>
+<p>So far we have looked at ill health for those in West Sussex using the 'crude' or unstandardised values, as this gives an idea of the scale of the burden of ill health for our population. We know from the section above that age is a very important determinent of ill health and disability and conditions affect people of different ages.</p>
+<p>To account for differences in population size and demographics, the remaining analyses in this section uses <font color = "#256cb2"><b>standardised estimates</b></font> which detail the number (e.g. deaths) per 100,000 population. For more information on standardisation, look at the 'Concepts' section on this left of this page.</p>
+<!-- Line chart deaths over time compared to England and maybe CIPFA neighbours -->
+<!-- x = condition, y = % change 07-17 -->
+<!-- slope chart -->
 
-<p>So far we have looked at the estimates for mortality, that is, what kills people. However, there are many people who continue to live with certain conditions to a greater or lesser extent of disability. Whilst the biggest contributers to mortality are generally the biggest contributers to disability and ill health, some conditions which have fairly low mortality rates can cause significant levels of disability.</p>
-
+<h1>Condition Focus</h1>
 <!-- A good example of this is Musculoskeletal disorders which cause -->
 
 <p>In the next section we focus on the three disease groups which contributed the most disability adjusted life-years lost in West Sussex in 2017 (Cancers (neoplasms), Cardiovascular diseases and Musculoskeletal disorders).</p>
@@ -69,7 +76,13 @@
 <h3>Disability Adjusted Life Years (DALYs)</h3>
 <p>One DALY equals one lost year of healthy life and is the sum of years of life lost and years lived with disability. This is the best measure to consider the overall impact of a specific cause or group of causes on a population.</p>
 
-<h2>Exploring causes</h2>
+<h3>Standardised values</h3>
+<p>Looking at crude estimates helps to know what the true impact might be for your area and this can help to plan services (e.g. to anticipate the number of patients a service might need to cater for, the number of cases).</p>
+<p>You could compare these estimates with those in other areas, or over time, to see if things are better in some areas or are improving over time although any differences (or similarities) in estimates could be at least in part due the underlying differences in populations (e.g. areas with fewer or greater numbers of older people, or the shear size of the population).</p>
+<p>For example area A may have recorded 2,000 deaths and area B recorded 1,500 deaths. You might think that area A has a much bigger issue of mortality than area B. However, if area A has a population of 500,000, the rate of deaths is 400 deaths per 100,000 population. If area B has a population of 300,000, then the rate of deaths is higher in area B (500 per 100,000).</p>
+<p><i>Better example of standardising.</i></p>
+
+<h3>Cause groups</h3>
 <p>Use the buttons below to select a group of causes and hover over a circle to see more.</p>
         <!-- Maybe we could have a tooltip for high level number of deaths, number of causes, rank etc. -->
 <div id="cause_categories"></div>

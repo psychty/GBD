@@ -19,8 +19,6 @@ libraries(c("readxl", "readr", "plyr", "dplyr", "ggplot2", "png", "tidyverse", "
 Area_x <- "West Sussex"
 options(scipen = 999)
 
-
-
 GBD_2017_cause_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2017_CAUSE_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric", "text", "text")) %>% 
   rename(Cause_name = cause_name,
          Cause_id = cause_id,
@@ -30,30 +28,28 @@ GBD_2017_cause_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2
 
 # GBD_cause_group_lv1 <- GBD_2017_cause_hierarchy %>% 
 #    filter(level == 1)
-# 
+ 
 # non_com <- GBD_2017_cause_hierarchy %>%
 #   filter(level == 2) %>% 
 #   filter(substr(cause_outline, 1,1) == "B")
 
-lev2 <- GBD_2017_cause_hierarchy %>%
-    filter(Level == 2)
+# GBD_2017_cause_hierarchy %>%
+#      filter(Level == 2) %>% 
+#   View()
 
-lev3 <- GBD_2017_cause_hierarchy %>%
-  filter(Level == 3)
+# lev3 <- GBD_2017_cause_hierarchy %>%
+#   filter(Level == 3)
 
-lev4 <- GBD_2017_cause_hierarchy %>%
-  filter(Level == 4)
+# lev4 <- GBD_2017_cause_hierarchy %>%
+#   filter(Level == 4)
 
-GBD_2017_cause_hierarchy %>% 
+Causes_in_each_level <- GBD_2017_cause_hierarchy %>% 
   select(Level) %>% 
   group_by(Level) %>% 
   summarise(n())
 
 # Cause of mortality and morbidity ####
-# All causes, 2002, 2007-17, all ages and age standardised, deaths, YLL, YLD, DALYs, West Sussex and cipfa neighbours
-
 # This is 3.5 million records
-  
 All_ages_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("e004c73d", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
   map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>% 
   filter(age != 'Age-standardized') %>% 
@@ -80,7 +76,7 @@ Cause_number <- All_ages_GBD_cause_data %>%
   spread(measure, Estimate) %>% 
   ungroup() 
 
-# Proportions of morbidity, mortality and dalys due to particular causes ####
+# Percent is the proportion of the deaths in the given location for the given sex, year, and level.
 Cause_perc <- All_ages_GBD_cause_data %>% 
   filter(metric == "Proportion of total burden caused by this condition") %>% 
   group_by(measure, Year, Area, Sex) %>%   
@@ -89,7 +85,6 @@ Cause_perc <- All_ages_GBD_cause_data %>%
   ungroup()
 
 # Rate is per 100,000 population
-# Percent is the proportion of the deaths in the given location for the given sex, year, and level.
 # Number is the count of deaths
 
 Area_x_cause_number <- Cause_number %>% 
@@ -100,6 +95,7 @@ Area_x_cause_perc <- Cause_perc %>%
   filter(Area == Area_x) %>% 
   arrange(Sex, Year, Cause_outline)
 
+# We need to remove the NAs and replace them with zeros (otherwise the JSON file we are about to export won't be read properly)
 Area_x_cause <- Area_x_cause_number %>% 
   bind_rows(Area_x_cause_perc) %>% 
   mutate(Deaths = replace_na(Deaths, 0)) %>% 
@@ -108,19 +104,19 @@ Area_x_cause <- Area_x_cause_number %>%
   mutate(`YLDs (Years Lived with Disability)` = replace_na(`YLDs (Years Lived with Disability)`, 0)) %>% 
   mutate(`YLLs (Years of Life Lost)` = replace_na(`YLLs (Years of Life Lost)`, 0))
 
-Total_deaths_area_x <- Area_x_cause %>% 
+# This exports a JSON file of the total number of deaths and YLLs by sex in the most recent year for our chosen area
+Area_x_cause %>% 
   filter(Level == 0) %>%
   filter(Year %in% c(max(Year))) %>% 
   filter(metric == "Number") %>% 
-  select(Year, Sex, Cause, Deaths, `YLLs (Years of Life Lost)`)
-
-Total_deaths_area_x %>% 
+  select(Year, Sex, Cause, Deaths, `YLLs (Years of Life Lost)`) %>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Deaths_YLL_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
 Area_x_cause <- Area_x_cause %>% 
   select(-c(Area, Cause_outline, Cause_id, Parent_id))
 
+# Change over time for deaths at all levels by sex ####
 Area_deaths_2017 <- Area_x_cause %>% 
   filter(Level %in% c(2,3)) %>% 
   filter(Year == 2017) %>% 
@@ -152,29 +148,32 @@ Area_deaths_2017_d <- Area_deaths_2017_a %>%
   select(Sex, Cause, metric, Deaths, Death_label) %>% 
   spread(Death_label, Deaths)
 
-Area_deaths_2017 %>% 
+Area_deaths_2017 <- Area_deaths_2017 %>% 
   left_join(Area_deaths_2017_b, by = c('Sex', 'Cause', 'metric')) %>% 
   select(-c('DALYs (Disability-Adjusted Life Years)', "Incidence",'Prevalence','YLDs (Years Lived with Disability)', "YLLs (Years of Life Lost)")) %>% 
   left_join(Area_deaths_2017_c, by = c('Sex', 'Cause', 'metric')) %>% 
   left_join(Area_deaths_2017_d, by = c('Sex', 'Cause', 'metric')) %>% 
   select(-Deaths_2017) %>% 
-  toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Number_proportion_cause_death_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
-
+  mutate(`Change since 1997` = replace_na(`Change since 1997`, 0)) %>% 
+  mutate(`Change since 2002` = replace_na(`Change since 2002`, 0)) %>% 
+  mutate(`Change since 2007` = replace_na(`Change since 2007`, 0)) %>% 
+  mutate(`Change since 2012` = replace_na(`Change since 2012`, 0)) 
 
 rm(Area_deaths_2017_a, Area_deaths_2017_b, Area_deaths_2017_c, Area_deaths_2017_d)
 
-
-# Burden of premature mortality and illness
+# This is the change over time for deaths at all levels by sex - show change in number and change in proportion
+Area_deaths_2017 %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Number_proportion_cause_death_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
 Deaths_10 <- Area_x_cause %>% 
   filter(Year == 2017,
          Level == 2,) %>%
-  group_by(Sex) %>% 
+  group_by(Year, Sex) %>% 
   mutate(Rank = rank(-Deaths)) %>% 
   filter(Rank <= 10) %>% 
-  rename(Deaths_causes = Cause) %>%
-  select(Sex, Rank, Deaths_causes, Deaths) %>% 
+  rename(`Cause of death` = Cause) %>%
+  select(Sex, Rank, `Cause of death`, Deaths) %>% 
   arrange(Sex,Rank)
 
 YLL_10 <- Area_x_cause %>% 
@@ -183,8 +182,8 @@ YLL_10 <- Area_x_cause %>%
   group_by(Sex) %>% 
   mutate(Rank = rank(-`YLLs (Years of Life Lost)`)) %>% 
   filter(Rank <= 10) %>% 
-  rename(Premature_YLL_causes = Cause) %>%
-  select(Sex, Rank, Premature_YLL_causes, `YLLs (Years of Life Lost)`) %>% 
+  rename(`Cause of years of life lost` = Cause) %>%
+  select(Sex, Rank, `Cause of years of life lost`, `YLLs (Years of Life Lost)`) %>% 
   arrange(Sex,Rank)
 
 YLD_10 <- Area_x_cause %>% 
@@ -193,8 +192,8 @@ YLD_10 <- Area_x_cause %>%
   group_by(Sex) %>% 
   mutate(Rank = rank(-`YLDs (Years Lived with Disability)`)) %>% 
   filter(Rank <= 10) %>% 
-  rename(YLD_causes = Cause) %>%
-  select(Sex, Rank, YLD_causes, `YLDs (Years Lived with Disability)`) %>% 
+  rename(`Cause of years lived with disability` = Cause) %>%
+  select(Sex, Rank, `Cause of years lived with disability`, `YLDs (Years Lived with Disability)`) %>% 
   arrange(Sex, Rank)
 
 DALY_10 <- Area_x_cause %>% 
@@ -203,8 +202,8 @@ DALY_10 <- Area_x_cause %>%
   group_by(Sex) %>% 
   mutate(Rank = rank(-`DALYs (Disability-Adjusted Life Years)`)) %>% 
   filter(Rank <= 10) %>% 
-  rename(DALY_causes = Cause) %>%
-  select(Sex, Rank, DALY_causes, `DALYs (Disability-Adjusted Life Years)`) %>% 
+  rename(`Cause of disability adjusted life years lost` = Cause) %>%
+  select(Sex, Rank, `Cause of disability adjusted life years lost`, `DALYs (Disability-Adjusted Life Years)`) %>% 
   arrange(Sex, Rank)
 
 WSx_top_10 <- Deaths_10 %>% 
@@ -212,35 +211,296 @@ WSx_top_10 <- Deaths_10 %>%
   left_join(YLD_10, by = c('Sex', 'Rank')) %>% 
   left_join(DALY_10, by = c('Sex', 'Rank')) 
 
+rm(DALY_10, Deaths_10, YLD_10, YLL_10)
+
 WSx_top_10 %>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Top_10_YLL_YLD_DALY_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
   
 # Explore the top ten causes of death (numbers), YLL (numbers), YLDs (numbers) and DALYs.
 
-# Then look at DALYs in more detail by exploring age differences, changes over time, comparisons with other areas (using rates per 100,000).
-
-# This exports the last five years of data for our chosen area to a JSON file. This is the easiest way to read in data to a javascript visualisation.
-# We have to try and keep the file size down so I have excluded data prior to 2013.
-# Area_x_cause %>% 
-#   filter(Year %in% seq(max(Year)-5,max(Year),1)) %>% # Last 5 years
-#   toJSON() %>% 
-#   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Number_proportion_cause_', gsub(" ", "_", tolower(Area_x)), '.json'))
-
-# We can keep more data in the csv file as this won't be loaded into the webpage.
-write.csv(Area_x_cause, paste0('/Users/richtyler/Documents/Repositories/GBD/Number_proportion_cause_', gsub(" ", "_", tolower(Area_x)), '.csv'), row.names = FALSE)
-
-lev_2 <- Area_x_cause %>% 
+# Explore all level 2 causes for West Sussex ####
+level_2_cause_df_a <- Area_x_cause %>% 
   filter(Level == 2,
          Year == 2017) %>%
   group_by(Sex) %>% 
   mutate(Death_rank =  rank(-Deaths, ties.method = "first")) %>% # The - indicates descending order
   mutate(YLL_rank =  rank(-`YLLs (Years of Life Lost)`, ties.method = "first")) %>% 
-  mutate(DALY_rank =  rank(-`DALYs (Disability-Adjusted Life Years)`, ties.method = "first"))
+  mutate(YLD_rank =  rank(-`YLDs (Years Lived with Disability)`, ties.method = "first")) %>% 
+  mutate(DALY_rank =  rank(-`DALYs (Disability-Adjusted Life Years)`, ties.method = "first")) %>% 
+  select(-c(Incidence, Prevalence))
 
-lev_2 %>% 
+level_2_cause_df_b <- level_2_cause_df_a %>% 
+  filter(metric == 'Proportion of total burden caused by this condition') %>% 
+  rename(DALY_proportion = `DALYs (Disability-Adjusted Life Years)`,
+         Deaths_proportion = Deaths,
+         YLD_proportion = `YLDs (Years Lived with Disability)`,
+         YLL_proportion = `YLLs (Years of Life Lost)`) %>% 
+  select(Sex, Cause, Deaths_proportion, YLL_proportion, YLD_proportion, DALY_proportion)
+
+level_2_cause_df <- level_2_cause_df_a %>% 
+  filter(metric == 'Number') %>% 
+  rename(DALY_number = `DALYs (Disability-Adjusted Life Years)`,
+         Deaths_number = Deaths,
+         YLD_number = `YLDs (Years Lived with Disability)`,
+         YLL_number = `YLLs (Years of Life Lost)`) %>% 
+  left_join(level_2_cause_df_b, by = c('Sex', 'Cause')) %>% 
+  select(Sex, Cause, Year, `Cause group`, Deaths_number, Deaths_proportion, Death_rank, YLL_number, YLL_proportion, YLL_rank, YLD_number, YLD_proportion, YLD_rank, DALY_number, DALY_proportion, DALY_rank)
+
+rm(level_2_cause_df_a, level_2_cause_df_b)
+
+level_2_cause_df %>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Number_cause_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
+
+# Data for cause size bubbles
+
+
+# Over the lifecourse ####
+
+lifecourse_wsx_df <- unique(list.files("~/Documents/GBD_data_download")[grepl("2b4d76ab", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
+  map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(measure_id = col_double(),measure_name = col_character(),location_id = col_double(),location_name = col_character(),sex_id = col_double(),sex_name = col_character(),age_id = col_double(),age_name = col_character(),cause_id = col_double(),cause_name = col_character(),metric_id = col_double(),metric_name = col_character(),year = col_double(),val = col_double(),upper = col_double(),lower = col_double())))
+
+# http://www.healthdata.org/sites/default/files/files/infographics/Infographic_GBD2016-YLDs-Highlights_2018_Page_1.png
+
+yld_age_level_1 <- gbd_age_data %>% 
+  filter(measure == "YLDs (Years Lived with Disability)",
+         metric == "Number",
+         year == max(year),
+         age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
+  mutate(age = factor(age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
+  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
+  filter(sex != "Both") %>% 
+  filter(level == 1) %>% 
+  mutate(cause = factor(cause, levels = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries")))
+
+yld_age_level_1_plot <- ggplot(yld_age_level_1, aes(x = age,  y = val, fill = cause)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_y_continuous(limits = c(0,6000), breaks = seq(0,6000, 500), labels = comma) +
+  scale_fill_manual(values = c("#C2464F", "#62A7B9", "#9DCB9C"), 
+                    breaks = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
+                    limits = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
+                    labels = c("Communicable, maternal, neonatal,\nand nutritional diseases", "Non-communicable\ndiseases", "Injuries\n"),
+                    name = "Cause group\n(level 1)") +
+  labs(title = paste0("Total number of years lived with disability; by age group and sex; ", unique(yld_age_level_1$year)),
+       subtitle = paste0(unique(yld_age_level_1$location)),
+       caption = "Measure: Years lived with disability (YLD)",
+       x = "Age group",
+       y = "Number") +
+  stack_theme() +
+  theme(axis.text.x = element_text(angle = 90),
+        legend.position = "top",
+        legend.key.height = unit(0.4, "cm"),
+        legend.key.width = unit(0.2, "cm")) +
+  facet_rep_wrap(~sex, repeat.tick.labels = TRUE)
+
+png(paste0("./GBD/yld_age_level_1_plot.png"), width = 800, height = 500, res = 92, units = "px")
+yld_age_level_1_plot
+dev.off()
+
+yld_age_level_2 <- gbd_age_data %>% 
+  filter(measure == "YLDs (Years Lived with Disability)",
+         metric == "Number",
+         year == max(year),
+         age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
+  mutate(age = factor(age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
+  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
+  filter(sex != "Both") %>% 
+  filter(level == 2) %>%
+  arrange(cause_outline) %>% 
+  mutate(cause = ifelse(nchar(cause) < 40, cause, sub('(.{1,40})(\\s|$)', '\\1\n', cause))) %>% 
+  mutate(cause = factor(cause, levels =  unique(cause))) %>% 
+  ungroup() 
+
+yld_age_level_2_js <- gbd_age_data %>% 
+  filter(measure == "YLDs (Years Lived with Disability)",
+         metric == "Number",
+         year == max(year),
+         age == "All Ages") %>% 
+  left_join(GBD_2016_cause_hierarchy[c("cause_name", "cause_id","cause_outline", "parent_id", "level")], by = c("cause" = "cause_name")) %>% 
+  filter(level == 2) %>% 
+  left_join(GBD_2016_cause_hierarchy[c("cause_name", "cause_id")], by = c("parent_id" = "cause_id")) %>% 
+  rename(Parent_cause = cause_name) %>% 
+  filter(sex == "Both") %>% 
+  arrange(cause_outline) %>% 
+  mutate(cause = capwords(cause, strict = TRUE)) %>%
+  mutate(cause = factor(cause, levels =  unique(cause))) %>% 
+  ungroup() %>%  
+  mutate(Parent_cause = capwords(Parent_cause, strict = TRUE)) %>% 
+  mutate(id = paste0(Parent_cause, ".", cause)) %>% 
+  select(Parent_cause, cause, id, val, year, location) %>% 
+  rename(value = val) %>% 
+  arrange(desc(value))
+
+r2d3(data = yld_age_level_2_js, script = "./Javascripts/bubbles_yld_level_2.js")
+
+yld_age_level_2_plot <- ggplot(yld_age_level_2, aes(x = age,  y = val, fill = cause)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_y_continuous(limits = c(0,6000), breaks = seq(0,6000, 500), labels = comma) +
+  scale_fill_manual(values = c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#99000d", '#a6bddb','#74a9cf','#3690c0','#0570b0','#034e7b',"#063367", '#9e9ac8','#807dba','#6a51a3','#54278f', "#bae4b3", "#74c476", "#31a354", "#22723a"), name = "Cause group\n(level 2)") +
+  labs(title = paste0("Total number of years lived with disability; by age group and sex; ", unique(yld_age_level_2$year)),
+       subtitle = paste0(unique(yld_age_level_2$location)),
+       caption = "Measure: Years lived with disability (YLD)",
+       x = "Age group",
+       y = "Number of years lived with\ndisability (YLDs)") +
+  stack_theme() +
+  theme(axis.text.x = element_text(size = 7, angle = 90),
+        legend.position = "right",
+        legend.key.height = unit(0.4, "cm"),
+        legend.key.width = unit(0.2, "cm"),
+        legend.text = element_text(size = 8)) +
+  guides(fill = guide_legend(ncol = 1)) +
+  facet_rep_wrap(~sex, repeat.tick.labels = TRUE)
+
+png(paste0("./GBD/yld_age_level_2_plot.png"), width = 800, height = 500, res = 92, units = "px")
+yld_age_level_2_plot
+dev.off()
+
+daly_age_level_1 <- gbd_age_data %>% 
+  filter(measure == "DALYs (Disability-Adjusted Life Years)",
+         metric == "Number",
+         year == max(year),
+         age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
+  mutate(age = factor(age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
+  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
+  filter(sex != "Both") %>% 
+  filter(level == 1) %>% 
+  mutate(cause = factor(cause, levels = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries")))
+
+daly_age_level_1_plot <- ggplot(daly_age_level_1, aes(x = age,  y = val, fill = cause)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_y_continuous(limits = c(0,14000), breaks = seq(0,14000, 1000), labels = comma) +
+  scale_fill_manual(values = c("#C2464F", "#62A7B9", "#9DCB9C"), 
+                    breaks = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
+                    limits = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
+                    labels = c("Communicable, maternal, neonatal,\nand nutritional diseases", "Non-communicable\ndiseases", "Injuries\n"),
+                    name = "Cause group\n(level 1)") +
+  labs(title = paste0("Total number of disability adjusted life years (ill health and premature mortality combined);\nby age group and sex; ", unique(daly_age_level_1$year)),
+       subtitle = paste0(unique(daly_age_level_1$location)),
+       caption = "Measure: DALYs (Disability-Adjusted Life Years)",
+       x = "Age group",
+       y = "Number") +
+  stack_theme() +
+  theme(axis.text.x = element_text(angle = 90),
+        legend.position = "right",
+        legend.key.height = unit(0.4, "cm"),
+        legend.key.width = unit(0.2, "cm")) +
+  facet_rep_wrap(~sex, repeat.tick.labels = TRUE)
+
+
+png(paste0("./GBD/daly_age_level_1_plot.png"), width = 800, height = 500, res = 92, units = "px")
+daly_age_level_1_plot
+dev.off()
+
+daly_age_level_2 <- gbd_age_data %>% 
+  filter(measure == "DALYs (Disability-Adjusted Life Years)",
+         metric == "Number",
+         year == max(year),
+         age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
+  mutate(age = factor(age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
+  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
+  filter(sex != "Both") %>% 
+  filter(level == 2) %>%
+  arrange(cause_outline) %>% 
+  mutate(cause = ifelse(nchar(cause) < 40, cause, sub('(.{1,40})(\\s|$)', '\\1\n', cause))) %>% 
+  mutate(cause = factor(cause, levels =  unique(cause))) %>% 
+  ungroup()
+
+daly_age_level_2_plot <- ggplot(daly_age_level_2, aes(x = age,  y = val, fill = cause)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_y_continuous(limits = c(0,14000), breaks = seq(0,14000, 1000), labels = comma) +
+  scale_fill_manual(values = c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#99000d", '#a6bddb','#74a9cf','#3690c0','#0570b0','#034e7b',"#063367", '#9e9ac8','#807dba','#6a51a3','#54278f', "#bae4b3", "#74c476", "#31a354", "#22723a"), name = "Cause group\n(level 2)") +
+  labs(title = paste0("Total number of disability adjusted life years (ill health and premature mortality combined);\nby age group and sex; ", unique(daly_age_level_2$year)),
+       subtitle = paste0(unique(daly_age_level_2$location)),
+       caption = "Measure: DALYs (Disability-Adjusted Life Years)",
+       x = "Age group",
+       y = "Number") +
+  stack_theme() +
+  theme(axis.text.x = element_text(angle = 90),
+        legend.position = "right",
+        legend.key.height = unit(0.4, "cm"),
+        legend.key.width = unit(0.2, "cm")) +
+  guides(fill = guide_legend(ncol = 1)) +
+  facet_rep_wrap(~sex, repeat.tick.labels = TRUE)
+
+png(paste0("./GBD/daly_age_level_2_plot.png"), width = 800, height = 500, res = 92, units = "px")
+daly_age_level_2_plot
+dev.off()
+
+# Cause proportion contributing to DALYs by age 
+daly_age_perc_level_1 <- gbd_age_data %>% 
+  filter(measure == "DALYs (Disability-Adjusted Life Years)",
+         metric == "Percent",
+         year == max(year),
+         age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
+  mutate(age = factor(age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
+  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
+  filter(sex != "Both") %>% 
+  filter(level == 1) %>% 
+  arrange(cause_outline) %>% 
+  mutate(cause = ifelse(nchar(cause) < 35, cause, sub('(.{1,35})(\\s|$)', '\\1\n', cause))) %>%
+  mutate(cause = factor(cause, levels =  unique(cause)))
+
+daly_age_perc_level_1_plot <- ggplot(daly_age_perc_level_1, aes(x = age,  y = val, fill = cause)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_y_continuous(breaks = seq(0,1, 0.1), labels = percent, expand = c(0,0.02)) +
+  scale_fill_manual(values = c("#C2464F", "#62A7B9", "#9DCB9C"), 
+                    name = "Cause group\n(level 1)") +
+  labs(title = paste0("Contribution of causes towards disability adjusted life years (ill health and premature mortality combined);\nby age group and sex; ", unique(daly_age_perc_level_1$year)),
+       subtitle = paste0(unique(daly_age_perc_level_1$location)),
+       caption = "Measure: DALYs (Disability-Adjusted Life Years)",
+       x = "Age group",
+       y = "Number") +
+  stack_theme() +
+  theme(axis.text.x = element_text(angle = 90),
+        legend.position = "right",
+        legend.key.height = unit(0.4, "cm"),
+        legend.key.width = unit(0.2, "cm")) +
+  facet_rep_wrap(~sex, repeat.tick.labels = TRUE)
+
+png(paste0("./GBD/daly_age_perc_level_1_plot.png"), width = 800, height = 500, res = 92, units = "px")
+daly_age_perc_level_1_plot
+dev.off()
+
+daly_age_perc_level_2 <- gbd_age_data %>% 
+  filter(measure == "DALYs (Disability-Adjusted Life Years)",
+         metric == "Percent",
+         year == max(year),
+         age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
+  mutate(age = factor(age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
+  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
+  filter(sex != "Both") %>% 
+  filter(level == 2) %>% 
+  arrange(cause_outline) %>% 
+  mutate(cause = ifelse(nchar(cause) < 35, cause, sub('(.{1,35})(\\s|$)', '\\1\n', cause))) %>%
+  mutate(cause = factor(cause, levels =  unique(cause)))
+
+daly_age_perc_level_2_plot <- ggplot(daly_age_perc_level_2, aes(x = age,  y = val, fill = cause)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_y_continuous(breaks = seq(0,1, 0.1), labels = percent, expand = c(0,0.02)) +
+  scale_fill_manual(values = c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#99000d", '#a6bddb','#74a9cf','#3690c0','#0570b0','#034e7b',"#063367", '#9e9ac8','#807dba','#6a51a3','#54278f', "#bae4b3", "#74c476", "#31a354", "#22723a"), name = "Cause group\n(level 2)") +
+  labs(title = paste0("Contribution of causes towards disability adjusted life years (ill health and premature mortality combined);\nby age group and sex; ", unique(daly_age_perc_level_2$year)),
+       subtitle = paste0(unique(daly_age_perc_level_2$location)),
+       caption = "Measure: DALYs (Disability-Adjusted Life Years)",
+       x = "Age group",
+       y = "Number") +
+  stack_theme() +
+  theme(axis.text.x = element_text(angle = 90),
+        legend.position = "right",
+        legend.key.height = unit(0.4, "cm"),
+        legend.key.width = unit(0.2, "cm")) +
+  guides(fill = guide_legend(ncol = 1)) +
+  facet_rep_wrap(~sex, repeat.tick.labels = TRUE)
+
+png(paste0("./GBD/daly_age_perc_level_2_plot.png"), width = 800, height = 500, res = 92, units = "px")
+daly_age_perc_level_2_plot
+dev.off()
+
+
+
+
+
+# Age standardising ####
 
 # To compare over areas or time we could use age_standardised data
 
@@ -804,245 +1064,6 @@ write.csv(DALYs_rate_rank_table, "./GBD/DALYs_rate_rank_table.csv", row.names = 
 
 # The quickest thing to do here would be to export the DALYs_rate_rank_table into excel, colour the cells manually (the significance is denoted by the row they are in).
 
-# Over the lifecourse - West Sussex 2006, 2011, 2016 ####
-
-lifecourse_wsx_df <- unique(list.files("~/Documents/GBD_data_download")[grepl("2b4d76ab", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
-     map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(measure_id = col_double(),measure_name = col_character(),location_id = col_double(),location_name = col_character(),sex_id = col_double(),sex_name = col_character(),age_id = col_double(),age_name = col_character(),cause_id = col_double(),cause_name = col_character(),metric_id = col_double(),metric_name = col_character(),year = col_double(),val = col_double(),upper = col_double(),lower = col_double())))
-
-# http://www.healthdata.org/sites/default/files/files/infographics/Infographic_GBD2016-YLDs-Highlights_2018_Page_1.png
-
-yld_age_level_1 <- gbd_age_data %>% 
-  filter(measure == "YLDs (Years Lived with Disability)",
-         metric == "Number",
-         year == max(year),
-         age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
-  mutate(age = factor(age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
-  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
-  filter(sex != "Both") %>% 
-  filter(level == 1) %>% 
-  mutate(cause = factor(cause, levels = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries")))
-
-yld_age_level_1_plot <- ggplot(yld_age_level_1, aes(x = age,  y = val, fill = cause)) +
-  geom_bar(position = "stack", stat = "identity") +
-  scale_y_continuous(limits = c(0,6000), breaks = seq(0,6000, 500), labels = comma) +
-  scale_fill_manual(values = c("#C2464F", "#62A7B9", "#9DCB9C"), 
-                    breaks = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                    limits = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                    labels = c("Communicable, maternal, neonatal,\nand nutritional diseases", "Non-communicable\ndiseases", "Injuries\n"),
-                    name = "Cause group\n(level 1)") +
-  labs(title = paste0("Total number of years lived with disability; by age group and sex; ", unique(yld_age_level_1$year)),
-       subtitle = paste0(unique(yld_age_level_1$location)),
-       caption = "Measure: Years lived with disability (YLD)",
-       x = "Age group",
-       y = "Number") +
-  stack_theme() +
-  theme(axis.text.x = element_text(angle = 90),
-        legend.position = "top",
-        legend.key.height = unit(0.4, "cm"),
-        legend.key.width = unit(0.2, "cm")) +
-  facet_rep_wrap(~sex, repeat.tick.labels = TRUE)
-
-png(paste0("./GBD/yld_age_level_1_plot.png"), width = 800, height = 500, res = 92, units = "px")
-yld_age_level_1_plot
-dev.off()
-
-yld_age_level_2 <- gbd_age_data %>% 
-  filter(measure == "YLDs (Years Lived with Disability)",
-         metric == "Number",
-         year == max(year),
-         age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
-  mutate(age = factor(age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
-  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
-  filter(sex != "Both") %>% 
-  filter(level == 2) %>%
-  arrange(cause_outline) %>% 
-  mutate(cause = ifelse(nchar(cause) < 40, cause, sub('(.{1,40})(\\s|$)', '\\1\n', cause))) %>% 
-  mutate(cause = factor(cause, levels =  unique(cause))) %>% 
-  ungroup() 
-
-yld_age_level_2_js <- gbd_age_data %>% 
-  filter(measure == "YLDs (Years Lived with Disability)",
-         metric == "Number",
-         year == max(year),
-         age == "All Ages") %>% 
-  left_join(GBD_2016_cause_hierarchy[c("cause_name", "cause_id","cause_outline", "parent_id", "level")], by = c("cause" = "cause_name")) %>% 
-  filter(level == 2) %>% 
-  left_join(GBD_2016_cause_hierarchy[c("cause_name", "cause_id")], by = c("parent_id" = "cause_id")) %>% 
-  rename(Parent_cause = cause_name) %>% 
-  filter(sex == "Both") %>% 
-  arrange(cause_outline) %>% 
-  mutate(cause = capwords(cause, strict = TRUE)) %>%
-  mutate(cause = factor(cause, levels =  unique(cause))) %>% 
-  ungroup() %>%  
-  mutate(Parent_cause = capwords(Parent_cause, strict = TRUE)) %>% 
-  mutate(id = paste0(Parent_cause, ".", cause)) %>% 
-  select(Parent_cause, cause, id, val, year, location) %>% 
-  rename(value = val) %>% 
-  arrange(desc(value))
-
-r2d3(data = yld_age_level_2_js, script = "./Javascripts/bubbles_yld_level_2.js")
-
-yld_age_level_2_plot <- ggplot(yld_age_level_2, aes(x = age,  y = val, fill = cause)) +
-  geom_bar(position = "stack", stat = "identity") +
-  scale_y_continuous(limits = c(0,6000), breaks = seq(0,6000, 500), labels = comma) +
-  scale_fill_manual(values = c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#99000d", '#a6bddb','#74a9cf','#3690c0','#0570b0','#034e7b',"#063367", '#9e9ac8','#807dba','#6a51a3','#54278f', "#bae4b3", "#74c476", "#31a354", "#22723a"), name = "Cause group\n(level 2)") +
-  labs(title = paste0("Total number of years lived with disability; by age group and sex; ", unique(yld_age_level_2$year)),
-       subtitle = paste0(unique(yld_age_level_2$location)),
-       caption = "Measure: Years lived with disability (YLD)",
-       x = "Age group",
-       y = "Number of years lived with\ndisability (YLDs)") +
-  stack_theme() +
-  theme(axis.text.x = element_text(size = 7, angle = 90),
-        legend.position = "right",
-        legend.key.height = unit(0.4, "cm"),
-        legend.key.width = unit(0.2, "cm"),
-        legend.text = element_text(size = 8)) +
-  guides(fill = guide_legend(ncol = 1)) +
-  facet_rep_wrap(~sex, repeat.tick.labels = TRUE)
-
-png(paste0("./GBD/yld_age_level_2_plot.png"), width = 800, height = 500, res = 92, units = "px")
-yld_age_level_2_plot
-dev.off()
-
-daly_age_level_1 <- gbd_age_data %>% 
-  filter(measure == "DALYs (Disability-Adjusted Life Years)",
-         metric == "Number",
-         year == max(year),
-         age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
-  mutate(age = factor(age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
-  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
-  filter(sex != "Both") %>% 
-  filter(level == 1) %>% 
-  mutate(cause = factor(cause, levels = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries")))
-
-daly_age_level_1_plot <- ggplot(daly_age_level_1, aes(x = age,  y = val, fill = cause)) +
-  geom_bar(position = "stack", stat = "identity") +
-  scale_y_continuous(limits = c(0,14000), breaks = seq(0,14000, 1000), labels = comma) +
-  scale_fill_manual(values = c("#C2464F", "#62A7B9", "#9DCB9C"), 
-                    breaks = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                    limits = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                    labels = c("Communicable, maternal, neonatal,\nand nutritional diseases", "Non-communicable\ndiseases", "Injuries\n"),
-                    name = "Cause group\n(level 1)") +
-  labs(title = paste0("Total number of disability adjusted life years (ill health and premature mortality combined);\nby age group and sex; ", unique(daly_age_level_1$year)),
-       subtitle = paste0(unique(daly_age_level_1$location)),
-       caption = "Measure: DALYs (Disability-Adjusted Life Years)",
-       x = "Age group",
-       y = "Number") +
-  stack_theme() +
-  theme(axis.text.x = element_text(angle = 90),
-        legend.position = "right",
-        legend.key.height = unit(0.4, "cm"),
-        legend.key.width = unit(0.2, "cm")) +
-  facet_rep_wrap(~sex, repeat.tick.labels = TRUE)
-
-
-png(paste0("./GBD/daly_age_level_1_plot.png"), width = 800, height = 500, res = 92, units = "px")
-daly_age_level_1_plot
-dev.off()
-
-daly_age_level_2 <- gbd_age_data %>% 
-  filter(measure == "DALYs (Disability-Adjusted Life Years)",
-         metric == "Number",
-         year == max(year),
-         age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
-  mutate(age = factor(age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
-  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
-  filter(sex != "Both") %>% 
-  filter(level == 2) %>%
-  arrange(cause_outline) %>% 
-  mutate(cause = ifelse(nchar(cause) < 40, cause, sub('(.{1,40})(\\s|$)', '\\1\n', cause))) %>% 
-  mutate(cause = factor(cause, levels =  unique(cause))) %>% 
-  ungroup()
-
-daly_age_level_2_plot <- ggplot(daly_age_level_2, aes(x = age,  y = val, fill = cause)) +
-  geom_bar(position = "stack", stat = "identity") +
-  scale_y_continuous(limits = c(0,14000), breaks = seq(0,14000, 1000), labels = comma) +
-  scale_fill_manual(values = c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#99000d", '#a6bddb','#74a9cf','#3690c0','#0570b0','#034e7b',"#063367", '#9e9ac8','#807dba','#6a51a3','#54278f', "#bae4b3", "#74c476", "#31a354", "#22723a"), name = "Cause group\n(level 2)") +
-  labs(title = paste0("Total number of disability adjusted life years (ill health and premature mortality combined);\nby age group and sex; ", unique(daly_age_level_2$year)),
-       subtitle = paste0(unique(daly_age_level_2$location)),
-       caption = "Measure: DALYs (Disability-Adjusted Life Years)",
-       x = "Age group",
-       y = "Number") +
-  stack_theme() +
-  theme(axis.text.x = element_text(angle = 90),
-        legend.position = "right",
-        legend.key.height = unit(0.4, "cm"),
-        legend.key.width = unit(0.2, "cm")) +
-  guides(fill = guide_legend(ncol = 1)) +
-  facet_rep_wrap(~sex, repeat.tick.labels = TRUE)
-
-png(paste0("./GBD/daly_age_level_2_plot.png"), width = 800, height = 500, res = 92, units = "px")
-daly_age_level_2_plot
-dev.off()
-
-# Cause proportion contributing to DALYs by age  ####
-daly_age_perc_level_1 <- gbd_age_data %>% 
-  filter(measure == "DALYs (Disability-Adjusted Life Years)",
-         metric == "Percent",
-         year == max(year),
-         age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
-  mutate(age = factor(age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
-  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
-  filter(sex != "Both") %>% 
-  filter(level == 1) %>% 
-  arrange(cause_outline) %>% 
-  mutate(cause = ifelse(nchar(cause) < 35, cause, sub('(.{1,35})(\\s|$)', '\\1\n', cause))) %>%
-  mutate(cause = factor(cause, levels =  unique(cause)))
-
-daly_age_perc_level_1_plot <- ggplot(daly_age_perc_level_1, aes(x = age,  y = val, fill = cause)) +
-  geom_bar(position = "stack", stat = "identity") +
-  scale_y_continuous(breaks = seq(0,1, 0.1), labels = percent, expand = c(0,0.02)) +
-  scale_fill_manual(values = c("#C2464F", "#62A7B9", "#9DCB9C"), 
-                    name = "Cause group\n(level 1)") +
-  labs(title = paste0("Contribution of causes towards disability adjusted life years (ill health and premature mortality combined);\nby age group and sex; ", unique(daly_age_perc_level_1$year)),
-       subtitle = paste0(unique(daly_age_perc_level_1$location)),
-       caption = "Measure: DALYs (Disability-Adjusted Life Years)",
-       x = "Age group",
-       y = "Number") +
-  stack_theme() +
-  theme(axis.text.x = element_text(angle = 90),
-        legend.position = "right",
-        legend.key.height = unit(0.4, "cm"),
-        legend.key.width = unit(0.2, "cm")) +
-  facet_rep_wrap(~sex, repeat.tick.labels = TRUE)
-
-png(paste0("./GBD/daly_age_perc_level_1_plot.png"), width = 800, height = 500, res = 92, units = "px")
-daly_age_perc_level_1_plot
-dev.off()
-
-daly_age_perc_level_2 <- gbd_age_data %>% 
-  filter(measure == "DALYs (Disability-Adjusted Life Years)",
-         metric == "Percent",
-         year == max(year),
-         age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
-  mutate(age = factor(age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
-  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
-  filter(sex != "Both") %>% 
-  filter(level == 2) %>% 
-  arrange(cause_outline) %>% 
-  mutate(cause = ifelse(nchar(cause) < 35, cause, sub('(.{1,35})(\\s|$)', '\\1\n', cause))) %>%
-  mutate(cause = factor(cause, levels =  unique(cause)))
-
-daly_age_perc_level_2_plot <- ggplot(daly_age_perc_level_2, aes(x = age,  y = val, fill = cause)) +
-  geom_bar(position = "stack", stat = "identity") +
-  scale_y_continuous(breaks = seq(0,1, 0.1), labels = percent, expand = c(0,0.02)) +
-  scale_fill_manual(values = c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#99000d", '#a6bddb','#74a9cf','#3690c0','#0570b0','#034e7b',"#063367", '#9e9ac8','#807dba','#6a51a3','#54278f', "#bae4b3", "#74c476", "#31a354", "#22723a"), name = "Cause group\n(level 2)") +
-  labs(title = paste0("Contribution of causes towards disability adjusted life years (ill health and premature mortality combined);\nby age group and sex; ", unique(daly_age_perc_level_2$year)),
-       subtitle = paste0(unique(daly_age_perc_level_2$location)),
-       caption = "Measure: DALYs (Disability-Adjusted Life Years)",
-       x = "Age group",
-       y = "Number") +
-  stack_theme() +
-  theme(axis.text.x = element_text(angle = 90),
-        legend.position = "right",
-        legend.key.height = unit(0.4, "cm"),
-        legend.key.width = unit(0.2, "cm")) +
-  guides(fill = guide_legend(ncol = 1)) +
-  facet_rep_wrap(~sex, repeat.tick.labels = TRUE)
-
-png(paste0("./GBD/daly_age_perc_level_2_plot.png"), width = 800, height = 500, res = 92, units = "px")
-daly_age_perc_level_2_plot
-dev.off()
 
 # West Sussex Cause Trends ####
 

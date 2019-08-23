@@ -50,11 +50,14 @@ table {
 	th {
     background-color: #ffffff;
 		color: #256cb2;
-    font-size: 1rem;
+    font-size: .8rem;
 	}
 
 	td, th {
-		padding: 6px;
+    padding-top: 0px;
+		padding-right: 3px;
+    padding-left: 3px;
+    padding-bottom: 1px;
 		border: 1px solid #ffffff;
 		text-align: left;
 	}

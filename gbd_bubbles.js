@@ -1,6 +1,3 @@
-
-
-
 var width = window.innerWidth / 100 * 55;
 var height = 500;
 
@@ -9,7 +6,6 @@ var sex_x = "Both";
 
 var parent_cause_categories = ["Cardiovascular diseases", "Chronic respiratory diseases", "Diabetes and kidney diseases", "Digestive diseases", "Enteric infections", "HIV/AIDS and sexually transmitted infections", "Maternal and neonatal disorders", "Mental disorders", "Musculoskeletal disorders", "Neglected tropical diseases and malaria", "Neoplasms", "Neurological disorders", "Nutritional deficiencies", "Other infectious diseases", "Other non-communicable diseases", "Respiratory infections and tuberculosis", "Self-harm and interpersonal violence", "Sense organ diseases", "Skin and subcutaneous diseases", "Substance use disorders", "Transport injuries", "Unintentional injuries"]
 
-// Color palette for continents?
 var color_p_cause = d3.scaleOrdinal()
   .domain(parent_cause_categories)
   .range(["#e48874", "#50bd54", "#a35cce", "#7eb233", "#d24aa4", "#5bc187", "#dd4973", "#3c803b", "#656ec9", "#bcb034", "#994e8b", "#8eac5b", "#d48ecb", "#6c6e26", "#5e97d1", "#db9037", "#45c7c8", "#ce4933", "#3d9275", "#a74b5b", "#bba360", "#9b5e2c"]);
@@ -28,27 +24,42 @@ var tooltip = d3.select("#my_dataviz")
   .style("z-index", "10")
   .style("visibility", "hidden");
 
-// var request = new XMLHttpRequest();
-//   request.open("GET", "./Deaths_cause_area_x.json", false);
-//   request.send(null);
-// var data_1 = JSON.parse(request.responseText); // parse the fetched json data into a variable
-//
-// data_1 = data_1.filter(function(d){
-//   	    return d.Sex === "Both" &
-//   			+d.Year === 2017 &
-//   			d.metric === "Number" &
-//   			d.Area === "West Sussex" &
-//   			d.Cause !== "All causes"
-//   			& d.Level === '3'})
+var request = new XMLHttpRequest();
+  request.open("GET", "./Number_cause_level_2_2017_west_sussex.json", false);
+  request.send(null);
+var level_2_cause_summary = JSON.parse(request.responseText); // parse the fetched json data into a variable
+level_2_cause_summary = level_2_cause_summary.sort(function(a, b) {
+			return d3.ascending(a.Cause, b.Cause)});;
+// console.table(level_2_cause_summary);
+// TODO: attach this data to a tooltip on buildMenu
 
-// console.table(data_1.slice(0,5))
+// Overall deaths data
+var request = new XMLHttpRequest();
+request.open("GET", "./Deaths_YLL_2017_west_sussex.json", false);
+request.send(null);
+var total_data = JSON.parse(request.responseText); // parse the fetched json data into a variable
+
+// Select the div id total_death_string (this is where you want the result of this to be displayed in the html page)
+d3.select("#total_death_string")
+	.data(total_data) // The array
+	.filter(function(d){
+			return d.Sex == "Both" }) // We can filter just persons
+	.text(function(d){
+	return "What caused the " + d3.format(",.0f")(d.Deaths) + " deaths in West Sussex in 2017" }); // Concatenate a string
+
+
+// Deaths data with ranks over time
+// request.open("GET", "./Number_proportion_cause_death_2017_west_sussex.json", false);
+// request.send(null);
+// var data_1 = JSON.parse(request.responseText); // parse the fetched json data into a variable
+// console.table(data_1);
 
 // Read and use data
 d3.csv("./Deaths_cause_x_sex_years.csv", function(data) {
 data = data.filter(function(d) { // Add any filters
     return d.sex === sex_x &
       +d.year === year_x
-  }) // Unfortunately, it seems that if your filter removes a row and there are no other parent causes the color_p_cause function changes the color returned (although it should do the same for the legend). This will be problematic if switching using filters.
+  })
 
   data = data.sort(function(a, b) {
     return d3.ascending(a.Parent_cause, b.Parent_cause);
@@ -209,7 +220,7 @@ data = data.filter(function(d) { // Add any filters
     .attr("font-size", 11)
     .attr('alignment-baseline', 'top')
 
-  // Loop through array to get distinct chapter names
+// Loop through array to get distinct cause group names
   function create_parent_cause_categories(data) {
     var cats = []; // Create a variable called cats - this will hold our menu
     data.forEach(function(d) { // For every datapoint
@@ -220,9 +231,7 @@ data = data.filter(function(d) { // Add any filters
     })
     return cats; // Once all datapoints have been examined, the result returned should be an array containing all the unique values of BNF_chapter in the data
   }
-
   var cats_available = create_parent_cause_categories(data)
-
   function buildMenu() {
     cats_available.forEach(function(item, index) { // The index is the position of the loop, which can be used later for the border colour
       var button = document.createElement("button");
@@ -238,10 +247,7 @@ data = data.filter(function(d) { // Add any filters
         selected_chapter = e.target.innerHTML;
         console.log(selected_chapter)
       })
-
     })
   }
-
   buildMenu();
-
 })
