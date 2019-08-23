@@ -1,5 +1,8 @@
-
 # Notes
+
+# http://ghdx.healthdata.org/gbd-results-tool
+# http://www.healthdata.org/united-kingdom
+# http://www.who.int/quantifying_ehimpacts/publications/en/9241546204chap3.pdf
 
 # You need to download the Global Burden of Disease data manually - and the links expire after a time so it is impossible to automate the downloading (and I have tried a few ways).
 
@@ -8,116 +11,15 @@
 # Incidence data published for 2017 - included in download
 # Prevalence data published for 2017
 
-Area_x <- "West Sussex"
-
-
-options(scipen = 999)
-# Load useful libraries
-
 # This uses the easypackages package to load several libraries at once. Note: it should only be used when you are confident that all packages are installed as it will be more difficult to spot load errors compared to loading each one individually.
-
 library(easypackages)
 
 libraries(c("readxl", "readr", "plyr", "dplyr", "ggplot2", "png", "tidyverse", "reshape2", "scales", "viridis", "rgdal", "officer", "flextable", "tmaptools", "lemon", "fingertipsR", "PHEindicatormethods", "jsonlite"))
 
-stack_theme = function(){
-  theme( 
-    axis.text.y = element_text(colour = "#000000", size = 9), 
-    axis.text.x = element_text(colour = "#000000", angle = 0, hjust = 1, vjust = .5, size = 8), 
-    axis.title =  element_text(colour = "#000000", size = 9, face = "bold"),     
-    plot.title = element_text(colour = "#000000", face = "bold", size = 10),    
-    plot.subtitle = element_text(colour = "#000000", size = 9),
-    panel.grid.major.x = element_blank(), 
-    panel.grid.minor.x = element_blank(),
-    panel.background = element_rect(fill = "#FFFFFF"), 
-    panel.grid.major.y = element_line(colour = "#E7E7E7", size = .3),
-    panel.grid.minor.y = element_blank(), 
-    strip.text = element_text(colour = "#000000", size = 10, face = "bold"), 
-    strip.background = element_blank(), 
-    axis.ticks = element_line(colour = "#E7E7E7"), 
-    legend.position = "bottom", 
-    legend.title = element_text(colour = "#000000", size = 10, face = "bold"), 
-    legend.background = element_rect(fill = "#ffffff"), 
-    legend.key = element_rect(fill = "#ffffff", colour = "#ffffff"), 
-    legend.text = element_text(colour = "#000000", size = 9), 
-    axis.line = element_line(colour = "#dbdbdb")
-  ) 
-}
-
-slope_theme = function(){
-  theme(axis.text = element_blank(),
-  plot.title = element_text(colour = "#000000", face = "bold", size = 10),    
-  plot.subtitle = element_text(colour = "#000000", size = 9),
-  strip.text = element_text(colour = "#000000", size = 10, face = "bold"),
-  plot.margin = unit(c(0,2,0,0), "cm"),
-  # legend.position = c(.75,-.1), 
-  legend.position = "top", 
-  legend.title = element_text(colour = "#000000", size = 10, face = "bold"), 
-  legend.background = element_blank(), 
-  legend.key = element_rect(fill = "#ffffff", colour = "#ffffff"), 
-  legend.text = element_text(colour = "#000000", size = 8),
-  panel.grid.major = element_blank(), 
-  panel.grid.minor = element_blank(),
-  panel.background = element_blank(), 
-  panel.border = element_blank(),
-  strip.background = element_blank(), 
-  axis.ticks = element_blank(), 
-  axis.line = element_blank()
-  )}
+Area_x <- "West Sussex"
+options(scipen = 999)
 
 
-# Area codes #### 
-
-if(!(file.exists("~/Documents/Repositories/GBD/Area_lookup_table.csv") & file.exists("~/Documents/Repositories/GBD/Area_types_table.csv"))){
-  LAD <- read_csv(url("https://opendata.arcgis.com/datasets/a267b55f601a4319a9955b0197e3cb81_0.csv"), col_types = cols(LAD17CD = col_character(),LAD17NM = col_character(),  LAD17NMW = col_character(),  FID = col_integer()))
-  
-  Counties <- read_csv(url("https://opendata.arcgis.com/datasets/7e6bfb3858454ba79f5ab3c7b9162ee7_0.csv"), col_types = cols(CTY17CD = col_character(),  CTY17NM = col_character(),  Column2 = col_character(),  Column3 = col_character(),  FID = col_integer()))
-  
-  lookup <- read_csv(url("https://opendata.arcgis.com/datasets/41828627a5ae4f65961b0e741258d210_0.csv"), col_types = cols(LTLA17CD = col_character(),  LTLA17NM = col_character(),  UTLA17CD = col_character(),  UTLA17NM = col_character(),  FID = col_integer()))
-  
-
-    # This is a lower tier LA to upper tier LA lookup
-  UA <- subset(lookup, LTLA17NM == UTLA17NM)
-  
-  CCG <- read_csv(url("https://opendata.arcgis.com/datasets/4010cd6fc6ce42c29581c4654618e294_0.csv"), col_types = cols(CCG18CD = col_character(),CCG18CDH = col_skip(),CCG18NM = col_character(), FID = col_skip())) %>% 
-    rename(Area_Name = CCG18NM,
-           Area_Code = CCG18CD) %>% 
-    mutate(Area_Type = "Clinical Commissioning Group (2018)")
-  
-  Region <- read_csv(url("https://opendata.arcgis.com/datasets/cec20f3a9a644a0fb40fbf0c70c3be5c_0.csv"), col_types = cols(RGN17CD = col_character(),  RGN17NM = col_character(),  RGN17NMW = col_character(),  FID = col_integer()))
-  colnames(Region) <- c("Area_Code", "Area_Name", "Area_Name_Welsh", "FID")
-  
-  Region$Area_Type <- "Region"
-  Region <- Region[c("Area_Code", "Area_Name", "Area_Type")]
-  
-  LAD <- subset(LAD, substr(LAD$LAD17CD, 1, 1) == "E")
-  LAD$Area_Type <- ifelse(LAD$LAD17NM %in% UA$LTLA17NM, "Unitary Authority", "District")
-  colnames(LAD) <- c("Area_Code", "Area_Name", "Area_Name_Welsh", "FID", "Area_Type")
-  LAD <- LAD[c("Area_Code", "Area_Name", "Area_Type")]
-  
-  Counties$Area_type <- "County"
-  colnames(Counties) <- c("Area_Code", "Area_Name", "Col2", "Col3", "FID", "Area_Type")
-  Counties <- Counties[c("Area_Code", "Area_Name", "Area_Type")]
-  
-  England <- data.frame(Area_Code = "E92000001", Area_Name = "England", Area_Type = "Country")
-  
-  Areas <- rbind(LAD, CCG, Counties, Region, England)
-  rm(LAD, CCG, Counties, Region, England, UA)
-  
-  write.csv(lookup, "~/Documents/Repositories/GBD/Area_lookup_table.csv", row.names = FALSE)
-  write.csv(Areas, "~/Documents/Repositories/GBD/Area_types_table.csv", row.names = FALSE)
-}
-
-Lookup <- read_csv("~/Documents/Repositories/GBD/Area_lookup_table.csv", col_types = cols(LTLA17CD = col_character(),LTLA17NM = col_character(), UTLA17CD = col_character(),  UTLA17NM = col_character(), FID = col_character()))
-Areas <- read_csv("~/Documents/Repositories/GBD/Area_types_table.csv", col_types = cols(Area_Code = col_character(), Area_Name = col_character(), Area_Type = col_character()))
-
-WSx_NN <- data.frame(Area_Code = nearest_neighbours(AreaCode = "E10000032", AreaTypeID = "102", measure = "CIPFA")) %>%   mutate(Neighbour_rank = row_number()) %>% 
-  left_join(Areas, by = "Area_Code") %>% 
-  bind_rows(data.frame(Area_Code = "E10000032", Neighbour_rank = 0, Area_Name = "West Sussex", Area_Type = "County"))
-
-# http://ghdx.healthdata.org/gbd-results-tool
-# http://www.healthdata.org/united-kingdom
-# http://www.who.int/quantifying_ehimpacts/publications/en/9241546204chap3.pdf
 
 GBD_2017_cause_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2017_CAUSE_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric", "text", "text")) %>% 
   rename(Cause_name = cause_name,
@@ -125,11 +27,6 @@ GBD_2017_cause_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2
          Parent_id = parent_id,
          Cause_outline = cause_outline,
          Level = level)
-
-# GBD_cause_codebook <- read_csv("~/Documents/GBD_data_download/IHME_GBD_2017_CODEBOOK_Y2018M11D18.csv", col_types = cols_only(cause_id = col_character(), cause_name = col_character())) %>% 
-#   filter(cause_id != "Cause ID")
-
-GBD_2017_rei_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2017_REI_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric"))
 
 # GBD_cause_group_lv1 <- GBD_2017_cause_hierarchy %>% 
 #    filter(level == 1)
@@ -151,31 +48,6 @@ GBD_2017_cause_hierarchy %>%
   select(Level) %>% 
   group_by(Level) %>% 
   summarise(n())
-
-
-# GBD_cause_group_lv3 <- GBD_2017_cause_hierarchy %>% 
-#   filter(level == 3)
-# GBD_cause_group_lv4 <- GBD_2017_cause_hierarchy %>% 
-#   filter(level == 4)
-# 
-# GBD_risk_group_lv1 <- gbd_rei_hierarchy %>% 
-#   filter(level == 1 & rei_type == "Risk")
-# GBD_risk_group_lv2 <- gbd_rei_hierarchy %>% 
-#   filter(level == 2 & rei_type == "Risk")
-# GBD_risk_group_lv3 <- gbd_rei_hierarchy %>% 
-#   filter(level == 3 & rei_type == "Risk")
-# GBD_risk_group_lv4 <- gbd_rei_hierarchy %>% 
-#   filter(level == 4 & rei_type == "Risk")
-# 
-# GBD_impairment_group_lv1 <- gbd_rei_hierarchy %>% 
-#   filter(level == 1 & rei_type == "Impairment")
-# GBD_impairment_group_lv2 <- gbd_rei_hierarchy %>% 
-#   filter(level == 2 & rei_type == "Impairment")
-# 
-# GBD_etiology_group_lv1 <- gbd_rei_hierarchy %>% 
-#   filter(level == 1 & rei_type == "Etiology")
-# GBD_etiology_group_lv2 <- gbd_rei_hierarchy %>% 
-#   filter(level == 2 & rei_type == "Etiology")
 
 # Cause of mortality and morbidity ####
 # All causes, 2002, 2007-17, all ages and age standardised, deaths, YLL, YLD, DALYs, West Sussex and cipfa neighbours
@@ -1292,8 +1164,61 @@ paste0("The same causes feature as the most ")
 
 # data source variation and unavailability of quality data could be a source of variation, as well as explain the limited variation compared to ylls
 
+# Comparing to other areas ####
 
-# Risks
+# Area codes #### 
+
+if(!(file.exists("~/Documents/Repositories/GBD/Area_lookup_table.csv") & file.exists("~/Documents/Repositories/GBD/Area_types_table.csv"))){
+  LAD <- read_csv(url("https://opendata.arcgis.com/datasets/a267b55f601a4319a9955b0197e3cb81_0.csv"), col_types = cols(LAD17CD = col_character(),LAD17NM = col_character(),  LAD17NMW = col_character(),  FID = col_integer()))
+  
+  Counties <- read_csv(url("https://opendata.arcgis.com/datasets/7e6bfb3858454ba79f5ab3c7b9162ee7_0.csv"), col_types = cols(CTY17CD = col_character(),  CTY17NM = col_character(),  Column2 = col_character(),  Column3 = col_character(),  FID = col_integer()))
+  
+  lookup <- read_csv(url("https://opendata.arcgis.com/datasets/41828627a5ae4f65961b0e741258d210_0.csv"), col_types = cols(LTLA17CD = col_character(),  LTLA17NM = col_character(),  UTLA17CD = col_character(),  UTLA17NM = col_character(),  FID = col_integer()))
+  
+  # This is a lower tier LA to upper tier LA lookup
+  UA <- subset(lookup, LTLA17NM == UTLA17NM)
+  
+  CCG <- read_csv(url("https://opendata.arcgis.com/datasets/4010cd6fc6ce42c29581c4654618e294_0.csv"), col_types = cols(CCG18CD = col_character(),CCG18CDH = col_skip(),CCG18NM = col_character(), FID = col_skip())) %>% 
+    rename(Area_Name = CCG18NM,
+           Area_Code = CCG18CD) %>% 
+    mutate(Area_Type = "Clinical Commissioning Group (2018)")
+  
+  Region <- read_csv(url("https://opendata.arcgis.com/datasets/cec20f3a9a644a0fb40fbf0c70c3be5c_0.csv"), col_types = cols(RGN17CD = col_character(),  RGN17NM = col_character(),  RGN17NMW = col_character(),  FID = col_integer()))
+  colnames(Region) <- c("Area_Code", "Area_Name", "Area_Name_Welsh", "FID")
+  
+  Region$Area_Type <- "Region"
+  Region <- Region[c("Area_Code", "Area_Name", "Area_Type")]
+  
+  LAD <- subset(LAD, substr(LAD$LAD17CD, 1, 1) == "E")
+  LAD$Area_Type <- ifelse(LAD$LAD17NM %in% UA$LTLA17NM, "Unitary Authority", "District")
+  colnames(LAD) <- c("Area_Code", "Area_Name", "Area_Name_Welsh", "FID", "Area_Type")
+  LAD <- LAD[c("Area_Code", "Area_Name", "Area_Type")]
+  
+  Counties$Area_type <- "County"
+  colnames(Counties) <- c("Area_Code", "Area_Name", "Col2", "Col3", "FID", "Area_Type")
+  Counties <- Counties[c("Area_Code", "Area_Name", "Area_Type")]
+  
+  England <- data.frame(Area_Code = "E92000001", Area_Name = "England", Area_Type = "Country")
+  
+  Areas <- rbind(LAD, CCG, Counties, Region, England)
+  rm(LAD, CCG, Counties, Region, England, UA)
+  
+  write.csv(lookup, "~/Documents/Repositories/GBD/Area_lookup_table.csv", row.names = FALSE)
+  write.csv(Areas, "~/Documents/Repositories/GBD/Area_types_table.csv", row.names = FALSE)
+}
+
+Lookup <- read_csv("~/Documents/Repositories/GBD/Area_lookup_table.csv", col_types = cols(LTLA17CD = col_character(),LTLA17NM = col_character(), UTLA17CD = col_character(),  UTLA17NM = col_character(), FID = col_character()))
+Areas <- read_csv("~/Documents/Repositories/GBD/Area_types_table.csv", col_types = cols(Area_Code = col_character(), Area_Name = col_character(), Area_Type = col_character()))
+
+# WSx_NN <- data.frame(Area_Code = nearest_neighbours(AreaCode = "E10000032", AreaTypeID = "102", measure = "CIPFA")) %>%   mutate(Neighbour_rank = row_number()) %>% 
+#   left_join(Areas, by = "Area_Code") %>% 
+#   bind_rows(data.frame(Area_Code = "E10000032", Neighbour_rank = 0, Area_Name = "West Sussex", Area_Type = "County"))
+
+
+# Risks ####
+
+GBD_2017_rei_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2017_REI_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric"))
+
 
 # Risk - cause pairs look at risks all cause ylds
 
@@ -1329,78 +1254,122 @@ paste0("The same causes feature as the most ")
 
 # file.remove("./GBD/Query_2_n_part_1.zip","./GBD/Query_2_n_part_2.zip","./GBD/Query_2_n_part_3.zip","./GBD/Query_2_n_part_4.zip","./GBD/Query_2_n_part_5.zip","./GBD/Query_2_n_part_6.zip","./GBD/Query_2_n_part_7.zip","./GBD/Query_2_n_part_8.zip","./GBD/Query_2_n_part_9.zip","./GBD/Query_2_n_part_10.zip","./GBD/Query_2_n_part_11.zip","./GBD/Query_2_n_part_12.zip","./GBD/Query_2_n_part_13.zip")
 
+# GBD_risk_data <- read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-1.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character())) %>% 
+#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-2.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
+#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-3.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
+#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-4.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
+#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-5.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
+#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-6.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
+#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-7.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
+#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-8.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
+#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-9.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
+#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-10.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
+#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-11.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
+#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-12.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
+#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-13.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character())))
+# 
+# GBD_risk_group <- gbd_rei_hierarchy %>% 
+#   filter(level == 1, parent_id == 169)
+# 
+# Risk_DALY_1 <- GBD_risk_data %>% 
+#   filter(location == "West Sussex",
+#          year %in% c(2006, 2016),
+#          measure == "DALYs (Disability-Adjusted Life Years)",
+#          sex == "Female",
+#          age == "Age-standardized",
+#          metric == "Rate",
+#          cause == "All causes") %>% 
+#   select(location, sex, age, year, val, cause, rei) %>% 
+#   spread(year, val)  %>% 
+#   mutate(change = (Rank_2016-Rank_2006)/Rank_2006) %>% 
+#   gather(Rank_2006:Rank_2016, key = year, value = val) %>% 
+#   left_join(gbd_rei_hierarchy, by = c("rei" = "rei_name")) %>% 
+#   filter(level == 2) %>% 
+#   group_by(year) %>% 
+#   arrange(desc(val)) %>% 
+#   mutate(rank = row_number()) %>% 
+#   select(location, sex, age, year, rank, change, cause, rei, parent_id) %>% 
+#   spread(year, rank) %>% 
+#   filter(Rank_2006 <= 10 | Rank_2016 <= 10) %>% 
+#   left_join(GBD_risk_group[c("rei_id", "rei_name")], by = c("parent_id" = "rei_id")) %>% 
+#   rename(risk_group = rei_name) %>% 
+#   mutate(risk_group = factor(risk_group, levels = c("Behavioral risks","Environmental/occupational risks", "Metabolic risks")))
+# 
+# # Metabolic = "#F7DBBB"
+# # envrionment = "#B2EBDE"
+# # behaviour = "#CEB2EB"
+# 
+# ggplot(Risk_DALY_1) + 
+#   geom_segment(aes(x = 1, xend = 2, y = Rank_2006, yend = Rank_2016), size = .7, lty = "dashed", show.legend = FALSE) +
+#   geom_point(aes(x = 1, y = Rank_2006, col = risk_group), size = 7) +
+#   geom_text(aes(x = 1, y = Rank_2006, label = paste0(Risk_DALY_1$Rank_2006)), col = "#ffffff", fontface = "bold") +
+#   geom_point(aes(x = 2, y = Rank_2016, col = risk_group), size = 7) +
+#   geom_text(aes(x = 2, y = Rank_2016, label = paste0(Risk_DALY_1$Rank_2016)), col = "#ffffff", fontface = "bold") +
+#   scale_colour_manual(values = c("#CEB2EB", "#B2EBDE", "#F7DBBB"), breaks = c("Behavioral risks","Environmental/occupational risks", "Metabolic risks"), limits = c("Behavioral risks","Environmental/occupational risks", "Metabolic risks"), name = "Risk grouping") +
+#   labs(title = paste0("Ten biggest risk factors for disability; ",unique(Risk_DALY_1$location), "; ", unique(Risk_DALY_1$age)),
+#        subtitle = "Measure: Disability Adjusted Life Years (DALYs)",
+#        x = "",
+#        y = "") +
+#   scale_y_reverse() +
+#   scale_x_continuous(limits = c(-1,6)) +
+#   geom_text(aes(label = "2006 ranking", y = 0, x = 1), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
+#   geom_text(aes(label = "2016 ranking", y = 0, x = 2), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
+#   geom_text(aes(label = "% change 2006-2016", y = 0, x = 6), size = 3.5, col = "#000000", hjust = 1, fontface = "bold") +
+#   geom_text(aes(label = Risk_DALY_1$rei, y = Risk_DALY_1$Rank_2006, x = 0.8), size = 3.5, col = "#000000", hjust = 1, fontface = "bold") +
+#   geom_text(aes(label = Risk_DALY_1$rei, y = Risk_DALY_1$Rank_2016, x = 2.2), size = 3.5, col = "#000000", hjust = 0, fontface = "bold") +
+#   geom_text(aes(label = paste0(round(Risk_DALY_1$change*100,1), "%"), y = Risk_DALY_1$Rank_2016, x = 6), size = 3.5, col = "#000000", hjust = 1) +
+#   theme(axis.text = element_blank(),
+#         plot.title = element_text(colour = "#000000", face = "bold", size = 10),    
+#         plot.subtitle = element_text(colour = "#000000", size = 9),
+#         strip.text = element_text(colour = "#000000", size = 10, face = "bold"),
+#         plot.margin = unit(c(0,2,0,0), "cm"),
+#         # legend.position = c(.75,-.1), 
+#         legend.position = "bottom", 
+#         legend.title = element_text(colour = "#000000", size = 10, face = "bold"), 
+#         legend.background = element_blank(), 
+#         legend.key = element_rect(fill = "#ffffff", colour = "#ffffff"), 
+#         legend.text = element_text(colour = "#000000", size = 8),
+#         panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_blank(), 
+#         panel.border = element_blank(),
+#         strip.background = element_blank(), 
+#         axis.ticks = element_blank(), 
+#         axis.line = element_blank())
 
-GBD_risk_data <- read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-1.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character())) %>% 
-  bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-2.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-  bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-3.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-  bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-4.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-  bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-5.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-  bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-6.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-  bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-7.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-  bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-8.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-  bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-9.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-  bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-10.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-  bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-11.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-  bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-12.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-  bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-13.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character())))
 
-GBD_risk_group <- gbd_rei_hierarchy %>% 
-  filter(level == 1, parent_id == 169)
+stack_theme = function(){
+  theme( 
+    axis.text.y = element_text(colour = "#000000", size = 9), 
+    axis.text.x = element_text(colour = "#000000", angle = 0, hjust = 1, vjust = .5, size = 8), 
+    axis.title =  element_text(colour = "#000000", size = 9, face = "bold"),     
+    plot.title = element_text(colour = "#000000", face = "bold", size = 10),    
+    plot.subtitle = element_text(colour = "#000000", size = 9),
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.x = element_blank(),
+    panel.background = element_rect(fill = "#FFFFFF"), 
+    panel.grid.major.y = element_line(colour = "#E7E7E7", size = .3),
+    panel.grid.minor.y = element_blank(), 
+    strip.text = element_text(colour = "#000000", size = 10, face = "bold"), 
+    strip.background = element_blank(), 
+    axis.ticks = element_line(colour = "#E7E7E7"), 
+    legend.position = "bottom", 
+    legend.title = element_text(colour = "#000000", size = 10, face = "bold"), 
+    legend.background = element_rect(fill = "#ffffff"), 
+    legend.key = element_rect(fill = "#ffffff", colour = "#ffffff"), 
+    legend.text = element_text(colour = "#000000", size = 9), 
+    axis.line = element_line(colour = "#dbdbdb")
+  ) 
+}
 
-Risk_DALY_1 <- GBD_risk_data %>% 
-  filter(location == "West Sussex",
-         year %in% c(2006, 2016),
-         measure == "DALYs (Disability-Adjusted Life Years)",
-         sex == "Female",
-         age == "Age-standardized",
-         metric == "Rate",
-         cause == "All causes") %>% 
-  select(location, sex, age, year, val, cause, rei) %>% 
-  spread(year, val)  %>% 
-  mutate(change = (Rank_2016-Rank_2006)/Rank_2006) %>% 
-  gather(Rank_2006:Rank_2016, key = year, value = val) %>% 
-  left_join(gbd_rei_hierarchy, by = c("rei" = "rei_name")) %>% 
-  filter(level == 2) %>% 
-  group_by(year) %>% 
-  arrange(desc(val)) %>% 
-  mutate(rank = row_number()) %>% 
-  select(location, sex, age, year, rank, change, cause, rei, parent_id) %>% 
-  spread(year, rank) %>% 
-  filter(Rank_2006 <= 10 | Rank_2016 <= 10) %>% 
-  left_join(GBD_risk_group[c("rei_id", "rei_name")], by = c("parent_id" = "rei_id")) %>% 
-  rename(risk_group = rei_name) %>% 
-  mutate(risk_group = factor(risk_group, levels = c("Behavioral risks","Environmental/occupational risks", "Metabolic risks")))
-
-# Metabolic = "#F7DBBB"
-# envrionment = "#B2EBDE"
-# behaviour = "#CEB2EB"
-
-ggplot(Risk_DALY_1) + 
-  geom_segment(aes(x = 1, xend = 2, y = Rank_2006, yend = Rank_2016), size = .7, lty = "dashed", show.legend = FALSE) +
-  geom_point(aes(x = 1, y = Rank_2006, col = risk_group), size = 7) +
-  geom_text(aes(x = 1, y = Rank_2006, label = paste0(Risk_DALY_1$Rank_2006)), col = "#ffffff", fontface = "bold") +
-  geom_point(aes(x = 2, y = Rank_2016, col = risk_group), size = 7) +
-  geom_text(aes(x = 2, y = Rank_2016, label = paste0(Risk_DALY_1$Rank_2016)), col = "#ffffff", fontface = "bold") +
-  scale_colour_manual(values = c("#CEB2EB", "#B2EBDE", "#F7DBBB"), breaks = c("Behavioral risks","Environmental/occupational risks", "Metabolic risks"), limits = c("Behavioral risks","Environmental/occupational risks", "Metabolic risks"), name = "Risk grouping") +
-  labs(title = paste0("Ten biggest risk factors for disability; ",unique(Risk_DALY_1$location), "; ", unique(Risk_DALY_1$age)),
-       subtitle = "Measure: Disability Adjusted Life Years (DALYs)",
-       x = "",
-       y = "") +
-  scale_y_reverse() +
-  scale_x_continuous(limits = c(-1,6)) +
-  geom_text(aes(label = "2006 ranking", y = 0, x = 1), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "2016 ranking", y = 0, x = 2), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "% change 2006-2016", y = 0, x = 6), size = 3.5, col = "#000000", hjust = 1, fontface = "bold") +
-  geom_text(aes(label = Risk_DALY_1$rei, y = Risk_DALY_1$Rank_2006, x = 0.8), size = 3.5, col = "#000000", hjust = 1, fontface = "bold") +
-  geom_text(aes(label = Risk_DALY_1$rei, y = Risk_DALY_1$Rank_2016, x = 2.2), size = 3.5, col = "#000000", hjust = 0, fontface = "bold") +
-  geom_text(aes(label = paste0(round(Risk_DALY_1$change*100,1), "%"), y = Risk_DALY_1$Rank_2016, x = 6), size = 3.5, col = "#000000", hjust = 1) +
+slope_theme = function(){
   theme(axis.text = element_blank(),
         plot.title = element_text(colour = "#000000", face = "bold", size = 10),    
         plot.subtitle = element_text(colour = "#000000", size = 9),
         strip.text = element_text(colour = "#000000", size = 10, face = "bold"),
         plot.margin = unit(c(0,2,0,0), "cm"),
         # legend.position = c(.75,-.1), 
-        legend.position = "bottom", 
+        legend.position = "top", 
         legend.title = element_text(colour = "#000000", size = 10, face = "bold"), 
         legend.background = element_blank(), 
         legend.key = element_rect(fill = "#ffffff", colour = "#ffffff"), 
@@ -1411,6 +1380,6 @@ ggplot(Risk_DALY_1) +
         panel.border = element_blank(),
         strip.background = element_blank(), 
         axis.ticks = element_blank(), 
-        axis.line = element_blank())
-
+        axis.line = element_blank()
+  )}
 

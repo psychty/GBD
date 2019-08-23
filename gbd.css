@@ -1,7 +1,7 @@
 
-.main {
+/* .main {
   max-width: 700px;
-}
+} */
 
 h1 {
     font-size: 1.8rem;
@@ -21,6 +21,14 @@ h2 {
 p {
   font-size: .8rem;
   font-family: "Verdana";
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+p.tooltip {
+  font-size: .8rem;
+  font-family: "Verdana";
+  color: #ccc000;
 }
 
 a {
@@ -51,24 +59,9 @@ table {
 		text-align: left;
 	}
 
-/* Style for hovering over bubbles */
 .node:hover {
   stroke: black;
 }
-
-.footer {
-  font-family: "Garmond";
-  font-weight: bold;
-  background-color: #ffffff;
-  color: #256cb2;
-  font-size: 30px;
-  min-height: 60px;
-  padding-top: 10px;
-  padding-right: 25px;
-  padding-bottom: 20PX;
-  text-align: right;
-}
-
 
 .line {
   fill: none;
@@ -87,12 +80,6 @@ table {
   border: 1px solid #000;
 }
 
-p.tooltip {
-  font-size: .8rem;
-  font-family: "Verdana";
-  color: #ccc000;
-}
-
 .wrapper {
   display: flex;
   flex-flow: row wrap;
@@ -101,28 +88,6 @@ p.tooltip {
 /* We tell all items to be 100% width, via flex-basis */
 .wrapper > * {
   flex: 1 100%;
-}
-
-#reset {
-  display: block;
-  padding: 0.5em 0.5em;
-  border: none;
-  color: #000000;
-  background: #ffffff;
-  width: 300px;
-  font-size: .8em;
-  cursor: pointer;
-  text-align: left;
-  margin: 0 0 3px;
-  min-height: 20px;
-  border-left: 8px solid #ccc;
-  -webkit-transition-duration: 0.4s; /* Safari */
-  transition-duration: 0.4s;
-}
-
-
-#reset:hover{
-  background: #ccc;
 }
 
 svg {
@@ -151,8 +116,20 @@ button.filterButton:hover{
   background: #ccc;
 }
 
+.footer {
+  font-family: "Garmond";
+  font-weight: bold;
+  background-color: #ffffff;
+  color: #256cb2;
+  font-size: 30px;
+  min-height: 60px;
+  padding-top: 10px;
+  padding-right: 25px;
+  padding-bottom: 20PX;
+  text-align: right;
+}
 
-/* Medium screens */
+/* Small screens */
 @media all and (min-width: 400px) {
   /* We tell both sidebars to share a row */
   .main {
@@ -174,28 +151,31 @@ button.filterButton:hover{
 
 /* Large screens */
 @media all and (min-width: 600px) {
-  /* We invert order of first sidebar and main
+  /* Invert order of first sidebar and main
    * And tell the main element to take twice as much width as the other two sidebars
    */
 
   .aside-1 {
     order: 1;
-    max-width: 250px;
+    max-width: 20%;
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 0;
   }
   .main    {
     flex: 4 0px;
+    max-width: 55%;
     order: 2;
   }
+
   .aside-2 {
     order: 3;
-    max-width: 250px;
+    max-width: 20%;
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 0;
   }
+
   .footer  {
     order: 4;
   }

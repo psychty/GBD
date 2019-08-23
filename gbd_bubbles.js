@@ -1,7 +1,7 @@
 
 
 
-var width = 700;
+var width = window.innerWidth / 100 * 55;
 var height = 500;
 
 var year_x = 2017;
