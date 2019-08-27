@@ -37,6 +37,8 @@ function tabulate_top10(top_10_data, columns) {
 	}
 
 // Cause of death data
+// create the ajax request to grab the source JSON data
+var request = new XMLHttpRequest();
 request.open("GET", "./Top_10_YLL_YLD_DALY_2017_west_sussex.json", false);
 request.send(null);
 var top_10_data = JSON.parse(request.responseText); // parse the fetched json data into a variable

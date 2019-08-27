@@ -10,30 +10,16 @@ var color_p_cause = d3.scaleOrdinal()
   .domain(parent_cause_categories)
   .range(["#e48874", "#50bd54", "#a35cce", "#7eb233", "#d24aa4", "#5bc187", "#dd4973", "#3c803b", "#656ec9", "#bcb034", "#994e8b", "#8eac5b", "#d48ecb", "#6c6e26", "#5e97d1", "#db9037", "#45c7c8", "#ce4933", "#3d9275", "#a74b5b", "#bba360", "#9b5e2c"]);
 
-// append the svg object to the body of the page
-var svg = d3.select("#my_dataviz")
-  .append("svg")
-  .attr("width", width)
-  .attr("height", height)
-
-// Create functions to show, move, and hide the tooltip
-var tooltip = d3.select("#my_dataviz")
-  .append("div")
-  .attr("class", "tooltip")
-  .style("position", "absolute")
-  .style("z-index", "10")
-  .style("visibility", "hidden");
-
-var request = new XMLHttpRequest();
-  request.open("GET", "./Number_cause_level_2_2017_west_sussex.json", false);
-  request.send(null);
-var level_2_cause_summary = JSON.parse(request.responseText); // parse the fetched json data into a variable
-level_2_cause_summary = level_2_cause_summary.sort(function(a, b) {
-			return d3.ascending(a.Cause, b.Cause)});;
+// var request = new XMLHttpRequest();
+//   request.open("GET", "./Number_cause_level_2_2017_west_sussex.json", false);
+//   request.send(null);
+// var level_2_cause_summary = JSON.parse(request.responseText); // parse the fetched json data into a variable
+// level_2_cause_summary = level_2_cause_summary.sort(function(a, b) {
+// 			return d3.ascending(a.Cause, b.Cause)});
 // console.table(level_2_cause_summary);
 // TODO: attach this data to a tooltip on buildMenu
 
-// Overall deaths data
+// Overall deaths data for summary at the top
 var request = new XMLHttpRequest();
 request.open("GET", "./Deaths_YLL_2017_west_sussex.json", false);
 request.send(null);
@@ -47,12 +33,47 @@ d3.select("#total_death_string")
 	.text(function(d){
 	return "What caused the " + d3.format(",.0f")(d.Deaths) + " deaths in West Sussex in 2017" }); // Concatenate a string
 
+// Deaths data m/f/p
+// create the ajax request to grab the source JSON data
+var request = new XMLHttpRequest();
+request.open("GET", "./Number_bubbles_df_level_3_2017_west_sussex.json", false);
+request.send(null);
+var data_df = JSON.parse(request.responseText); // parse the fetched json data into a variable
 
-// Deaths data with ranks over time
-// request.open("GET", "./Number_proportion_cause_death_2017_west_sussex.json", false);
-// request.send(null);
-// var data_1 = JSON.parse(request.responseText); // parse the fetched json data into a variable
-// console.table(data_1);
+deaths_persons = data_df.filter(function(d){
+	    return d.Sex === "Both" &
+	      +d.Year === 2017});
+
+yll_persons = data_df.filter(function(d){
+      return d.Sex === "Both"
+        +d.Year === 2017});
+
+yld_persons = data_df.filter(function(d){
+	    return d.Sex === "Both" &
+	      +d.Year === 2017});
+
+daly_persons = data_df.filter(function(d){
+	    return d.Sex === "Both" &
+	      +d.Year === 2017});
+
+
+
+console.log(deaths_persons);
+
+
+// append the svg object to the body of the page
+var svg = d3.select("#my_deaths_bubble_dataviz")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height)
+
+// Create functions to show, move, and hide the tooltip
+var tooltip = d3.select("#my_deaths_bubble_dataviz")
+  .append("div")
+  .attr("class", "tooltip")
+  .style("position", "absolute")
+  .style("z-index", "10")
+  .style("visibility", "hidden");
 
 // Read and use data
 d3.csv("./Deaths_cause_x_sex_years.csv", function(data) {

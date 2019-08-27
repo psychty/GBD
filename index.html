@@ -23,18 +23,43 @@
 <article class = "main">
 
 <h1>Exploring the burden of disease in West Sussex in 2017</h1>
-<h2>Top 10 in West Sussex</h2>
-<p>The leading burdens of disease in West Sussex in 2017 are given in the table below. These are the 'level two' cause groups. You'll notice there are actually four top 10s and these reflect the various ways conditions affect our health.</p>
+<h2 id = "total_death_string"></h2>
+
+<p>The figure below shows the top 10 causes of deaths in West Sussex, in 2017. These are the 'level two' cause groups. You can use the buttons at the top of the figure to toggle between looking at all people or just females or males.</p>
+  <div class="switch-field">
+  <input onclick="update(data1)" type="radio" id="radio-one" name="switch-one" checked/>
+  <label for="radio-one">Persons</label>
+  <input onclick="update(data2)" type="radio" id="radio-two" name="switch-one" />
+  <label for="radio-two">Females</label>
+  <input onclick='update(data3)' type="radio" id="radio-three" name="switch-one" />
+  <label for="radio-three">Males</label>
+  </div>
+
+<div id="top_10_bars_by_sex_dataviz"></div>
+<p>The leading burdens of disease in West Sussex in 2017 are given in the table below. You'll notice there are actually four top 10s and these reflect the various ways conditions affect our health.</p>
 
 <div id = "top_10_table"> </div>
 <p>Discuss each of the metrics. What differences are there across top tens.</p>
 <p>Whilst the biggest contributers to mortality are generally the biggest contributers to disability and ill health, some conditions which have fairly low mortality rates can cause significant levels of disability.</p>
 
-<h2 id = "total_death_string"></h2>
-<p>The figure below shows the estimated number of deaths in West Sussex in 2017 by cause (level 3 causes). Causes are coloured by the 'cause group' (level 2 cause). Hover over a circle to see more information.
-<div id = "my_dataviz"> </div>
+<p>The figure below shows the estimated number of deaths in West Sussex in 2017 by cause (level 3 causes). Causes are coloured by the 'cause group' (level 2 cause). Hover over a circle to see more information. You can toggle between the different measures to explore the different conditions that contribute to the burden of ill health and mortality.
+  <div class="switch-field">
+  <input onclick="update_bubbles(deaths_persons)" type="radio" id="radio-one" name="switch-two" checked/>
+  <label for="radio-one">Deaths</label>
+  <input onclick="update_bubbles(yll_persons)" type="radio" id="radio-two" name="switch-two" />
+  <label for="radio-two">YLL</label>
+  <input onclick='update_bubbles(yld_persons)' type="radio" id="radio-three" name="switch-two" />
+  <label for="radio-three">YLD</label>
+  <input onclick='update_bubbles(daly_persons)' type="radio" id="radio-three" name="switch-two" />
+  <label for="radio-three">DALY</label>
+  </div>
+<div id = "my_deaths_bubble_dataviz"> </div>
 <!-- Perhaps we can get this graphic to either move when the causes are clicked, or perhaps highlighted, or perhaps have the cause groups cluster together -->
-<!-- Would be good to be able to split males vs females or change the year. -->
+<!-- Would be good to be able to split males vs females (maybe also change the year but that will require some thinking and maybe lots and lots of arrays). -->
+<!-- or perhaps we have one figure for males (for all four types) and one for females (for all four types) -->
+
+<p>The next bubble figure shows differences between males and females. Again, you can toggle between the different measures.</p>
+<div id = "my_deaths_by_sex_bubble_dataviz"> </div>
 
 <h2>How does ill health affect people of different ages?</h2>
 <p>We have already looked at measures of premature mortality and morbidity, that is ill health that occurs earlier than naturally expected, but we can also look at which conditions impact people across the lifecourse.</p>
@@ -107,9 +132,9 @@
 <footer class="footer">M4de by Dr Rich Tyler<br><a href = "https://github.com/psychty",target = "_blank">github/psychty</a><br>July 2019</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
-<script src = "gbd_bubbles.js"></script>
+<script src = "gbd_bubbles_persons.js"></script>
 <script src = "gbd_table.js"></script>
-<script src = "gbd_slope.js"></script>
+<script src = "gbd_deaths_bars.js"></script>
 <script src="https://d3js.org/d3-format.v1.min.js"></script>
 
 <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

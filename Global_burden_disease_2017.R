@@ -1,6 +1,5 @@
 # Notes
 
-
 stack_theme = function(){
   theme( 
     axis.text.y = element_text(colour = "#000000", size = 9), 
@@ -299,6 +298,10 @@ rm(level_2_cause_df_a, level_2_cause_df_b)
 level_2_cause_df %>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Number_cause_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
+
+level_2_cause_df %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/barplots/Number_cause_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
 # Data for cause size bubbles 
 
