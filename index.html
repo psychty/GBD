@@ -15,8 +15,9 @@
     <div class = "header">
         <h1>Burden of disease in West Sussex</h1>
         <p>The Global Burden of Disease Study (GBD) is one of the most comprehensive worldwide epidemiological collaborations describing mortality and morbidity from major diseases and injuries and risk factors to health at global, national, regional, and local levels. It provides a standardised approach to estimating incidence (new cases) and prevalence (total number of cases) of ill health and death as well as a measure of the number of potential years lost due to disability, ill health and death.</p>
-
+        <p>Data are available for every year between 1990 and 2017 and each year new data and methodological innovations are fed into models, revising annual estimates for 360 diseases and injuries and 85 risk factors.</p>
         <p>Where possible, local observational data (e.g. mortality and GP records or local studies) are included in the estimates but for a large number of diseases there is simply no recorded information on prevalence. The GBD ethos is that an uncertain estimate, even when data are sparse or not available, is preferable to no estimate at all. As a result, you should consider that there is a <b>margin of error when interpreting these results as they are simply estimates or <i>'best guesses'</i></b>.</p>
+
         <p>The 2017 overview for England is available <a href = "http://www.healthdata.org/united-kingdom-england" target = "_blank">here</a href></p>
     </div>
 
@@ -25,7 +26,7 @@
 <h1>Exploring the burden of disease in West Sussex in 2017</h1>
 <h2 id = "total_death_string"></h2>
 
-<p>The figure below shows the top 10 causes of deaths in West Sussex, in 2017. These are the 'level two' cause groups. You can use the buttons at the top of the figure to toggle between looking at all people or just females or males.</p>
+<p>The figure below shows the top 10 causes of deaths in West Sussex, in 2017. These are the 'level two' cause groups. You can use the buttons at the top of the figure to toggle between viewing all people or just females or males.</p>
   <div class="switch-field">
   <input onclick="update(data1)" type="radio" id="radio-one" name="switch-one" checked/>
   <label for="radio-one">Persons</label>
@@ -34,25 +35,25 @@
   <input onclick='update(data3)' type="radio" id="radio-three" name="switch-one" />
   <label for="radio-three">Males</label>
   </div>
-
 <div id="top_10_bars_by_sex_dataviz"></div>
+<p>In West Sussex, blah blah, differences in sexes, what leaves (MSK) for females).</p>
 <p>The leading burdens of disease in West Sussex in 2017 are given in the table below. You'll notice there are actually four top 10s and these reflect the various ways conditions affect our health.</p>
 
 <div id = "top_10_table"> </div>
 <p>Discuss each of the metrics. What differences are there across top tens.</p>
 <p>Whilst the biggest contributers to mortality are generally the biggest contributers to disability and ill health, some conditions which have fairly low mortality rates can cause significant levels of disability.</p>
 
-<p>The figure below shows the estimated number of deaths in West Sussex in 2017 by cause (level 3 causes). Causes are coloured by the 'cause group' (level 2 cause). Hover over a circle to see more information. You can toggle between the different measures to explore the different conditions that contribute to the burden of ill health and mortality.
-  <div class="switch-field-bubbles">
-  <input onclick="update_bubbles(deaths_persons)" type="radio" id="radio-one" name="switch-two" checked/>
+<p>The figure below shows the estimated number of deaths in West Sussex in 2017 by cause (level 3 causes). Causes are coloured by the 'cause group' (level 2 cause). The size of the circle represents the number of deaths. Items are grouped by the broad disease group. Hover over a circle to see more information. You can toggle between the different measures to explore the different conditions that contribute to the burden of ill health and mortality.
+  <!-- <div class="switch-field">
+  <input onclick="update_bubbles(deaths_persons)" type="radio" id="radio-four" name="switch-two" checked/>
   <label for="radio-one">Deaths</label>
-  <input onclick="update_bubbles(yll_persons)" type="radio" id="radio-two" name="switch-two" />
+  <input onclick="update_bubbles(yll_persons)" type="radio" id="radio-five" name="switch-two" />
   <label for="radio-two">YLL</label>
-  <input onclick='update_bubbles(yld_persons)' type="radio" id="radio-three" name="switch-two" />
+  <input onclick='update_bubbles(yld_persons)' type="radio" id="radio-six" name="switch-two" />
   <label for="radio-three">YLD</label>
-  <input onclick='update_bubbles(daly_persons)' type="radio" id="radio-three" name="switch-two" />
+  <input onclick='update_bubbles(daly_persons)' type="radio" id="radio-seven" name="switch-two" />
   <label for="radio-three">DALY</label>
-  </div>
+  </div> -->
 <div id = "my_deaths_bubble_dataviz"> </div>
 <!-- Perhaps we can get this graphic to either move when the causes are clicked, or perhaps highlighted, or perhaps have the cause groups cluster together -->
 <!-- Would be good to be able to split males vs females (maybe also change the year but that will require some thinking and maybe lots and lots of arrays). -->
@@ -107,24 +108,19 @@
 <p>For example area A may have recorded 2,000 deaths and area B recorded 1,500 deaths. You might think that area A has a much bigger issue of mortality than area B. However, if area A has a population of 500,000, the rate of deaths is 400 deaths per 100,000 population. If area B has a population of 300,000, then the rate of deaths is higher in area B (500 per 100,000).</p>
 <p><i>Better example of standardising.</i></p>
 
-<h3>Cause groups</h3>
-<p>Use the buttons below to select a group of causes and hover over a circle to see more.</p>
-        <!-- Maybe we could have a tooltip for high level number of deaths, number of causes, rank etc. -->
-<div id="cause_categories"></div>
+<h2>Further information</h2>
+<p>Data downloaded from the <a href = "http://ghdx.healthdata.org/gbd-results-tool", target="_blank">GBD online results tool;</a href> Institute for Health Metrics and Evaluation (IHME). Findings from the Global Burden of Disease Study 2017. Seattle, WA: IHME, 2018</p>
+
 </aside>
 
 <aside class="aside aside-2">
-    <h2>Further information:</h2>
-    <p>Data are available for every year between 1990 and 2017 and each year new data and methodological innovations are fed into models, revising annual estimates for 360 diseases and injuries and 85 risk factors.</p>
-    <p>The GBD 2017 diseases/conditions are split and aggregated into four hierarchical levels.</p>
+    <h2>Cause groups:</h2>
+    <p>The GBD 2017 diseases/conditions are split and aggregated into four hierarchical levels. For this analysis we explore levels 1,2, and 3.</p>
     <p>Level 1 contains three broad cause groups (communicable, maternal, neonatal and nutirional diseases (CMNN), non-communicable diseases (NCD) and injuries).</p>
-    <p>These are then split into 22 level 2 cause groups and 169 level 3 diseases/conditions. Some of the level 3 conditions are further expanded to 165 level 4 diseases/conditions.</p>
-    <p>For this analysis we explore levels 1,2, and 3.</p>
-
-    <p>Data downloaded from the <a href = "http://ghdx.healthdata.org/gbd-results-tool", target="_blank">GBD online results tool;</a href> Institute for Health Metrics and Evaluation (IHME). Findings from the Global Burden of Disease Study 2017. Seattle, WA: IHME, 2018</p>
-    <p>The size of the circle represents the number of deaths. Items are grouped by the broad disease group.</p>
-    <h2>Size key</h2>
-    <div id = "chart_legend"> </div>
+    <div id = 'level_1_cause_summary'></div>
+    <p>These are then split into 22 level 2 cause groups.</p>
+    <div id = 'level_2_cause_summary'></div>
+    <p>There are 169 level 3 diseases/conditions and some of these are further expanded to an additional 165 level 4 diseases/conditions. Level 3 conditions can be explored using the bubble figures on this page or at the bottom in the 'Exploring conditions in more detail' section.</p>
 </aside>
 
 </div>

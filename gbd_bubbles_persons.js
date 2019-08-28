@@ -77,11 +77,11 @@ var tooltip = d3.select("#my_deaths_bubble_dataviz")
       .style("left", (event.pageX + 10) + "px")
   }
 
-// Read and use data
+
 function update_bubbles(data) {
 
-data = data.sort(function(a, b) {
-    return d3.ascending(a['Cause group'], b['Cause group']);
+    data = data.sort(function(a, b) {
+    return d3.descending(a['Cause group'], b['Cause group']);
   });
 
   // Grab the lowest number of deaths
@@ -167,101 +167,8 @@ data = data.sort(function(a, b) {
     if (!d3.event.active) simulation.alphaTarget(.03);
     d.fx = null;
     d.fy = null;
+   }
   }
-
-  // Legend key size
-  var valuesToShow = [10, max_deaths / 4, max_deaths / 2, max_deaths]
-  var xLabel = 180
-  var xCircle = 100
-  var yCircle = 160
-
-  var svg_size_key = d3.select("#chart_legend")
-    .append("svg")
-    .attr("width", 350)
-    .attr("height", 350)
-
-  svg_size_key
-    .selectAll("legend")
-    .data(valuesToShow)
-    .enter()
-    .append("circle")
-    .attr("cx", xCircle)
-    .attr("cy", function(d) {
-      return yCircle - size(d)
-    })
-    .attr("r",
-      function(d) {
-        return size(d)
-      })
-    .style("fill", "none")
-    .attr("stroke", "black")
-
-  // Add svg_size_key: segments
-  svg_size_key
-    .selectAll("legend")
-    .data(valuesToShow)
-    .enter()
-    .append("line")
-    .attr('x1', function(d) {
-      return xCircle + size(d)
-    })
-    .attr('x2', xLabel)
-    .attr('y1', function(d) {
-      return yCircle - size(d)
-    })
-    .attr('y2', function(d) {
-      return yCircle - size(d)
-    })
-    .attr('stroke', 'black')
-    .style('stroke-dasharray', ('2,2'))
-
-  // Add svg_size_key: labels
-  svg_size_key
-    .selectAll("legend")
-    .data(valuesToShow)
-    .enter()
-    .append("text")
-    .attr('x', xLabel)
-    .attr('y', function(d) {
-      return yCircle - size(d)
-    })
-    .text(function(d) {
-      return d3.format(",.0f")(d) + " deaths"
-    })
-    .attr("font-size", 11)
-    .attr('alignment-baseline', 'top')
-
-// Loop through array to get distinct cause group names
-  function create_parent_cause_categories(data) {
-    var cats = []; // Create a variable called cats - this will hold our menu
-    data.forEach(function(d) { // For every datapoint
-      if (cats.indexOf(d['Cause group']) === -1) // This says look at the parent causes currently in the array (at the start there are none). If the current value you are looking at in the data does not appear in the array (signified by === -1) then move to push the value
-      {
-        cats.push(d['Cause group']) // push says add the value to the array
-      }
-    })
-    return cats; // Once all datapoints have been examined, the result returned should be an array containing all the unique values of BNF_chapter in the data
-  }
-  var cats_available = create_parent_cause_categories(data)
-  function buildMenu() {
-    cats_available.forEach(function(item, index) { // The index is the position of the loop, which can be used later for the border colour
-      var button = document.createElement("button");
-      button.innerHTML = item;
-      button.className = 'filterButton';
-      button.style.borderColor = color_p_cause(index);
-
-      var div = document.getElementById("cause_categories");
-      div.appendChild(button); // This appends the button to the div
-
-      // This says listen for which value is clicked, for whatever is clicked, the following actions should take place.
-      button.addEventListener('click', function(e) {
-        selected_chapter = e.target.innerHTML;
-        console.log(selected_chapter)
-      })
-    })
-  }
-  buildMenu();
-}
 
 // Initialize the plot with the first dataset
 update_bubbles(deaths_persons)
