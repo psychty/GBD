@@ -265,4 +265,3 @@ data = data.sort(function(a, b) {
 
 // Initialize the plot with the first dataset
 update_bubbles(deaths_persons)
-update_bubbles(deaths_persons)

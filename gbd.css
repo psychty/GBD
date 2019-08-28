@@ -189,6 +189,50 @@ button.filterButton:hover{
   text-align: right;
 }
 
+.switch-field-2 {
+    display: flex;
+    overflow: hidden;
+    align: centre;
+}
+
+.switch-field-2 input {
+    position: absolute !important;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    width: 1px;
+    border: 0;
+    overflow: hidden;
+}
+
+.switch-field-2 label {
+    background-color: #f7f2f1;
+    color: rgba(0, 0, 0, 0.8); /* opacity */
+    font-size: 1rem;
+    line-height: 1;
+    text-align: center;
+    padding: 5px 5px;
+    margin-right: -1px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+    transition: all 0.1s ease-in-out;
+}
+
+.switch-field-2 label:hover {
+    cursor: pointer;
+}
+
+.switch-field-2 input:checked + label{
+    background-color: #448f99;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.switch-field-2 label:first-of-type {
+    border-radius: 4px 0 0 4px;
+}
+
+.switch-field-2 label:last-of-type {
+    border-radius: 0 4px 4px 0;
+}
 /* Small screens */
 @media all and (min-width: 400px) {
   /* We tell both sidebars to share a row */
