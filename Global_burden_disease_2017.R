@@ -1,4 +1,3 @@
-# Notes
 
 stack_theme = function(){
   theme( 
@@ -44,7 +43,6 @@ slope_theme = function(){
         axis.ticks = element_blank(), 
         axis.line = element_blank()
   )}
-
 
 # http://ghdx.healthdata.org/gbd-results-tool
 # http://www.healthdata.org/united-kingdom
@@ -157,7 +155,7 @@ Area_x_cause %>%
   filter(metric == "Number") %>% 
   select(Year, Sex, Cause, Deaths, `YLLs (Years of Life Lost)`) %>% 
   toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Deaths_YLL_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Total_deaths_yll_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
 Area_x_cause <- Area_x_cause %>% 
   select(-c(Area, Cause_outline, Cause_id, Parent_id))
@@ -299,10 +297,6 @@ level_2_cause_df %>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Number_cause_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
-level_2_cause_df %>% 
-  toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/barplots/Number_cause_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
-
 # Data for cause size bubbles 
 
 # area, sex, year, measure, value - switch between deaths, yll, yld and daly - number
@@ -335,16 +329,65 @@ lifecourse_wsx_df <- unique(list.files("~/Documents/GBD_data_download")[grepl("b
          Measure = measure) %>% 
   mutate(Metric = ifelse(metric == "Rate", "Rate per 100,000 population", ifelse(metric == "Percent", "Proportion of total burden caused by this condition", metric))) %>% 
   mutate(Cause = factor(Cause, levels =  unique(Cause))) %>% 
-  select(Area, Sex, Age, Year, Cause, Cause_outline, Cause_id, Level, Estimate, Lower_estimate, Upper_estimate, `Cause group`, Parent_id, Measure, Metric) 
+  select(Area, Sex, Age, Year, Cause, Cause_outline, Cause_id, Level, Estimate, Lower_estimate, Upper_estimate, `Cause group`, Parent_id, Measure, Metric) %>% 
+  filter(Age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
+  mutate(Age = factor(Age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
+  filter(Year == max(Year))
 
-# http://www.healthdata.org/sites/default/files/files/infographics/Infographic_GBD2016-YLDs-Highlights_2018_Page_1.png
+# http://www.healthdata.org/sites/default/files/files/infographics/Infographic_GBD2017-YLDs-Highlights_2018_Page_1.png
+
+lifecourse_numbers <- lifecourse_wsx_df %>% 
+  filter(Metric == 'Number')
+
+lifecourse_prop <- lifecourse_wsx_df %>% 
+  filter(Metric == "Proportion of total burden caused by this condition")
+
+lifecourse_age <- lifecourse_numbers %>% 
+  filter(Level == 2,
+         Sex == 'Both') %>% 
+  select(Age, Cause, Measure, Estimate) %>% 
+  mutate(Cause = factor(Cause, levels = c("HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"))) %>%
+  arrange(Cause) %>% 
+  spread(Cause, Estimate) %>% 
+  arrange(Measure, Age) %>% 
+  mutate(`Neglected tropical diseases and malaria` = replace_na(`Neglected tropical diseases and malaria`, 0)) %>% 
+  mutate(`Chronic respiratory diseases` = replace_na(`Chronic respiratory diseases`, 0)) %>% 
+  mutate(`Digestive diseases` = replace_na(`Digestive diseases`, 0)) %>% 
+  mutate(`Cardiovascular diseases` = replace_na(`Cardiovascular diseases`, 0)) %>% 
+  mutate(`Nutritional deficiencies` = replace_na(`Nutritional deficiencies`, 0)) %>% 
+  mutate(`Other non-communicable diseases` = replace_na(`Other non-communicable diseases`, 0)) %>% 
+  mutate(`Skin and subcutaneous diseases` = replace_na(`Skin and subcutaneous diseases`, 0)) %>% 
+  mutate(`Neurological disorders` = replace_na(`Neurological disorders`, 0)) %>% 
+  mutate(`Transport injuries` = replace_na(`Transport injuries`, 0)) %>% 
+  mutate(`Unintentional injuries` = replace_na(`Unintentional injuries`, 0)) %>% 
+  mutate(`Mental disorders` = replace_na(`Mental disorders`, 0)) %>% 
+  mutate(`Sense organ diseases` = replace_na(`Sense organ diseases`, 0)) %>% 
+  mutate(`Musculoskeletal disorders` = replace_na(`Musculoskeletal disorders`, 0)) %>% 
+  mutate(`Neoplasms` = replace_na(`Neoplasms`, 0)) %>% 
+  mutate(`Self-harm and interpersonal violence` = replace_na(`Self-harm and interpersonal violence`, 0)) %>% 
+  mutate(`HIV/AIDS and sexually transmitted infections` = replace_na(`HIV/AIDS and sexually transmitted infections`, 0)) %>% 
+  mutate(`Respiratory infections and tuberculosis` = replace_na(`Respiratory infections and tuberculosis`, 0)) %>% 
+  mutate(`Enteric infections` = replace_na(`Enteric infections`, 0)) %>% 
+  mutate(`Other infectious diseases` = replace_na(`Other infectious diseases`, 0)) %>% 
+  mutate(`Maternal and neonatal disorders` = replace_na(`Maternal and neonatal disorders`, 0)) %>% 
+  mutate(`Substance use disorders` = replace_na(`Substance use disorders`, 0)) %>% 
+  mutate(`Diabetes and kidney diseases` = replace_na(`Diabetes and kidney diseases`, 0)) 
+
+lifecourse_age %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Numbers_lifecourse_persons_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
+
+lifecourse_age_max <- lifecourse_age %>% 
+  mutate(Total_in_age = rowSums(.[3:ncol(.)])) %>% 
+  select(Age, Measure, Total_in_age) %>% 
+  group_by(Measure) %>% 
+  filter(Total_in_age == max(Total_in_age)) %>% 
+  select(-Age) %>% 
+  mutate(rounded_Total_in_age = round_any(Total_in_age, 500, ceiling))
+
 
 yld_age_level_1 <- lifecourse_wsx_df %>% 
-    filter(Measure == "YLDs (Years Lived with Disability)",
-         Metric == "Number",
-         Year == max(Year),
-         Age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
-  mutate(Age = factor(Age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
+  filter(Measure == "YLDs (Years Lived with Disability)") %>% 
   filter(Sex != "Both") %>% 
   filter(Level == 1) %>% 
   mutate(Cause = factor(Cause, levels = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries")))
@@ -469,6 +512,8 @@ ggplot(daly_age_perc_level_2, aes(x = Age,  y = Estimate, fill = Cause)) +
 # To compare over areas or time we could use age_standardised data
 
 # My thoughts are to do the analysis here, include columns for % change compared to 5 years (2012), 10 years (2007), and compared to 20 years (1997).
+
+# also line charts
 
 Age_standardised_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("e004c73d", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
   map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>%

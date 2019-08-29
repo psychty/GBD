@@ -8,11 +8,11 @@ var margin = {top: 30,
 var width = window.innerWidth / 100 * 55 - margin.left - margin.right;
 var height = 400 - margin.top - margin.bottom;
 
-var cause_categories = ["Cardiovascular diseases", "Chronic respiratory diseases", "Diabetes and kidney diseases", "Digestive diseases", "Enteric infections", "HIV/AIDS and sexually transmitted infections", "Maternal and neonatal disorders", "Mental disorders", "Musculoskeletal disorders", "Neglected tropical diseases and malaria", "Neoplasms", "Neurological disorders", "Nutritional deficiencies", "Other infectious diseases", "Other non-communicable diseases", "Respiratory infections and tuberculosis", "Self-harm and interpersonal violence", "Sense organ diseases", "Skin and subcutaneous diseases", "Substance use disorders", "Transport injuries", "Unintentional injuries"]
+var cause_categories = ["HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"]
 
-var color_p_cause = d3.scaleOrdinal()
+var color_cause_group = d3.scaleOrdinal()
   .domain(cause_categories)
-  .range(["#e48874", "#50bd54", "#a35cce", "#7eb233", "#d24aa4", "#5bc187", "#dd4973", "#3c803b", "#656ec9", "#bcb034", "#994e8b", "#8eac5b", "#d48ecb", "#6c6e26", "#5e97d1", "#db9037", "#45c7c8", "#ce4933", "#3d9275", "#a74b5b", "#bba360", "#9b5e2c"]);
+  .range(["#F8DDEB", "#F2B9BF", "#EE9187", "#EA695C", "#D84D42", "#AD3730", "#7A1C1C", '#BCD6F7','#97C4F0','#67A8E7','#528CDB','#376ACB',"#1845A5", '#CFD6F6','#ADB9ED','#8B96DD','#6978D0', "#4E4FB8", "#3E3294", "#B5DCD0", "#76B786", '#477A49']);
 
 var request = new XMLHttpRequest();
   request.open("GET", "./Number_cause_level_2_2017_west_sussex.json", false);
@@ -54,7 +54,6 @@ data3 = data3.sort(function(a, b) {
         });
 
 data3 = data3.slice(0,10);
-
 
 // Set up the svg and link to the div with the same identifier on the html page
 var svg = d3.select("#top_10_bars_by_sex_dataviz")
@@ -101,7 +100,7 @@ var showTooltip = function(d) {
 // The nested .replace within .toLowerCase() replaces the string 'both' (not 'Both') with 'both males and female' and then we add the s and a line break.
   tooltip
     .style("opacity", 1)
-    .html("<h3>" + d.Cause + '</h3><p>The estimated number of deaths as a result of ' + d.Cause + ' in West Sussex in 2017 among ' + d.Sex.toLowerCase().replace('both', 'both males and female') + 's was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.Deaths_number) + '</b></font></p><p>This is the ' + d.Death_rank + 'th/nd/rd/st highest cause of death, accounting for ' + d3.format('.0%')(d.Deaths_proportion) + ' of the total number of deaths in 2017 for this population.')
+    .html("<h3>" + d.Cause + '</h3><p>The estimated number of deaths as a result of ' + d.Cause + ' in West Sussex in 2017 among ' + d.Sex.toLowerCase().replace('both', 'both males and female') + 's was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.Deaths_number) + '</b></font>.</p><p>This is the ' + d.Death_rank + 'th/nd/rd/st highest cause of death, accounting for ' + d3.format('.0%')(d.Deaths_proportion) + ' of the total number of deaths in 2017 for this population.</p>')
     .style("top", (event.pageY - 10) + "px")
     .style("left", (event.pageX + 10) + "px")
 }
@@ -121,36 +120,6 @@ svg.append("text")
     .attr("y", - margin.left + 20)
     .attr("x", - margin.top - 60)
     .text('Deaths');
-    // .text(function(d){ // we could use an if statement to change the yaxis labels from deaths to years
-    //   if(data === data1){
-    //   return 'Deaths'}
-    //   return 'Bananas'
-    // });
-
-
-    // function wrap(text, width) {
-    //   text.each(function() {
-    //     var text = d3.select(this),
-    //         words = text.text().split(/\s+/).reverse(),
-    //         word,
-    //         line = [],
-    //         lineNumber = 0,
-    //         lineHeight = 1.1, // ems
-    //         y = text.attr("y"),
-    //         dy = parseFloat(text.attr("dy")),
-    //         tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-    //     while (word = words.pop()) {
-    //       line.push(word);
-    //       tspan.text(line.join(" "));
-    //       if (tspan.node().getComputedTextLength() > width) {
-    //         line.pop();
-    //         tspan.text(line.join(" "));
-    //         line = [word];
-    //         tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-    //       }
-    //     }
-    //   });
-    // }
 
 // A function to create / update the plot for a given variable:
 function update(data) {
@@ -171,7 +140,6 @@ function update(data) {
     y
   .domain([0, d3.max(data, function(d) {
     return Math.ceil(d.Deaths_number / 500) * 500 // This gets the maximum deaths number rounded up to nearest 500 (ceiling)
-    // return d.Deaths_number
   })]); // update the yaxis based on 'data'
 
 // This adds a transition effect on the change between datasets (i.e. if the yaxis needs to be longer or shorter).
@@ -198,14 +166,15 @@ function update(data) {
       .attr("height", function(d) {
                       return height - y(d.Deaths_number); })
       .style("fill", function(d) {
-                      return color_p_cause(d.Cause)});
+                      return color_cause_group(d.Cause)});
 
 // You could add these .on events to the selection above, but because we have a .transition() function, it turns the selection into a transition and it is not possible to add a tooltip to a transition and so we need to use the .notation to add tooltip functions separately.
-  bars_df.on("mouseover", function() {
+  bars_df
+    .on("mouseover", function() {
     return tooltip.style("visibility", "visible");
-  });
-  bars_df.on("mousemove", showTooltip);
-  bars_df.on("mouseout", function() {
+  })
+    .on("mousemove", showTooltip)
+    .on("mouseout", function() {
     return tooltip.style("visibility", "hidden");
   });
 

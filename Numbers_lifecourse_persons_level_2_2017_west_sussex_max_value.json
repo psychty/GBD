@@ -1,0 +1,17 @@
+[{
+  "Measure": "DALYs (Disability-Adjusted Life Years)",
+  "Total_in_age": 24814.3961,
+  "rounded_Total_in_age": 25000
+}, {
+  "Measure": "Deaths",
+  "Total_in_age": 1986.7597,
+  "rounded_Total_in_age": 2000
+}, {
+  "Measure": "YLDs (Years Lived with Disability)",
+  "Total_in_age": 10532.6347,
+  "rounded_Total_in_age": 11000
+}, {
+  "Measure": "YLLs (Years of Life Lost)",
+  "Total_in_age": 15354.1199,
+  "rounded_Total_in_age": 15500
+}]
