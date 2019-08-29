@@ -377,14 +377,15 @@ lifecourse_age %>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Numbers_lifecourse_persons_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
-lifecourse_age_max <- lifecourse_age %>% 
+lifecourse_age %>% 
   mutate(Total_in_age = rowSums(.[3:ncol(.)])) %>% 
   select(Age, Measure, Total_in_age) %>% 
   group_by(Measure) %>% 
   filter(Total_in_age == max(Total_in_age)) %>% 
   select(-Age) %>% 
-  mutate(rounded_Total_in_age = round_any(Total_in_age, 500, ceiling))
-
+  mutate(rounded_Total_in_age = round_any(Total_in_age, 500, ceiling)) %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Numbers_lifecourse_persons_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '_max_value.json'))
 
 yld_age_level_1 <- lifecourse_wsx_df %>% 
   filter(Measure == "YLDs (Years Lived with Disability)") %>% 
@@ -424,6 +425,7 @@ yld_age_level_2 <- lifecourse_wsx_df %>%
   mutate(Cause = ifelse(nchar(as.character(Cause)) < 40, as.character(Cause), sub('(.{1,40})(\\s|$)', '\\1\n', as.character(Cause)))) %>% 
   mutate(Cause = factor(Cause, levels =  unique(Cause))) %>% 
   ungroup() 
+
 
 ggplot(yld_age_level_2, aes(x = Age,  y = Estimate, fill = Cause)) +
   geom_bar(position = "stack", stat = "identity") +
