@@ -561,3 +561,38 @@ var age_bars_df = svg_fg_4.append("g")
 }
 
 update_age(deaths_age)
+
+// age by conditions
+var request = new XMLHttpRequest();
+    request.open("GET", "./Numbers_lifecourse_persons_by_condition_level_2_2017_west_sussex.json", false);
+    request.send(null);
+var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
+
+conditions = d3.map(json, function(d){
+  return(d.Cause)})
+  .keys();
+
+deaths_condition = json.filter(function(d){
+  return d.Measure === 'Deaths'});
+
+yll_condition = json.filter(function(d){
+  return d.Measure === 'YLLs (Years of Life Lost)'});
+
+yld_condition = json.filter(function(d){
+  return d.Measure === 'YLDs (Years Lived with Disability)'});
+
+daly_condition = json.filter(function(d){
+  return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
+
+// possible bug
+// y_fg_5
+//   .domain([0, function(d) {
+//     if(measure_name === 'Deaths') return 3000;
+//     else if (measure_name === 'YLLs (Years of Life Lost)') return 45000;
+//     else if (measure_name === 'YLDs (Years Lived with Disability)') return 29000;
+//                return 48500; }])
+//    .range([height_fg_4, 0 ]);
+
+
+// Line chart 
+// https://www.d3-graph-gallery.com/graph/line_basic.html
