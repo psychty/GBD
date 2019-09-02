@@ -578,9 +578,8 @@ Age_standardised_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_downl
 Age_standardised_GBD_cause_data %>% 
   filter(Level == 0) %>% 
   filter(Sex == 'Both') %>% 
-  select(Area, Sex, Year, Cause,Estimate, Lower_estimate, Upper_estimate, measure) %>%
   toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_totals_1990_2017_all_areas_.json'))
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_totals_1990_2017_all_areas.json'))
 
 Age_standardised_GBD_cause_data %>% 
   filter(Level == 2) %>% 

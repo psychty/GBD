@@ -26,11 +26,11 @@
 
 <p>The figure below shows the top 10 causes of deaths in West Sussex, in 2017. These are the 'level two' cause groups. You can use the buttons at the top of the figure to toggle between viewing all people or just females or males.</p>
   <div class="switch-field">
-  <input onclick="update_fg_1(deaths_persons)" type="radio" id="radio-one" name="switch-one" checked/>
+  <input onclick="update_fg_1(deaths_persons_lv2)" type="radio" id="radio-one" name="switch-one" checked/>
   <label for="radio-one">Persons</label>
-  <input onclick="update_fg_1(deaths_females)" type="radio" id="radio-two" name="switch-one" />
+  <input onclick="update_fg_1(deaths_females_lv2)" type="radio" id="radio-two" name="switch-one" />
   <label for="radio-two">Females</label>
-  <input onclick='update_fg_1(deaths_males)' type="radio" id="radio-three" name="switch-one" />
+  <input onclick='update_fg_1(deaths_males_lv2)' type="radio" id="radio-three" name="switch-one" />
   <label for="radio-three">Males</label>
   </div>
 
@@ -45,13 +45,13 @@
 <p>The figure below shows the estimated number of deaths in West Sussex in 2017 by cause (level 3 causes). Causes are coloured by the 'cause group' (level 2 cause). The size of the circle represents the number of deaths. Items are grouped by the broad disease group. Hover over a circle to see more information. You can toggle between the different measures to explore the different conditions that contribute to the burden of ill health and mortality.
 
   <div class="switch-field">
-  <input onclick="update_bubbles(deaths_persons)" type="radio" id="radio-four" name="switch-two" checked/>
+  <input onclick="update_bubbles(deaths_persons_lv3)" type="radio" id="radio-four" name="switch-two" checked/>
   <label for="radio-four">Deaths</label>
-  <input onclick="update_bubbles(yll_persons)" type="radio" id="radio-five" name="switch-two" />
+  <input onclick="update_bubbles(yll_persons_lv3)" type="radio" id="radio-five" name="switch-two" />
   <label for="radio-five">YLL</label>
-  <input onclick='update_bubbles(yld_persons)' type="radio" id="radio-six" name="switch-two" />
+  <input onclick='update_bubbles(yld_persons_lv3)' type="radio" id="radio-six" name="switch-two" />
   <label for="radio-six">YLD</label>
-  <input onclick='update_bubbles(daly_persons)' type="radio" id="radio-seven" name="switch-two" />
+  <input onclick='update_bubbles(daly_persons_lv3)' type="radio" id="radio-seven" name="switch-two" />
   <label for="radio-seven">DALY</label>
   </div>
 
@@ -85,7 +85,25 @@
 <h1>Exploring changes over time and across areas</h1>
 <p>So far we have looked at ill health for those in West Sussex using the 'crude' or unstandardised values, as this gives an idea of the scale of the burden of ill health for our population. We know from the section above that age is a very important determinent of ill health and disability and conditions affect people of different ages.</p>
 <p>To account for differences in population size and demographics, the remaining analyses in this section uses <font color = "#256cb2"><b>standardised estimates</b></font> which detail the number (e.g. deaths) per 100,000 population. For more information on standardisation, look at the 'Concepts' section on this left of this page.</p>
+
 <!-- Line chart deaths over time compared to England and maybe CIPFA neighbours -->
+<!--
+  <div class="switch-field">
+  <input onclick="update_age(deaths_age)" type="radio" id="radio-eight" name="switch-three" checked/>
+  <label for="radio-eight">Deaths</label>
+  <input onclick="update_age(yll_age)" type="radio" id="radio-nine" name="switch-three" />
+  <label for="radio-nine">YLL</label>
+  <input onclick='update_age(yld_age)' type="radio" id="radio-ten" name="switch-three" />
+  <label for="radio-ten">YLD</label>
+  <input onclick='update_age(daly_age)' type="radio" id="radio-eleven" name="switch-three" />
+  <label for="radio-eleven">DALY</label>
+  </div> -->
+    <!-- Initialize a select button -->
+    <select id="selectAreaButton"></select>
+<div id = "my_line_dataviz"> </div>
+<!-- x = age y = value, fill = condition (level 2)-->
+
+
 <!-- x = condition, y = % change 07-17 -->
 <!-- slope chart -->
 
@@ -142,8 +160,11 @@
 <footer class="footer">M4de by Dr Rich Tyler<br><a href = "https://github.com/psychty",target = "_blank">github/psychty</a><br>July 2019</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
-<script src = 'gbd.js'></script>
 <script src="https://d3js.org/d3-format.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src = 'gbd.js'></script>
+<script src = 'gbd_line.js'></script>
+
 
 </body>
 </html>

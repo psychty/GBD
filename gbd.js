@@ -32,7 +32,7 @@ json.forEach(function(elem){
     elem.Deaths_number = parseInt(elem.Deaths_number); // Cause_id does not need to be an integer but it shows that it is working in console.log
 			});
 
-deaths_persons = json.filter(function(d){ // gets a subset of the json data
+deaths_persons_lv2 = json.filter(function(d){ // gets a subset of the json data
 	    return d.Sex === "Both" &
 	      +d.Year === 2017})
         .sort(function(a, b) { // sorts it according to the number of deaths (descending order)
@@ -40,7 +40,7 @@ deaths_persons = json.filter(function(d){ // gets a subset of the json data
         })
         .slice(0,10); // just keeps the first 10 rows
 
-deaths_females = json.filter(function(d){
+deaths_females_lv2 = json.filter(function(d){
 	    return d.Sex === "Female" &
 	      +d.Year === 2017})
         .sort(function(a, b) {
@@ -48,7 +48,7 @@ deaths_females = json.filter(function(d){
         })
         .slice(0,10);
 
-deaths_males = json.filter(function(d){
+deaths_males_lv2 = json.filter(function(d){
 	    return d.Sex === "Male" &
 	      +d.Year === 2017})
         .sort(function(a, b) {
@@ -192,8 +192,8 @@ bars_fig_1
   }
 
 // Initialize the plot with the first dataset
-update_fg_1(deaths_persons)
-update_fg_1(deaths_persons)
+update_fg_1(deaths_persons_lv2)
+update_fg_1(deaths_persons_lv2)
 
 // Top ten table
 var request = new XMLHttpRequest();
@@ -272,22 +272,22 @@ request.open("GET", "./Number_bubbles_df_level_3_2017_west_sussex.json", false);
 request.send(null);
 var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
 
-deaths_persons = json.filter(function(d){
+deaths_persons_lv3 = json.filter(function(d){
 	    return d.Sex === "Both" &
 	      +d.Year === 2017 &
         d.Measure === 'Deaths'});
 
-yll_persons = json.filter(function(d){
+yll_persons_lv3 = json.filter(function(d){
       return d.Sex === "Both" &
         +d.Year === 2017 &
          d.Measure === 'YLLs (Years of Life Lost)'});
 
-yld_persons = json.filter(function(d){
+yld_persons_lv3 = json.filter(function(d){
 	    return d.Sex === "Both" &
 	      +d.Year === 2017 &
          d.Measure === 'YLDs (Years Lived with Disability)'});
 
-daly_persons = json.filter(function(d){
+daly_persons_lv3 = json.filter(function(d){
 	    return d.Sex === "Both" &
 	      +d.Year === 2017 &
          d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
@@ -406,7 +406,7 @@ function dragended(d) {
 }
 
 // Initialize the plot with the first dataset
-update_bubbles(deaths_persons)
+update_bubbles(deaths_persons_lv3)
 
 // Bubbles by sex will be added as figure 3
 
@@ -572,6 +572,8 @@ conditions = d3.map(json, function(d){
   return(d.Cause)})
   .keys();
 
+console.log(conditions)
+
 deaths_condition = json.filter(function(d){
   return d.Measure === 'Deaths'});
 
@@ -594,5 +596,9 @@ daly_condition = json.filter(function(d){
 //    .range([height_fg_4, 0 ]);
 
 
-// Line chart 
+// Line chart
 // https://www.d3-graph-gallery.com/graph/line_basic.html
+
+// bar chart west sussex compared to SE and England.
+
+// Look at the three conditions, maybe introduce risk factors too...
