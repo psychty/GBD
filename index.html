@@ -76,37 +76,38 @@
 <input onclick='update_age(daly_age)' type="radio" id="radio-eleven" name="switch-three" />
 <label for="radio-eleven">DALY</label>
 </div>
-
 <div id = "my_lifecourse_condition_dataviz"> </div>
 <!-- x = age y = value, fill = condition (level 2)-->
 
+<div class="switch-field">
+<input onclick="update_condition(deaths_condition)" type="radio" id="radio-twelve" name="switch-four" checked/>
+<label for="radio-twelve">Deaths</label>
+<input onclick="update_condition(yll_condition)" type="radio" id="radio-thirteen" name="switch-four" />
+<label for="radio-thirteen">YLL</label>
+<input onclick='update_condition(yld_condition)' type="radio" id="radio-fourteen" name="switch-four" />
+<label for="radio-fourteen">YLD</label>
+<input onclick='update_condition(daly_condition)' type="radio" id="radio-fifteen" name="switch-four" />
+<label for="radio-fifteen">DALY</label>
+</div>
+<div id = 'my_condition_lifecourse_dataviz'></div>
 <!-- x = condition (level 2) y = value, fill - age -->
 
 <h1>Exploring changes over time and across areas</h1>
 <p>So far we have looked at ill health for those in West Sussex using the 'crude' or unstandardised values, as this gives an idea of the scale of the burden of ill health for our population. We know from the section above that age is a very important determinent of ill health and disability and conditions affect people of different ages.</p>
-<p>To account for differences in population size and demographics, the remaining analyses in this section uses <font color = "#256cb2"><b>standardised estimates</b></font> which detail the number (e.g. deaths) per 100,000 population. For more information on standardisation, look at the 'Concepts' section on this left of this page.</p>
+<p>To account for differences in population size and demographics, the remaining analyses use <font color = "#256cb2"><b>standardised estimates</b></font> which detail the number (e.g. deaths) per 100,000 population. For more information on standardisation, look at the 'Concepts' section on this left of this page.</p>
 
 <!-- Line chart deaths over time compared to England and maybe CIPFA neighbours -->
-<!--
-  <div class="switch-field">
-  <input onclick="update_age(deaths_age)" type="radio" id="radio-eight" name="switch-three" checked/>
-  <label for="radio-eight">Deaths</label>
-  <input onclick="update_age(yll_age)" type="radio" id="radio-nine" name="switch-three" />
-  <label for="radio-nine">YLL</label>
-  <input onclick='update_age(yld_age)' type="radio" id="radio-ten" name="switch-three" />
-  <label for="radio-ten">YLD</label>
-  <input onclick='update_age(daly_age)' type="radio" id="radio-eleven" name="switch-three" />
-  <label for="radio-eleven">DALY</label>
-  </div> -->
-    <!-- Initialize a select button -->
-    <select id="selectAreaButton"></select>
+<p>Select an area to view. The first drop down menu contains West Sussex and its 15 statistically nearest (in terms of demographics) neighbouring areas.</p>
+<select id = 'selectAreaButton'></select>
+<p>You can also choose whether to compare the estimate with the South East region or England overall.</p>
+<select id = 'selectReferenceAreaButton'></select>
 <div id = "my_line_dataviz"> </div>
-<!-- x = age y = value, fill = condition (level 2)-->
 
 
 <!-- x = condition, y = % change 07-17 -->
 <!-- slope chart -->
 
+<h1>Risk factors</h1>
 
 <h1>Condition Focus</h1>
 <p>In the next section we focus on the three disease groups which contributed the most disability adjusted life-years lost in West Sussex in 2017 (Cancers (neoplasms), Cardiovascular diseases and Musculoskeletal disorders).</p>
@@ -119,6 +120,8 @@
 
 <h2>Exploring conditions in more detail</h2>
 <p>It is not possible to provide a commentary on all 360 diseases/conditions but you can use the drop down boxes below to explore more detail on conditions.</p>
+
+
 
 </article>
 
@@ -142,17 +145,19 @@
 
 <h2>Further information</h2>
 <p>Data downloaded from the <a href = "http://ghdx.healthdata.org/gbd-results-tool", target="_blank">GBD online results tool;</a href> Institute for Health Metrics and Evaluation (IHME). Findings from the Global Burden of Disease Study 2017. Seattle, WA: IHME, 2018</p>
+<p>A note on spellings: As the GBD is produced in Seattle, USA, some conditions and cause names use English (U.S.) spellings.</p>
 <p>The 2017 overview for England, by the IHME, is available <a href = "http://www.healthdata.org/united-kingdom-england" target = "_blank">here</a href></p>
 </aside>
 
 <aside class="aside aside-2">
-    <h2>Cause groups:</h2>
-    <p>The GBD 2017 diseases/conditions are split and aggregated into four hierarchical levels. For this analysis we explore levels 1,2, and 3.</p>
-    <p>Level 1 contains three broad cause groups (communicable, maternal, neonatal and nutirional diseases (CMNN), non-communicable diseases (NCD) and injuries).</p>
+    <h2>Cause groups</h2>
+    <p>The GBD 2017 diseases/conditions are split and aggregated into four hierarchical levels. Hover over the tiles below to find out more about the high level (levels 1 and 2) groups*.</p>
+    <p>Level 1 contains three broad cause groups:</p>
     <div id = 'level_1_cause_summary'></div>
-    <p>These are then split into 22 level 2 cause groups.</p>
+    <p>These are then split into 22 level 2 cause groups:</p>
     <div id = 'level_2_cause_summary'></div>
-    <p>There are 169 level 3 diseases/conditions and some of these are further expanded to an additional 165 level 4 diseases/conditions. Level 3 conditions can be explored using the bubble figures on this page or at the bottom in the 'Exploring conditions in more detail' section.</p>
+    <p>In addition, there are 169 level 3 diseases/conditions and some of these are further expanded to an additional 165 level 4 diseases/conditions. For this analysis we explore levels 1, 2, and 3.</p>
+    <p><i>*Level 3 conditions can be explored using the bubble figures on this page or in the 'Exploring conditions in more detail' section.</i></p>
 </aside>
 
 </div>
@@ -163,8 +168,6 @@
 <script src="https://d3js.org/d3-format.v1.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src = 'gbd.js'></script>
-<script src = 'gbd_line.js'></script>
-
 
 </body>
 </html>

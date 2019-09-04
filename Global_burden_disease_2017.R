@@ -70,23 +70,6 @@ GBD_2017_cause_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2
          Cause_outline = cause_outline,
          Level = level)
 
-# GBD_cause_group_lv1 <- GBD_2017_cause_hierarchy %>% 
-#    filter(level == 1)
- 
-# non_com <- GBD_2017_cause_hierarchy %>%
-#   filter(level == 2) %>% 
-#   filter(substr(cause_outline, 1,1) == "B")
-
-# GBD_2017_cause_hierarchy %>%
-#      filter(Level == 2) %>% 
-#   View()
-
-# lev3 <- GBD_2017_cause_hierarchy %>%
-#   filter(Level == 3)
-
-# lev4 <- GBD_2017_cause_hierarchy %>%
-#   filter(Level == 4)
-
 Causes_in_each_level <- GBD_2017_cause_hierarchy %>% 
   select(Level) %>% 
   group_by(Level) %>% 
@@ -262,17 +245,66 @@ WSx_top_10 %>%
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Top_10_YLL_YLD_DALY_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
   
 # Explore the top ten causes of death (numbers), YLL (numbers), YLDs (numbers) and DALYs.
+# Explore all level 2 causes for West Sussex ####
+level_1_cause_df_a <- Area_x_cause %>% 
+  filter(Level == 1,
+         Year == 2017) %>%
+  group_by(Sex, metric) %>% 
+  mutate(Death_rank =  rank(-Deaths, ties.method = "first")) %>% # The - indicates descending order
+  mutate(YLL_rank =  rank(-`YLLs (Years of Life Lost)`, ties.method = "first")) %>% 
+  mutate(YLD_rank =  rank(-`YLDs (Years Lived with Disability)`, ties.method = "first")) %>% 
+  mutate(DALY_rank =  rank(-`DALYs (Disability-Adjusted Life Years)`, ties.method = "first")) %>% 
+  select(-c(Incidence, Prevalence)) %>% 
+  ungroup()
+
+level_1_cause_df_b <- level_1_cause_df_a %>% 
+  filter(metric == 'Proportion of total burden caused by this condition') %>% 
+  rename(DALY_proportion = `DALYs (Disability-Adjusted Life Years)`,
+         Deaths_proportion = Deaths,
+         YLD_proportion = `YLDs (Years Lived with Disability)`,
+         YLL_proportion = `YLLs (Years of Life Lost)`) %>% 
+  select(Sex, Cause, Deaths_proportion, YLL_proportion, YLD_proportion, DALY_proportion)
+
+level_1_cause_df <- level_1_cause_df_a %>% 
+  filter(metric == 'Number') %>% 
+  rename(DALY_number = `DALYs (Disability-Adjusted Life Years)`,
+         Deaths_number = Deaths,
+         YLD_number = `YLDs (Years Lived with Disability)`,
+         YLL_number = `YLLs (Years of Life Lost)`) %>% 
+  left_join(level_1_cause_df_b, by = c('Sex', 'Cause')) %>% 
+  select(Sex, Cause, Year, `Cause group`, Deaths_number, Deaths_proportion, Death_rank, YLL_number, YLL_proportion, YLL_rank, YLD_number, YLD_proportion, YLD_rank, DALY_number, DALY_proportion, DALY_rank)
+
+rm(level_1_cause_df_a, level_1_cause_df_b)
+
+level_1_cause_df %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Number_cause_level_1_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
+
+level_1_summary <- level_1_cause_df %>% 
+  filter(Sex == 'Both') %>% 
+  mutate(deaths_label = paste0('This group of causes was estimated to be responsible for ', format(round(Deaths_number,0), big.mark = ',', trim = TRUE), ' deaths which represents ', round(Deaths_proportion * 100,1), '% of all deaths in ', Year, '.')) %>%
+  mutate(yll_label = paste0('This group of causes was estimated to be responsible for ', format(round(YLL_number,0), big.mark = ',', trim = TRUE), ' years of life lost which represents ', round(YLL_proportion * 100,1), '% of all YLLs in ', Year, '.')) %>% 
+  mutate(yld_label = paste0('This group of causes was estimated to be responsible for ', format(round(YLD_number,0), big.mark = ',', trim = TRUE), ' years of life lived with disability which represents ', round(YLD_proportion * 100,1), '% of all YLDs in ', Year, '.')) %>% 
+  mutate(daly_label = paste0('This group of causes was estimated to be responsible for ', format(round(DALY_number,0), big.mark = ',', trim = TRUE), ' disability adjusted life years lost which represents ', round(DALY_proportion * 100,1), '% of all DALYs in ', Year, '.')) %>% 
+  select(Cause, deaths_label, yll_label, yld_label, daly_label) %>% 
+  mutate(Cause = factor(Cause, levels = c('Communicable, maternal, neonatal, and nutritional diseases', 'Non-communicable diseases', 'Injuries'))) %>% 
+  arrange(Cause)
+
+level_1_summary %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_1_2017_', gsub(" ", "_", tolower(Area_x)), '_summary.json'))
 
 # Explore all level 2 causes for West Sussex ####
 level_2_cause_df_a <- Area_x_cause %>% 
   filter(Level == 2,
          Year == 2017) %>%
-  group_by(Sex) %>% 
+  group_by(Sex, metric) %>% 
   mutate(Death_rank =  rank(-Deaths, ties.method = "first")) %>% # The - indicates descending order
   mutate(YLL_rank =  rank(-`YLLs (Years of Life Lost)`, ties.method = "first")) %>% 
   mutate(YLD_rank =  rank(-`YLDs (Years Lived with Disability)`, ties.method = "first")) %>% 
   mutate(DALY_rank =  rank(-`DALYs (Disability-Adjusted Life Years)`, ties.method = "first")) %>% 
-  select(-c(Incidence, Prevalence))
+  select(-c(Incidence, Prevalence)) %>% 
+  ungroup()
 
 level_2_cause_df_b <- level_2_cause_df_a %>% 
   filter(metric == 'Proportion of total burden caused by this condition') %>% 
@@ -296,6 +328,26 @@ rm(level_2_cause_df_a, level_2_cause_df_b)
 level_2_cause_df %>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Number_cause_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
+
+cause_description <- data.frame(Cause = c("HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence")) %>% 
+  bind_cols(Description = c("This disease group includes HIV/AIDS and sexually transmitted infections such as Syphilis, Chlamydia and Gonorrhea.", "This disease group includes lower and upper respiratory infections, Otitis media (inflamatory diseases of the middle ear) and Tuberculosis.", "Enteric infections include Diarrheal diseases, Typhoid, Salmonella and other intestinal infectious diseases.", "This disease group includes Malaria, Leishmaniasis, Yellow fever, Rabies, Food-borne trematodiases, Leprosy, Ebola, Zika virus and other neglected tropical diseases.", "Other infectious disease include Meningitis, Encephalitis, Diphtheria, Whooping Cough, Tetanus, Measles, Acute hepatitis and other unspecified infectious diseases.", "Maternal and neonatal disorders include maternal hemorrhage, sepsis, hypertensive disorders, obstructed labor, abortion or miscariage, as well as Ectopic pregnancies, preterm birth, encephalopathy due to asphyxia and trauma during birth.", "Nutritional deficiencies include protein-energy malnutrition, as well as deficiencies in Iodine, Vitamin A, and dietary iron.", "Neoplasms (cancer) include all sites as well as malignant and non-melanoma cancers.", "Cardiovascular diseases include Ischemic heart disease, Stroke, Hypertensive heart disease, Atrial fibrillation, Aortic aneurysm, Peripheral Artery Disease and other circulatory diseases.", "Chronic respiratory diseases include Chronic Obstructive Pulmonary Disease (COPD), Pneumoconiosis (e.g. Silicosis and Asbestosis), Asthma, and Interstitial lung disease and pulmonary sarcoidosis.", "Digestive diseases include Cirrhosis and other chronic liver diseases, Appendicitis, Inflammatory bowel disease, Vascular intestinal disorders, Gallblader and biliary diseases, and Pancreatitis.", "Neurological disorders include Alzheimer's and other dementias, Parkinson's disease, Epilepsy, Multiple sclerosis, Motor neuron disease, Migraine and tension headaches and other neurological disorders.", "Mental disorders include Schizophrenia, Depressive, Bipolar, Anxiety, and Eating disorders as well as Autism Spectrum, Attention-deficit/hyperactivity, and Conduct disorders.", "Substance use disorders include Alcohol, Opioid, Cocaine, Amphetamine, Cannabis and other drug use disorders", "Diabetes and kidney diseases include both Type 1 and Type 2 Diabetes mellitus, Chronic Kidney Disease and Acute Glomerulonephritis.", "Skin and subcutaneous disease include Dermatitis, Psoriasis, Bacterial, Fungal and Viral skin diseases, Alopecia areata, and Acne.", "Sense organ disease include blindness and visual impairment caused by Glaucoma, Cataract, and Macular degeneration as well as hearing loss and other sense organ diseases.", "Musculoskeletal disorders include Rheumatoid arthritis, Osteoarthritis, Low back pain, Neck pain and Gout.", "Other non-communicable diseases include congenital birth defects, urinary diseases, male infertility and other gynecological diseases, as well as Endocrine, metabolic, blood, and immune disorders, Oral disorders and Sudden Infant Death Syndrome.", "Transport injuries include injuries on the road involving pedestrains, cyclists, motorcyclist and motor vehicle road injuries.", "Unintentional injuries include falls, drowning, poisonings, exposure to mechanical forces, fire, heat and hot substances as well as adverse effects of medical treatment, animal contact, foreign bodies or forces of nature.", "Self-harm and interpersonal violence includes conflict and terrorism, physical and sexual violence as well as self-harm and executions."))
+
+level_2_summary <- level_2_cause_df %>% 
+  filter(Sex == 'Both') %>% 
+  mutate(deaths_label = paste0('This group of causes was estimated to be responsible for ', format(round(Deaths_number,0), big.mark = ',', trim = TRUE), ' deaths which represents ', round(Deaths_proportion * 100,1), '% of all deaths in ', Year, '. ', Cause, ' had the ', ifelse(Death_rank == 1, ' highest ', ifelse(Death_rank == 22, ' lowest ', paste0(ordinal_format()(Death_rank), ' highest '))), 'number of deaths out of the 22 cause groups.')) %>% 
+  mutate(yll_label = paste0('This group of causes was estimated to be responsible for ', format(round(YLL_number,0), big.mark = ',', trim = TRUE), ' years of life lost which represents ', round(YLL_proportion * 100,1), '% of all YLLs in ', Year, '. ', Cause, ' had the ', ifelse(YLL_rank == 1, ' highest ', ifelse(YLL_rank == 22, ' lowest ', paste0(ordinal_format()(YLL_rank), ' highest '))), 'number of YLLs out of the 22 cause groups.')) %>% 
+  mutate(yld_label = paste0('This group of causes was estimated to be responsible for ', format(round(YLD_number,0), big.mark = ',', trim = TRUE), ' years of life lived with disability which represents ', round(YLD_proportion * 100,1), '% of all YLDs in ', Year, '. ', Cause, ' had the ', ifelse(YLD_rank == 1, ' highest ', ifelse(YLD_rank == 22, ' lowest ', paste0(ordinal_format()(YLD_rank), ' highest '))), 'number of YLDs out of the 22 cause groups.')) %>% 
+  mutate(daly_label = paste0('This group of causes was estimated to be responsible for ', format(round(DALY_number,0), big.mark = ',', trim = TRUE), ' disability adjusted life years lost which represents ', round(DALY_proportion * 100,1), '% of all DALYs in ', Year, '. ', Cause, ' had the ', ifelse(DALY_rank == 1, ' highest ', ifelse(DALY_rank == 22, ' lowest ', paste0(ordinal_format()(DALY_rank), ' highest '))), 'number of DALYs out of the 22 cause groups.')) %>% 
+  mutate(Parent = paste0('This group is part of the ', `Cause group`, ' main group of causes.')) %>% 
+  left_join(cause_description, by = 'Cause') %>% 
+  select(Cause, Parent, Description, deaths_label, yll_label, yld_label, daly_label) %>% 
+  mutate(Cause = factor(Cause, levels = c("HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"))) %>% 
+  arrange(Cause)
+
+level_2_summary %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_2_2017_', gsub(" ", "_", tolower(Area_x)), '_summary.json'))
+  
 
 # Data for cause size bubbles 
 
@@ -575,9 +627,58 @@ Age_standardised_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_downl
 
 # There are no raw counts in the standardised set - only rates
 
+# we will be comparing our area against the region and england, and our nearest neighbours. 
+# Nearest neighbours #### 
+LAD <- read_csv(url("https://opendata.arcgis.com/datasets/a267b55f601a4319a9955b0197e3cb81_0.csv"), col_types = cols(LAD17CD = col_character(),LAD17NM = col_character(),  LAD17NMW = col_character(),  FID = col_integer()))
+
+Counties <- read_csv(url("https://opendata.arcgis.com/datasets/7e6bfb3858454ba79f5ab3c7b9162ee7_0.csv"), col_types = cols(CTY17CD = col_character(),  CTY17NM = col_character(),  Column2 = col_character(),  Column3 = col_character(),  FID = col_integer()))
+
+lookup <- read_csv(url("https://opendata.arcgis.com/datasets/41828627a5ae4f65961b0e741258d210_0.csv"), col_types = cols(LTLA17CD = col_character(),  LTLA17NM = col_character(),  UTLA17CD = col_character(),  UTLA17NM = col_character(),  FID = col_integer()))
+
+# This is a lower tier LA to upper tier LA lookup
+UA <- subset(lookup, LTLA17NM == UTLA17NM)
+
+Region <- read_csv(url("https://opendata.arcgis.com/datasets/cec20f3a9a644a0fb40fbf0c70c3be5c_0.csv"), col_types = cols(RGN17CD = col_character(),  RGN17NM = col_character(),  RGN17NMW = col_character(),  FID = col_integer()))
+colnames(Region) <- c("Area_Code", "Area_Name", "Area_Name_Welsh", "FID")
+
+Region$Area_Type <- "Region"
+Region <- Region[c("Area_Code", "Area_Name", "Area_Type")]
+
+LAD <- subset(LAD, substr(LAD$LAD17CD, 1, 1) == "E")
+LAD$Area_Type <- ifelse(LAD$LAD17NM %in% UA$LTLA17NM, "Unitary Authority", "District")
+colnames(LAD) <- c("Area_Code", "Area_Name", "Area_Name_Welsh", "FID", "Area_Type")
+LAD <- LAD[c("Area_Code", "Area_Name", "Area_Type")]
+
+Counties$Area_type <- "County"
+colnames(Counties) <- c("Area_Code", "Area_Name", "Col2", "Col3", "FID", "Area_Type")
+Counties <- Counties[c("Area_Code", "Area_Name", "Area_Type")]
+
+England <- data.frame(Area_Code = "E92000001", Area_Name = "England", Area_Type = "Country")
+
+Areas <- rbind(LAD, Counties, Region, England)
+rm(LAD, Counties, Region, England, UA)
+
+WSx_NN <- data.frame(Area_Code = nearest_neighbours(AreaCode = "E10000032", AreaTypeID = "102", measure = "CIPFA")) %>%   
+  mutate(Neighbour_rank = row_number()) %>% 
+  left_join(Areas, by = "Area_Code") %>% 
+  select(Area_Name, Neighbour_rank) 
+
+Area_rank = data.frame(Area_Name = c('West Sussex','South East England',"England"), Neighbour_rank = c(0,1,2)) %>% 
+  bind_rows(WSx_NN) %>% 
+  mutate(Neighbour_rank = row_number()) %>% 
+  rename(Area = Area_Name)
+
+# se_eng <- Age_standardised_GBD_cause_data %>% 
+#   filter(Level == 0) %>% 
+#   filter(Sex == 'Both') %>% 
+#   left_join(Area_rank, by = 'Area') %>% 
+#   filter(measure == 'Deaths') %>% 
+#   filter(Area %in% c('South East England', 'England'))
+# 
 Age_standardised_GBD_cause_data %>% 
   filter(Level == 0) %>% 
   filter(Sex == 'Both') %>% 
+  left_join(Area_rank, by = 'Area') %>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_totals_1990_2017_all_areas.json'))
 

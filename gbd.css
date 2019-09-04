@@ -154,25 +154,21 @@ svg {
   background: #ffffff;
 }
 
-button.filterButton {
+.cause_list {
   display: block;
   padding: 0.5em 0.5em;
   border: none;
   color: #000000;
   background: #ffffff;
-  /* width: 100%; */
   cursor: pointer;
   text-align: left;
   font-size: .8rem;
   font-family: inherit;
   margin: 0 0 3px;
-  /* min-height: 18px; */
   border-left: 8px solid #ccc;
-  /* -webkit-transition-duration: 0.4s; /* Safari */
-  /* transition-duration: 0.4s; */
 }
 
-button.filterButton:hover{
+.cause_list:hover{
   background: #ccc;
 }
 
