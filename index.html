@@ -79,6 +79,7 @@
 <div id = "my_lifecourse_condition_dataviz"> </div>
 <!-- x = age y = value, fill = condition (level 2)-->
 
+<h2>Perhaps there could be just one switch for both the number and proportions figure that updates together.</h2>
 <div class="switch-field">
 <input onclick="update_condition(deaths_condition)" type="radio" id="radio-twelve" name="switch-four" checked/>
 <label for="radio-twelve">Deaths</label>
@@ -91,6 +92,19 @@
 </div>
 <div id = 'my_condition_lifecourse_dataviz'></div>
 <!-- x = condition (level 2) y = value, fill - age -->
+
+<p>Finally, this is the proportion of a conditions burden by the age of people. If the condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain age. It shows us that certain diseases impact people of particular ages disproportionately.</p>
+<div class="switch-field">
+<input onclick="update_condition_prop(deaths_condition_proportion)" type="radio" id="radio-sixteen" name="switch-five" checked/>
+<label for="radio-sixteen">Deaths</label>
+<input onclick="update_condition_prop(yll_condition_proportion)" type="radio" id="radio-seventeen" name="switch-five" />
+<label for="radio-seventeen">YLL</label>
+<input onclick='update_condition_prop(yld_condition_proportion)' type="radio" id="radio-eighteen" name="switch-five" />
+<label for="radio-eighteen">YLD</label>
+<input onclick='update_condition_prop(daly_condition_proportion)' type="radio" id="radio-nineteen" name="switch-five" />
+<label for="radio-nineteen">DALY</label>
+</div>
+<div id = 'my_condition_lifecourse_proportion_dataviz'></div>
 
 <h1>Exploring changes over time and across areas</h1>
 <p>So far we have looked at ill health for those in West Sussex using the 'crude' or unstandardised values, as this gives an idea of the scale of the burden of ill health for our population. We know from the section above that age is a very important determinent of ill health and disability and conditions affect people of different ages.</p>

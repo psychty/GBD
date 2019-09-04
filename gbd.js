@@ -615,7 +615,6 @@ var age_bars_df = svg_fg_4.append("g")
 
 update_age(deaths_age)
 
-
 // age by conditions
 var request = new XMLHttpRequest();
     request.open("GET", "./Numbers_lifecourse_persons_by_condition_level_2_2017_west_sussex.json", false);
@@ -663,7 +662,7 @@ var subgroupName = d3.select(this.parentNode).datum().key;
 var subgroupValue = d.data[subgroupName];
 
 tooltip_condition_age
- .html("<h3>" + subgroupName + '</h3><p>The estimated number of ' + d.data.Measure + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(subgroupValue) + '</b></font>.</p>')
+ .html("<h3>" + d.data.Cause + '</h3><p>The estimated number of ' + d.data.Measure + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(subgroupValue) + '</b></font>.</p>')
  .style("opacity", 1)
  .style("top", (event.pageY - 10) + "px")
  .style("left", (event.pageX + 10) + "px")
@@ -673,7 +672,7 @@ tooltip_condition_age
 var svg_fg_5 = d3.select("#my_condition_lifecourse_dataviz")
  .append("svg")
  .attr("width", width)
- .attr("height", height_fg_5 +100)
+ .attr("height", height_fg_5 + 200)
  .append("g")
  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -775,6 +774,162 @@ var yAxis_fg_5 = svg_fg_5
 
   update_condition(deaths_condition)
 
+
+  // age by conditions proportion
+
+  // This is the proportion of a conditions burden by the age of people. If the condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain age. It shows us that certain diseases impact people of particular ages disproportionately.
+  var request = new XMLHttpRequest();
+      request.open("GET", "./Proportion_lifecourse_persons_by_condition_level_2_2017_west_sussex.json", false);
+      request.send(null);
+  var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
+
+  deaths_condition_proportion = json.filter(function(d){
+    return d.Measure === 'Deaths'});
+
+  yll_condition_proportion = json.filter(function(d){
+    return d.Measure === 'YLLs (Years of Life Lost)'});
+
+  yld_condition_proportion = json.filter(function(d){
+    return d.Measure === 'YLDs (Years Lived with Disability)'});
+
+  daly_condition_proportion = json.filter(function(d){
+    return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
+
+var width_fg_5_prop = width_fg_4
+var height_fg_5_prop = height_fg_4
+
+var tooltip_condition_age_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
+ .append("div")
+ .style("opacity", 0)
+     .attr("class", "tooltip_bars")
+     .style("position", "absolute")
+     .style("z-index", "10")
+     .style("background-color", "white")
+     .style("border", "solid")
+     .style("border-width", "1px")
+     .style("border-radius", "5px")
+     .style("padding", "10px")
+
+    var showTooltip_condition_age_prop = function(d) {
+      tooltip_condition_age_prop
+        .transition()
+        .duration(200);
+
+    var subgroupName_prop = d3.select(this.parentNode).datum().key;
+    var subgroupValue_prop = d.data[subgroupName_prop];
+
+    tooltip_condition_age_prop
+     .html("<h3>" + d.data.Cause + '</h3><p>The estimated proportion of ' + d.data.Measure + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName_prop + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.1%")(subgroupValue_prop) + '</b></font>.</p>')
+     .style("opacity", 1)
+     .style("top", (event.pageY - 10) + "px")
+     .style("left", (event.pageX + 10) + "px")
+    }
+
+    // append the svg object to the body of the page
+    var svg_fg_5_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
+     .append("svg")
+     .attr("width", width)
+     .attr("height", height_fg_5_prop + 200)
+     .append("g")
+     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // Add X axis
+    var x_fg_5_prop = d3.scaleBand()
+     .domain(conditions)
+     .range([0, width_fg_5_prop])
+     .padding([0.2])
+
+    svg_fg_5_prop
+     .append("g")
+     .attr("transform", "translate(0," + height_fg_5_prop + ")")
+     .call(d3.axisBottom(x_fg_5_prop).tickSizeOuter(0));
+
+    svg_fg_5_prop
+     .selectAll("text")
+     .attr("transform", "translate(-10,10)rotate(-45)")
+     .style("text-anchor", "end")
+
+    // Add X axis label:
+    svg_fg_5_prop
+     .append("text")
+     .attr("text-anchor", "end")
+     .attr("x", width/2)
+     .attr("y", height_fg_5_prop + margin.top + 30)
+     .text("Condition");
+
+    // Y axis label:
+    svg_fg_5_prop
+     .append("text")
+     .attr('id', 'axis_y_title')
+     .attr("text-anchor", "end")
+     .attr("transform", "rotate(-90)")
+     .attr("y", - margin.left + 10)
+     .attr("x", - margin.top - 60)
+     .text('Number');
+
+    // TODO:  This is currently the max value, for DALYs, if we want the y axis to update based on the measure we need to figure out how do do it.
+
+    // // Add Y axis
+    var y_fg_5_prop = d3.scaleLinear()
+        .domain([0, 1])
+        .range([height_fg_5_prop, 0 ]);
+
+      svg_fg_5_prop
+        .append("g")
+        .call(d3.axisLeft(y_fg_5_prop));
+
+    var yAxis_fg_5_prop = svg_fg_5_prop
+      .append("g")
+      .attr("class", "myYaxis")
+
+      function update_condition_prop(data) {
+
+      var stackedData = d3.stack()
+        .keys(ages)
+          (data)
+
+      var measure_name = d3.map(data, function(d){
+        return(d.Measure)})
+        .keys();
+
+      // This adds a transition effect on the change between datasets (i.e. if the yaxis needs to be longer or shorter).
+      yAxis_fg_5_prop
+        .transition()
+        .duration(1000)
+        .call(d3.axisLeft(y_fg_5_prop));
+
+      var condition_bars_df_prop = svg_fg_5_prop.append("g")
+        .selectAll("g")
+        .data(stackedData) // Enter in the stack data = loop key per key = group per group
+        .enter()
+        .append("g")
+        .attr("fill", function(d) {
+          return color_age_group(d.key); })
+        .selectAll("rect")
+        .data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
+        .enter()
+        .append("rect")
+        .attr("x", function(d) {
+          return x_fg_5_prop(d.data.Cause); })
+        .attr("y", function(d) {
+          return y_fg_5_prop(d[1]); })
+        .attr("height", function(d) {
+          return y_fg_5_prop(d[0]) - y_fg_5_prop(d[1]); })
+        .attr("width", x_fg_5.bandwidth())
+        .on("mouseover", function() {
+        return tooltip_condition_age_prop.style("visibility", "visible");
+        })
+        .on("mousemove", showTooltip_condition_age_prop)
+        .on("mouseout", function() {
+        return tooltip_condition_age_prop.style("visibility", "hidden");
+        })
+
+        condition_bars_df_prop
+          .exit()
+          .remove()
+      }
+
+      update_condition_prop(deaths_condition_proportion)
 
 // possible bug
 // y_fg_5

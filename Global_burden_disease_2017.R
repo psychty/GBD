@@ -468,7 +468,9 @@ lifecourse_condition <- lifecourse_numbers %>%
   mutate(`80 to 84` = replace_na(`80 to 84`, 0)) %>%  
   mutate(`85 to 89` = replace_na(`85 to 89`, 0)) %>%  
   mutate(`90 to 94` = replace_na(`90 to 94`, 0)) %>%  
-  mutate(`95 plus` = replace_na(`95 plus`, 0))
+  mutate(`95 plus` = replace_na(`95 plus`, 0)) %>% 
+  mutate(Cause = factor(Cause, levels = c("HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"))) %>%
+  arrange(Cause)
   
 lifecourse_condition %>% 
   toJSON() %>% 
@@ -481,6 +483,39 @@ lifecourse_condition %>%
   filter(Total_in_condition == max(Total_in_condition)) %>% 
   select(-Cause) %>% 
   mutate(rounded_Total_in_condition = round_any(Total_in_condition, 500, ceiling))
+
+lifecourse_condition_prop <- lifecourse_condition %>%
+  mutate(Total_in_condition = rowSums(.[3:ncol(.)])) %>% 
+  mutate(`Early Neonatal` = `Early Neonatal` / Total_in_condition) %>% 
+  mutate(`Late Neonatal` = `Late Neonatal` / Total_in_condition) %>% 
+  mutate(`Post Neonatal` = `Post Neonatal` / Total_in_condition) %>% 
+  mutate(`1 to 4` = `1 to 4` / Total_in_condition) %>%  
+  mutate(`5 to 9` = `5 to 9` / Total_in_condition) %>%  
+  mutate(`10 to 14` = `10 to 14` / Total_in_condition) %>%  
+  mutate(`15 to 19` = `15 to 19` / Total_in_condition) %>%  
+  mutate(`20 to 24` = `20 to 24` / Total_in_condition) %>%  
+  mutate(`25 to 29` = `25 to 29` / Total_in_condition) %>%  
+  mutate(`30 to 34` = `30 to 34` / Total_in_condition) %>%  
+  mutate(`35 to 39` = `35 to 39` / Total_in_condition) %>%  
+  mutate(`40 to 44` = `40 to 44` / Total_in_condition) %>%  
+  mutate(`45 to 49` = `45 to 49` / Total_in_condition) %>%  
+  mutate(`50 to 54` = `50 to 54` / Total_in_condition) %>%  
+  mutate(`55 to 59` = `55 to 59` / Total_in_condition) %>%  
+  mutate(`60 to 64` = `60 to 64` / Total_in_condition) %>%  
+  mutate(`65 to 69` = `65 to 69` / Total_in_condition) %>%  
+  mutate(`70 to 74` = `70 to 74` / Total_in_condition) %>%  
+  mutate(`75 to 79` = `75 to 79` / Total_in_condition) %>%  
+  mutate(`80 to 84` = `80 to 84` / Total_in_condition) %>%  
+  mutate(`85 to 89` = `85 to 89` / Total_in_condition) %>%  
+  mutate(`90 to 94` = `90 to 94` / Total_in_condition) %>%  
+  mutate(`95 plus` = `95 plus` / Total_in_condition) %>% 
+  select(-Total_in_condition) %>% 
+  mutate(Cause = factor(Cause, levels = c("HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"))) %>%
+  arrange(Cause)
+
+lifecourse_condition_prop %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Proportion_lifecourse_persons_by_condition_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
 # yld_age_level_1 <- lifecourse_wsx_df %>% 
 #   filter(Measure == "YLDs (Years Lived with Disability)") %>% 
