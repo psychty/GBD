@@ -456,6 +456,19 @@ update_bubbles(deaths_persons_lv3)
 
 // Bubbles by sex will be added as figure 3
 
+function age_key_summary() {
+      ages.forEach(function(item, index) {
+        var list = document.createElement("li");
+        list.innerHTML = item;
+        list.className = 'cause_list';
+        list.style.borderColor = color_age_group(index);
+        var div = document.getElementById("age_summary");
+        div.appendChild(list);
+      })
+    }
+age_key_summary();
+
+
 // By age level 2 conditions figure 4
 var request = new XMLHttpRequest();
     request.open("GET", "./Numbers_lifecourse_persons_level_2_2017_west_sussex.json", false);
@@ -672,7 +685,7 @@ tooltip_condition_age
 var svg_fg_5 = d3.select("#my_condition_lifecourse_dataviz")
  .append("svg")
  .attr("width", width)
- .attr("height", height_fg_5 + 200)
+ .attr("height", height_fg_5 + 250)
  .append("g")
  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -689,7 +702,7 @@ svg_fg_5
 
 svg_fg_5
  .selectAll("text")
- .attr("transform", "translate(-10,10)rotate(-45)")
+ .attr("transform", "translate(-10,10)rotate(-90)")
  .style("text-anchor", "end")
 
 // Add X axis label:
@@ -697,7 +710,7 @@ svg_fg_5
  .append("text")
  .attr("text-anchor", "end")
  .attr("x", width/2)
- .attr("y", height_fg_5 + margin.top + 30)
+ .attr("y", height_fg_5 + margin.top + 100)
  .text("Condition");
 
 // Y axis label:
@@ -774,7 +787,6 @@ var yAxis_fg_5 = svg_fg_5
 
   update_condition(deaths_condition)
 
-
   // age by conditions proportion
 
   // This is the proportion of a conditions burden by the age of people. If the condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain age. It shows us that certain diseases impact people of particular ages disproportionately.
@@ -829,7 +841,7 @@ var tooltip_condition_age_prop = d3.select("#my_condition_lifecourse_proportion_
     var svg_fg_5_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
      .append("svg")
      .attr("width", width)
-     .attr("height", height_fg_5_prop + 200)
+     .attr("height", height_fg_5_prop + 250)
      .append("g")
      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -846,7 +858,7 @@ var tooltip_condition_age_prop = d3.select("#my_condition_lifecourse_proportion_
 
     svg_fg_5_prop
      .selectAll("text")
-     .attr("transform", "translate(-10,10)rotate(-45)")
+     .attr("transform", "translate(-10,10)rotate(-90)")
      .style("text-anchor", "end")
 
     // Add X axis label:
@@ -854,7 +866,7 @@ var tooltip_condition_age_prop = d3.select("#my_condition_lifecourse_proportion_
      .append("text")
      .attr("text-anchor", "end")
      .attr("x", width/2)
-     .attr("y", height_fg_5_prop + margin.top + 30)
+     .attr("y", height_fg_5_prop + margin.top + 100)
      .text("Condition");
 
     // Y axis label:
@@ -865,7 +877,7 @@ var tooltip_condition_age_prop = d3.select("#my_condition_lifecourse_proportion_
      .attr("transform", "rotate(-90)")
      .attr("y", - margin.left + 10)
      .attr("x", - margin.top - 60)
-     .text('Number');
+     .text('Proportion');
 
     // TODO:  This is currently the max value, for DALYs, if we want the y axis to update based on the measure we need to figure out how do do it.
 
@@ -939,6 +951,124 @@ var tooltip_condition_age_prop = d3.select("#my_condition_lifecourse_proportion_
 //     else if (measure_name === 'YLDs (Years Lived with Disability)') return 29000;
 //                return 48500; }])
 //    .range([height_fg_4, 0 ]);
+
+
+// append the svg object to the body of the page
+var rank_change_svg = d3.select("#my_dataviz")
+.append("svg")
+.attr("width", width + margin.left + margin.right)
+.attr("height", height + margin.top + margin.bottom)
+.append("g")
+.attr("transform",
+      "translate(" + margin.left + "," + margin.top + ")");
+
+var request = new XMLHttpRequest();
+    request.open("GET", "./Rate_change_over_time_levels_0_1_2.json", false);
+    request.send(null);
+var json = JSON.parse(request.responseText);
+
+deaths_rate_rank_change = json.filter(function(d){
+  return d.measure === 'Deaths' &
+         d.Sex ==='Both' &
+         d.Area === 'West Sussex' &
+        +d.Level === 2});
+
+yll_rate_rank_change = json.filter(function(d){
+  return d.measure === 'YLLs (Years of Life Lost)' &
+         d.Sex ==='Both' &
+         d.Area === 'West Sussex' &
+        +d.Level === 2});
+
+yld_rate_rank_change = json.filter(function(d){
+  return d.measure === 'YLDs (Years Lived with Disability)' &
+         d.Sex ==='Both' &
+         d.Area === 'West Sussex' &
+        +d.Level === 2});
+
+daly_rate_rank_change = json.filter(function(d){
+  return d.measure === 'DALYs (Disability-Adjusted Life Years)' &
+         d.Sex ==='Both' &
+         d.Area === 'West Sussex' &
+        +d.Level === 2});
+
+years_to_show = ["Rank in 1997", "Rank in 2007", "Rank in 2017"]
+
+
+function update_top_10_change(data) {
+// Parse the Data
+var max_17 = d3.max(data, function(d) {
+  return +d['Rank in 2017'];
+  });
+var max_12 = d3.max(data, function(d) {
+  return +d['Rank in 2012'];
+  });
+var max_07 = d3.max(data, function(d) {
+  return +d['Rank in 2007'];
+  });
+var max_02 = d3.max(data, function(d) {
+  return +d['Rank in 2002'];
+  });
+var max_97 = d3.max(data, function(d) {
+  return +d['Rank in 1997'];
+  });
+
+// Use the highest value of rank across 1997, 2007 and 2017 to determine the y axis scale for consistency.
+var y_rank_change = {}
+  for (i in years_to_show) {
+    name = years_to_show[i]
+    y_rank_change[name] = d3.scaleLinear()
+      .domain([1, d3.max([max_97, max_07, max_17])] )
+      .range([0, height])
+  }
+
+// Decide the place for each line
+x_rank_change = d3.scalePoint()
+  .range([0, width])
+  .padding(1)
+  .domain(years_to_show);
+
+// The path function returns x and y coordinates to draw the lines
+function path(d) {
+  return d3.line()(years_to_show.map(function(p) {
+    return [x_rank_change(p), y_rank_change[p](d[p])];
+  }));
+  }
+
+// Draw the lines
+rank_change_svg
+.selectAll("myPath")
+.data(data)
+.enter()
+.append("path")
+.attr("d",  path)
+.attr('fill', 'none')
+.style("stroke", function(d) {
+    return color_cause_group(d.Cause)})
+.style("opacity", 1)
+.style('stroke-width', 2.5)
+
+// Draw the axis for each year and add label at the top
+rank_change_svg
+.selectAll("myAxis")
+.data(years_to_show)
+.enter()
+.append("g")
+.attr("transform", function(d) {
+  return "translate(" + x_rank_change(d) + ")";
+ })
+.each(function(d) { d3.select(this).call(d3.axisLeft().scale(y_rank_change[d])); })
+.append("text")
+.style("text-anchor", "middle")
+.attr("y", -9)
+.text(function(d) {return d; })
+.style("fill", "black")
+.style("fontWeight", 'bold')
+
+}
+
+update_top_10_change(deaths_rate_rank_change)
+
+
 
 // Line chart
 var height_fg_6 = 300;
@@ -1047,6 +1177,20 @@ svg_fg_6
   .attr("y", height_fg_6 + margin.top + 10)
   .text("Year");
 
+svg_fg_6
+   .append("text")
+   .attr("x", (width/100)*70)
+   .attr("y", height_fg_6/100*20)
+   .attr("text-anchor", "start")
+   .text("The black line indicates");
+
+svg_fg_6
+  .append("text")
+  .attr("x", (width/100)*70)
+  .attr("y", (height_fg_6/100)*25)
+  .attr("text-anchor", "start")
+  .text("the comparator");
+
 // Y axis label:
 svg_fg_6
   .append("text")
@@ -1080,6 +1224,8 @@ var line_ref = svg_fg_6
   .attr("stroke", '#000000')
   .style("stroke-width", 2)
   .style("fill", "none")
+
+
 
 // Add a circle following the pointer
 var focus_fg_6 = svg_fg_6
@@ -1115,6 +1261,8 @@ focus_fg_6
  .style("opacity", 1)
  .attr("dx", 8)
  .attr("dy", "-.3em");
+
+
 
 // This is a function to update the chart with new data (it filters the larger dataset)
 function update_fg_6(selectedGroup) {

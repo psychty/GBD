@@ -70,6 +70,8 @@ GBD_2017_cause_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2
          Cause_outline = cause_outline,
          Level = level)
 
+
+
 Causes_in_each_level <- GBD_2017_cause_hierarchy %>% 
   select(Level) %>% 
   group_by(Level) %>% 
@@ -95,6 +97,7 @@ All_ages_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[g
   # mutate(Cause = ifelse(nchar(Cause) < 40, Cause, sub('(.{1,40})(\\s|$)', '\\1\n', Cause))) %>%
   mutate(Cause = factor(Cause, levels =  unique(Cause))) %>% 
   select(Area, Sex, Year, Cause, Cause_outline, Cause_id, Level, Estimate, Lower_estimate, Upper_estimate, `Cause group`, Parent_id, measure, metric)
+
 
 Cause_number <- All_ages_GBD_cause_data %>% 
   filter(metric == "Number") %>% 
@@ -391,6 +394,11 @@ lifecourse_wsx_df <- unique(list.files("~/Documents/GBD_data_download")[grepl("b
 lifecourse_numbers <- lifecourse_wsx_df %>% 
   filter(Metric == 'Number')
 
+ages_summary <- lifecourse_numbers %>% 
+  filter(Level == 0) 
+
+
+
 lifecourse_prop <- lifecourse_wsx_df %>% 
   filter(Metric == "Proportion of total burden caused by this condition")
 
@@ -517,132 +525,16 @@ lifecourse_condition_prop %>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Proportion_lifecourse_persons_by_condition_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
-# yld_age_level_1 <- lifecourse_wsx_df %>% 
-#   filter(Measure == "YLDs (Years Lived with Disability)") %>% 
-#   filter(Sex != "Both") %>% 
-#   filter(Level == 1) %>% 
-#   mutate(Cause = factor(Cause, levels = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries")))
-
-# ggplot(yld_age_level_1, aes(x = Age,  y = Estimate, fill = Cause)) +
-#   geom_bar(position = "stack", stat = "identity") +
-#   scale_y_continuous(limits = c(0,6000), breaks = seq(0,6000, 500), labels = comma) +
-#   scale_fill_manual(values = c("#C2464F", "#62A7B9", "#9DCB9C"), 
-#                     breaks = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-#                     limits = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-#                     labels = c("Communicable, maternal, neonatal,\nand nutritional diseases", "Non-communicable\ndiseases", "Injuries\n"),
-#                     name = "Cause group\n(level 1)") +
-#   labs(title = paste0("Total number of years lived with disability; by age group and sex; ", unique(yld_age_level_1$Year)),
-#        subtitle = paste0(unique(yld_age_level_1$Area)),
-#        caption = "Measure: Years lived with disability (YLD)",
-#        x = "Age group",
-#        y = "Number") +
-#   stack_theme() +
-#   theme(axis.text.x = element_text(angle = 90),
-#         legend.position = "top",
-#         legend.key.height = unit(0.4, "cm"),
-#         legend.key.width = unit(0.2, "cm")) +
-#   facet_rep_wrap(~Sex, repeat.tick.labels = TRUE)
-
-# yld_age_level_2 <- lifecourse_wsx_df %>% 
-#   filter(Measure == "YLDs (Years Lived with Disability)",
-#          Metric == "Number",
-#          Year == max(Year),
-#          Age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
-#   mutate(Age = factor(Age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
-#   filter(Sex != "Both") %>% 
-#   filter(Level == 2) %>%
-#   arrange(Cause_outline) %>% 
-#   mutate(Cause = ifelse(nchar(as.character(Cause)) < 40, as.character(Cause), sub('(.{1,40})(\\s|$)', '\\1\n', as.character(Cause)))) %>% 
-#   mutate(Cause = factor(Cause, levels =  unique(Cause))) %>% 
-#   ungroup() 
-
-
-# ggplot(yld_age_level_2, aes(x = Age,  y = Estimate, fill = Cause)) +
-#   geom_bar(position = "stack", stat = "identity") +
-#   scale_y_continuous(limits = c(0,6000), breaks = seq(0,6000, 500), labels = comma) +
-#   scale_fill_manual(values = c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#99000d", '#a6bddb','#74a9cf','#3690c0','#0570b0','#034e7b',"#063367", '#9e9ac8','#807dba','#6a51a3','#54278f', "#bae4b3", "#74c476", "#31a354", "#22723a", '#000000'), name = "Cause group\n(level 2)") +
-#   labs(title = paste0("Total number of years lived with disability; by age group and sex; ", unique(yld_age_level_2$Year)),
-#        subtitle = paste0(unique(yld_age_level_2$Area)),
-#        caption = "Measure: Years lived with disability (YLD)",
-#        x = "Age group",
-#        y = "Number of years lived with\ndisability (YLDs)") +
-#   stack_theme() +
-#   theme(axis.text.x = element_text(size = 7, angle = 90),
-#         legend.position = "right",
-#         legend.key.height = unit(0.4, "cm"),
-#         legend.key.width = unit(0.2, "cm"),
-#         legend.text = element_text(size = 8)) +
-#   guides(fill = guide_legend(ncol = 1)) +
-#   facet_rep_wrap(~Sex, repeat.tick.labels = TRUE)
-
-# Cause proportion contributing to DALYs by age 
-# daly_age_perc_level_1 <- lifecourse_wsx_df %>% 
-#   filter(Measure == "DALYs (Disability-Adjusted Life Years)",
-#          Metric == "Proportion of total burden caused by this condition",
-#          Year == max(Year),
-#          Age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
-#   mutate(Age = factor(Age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
-#   filter(Sex != "Both") %>% 
-#   filter(Level == 1) %>% 
-#   arrange(Cause_outline) %>% 
-#   mutate(Cause = ifelse(nchar(as.character(Cause)) < 35, as.character(Cause), sub('(.{1,35})(\\s|$)', '\\1\n', as.character(Cause)))) %>%
-#   mutate(Cause = factor(Cause, levels =  unique(Cause)))
-
-# ggplot(daly_age_perc_level_1, aes(x = Age,  y = Estimate, fill = Cause)) +
-#   geom_bar(position = "stack", stat = "identity") +
-#   scale_y_continuous(breaks = seq(0,1, 0.1), labels = percent, expand = c(0,0.02)) +
-#   scale_fill_manual(values = c("#C2464F", "#62A7B9", "#9DCB9C"), 
-#                     name = "Cause group\n(level 1)") +
-#   labs(title = paste0("Contribution of causes towards disability adjusted life years (ill health and premature mortality combined);\nby age group and sex; ", unique(daly_age_perc_level_1$Year)),
-#        subtitle = paste0(unique(daly_age_perc_level_1$Area)),
-#        caption = "Measure: DALYs (Disability-Adjusted Life Years)",
-#        x = "Age group",
-#        y = "Number") +
-#   stack_theme() +
-#   theme(axis.text.x = element_text(angle = 90),
-#         legend.position = "right",
-#         legend.key.height = unit(0.4, "cm"),
-#         legend.key.width = unit(0.2, "cm")) +
-#   facet_rep_wrap(~Sex, repeat.tick.labels = TRUE)
-
-# daly_age_perc_level_2 <- lifecourse_wsx_df %>% 
-#   filter(Measure == "DALYs (Disability-Adjusted Life Years)",
-#          Metric == "Proportion of total burden caused by this condition",
-#          Year == max(Year),
-#          Age %in% c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus")) %>%  
-#   mutate(Age = factor(Age, levels = c("Early Neonatal", "Late Neonatal",  "Post Neonatal",  "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29","30 to 34","35 to 39", "40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79", "80 to 84","85 to 89","90 to 94","95 plus"))) %>% 
-#   filter(Sex != "Both") %>% 
-#   filter(Level == 2) %>% 
-#   arrange(Cause_outline) %>% 
-#   mutate(Cause = ifelse(nchar(as.character(Cause)) < 35, as.character(Cause), sub('(.{1,35})(\\s|$)', '\\1\n', as.character(Cause)))) %>%
-#   mutate(Cause = factor(Cause, levels =  unique(Cause)))
-
-# ggplot(daly_age_perc_level_2, aes(x = Age,  y = Estimate, fill = Cause)) +
-#   geom_bar(position = "stack", stat = "identity") +
-#   scale_y_continuous(breaks = seq(0,1, 0.1), labels = percent, expand = c(0,0.02)) +
-#   scale_fill_manual(values = c("#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#99000d", '#a6bddb','#74a9cf','#3690c0','#0570b0','#034e7b',"#063367", '#9e9ac8','#807dba','#6a51a3','#54278f', "#bae4b3", "#74c476", "#31a354", "#22723a", '#000000'), name = "Cause group\n(level 2)") +
-#   labs(title = paste0("Contribution of causes towards disability adjusted life years (ill health and premature mortality combined);\nby age group and sex; ", unique(daly_age_perc_level_2$Year)),
-#        subtitle = paste0(unique(daly_age_perc_level_2$Area)),
-#        caption = "Measure: DALYs (Disability-Adjusted Life Years)",
-#        x = "Age group",
-#        y = "Number") +
-#   stack_theme() +
-#   theme(axis.text.x = element_text(angle = 90),
-#         legend.position = "right",
-#         legend.key.height = unit(0.4, "cm"),
-#         legend.key.width = unit(0.2, "cm")) +
-#   guides(fill = guide_legend(ncol = 1)) +
-#   facet_rep_wrap(~Sex, repeat.tick.labels = TRUE)
-
 # Age standardising ####
 
 # To compare over areas or time we could use age_standardised data
 
-# My thoughts are to do the analysis here, include columns for % change compared to 5 years (2012), 10 years (2007), and compared to 20 years (1997).
+# top 10 slope chart
 
-# also line charts
+# line charts 
 
-Age_standardised_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("7689553d", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
+# Rate is per 100,000 population
+Age_standardised_NN_ts_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("85cc91d0", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
   map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>%
   filter(age == 'Age-standardized') %>%
   rename(Area = location,
@@ -660,10 +552,11 @@ Age_standardised_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_downl
   mutate(Cause = factor(Cause, levels =  unique(Cause))) %>% 
   select(Area, Sex, Year, Cause, Cause_outline, Cause_id, Level, Estimate, Lower_estimate, Upper_estimate, `Cause group`, Parent_id, measure, metric)
 
+unique(Age_standardised_NN_ts_data$Area)
 # There are no raw counts in the standardised set - only rates
 
 # we will be comparing our area against the region and england, and our nearest neighbours. 
-# Nearest neighbours #### 
+# Nearest neighbours
 LAD <- read_csv(url("https://opendata.arcgis.com/datasets/a267b55f601a4319a9955b0197e3cb81_0.csv"), col_types = cols(LAD17CD = col_character(),LAD17NM = col_character(),  LAD17NMW = col_character(),  FID = col_integer()))
 
 Counties <- read_csv(url("https://opendata.arcgis.com/datasets/7e6bfb3858454ba79f5ab3c7b9162ee7_0.csv"), col_types = cols(CTY17CD = col_character(),  CTY17NM = col_character(),  Column2 = col_character(),  Column3 = col_character(),  FID = col_integer()))
@@ -703,21 +596,14 @@ Area_rank = data.frame(Area_Name = c('West Sussex','South East England',"England
   mutate(Neighbour_rank = row_number()) %>% 
   rename(Area = Area_Name)
 
-# se_eng <- Age_standardised_GBD_cause_data %>% 
-#   filter(Level == 0) %>% 
-#   filter(Sex == 'Both') %>% 
-#   left_join(Area_rank, by = 'Area') %>% 
-#   filter(measure == 'Deaths') %>% 
-#   filter(Area %in% c('South East England', 'England'))
-# 
-Age_standardised_GBD_cause_data %>% 
+Age_standardised_NN_ts_data %>% 
   filter(Level == 0) %>% 
   filter(Sex == 'Both') %>% 
   left_join(Area_rank, by = 'Area') %>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_totals_1990_2017_all_areas.json'))
 
-Age_standardised_GBD_cause_data %>% 
+Age_standardised_NN_ts_data %>% 
   filter(Level == 2) %>% 
   filter(Sex == 'Both') %>%
   filter(Area %in% c(Area_x, 'England', 'South East England')) %>%
@@ -725,299 +611,87 @@ Age_standardised_GBD_cause_data %>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_level_2_1990_2017_', gsub(" ", "_", tolower(Area_x)), '_region_england.json'))
 
-# Rate is per 100,000 population
 
-# YLL is a measure of premature mortality within a group of people. YLLs are calculated by starting with the life expectancy of a given age group in a given year, then subtracting the age at which a person in that age group dies. Greater emphasis is  placed on deaths of younger people.
 
-# Note - this is age-standardised
+# My thoughts are to do the analysis here, include columns for % change compared to 5 years (2012), 10 years (2007), and compared to 20 years (1997).
 
-YLL_rate_rank <- Age_standardised_GBD_cause_data %>% 
-  filter(Year %in% c(2007,2017),
-         measure == "YLLs (Years of Life Lost)",
-         metric == "Rate per 100,000 population") %>%  
-  select(Area, Sex, Year, Estimate, Cause) %>% 
-  spread(Year, Estimate) %>% 
-  mutate(change = (`2017`-`2007`)/`2007`) %>% 
-  gather(`2007`:`2017`, key = year, value = val) %>% 
-  left_join(GBD_2017_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
-  filter(level == 3) %>% 
-  group_by(location, sex, year) %>% 
-  arrange(desc(val)) %>% 
-  mutate(rank = row_number()) %>% 
-  select(location, sex, age, year, rank, change, cause, cause_outline) %>% 
-  spread(year, rank) %>% 
-  mutate(cause_group_code = substr(cause_outline, 1,1)) %>% 
-  left_join(GBD_2017_cause_hierarchy[c("cause_outline", "cause_name")], by = c("cause_group_code" = "cause_outline")) %>% 
-  rename(cause_group = cause_name) %>% 
-  mutate(cause_group = factor(cause_group, levels = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"))) %>% 
+Age_standardised_change_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("7d0121c1", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
+  map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>%
+  filter(age == 'Age-standardized') %>%
+  rename(Area = location,
+         Lower_estimate = lower,
+         Upper_estimate = upper,
+         Estimate = val,
+         Year = year,
+         Sex = sex,
+         Age = age,
+         Cause = cause) %>%
+  mutate(metric = ifelse(metric == "Rate", "Rate per 100,000 population", ifelse(metric == "Percent", "Proportion of total burden caused by this condition", metric))) %>% 
+  left_join(GBD_2017_cause_hierarchy[c("Cause_name", "Cause_outline", "Cause_id", "Parent_id", "Level")], by = c("Cause" = "Cause_name")) %>% 
+  left_join(GBD_2017_cause_hierarchy[c("Cause_name", "Cause_id")], by = c("Parent_id" = "Cause_id")) %>% 
+  rename(`Cause group` = Cause_name) %>% 
+  mutate(Cause = factor(Cause, levels =  unique(Cause))) %>% 
+  select(Area, Sex, Year, Cause, Cause_outline, Cause_id, Level, Estimate, Lower_estimate, Upper_estimate, `Cause group`, Parent_id, measure, metric)
+
+# Change over time for deaths at all levels by sex ####
+Change_over_time_latest <- Age_standardised_change_data %>% 
+  filter(Year == 2017) %>% 
+  rename(Estimate_2017 = Estimate) %>% 
+  mutate(Label_2017 = paste0(format(round(Estimate_2017,0), big.mark = ',', trim = TRUE), ' (', format(round(Lower_estimate,0), big.mark = ',', trim = TRUE), '-', format(round(Upper_estimate,0), big.mark = ',', trim = TRUE), ')')) %>% 
+  group_by(Area, Sex, Level, measure) %>% 
+  mutate(`Rank in 2017` = rank(-Estimate_2017))
+
+Change_over_time_a <- Age_standardised_change_data %>%
+  filter(Year %in% c(1997, 2002, 2007, 2012)) %>% 
+  select(Area, Sex, Year, Cause, Level, measure, Estimate) %>% 
+  group_by(Area, Sex, Year, Level, measure) %>% 
+  mutate(Rank = rank(-Estimate)) %>% 
+  left_join(Change_over_time_latest[c('Area', 'Sex', 'Cause', 'measure','Estimate_2017', 'Label_2017')], by = c('Area','Sex', 'Cause', 'measure')) %>% 
   ungroup() %>% 
-  mutate(location = factor(location, levels = c("West Sussex","Cambridgeshire","Devon","East Sussex", "Essex","Gloucestershire","Hampshire", "Kent","North Yorkshire","Northamptonshire","Oxfordshire","Somerset","Staffordshire","Suffolk","Warwickshire","Worcestershire", "South East region", "England", "United Kingdom"))) %>% 
-  rename(Rank_2007 = `2007`,
-         Rank_2017 = `2017`)
+  mutate(Change_to_2017 = (Estimate_2017 - Estimate) / Estimate *100) %>%
+  mutate(Change_label = paste0('Change since ', Year)) %>% 
+  mutate(Rank_label = paste0('Rank in ', Year)) %>% 
+  mutate(Estimate_label = paste0('Estimate in ', Year))
 
-YLL_rate_label <- GBD_cause_data %>% 
-  filter(year %in% c(2007,2017),
-         measure == "YLLs (Years of Life Lost)",
-         age == "Age-standardized",
-         metric == "Rate") %>%  
-  left_join(GBD_2017_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
-  filter(level == 3) %>% 
-  mutate(Rate_label = paste0(format(round(val,0),big.mark = ",", trim = TRUE), " (", format(round(lower,0),big.mark = ",", trim = TRUE),"-", format(round(upper,0),big.mark = ",", trim = TRUE), ")")) %>% 
-  select(location, sex, age, year, Rate_label, cause) %>% 
-  spread(year, Rate_label)  %>% 
-  rename(Label_2007 = `2007`,
-         Label_2017 = `2017`) %>% 
-  mutate(location = factor(location, levels = c("West Sussex","Cambridgeshire","Devon","East Sussex", "Essex","Gloucestershire","Hampshire", "Kent","North Yorkshire","Northamptonshire","Oxfordshire","Somerset","Staffordshire","Suffolk","Warwickshire","Worcestershire", "South East region", "England", "United Kingdom"))) %>% 
-  left_join(YLL_rate_rank, by = c("location", "sex", "age","cause"))
+Change_over_time_b <- Change_over_time_a %>% 
+  select(Area, Sex, Cause, measure, Change_to_2017, Change_label) %>% 
+  filter(Change_label != 'Change since 2017') %>% 
+  spread(Change_label, Change_to_2017)
 
-rm(YLL_rate_rank)
+Change_over_time_c <- Change_over_time_a %>% 
+  select(Area, Sex, Cause, measure, Rank, Rank_label) %>% 
+  spread(Rank_label, Rank)
 
-YLL_males <- YLL_rate_label %>% 
-  filter(location == "West Sussex",
-         sex == "Male",
-         Rank_2007 <= 10 | Rank_2017 <= 10)
-  
-YLL_males_top_10 <- ggplot(YLL_males) + 
-  geom_segment(aes(x = 1, xend = 2, y = Rank_2007, yend = Rank_2017), size = .7, lty = "dashed", show.legend = FALSE) +
-  geom_point(aes(x = 1, y = Rank_2007, col = cause_group), size = 7) +
-  geom_text(aes(x = 1, y = Rank_2007, label = paste0(Rank_2007)), col = "#ffffff", fontface = "bold") +
-  geom_point(aes(x = 2, y = Rank_2017, col = cause_group), size = 7) +
-  geom_text(aes(x = 2, y = Rank_2017, label = paste0(Rank_2017)), col = "#ffffff", fontface = "bold") +
-  scale_colour_manual(values = c("#C2464F", "#62A7B9", "#9DCB9C"), 
-                      breaks = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                      limits = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                      labels = c("Communicable, maternal,\nneonatal, and nutritional diseases", "Non-communicable\ndiseases", "Injuries\n"),
-                      name = "Cause\ngrouping") +
-  labs(title = paste0("Ten biggest contributors to premature mortality among ",tolower(unique(YLL_males$sex)), "s;"),
-       subtitle = paste0(unique(YLL_males$location), "; age-standardised rate"), 
-       caption = "Measure: Years of Life Lost (YLL)\nRate per 100,000 and 95% uncertainty interval given under each cause.",
-       x = "",
-       y = "") +
-  scale_y_reverse() +
-  scale_x_continuous(limits = c(-1,6)) +
-  geom_text(aes(label = "2007 ranking", y = 0, x = 1), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "2017 ranking", y = 0, x = 2), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "% change 2007-2017", y = 0, x = 6), size = 3.5, col = "#000000", hjust = 1, fontface = "bold") +
-  geom_text(aes(label = paste0(cause, "\n", Label_2007), y = Rank_2007, x = 0.8), size = 3.5, col = "#000000", hjust = 1) +
-  geom_text(aes(label = paste0(cause, "\n", Label_2017), y = Rank_2017, x = 2.2), size = 3.5, col = "#000000", hjust = 0) +
-  geom_text(data = subset(YLL_males, change <= 0), aes(label = paste0(abs(round(change*100,1)), "% ", ifelse(change == 0, "(no change)\n", ifelse(change < 0, "decline in\nrate per 100,000", "increase in\nrate per 100,000"))), y = Rank_2017, x = 6), size = 3.5, col = "#000000", hjust = 1) +
-  geom_text(data = subset(YLL_males, change > 0), aes(label = paste0(abs(round(change*100,1)), "% ", ifelse(change == 0, "(no change)\n", ifelse(change < 0, "decline in\nrate per 100,000", "increase in\nrate per 100,000"))), y = Rank_2017, x = 6), size = 3.5, col = "#cc0000", hjust = 1) +
-  slope_theme()
+Change_over_time_d <- Change_over_time_a %>% 
+  select(Area, Sex, Cause, measure, Estimate, Estimate_label) %>% 
+  spread(Estimate_label, Estimate)
 
-Top_10_YLL_males <- Measures_perc_level_3 %>% 
-  select(location, age, sex, cause_outline, cause, cause_id, level, Parent_cause, year, `YLLs (Years of Life Lost)`) %>% 
-  filter(location %in% YLL_males$location,
-         sex %in% YLL_males$sex,
-         cause %in% YLL_males$cause) %>% 
-  spread(year, `YLLs (Years of Life Lost)`) %>% 
-  select(location, age, sex, cause_outline, cause, cause_id, level, Parent_cause, `2007`,`2012`,`2017`) %>% 
-  left_join(YLL_males[c("cause_outline", "Rank_2007", "Rank_2017", "cause_group")], by = "cause_outline") %>% 
-  arrange(Rank_2017)
+Change_over_time <- Change_over_time_latest %>% 
+  left_join(Change_over_time_b, by = c('Area','Sex', 'Cause', 'measure')) %>% 
+  left_join(Change_over_time_c, by = c('Area','Sex', 'Cause', 'measure')) %>% 
+  left_join(Change_over_time_d, by = c('Area','Sex', 'Cause', 'measure')) %>% 
+  select(-c(Year, Cause_id, Cause_outline, Parent_id, metric)) %>% 
+  mutate(`Change since 1997` = replace_na(`Change since 1997`, 0)) %>% 
+  mutate(`Change since 2002` = replace_na(`Change since 2002`, 0)) %>% 
+  mutate(`Change since 2007` = replace_na(`Change since 2007`, 0)) %>% 
+  mutate(`Change since 2012` = replace_na(`Change since 2012`, 0)) %>% 
+  mutate(`Rank in 1997` = replace_na(`Rank in 1997`, 0)) %>% 
+  mutate(`Rank in 2002` = replace_na(`Rank in 2002`, 0)) %>% 
+  mutate(`Rank in 2007` = replace_na(`Rank in 2007`, 0)) %>% 
+  mutate(`Rank in 2012` = replace_na(`Rank in 2012`, 0)) %>% 
+  mutate(`Estimate in 1997` = replace_na(`Estimate in 1997`, 0)) %>% 
+  mutate(`Estimate in 2002` = replace_na(`Estimate in 2002`, 0)) %>% 
+  mutate(`Estimate in 2007` = replace_na(`Estimate in 2007`, 0)) %>% 
+  mutate(`Estimate in 2012` = replace_na(`Estimate in 2012`, 0)) 
 
-paste0("The top 10 causes of age standardised premature mortality for males in 2017 accounted for ", round(sum(subset(Top_10_YLL_males, Rank_2017 <= 10, select = "2017"))*100,1), "% of the total years of life lost among males in 2017.")
-
-paste0(subset(YLL_males, Rank_2017 == 1, select = "cause"), " was the top cause of premature mortality among males in West Sussex in 2017, contributing ", round(subset(Top_10_YLL_males, cause == as.character(subset(YLL_males, Rank_2017 == 1, select = "cause")), select = "2017")*100,1), "% of the total number of years of life lost among males in this year. This cause of premature mortality was ", ifelse(as.numeric(subset(YLL_males, Rank_2017 == 1, select = "Rank_2007")) == 1, "also the top contributor to premature mortality 10 years ago.", paste0(ifelse(as.numeric(subset(YLL_males, Rank_2017 == 1, select = "Rank_2007")) < 10, paste0("ranked ", tolower(as.character(subset(number_names, Number == as.numeric(subset(YLL_males, Rank_2017 == 1, select = "Rank_2007")), select = "Rank"))), " a decade ago."), ifelse(as.numeric(subset(YLL_males, Rank_2017 == 1, select = "Rank_2007") == 10, "ranked tenth a decade ago.", " was not in the top ten ranking a decade ago."))))), " The overall proportion of years of life lost due to ", tolower(as.character(subset(YLL_males, Rank_2017 == 1, select = "cause"))), " has ", as.character(ifelse(round(subset(Top_10_YLL_males, cause == as.character(subset(YLL_males, Rank_2017 == 1, select = "cause")), select = "2017")*100,1) == round(subset(Top_10_YLL_males, cause == as.character(subset(YLL_males, Rank_2017 == 1, select = "cause")), select = "2007")*100,1), paste0("stayed the same as in 2017"), ifelse(round(subset(Top_10_YLL_males, cause == as.character(subset(YLL_males, Rank_2017 == 1, select = "cause")), select = "2017")*100,1) > round(subset(Top_10_YLL_males, cause == as.character(subset(YLL_males, Rank_2017 == 1, select = "cause")), select = "2007")*100,1), paste0("increased since 2007 (", round(subset(Top_10_YLL_males, cause == as.character(subset(YLL_males, Rank_2017 == 1, select = "cause")), select = "2007")*100,1) ,"%)."), paste0("decreased since 2007 (", round(subset(Top_10_YLL_males, cause == as.character(subset(YLL_males, Rank_2017 == 1, select = "cause")), select = "2007")*100,1) ,"%).")))))
-
-YLL_females <- YLL_rate_label %>% 
-  filter(location == "West Sussex",
-         sex == "Female",
-         Rank_2007 <= 10 | Rank_2017 <= 10)
-
-YLL_females_top_10 <- ggplot(YLL_females) + 
-  geom_segment(aes(x = 1, xend = 2, y = Rank_2007, yend = Rank_2017), size = .7, lty = "dashed", show.legend = FALSE) +
-  geom_point(aes(x = 1, y = Rank_2007, col = cause_group), size = 7) +
-  geom_text(aes(x = 1, y = Rank_2007, label = paste0(Rank_2007)), col = "#ffffff", fontface = "bold") +
-  geom_point(aes(x = 2, y = Rank_2017, col = cause_group), size = 7) +
-  geom_text(aes(x = 2, y = Rank_2017, label = paste0(Rank_2017)), col = "#ffffff", fontface = "bold") +
-  scale_colour_manual(values = c("#C2464F", "#62A7B9", "#9DCB9C"), 
-                      breaks = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                      limits = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                      labels = c("Communicable, maternal,\nneonatal, and nutritional diseases", "Non-communicable\ndiseases", "Injuries\n"),
-                      name = "Cause\ngrouping") +
-  labs(title = paste0("Ten biggest contributors to premature mortality among ",tolower(unique(YLL_females$sex)), "s;"),
-       subtitle = paste0(unique(YLL_females$location), "; age-standardised rate"), 
-       caption = "Measure: Years of Life Lost (YLL)\nRate per 100,000 and 95% uncertainty interval given under each cause.",
-       x = "",
-       y = "") +
-  scale_y_reverse() +
-  scale_x_continuous(limits = c(-1,6)) +
-  geom_text(aes(label = "2007 ranking", y = 0, x = 1), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "2017 ranking", y = 0, x = 2), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "% change 2007-2017", y = 0, x = 6), size = 3.5, col = "#000000", hjust = 1, fontface = "bold") +
-  geom_text(aes(label = paste0(cause, "\n", Label_2007), y = Rank_2007, x = 0.8), size = 3.5, col = "#000000", hjust = 1) +
-  geom_text(aes(label = paste0(cause, "\n", Label_2017), y = Rank_2017, x = 2.2), size = 3.5, col = "#000000", hjust = 0) +
-  geom_text(data = subset(YLL_females, change <= 0),aes(label = paste0(abs(round(change*100,1)), "% ", ifelse(change == 0, "(no change)\n", ifelse(change < 0, "decline in\nrate per 100,000", "increase in\nrate per 100,000"))), y = Rank_2017, x = 6), size = 3.5, col = "#000000", hjust = 1) +
-  geom_text(data = subset(YLL_females, change > 0), aes(label = paste0(abs(round(change*100,1)), "% ", ifelse(change == 0, "(no change)\n", ifelse(change < 0, "decline in\nrate per 100,000", "increase in\nrate per 100,000"))), y = Rank_2017, x = 6), size = 3.5, col = "#cc0000", hjust = 1) +
-  slope_theme()
-
-Top_10_YLL_females <- Measures_perc_level_3 %>% 
-  select(location, age, sex, cause_outline, cause, cause_id, level, Parent_cause, year, `YLLs (Years of Life Lost)`) %>% 
-  filter(location %in% YLL_females$location,
-         sex %in% YLL_females$sex,
-         cause %in% YLL_females$cause) %>% 
-  spread(year, `YLLs (Years of Life Lost)`) %>% 
-  select(location, age, sex, cause_outline, cause, cause_id, level, Parent_cause, `2007`,`2012`,`2017`) %>% 
-  left_join(YLL_females[c("cause_outline", "Rank_2007", "Rank_2017", "cause_group")], by = "cause_outline") %>% 
-  arrange(Rank_2017)
-
-paste0("The top 10 causes of age standardised premature mortality for females in 2017 accounted for ", round(sum(subset(Top_10_YLL_females, Rank_2017 <= 10, select = "2017"))*100,1), "% of the total years of life lost among females in 2017.")
-
-paste0(subset(YLL_females, Rank_2017 == 1, select = "cause"), " was the top cause of premature mortality among females in West Sussex in 2017, contributing ", round(subset(Top_10_YLL_females, cause == as.character(subset(YLL_females, Rank_2017 == 1, select = "cause")), select = "2017")*100,1), "% of the total number of years of life lost among females in this year. This cause of premature mortality was ", ifelse(as.numeric(subset(YLL_females, Rank_2017 == 1, select = "Rank_2007")) == 1, "also the top contributor to premature mortality 10 years ago.", paste0(ifelse(as.numeric(subset(YLL_females, Rank_2017 == 1, select = "Rank_2007")) < 10, paste0("ranked ", tolower(as.character(subset(number_names, Number == as.numeric(subset(YLL_females, Rank_2017 == 1, select = "Rank_2007")), select = "Rank"))), " a decade ago."), ifelse(as.numeric(subset(YLL_females, Rank_2017 == 1, select = "Rank_2007") == 10, "ranked tenth a decade ago.", " was not in the top ten ranking a decade ago."))))), " The overall proportion of years of life lost due to ", tolower(as.character(subset(YLL_females, Rank_2017 == 1, select = "cause"))), " has ", as.character(ifelse(round(subset(Top_10_YLL_females, cause == as.character(subset(YLL_females, Rank_2017 == 1, select = "cause")), select = "2017")*100,1) == round(subset(Top_10_YLL_females, cause == as.character(subset(YLL_females, Rank_2017 == 1, select = "cause")), select = "2007")*100,1), paste0("stayed the same as in 2017"), ifelse(round(subset(Top_10_YLL_females, cause == as.character(subset(YLL_females, Rank_2017 == 1, select = "cause")), select = "2017")*100,1) > round(subset(Top_10_YLL_females, cause == as.character(subset(YLL_females, Rank_2017 == 1, select = "cause")), select = "2007")*100,1), paste0("increased since 2007 (", round(subset(Top_10_YLL_females, cause == as.character(subset(YLL_females, Rank_2017 == 1, select = "cause")), select = "2007")*100,1) ,"%)."), paste0("decreased since 2007 (", round(subset(Top_10_YLL_females, cause == as.character(subset(YLL_females, Rank_2017 == 1, select = "cause")), select = "2007")*100,1) ,"%).")))))
-
-png(paste0("./GBD/YLL_males_top_10.png"), width = 800, height = 500, res = 72, units = "px")
-YLL_males_top_10
-dev.off()
-
-png(paste0("./GBD/YLL_females_top_10.png"), width = 800, height = 500, res = 72, units = "px")
-YLL_females_top_10
-dev.off()
-
-# YLD Years lived with disability ####
-
-# YLD is a measure of the amount of time lived with a disability. This is calculated by multiplying the severity of a disability by its duration. Severe, short-term illness can therefore have the same number of YLDs as a chronic but mild health condition.
-
-YLD_rate_rank <- GBD_cause_data %>% 
-  filter(year %in% c(2006,2016),
-         measure == "YLDs (Years Lived with Disability)",
-         age == "Age-standardized",
-         metric == "Rate") %>%  
-  select(location, sex, age, year, val, cause) %>% 
-  spread(year, val) %>% 
-  mutate(change = (`2016`-`2006`)/`2006`) %>% 
-  gather(`2006`:`2016`, key = year, value = val) %>% 
-  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
-  filter(level == 3) %>% 
-  group_by(location, sex, year) %>% 
-  arrange(desc(val)) %>% 
-  mutate(rank = row_number()) %>% 
-  select(location, sex, age, year, rank, change, cause, cause_outline) %>% 
-  spread(year, rank) %>% 
-  mutate(cause_group_code = substr(cause_outline, 1,1)) %>% 
-  left_join(GBD_2016_cause_hierarchy[c("cause_outline", "cause_name")], by = c("cause_group_code" = "cause_outline")) %>% 
-  rename(cause_group = cause_name) %>% 
-  mutate(cause_group = factor(cause_group, levels = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"))) %>% 
-  ungroup() %>% 
-  mutate(location = factor(location, levels = c("West Sussex","Cambridgeshire","Devon","East Sussex", "Essex","Gloucestershire","Hampshire", "Kent","North Yorkshire","Northamptonshire","Oxfordshire","Somerset","Staffordshire","Suffolk","Warwickshire","Worcestershire", "South East region", "England", "United Kingdom"))) %>% 
-  rename(Rank_2006 = `2006`,
-         Rank_2016 = `2016`)
-
-YLD_rate_label <- GBD_cause_data %>% 
-  filter(year %in% c(2006,2016),
-         measure == "YLDs (Years Lived with Disability)",
-         age == "Age-standardized",
-         metric == "Rate") %>%  
-  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
-  filter(level == 3) %>% 
-  mutate(Rate_label = paste0(format(round(val,0),big.mark = ",", trim = TRUE), " (", format(round(lower,0),big.mark = ",", trim = TRUE),"-", format(round(upper,0),big.mark = ",", trim = TRUE), ")")) %>% 
-  select(location, sex, age, year, Rate_label, cause) %>% 
-  spread(year, Rate_label)  %>% 
-  rename(Label_2006 = `2006`,
-         Label_2016 = `2016`) %>% 
-  mutate(location = factor(location, levels = c("West Sussex","Cambridgeshire","Devon","East Sussex", "Essex","Gloucestershire","Hampshire", "Kent","North Yorkshire","Northamptonshire","Oxfordshire","Somerset","Staffordshire","Suffolk","Warwickshire","Worcestershire", "South East region", "England", "United Kingdom"))) %>% 
-  left_join(YLD_rate_rank, by = c("location", "sex", "age","cause"))
-
-rm(YLD_rate_rank)
-
-YLD_males <- YLD_rate_label %>% 
-  filter(location == "West Sussex",
-         sex == "Male",
-         Rank_2006 <= 10 | Rank_2016 <= 10)
-
-YLD_males_top_10 <- ggplot(YLD_males) + 
-  geom_segment(aes(x = 1, xend = 2, y = Rank_2006, yend = Rank_2016), size = .7, lty = "dashed", show.legend = FALSE) +
-  geom_point(aes(x = 1, y = Rank_2006, col = cause_group), size = 7) +
-  geom_text(aes(x = 1, y = Rank_2006, label = paste0(YLD_males$Rank_2006)), col = "#ffffff", fontface = "bold") +
-  geom_point(aes(x = 2, y = Rank_2016, col = cause_group), size = 7) +
-  geom_text(aes(x = 2, y = Rank_2016, label = paste0(Rank_2016)), col = "#ffffff", fontface = "bold") +
-  scale_colour_manual(values = c("#C2464F", "#62A7B9", "#9DCB9C"), 
-                      breaks = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                      limits = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                      labels = c("Communicable, maternal,\nneonatal, and nutritional diseases", "Non-communicable\ndiseases", "Injuries\n"),
-                      name = "Cause\ngrouping") +
-  labs(title = paste0("Ten biggest contributors to disability among ",tolower(unique(YLD_males$sex)), "s;"),
-       subtitle = paste0(unique(YLD_males$location), "; age-stadardised rate"),
-       caption = "Measure: Years lived with disability (YLD)\nRate per 100,000 and 95% uncertainty interval given under each cause",
-       x = "",
-       y = "") +
-  scale_y_reverse() +
-  scale_x_continuous(limits = c(-1,6)) +
-  geom_text(aes(label = "2006 ranking", y = 0, x = 1), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "2016 ranking", y = 0, x = 2), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "% change 2006-2016", y = 0, x = 6), size = 3.5, col = "#000000", hjust = 1, fontface = "bold") +
-  geom_text(aes(label = paste0(cause, "\n",Label_2006), y = Rank_2006, x = 0.8), size = 3.5, col = "#000000", hjust = 1) +
-  geom_text(aes(label = paste0(cause, "\n", Label_2016), y = Rank_2016, x = 2.2), size = 3.5, col = "#000000", hjust = 0) +
-  geom_text(data = subset(YLD_males, change <= 0),aes(label = paste0(abs(round(change*100,1)), "% ", ifelse(change == 0, "(no change)\n", ifelse(change < 0, "decline in\nrate per 100,000", "increase in\nrate per 100,000"))), y = Rank_2016, x = 6), size = 3.5, col = "#000000", hjust = 1) +
-  geom_text(data = subset(YLD_males, change > 0), aes(label = paste0(abs(round(change*100,1)), "% ", ifelse(change == 0, "(no change)\n", ifelse(change < 0, "decline in\nrate per 100,000", "increase in\nrate per 100,000"))), y = Rank_2016, x = 6), size = 3.5, col = "#cc0000", hjust = 1) +
-  slope_theme()
+rm(Change_over_time_a, Change_over_time_b, Change_over_time_c, Change_over_time_d)
 
 
-Top_10_YLD_males <- Measures_perc_level_3 %>% 
-  select(location, age, sex, cause_outline, cause, cause_id, level, Parent_cause, year, `YLDs (Years Lived with Disability)`) %>% 
-  filter(location %in% YLD_males$location,
-         sex %in% YLD_males$sex,
-         cause %in% YLD_males$cause) %>% 
-  spread(year, `YLDs (Years Lived with Disability)`) %>% 
-  select(location, age, sex, cause_outline, cause, cause_id, level, Parent_cause, `2006`,`2011`,`2016`) %>% 
-  left_join(YLD_males[c("cause_outline", "Rank_2006", "Rank_2016", "cause_group")], by = "cause_outline") %>% 
-  arrange(Rank_2016)
-
-paste0("The top 10 causes of age standardised years lived with disability for males in 2016 accounted for ", round(sum(subset(Top_10_YLD_males, Rank_2016 <= 10, select = "2016"))*100,1), "% of the total burden of disability among males in 2016.")
-
-paste0(subset(YLD_males, Rank_2016 == 1, select = "cause"), " was the top cause of morbidity among males in West Sussex in 2016, contributing ", round(subset(Top_10_YLD_males, cause == as.character(subset(YLD_males, Rank_2016 == 1, select = "cause")), select = "2016")*100,1), "% of the total number of years lived with disability among males in this year. This cause of morbidity was ", ifelse(as.numeric(subset(YLD_males, Rank_2016 == 1, select = "Rank_2006")) == 1, "also the top contributor to morbidity 10 years ago.", paste0(ifelse(as.numeric(subset(YLD_males, Rank_2016 == 1, select = "Rank_2006")) < 10, paste0("ranked ", tolower(as.character(subset(number_names, Number == as.numeric(subset(YLD_males, Rank_2016 == 1, select = "Rank_2006")), select = "Rank"))), " a decade ago."), ifelse(as.numeric(subset(YLD_males, Rank_2016 == 1, select = "Rank_2006") == 10, "ranked tenth a decade ago.", " was not in the top ten ranking a decade ago."))))), " The overall proportion of years of life lived with disability due to ", tolower(as.character(subset(YLD_males, Rank_2016 == 1, select = "cause"))), " has ", as.character(ifelse(round(subset(Top_10_YLD_males, cause == as.character(subset(YLD_males, Rank_2016 == 1, select = "cause")), select = "2016")*100,1) == round(subset(Top_10_YLD_males, cause == as.character(subset(YLD_males, Rank_2016 == 1, select = "cause")), select = "2006")*100,1), paste0("stayed the same as in 2016"), ifelse(round(subset(Top_10_YLD_males, cause == as.character(subset(YLD_males, Rank_2016 == 1, select = "cause")), select = "2016")*100,1) > round(subset(Top_10_YLD_males, cause == as.character(subset(YLD_males, Rank_2016 == 1, select = "cause")), select = "2006")*100,1), paste0("increased since 2006 (", round(subset(Top_10_YLD_males, cause == as.character(subset(YLD_males, Rank_2016 == 1, select = "cause")), select = "2006")*100,1) ,"%)."), paste0("decreased since 2006 (", round(subset(Top_10_YLD_males, cause == as.character(subset(YLD_males, Rank_2016 == 1, select = "cause")), select = "2006")*100,1) ,"%).")))))
-
-YLD_females <- YLD_rate_label %>% 
-  filter(location == "West Sussex",
-         sex == "Female",
-         Rank_2006 <= 10 | Rank_2016 <= 10)
-
-YLD_females_top_10 <- ggplot(YLD_females) + 
-  geom_segment(aes(x = 1, xend = 2, y = Rank_2006, yend = Rank_2016), size = .7, lty = "dashed", show.legend = FALSE) +
-  geom_point(aes(x = 1, y = Rank_2006, col = cause_group), size = 7) +
-  geom_text(aes(x = 1, y = Rank_2006, label = paste0(YLD_females$Rank_2006)), col = "#ffffff", fontface = "bold") +
-  geom_point(aes(x = 2, y = Rank_2016, col = cause_group), size = 7) +
-  geom_text(aes(x = 2, y = Rank_2016, label = paste0(Rank_2016)), col = "#ffffff", fontface = "bold") +
-  scale_colour_manual(values = c("#C2464F", "#62A7B9", "#9DCB9C"), 
-                      breaks = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                      limits = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                      labels = c("Communicable, maternal,\nneonatal, and nutritional diseases", "Non-communicable\ndiseases", "Injuries\n"),
-                      name = "Cause\ngrouping") +
-  labs(title = paste0("Ten biggest contributors to disability among ",tolower(unique(YLD_females$sex)), "s;"),
-       subtitle = paste0(unique(YLD_females$location), "; age-stadardised rate"),
-       caption = "Measure: Years lived with disability (YLD)\nRate per 100,000 and 95% uncertainty interval given under each cause",
-       x = "",
-       y = "") +
-  scale_y_reverse() +
-  scale_x_continuous(limits = c(-1,6)) +
-  geom_text(aes(label = "2006 ranking", y = 0, x = 1), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "2016 ranking", y = 0, x = 2), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "% change 2006-2016", y = 0, x = 6), size = 3.5, col = "#000000", hjust = 1, fontface = "bold") +
-  geom_text(aes(label = paste0(cause, "\n",Label_2006), y = Rank_2006, x = 0.8), size = 3.5, col = "#000000", hjust = 1) +
-  geom_text(aes(label = paste0(cause, "\n", Label_2016), y = Rank_2016, x = 2.2), size = 3.5, col = "#000000", hjust = 0) +
-  geom_text(data = subset(YLD_females, change <= 0),aes(label = paste0(abs(round(change*100,1)), "% ", ifelse(change == 0, "(no change)\n", ifelse(change < 0, "decline in\nrate per 100,000", "increase in\nrate per 100,000"))), y = Rank_2016, x = 6), size = 3.5, col = "#000000", hjust = 1) +
-  geom_text(data = subset(YLD_females, change > 0), aes(label = paste0(abs(round(change*100,1)), "% ", ifelse(change == 0, "(no change)\n", ifelse(change < 0, "decline in\nrate per 100,000", "increase in\nrate per 100,000"))), y = Rank_2016, x = 6), size = 3.5, col = "#cc0000", hjust = 1) +
-  slope_theme()
-
-Top_10_YLD_females <- Measures_perc_level_3 %>% 
-  select(location, age, sex, cause_outline, cause, cause_id, level, Parent_cause, year, `YLDs (Years Lived with Disability)`) %>% 
-  filter(location %in% YLD_females$location,
-         sex %in% YLD_females$sex,
-         cause %in% YLD_females$cause) %>% 
-  spread(year, `YLDs (Years Lived with Disability)`) %>% 
-  select(location, age, sex, cause_outline, cause, cause_id, level, Parent_cause, `2006`,`2011`,`2016`) %>% 
-  left_join(YLD_females[c("cause_outline", "Rank_2006", "Rank_2016", "cause_group")], by = "cause_outline") %>% 
-  arrange(Rank_2016)
-
-paste0("The top 10 causes of age standardised years lived with disability for females in 2016 accounted for ", round(sum(subset(Top_10_YLD_females, Rank_2016 <= 10, select = "2016"))*100,1), "% of the total burden of disability among females in 2016.")
-
-paste0(subset(YLD_females, Rank_2016 == 1, select = "cause"), " was the top cause of morbidity among females in West Sussex in 2016, contributing ", round(subset(Top_10_YLD_females, cause == as.character(subset(YLD_females, Rank_2016 == 1, select = "cause")), select = "2016")*100,1), "% of the total number of years lived with disability among females in this year. This cause of morbidity was ", ifelse(as.numeric(subset(YLD_females, Rank_2016 == 1, select = "Rank_2006")) == 1, "also the top contributor to morbidity 10 years ago.", paste0(ifelse(as.numeric(subset(YLD_females, Rank_2016 == 1, select = "Rank_2006")) < 10, paste0("ranked ", tolower(as.character(subset(number_names, Number == as.numeric(subset(YLD_females, Rank_2016 == 1, select = "Rank_2006")), select = "Rank"))), " a decade ago."), ifelse(as.numeric(subset(YLD_females, Rank_2016 == 1, select = "Rank_2006") == 10, "ranked tenth a decade ago.", " was not in the top ten ranking a decade ago."))))), " The overall proportion of years of life lived with disability due to ", tolower(as.character(subset(YLD_females, Rank_2016 == 1, select = "cause"))), " has ", as.character(ifelse(round(subset(Top_10_YLD_females, cause == as.character(subset(YLD_females, Rank_2016 == 1, select = "cause")), select = "2016")*100,1) == round(subset(Top_10_YLD_females, cause == as.character(subset(YLD_females, Rank_2016 == 1, select = "cause")), select = "2006")*100,1), paste0("stayed the same as in 2016"), ifelse(round(subset(Top_10_YLD_females, cause == as.character(subset(YLD_females, Rank_2016 == 1, select = "cause")), select = "2016")*100,1) > round(subset(Top_10_YLD_females, cause == as.character(subset(YLD_females, Rank_2016 == 1, select = "cause")), select = "2006")*100,1), paste0("increased since 2006 (", round(subset(Top_10_YLD_females, cause == as.character(subset(YLD_females, Rank_2016 == 1, select = "cause")), select = "2006")*100,1) ,"%)."), paste0("decreased since 2006 (", round(subset(Top_10_YLD_females, cause == as.character(subset(YLD_females, Rank_2016 == 1, select = "cause")), select = "2006")*100,1) ,"%).")))))
-
-png(paste0("./GBD/YLD_males_top_10.png"), width = 800, height = 500, res = 72, units = "px")
-YLD_males_top_10
-dev.off()
-
-png(paste0("./GBD/YLD_females_top_10.png"), width = 800, height = 500, res = 72, units = "px")
-YLD_females_top_10
-dev.off()
+# This is the change over time for deaths at all levels by sex - show change in number and change in proportion
+Change_over_time %>% 
+  filter(`Rank in 2017` <= 10 | `Rank in 2012` <= 10 | `Rank in 2007` <= 10 | `Rank in 2002` <= 10 | `Rank in 1997` <= 10) %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_change_over_time_levels_0_1_2.json'))
 
 # Disability adjusted life years ####
 
@@ -1393,6 +1067,32 @@ Areas <- read_csv("~/Documents/Repositories/GBD/Area_types_table.csv", col_types
 # Risks ####
 
 GBD_2017_rei_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2017_REI_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric"))
+
+# This is 1.2 million records
+GBD_risk_data_wsx <- unique(list.files("~/Documents/GBD_data_download/Risk/")[grepl("efaea572", list.files("~/Documents/GBD_data_download/Risk/")) == TRUE]) %>% 
+  map_df(~read_csv(paste0("~/Documents/GBD_data_download/Risk/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>% 
+  rename(Area = location,
+         Lower_estimate = lower,
+         Upper_estimate = upper,
+         Estimate = val,
+         Year = year,
+         Sex = sex,
+         Age = age,
+         Cause = cause) %>% 
+  mutate(metric = ifelse(metric == "Rate", "Rate per 100,000 population", ifelse(metric == "Percent", "Proportion of total burden caused by this condition", metric)))
+
+GBD_risk_data_all_cause_NN <- unique(list.files("~/Documents/GBD_data_download/Risk/")[grepl("defcbaed", list.files("~/Documents/GBD_data_download/Risk/")) == TRUE]) %>% 
+  map_df(~read_csv(paste0("~/Documents/GBD_data_download/Risk/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) 
+
+unique(GBD_risk_data$cause)
+unique(GBD_risk_data$location)
+unique(GBD_risk_data$rei)
+unique(GBD_risk_data$year)
+
+
+Risk_all_cause <- GBD_risk_data %>% 
+  filter(cause == 'All causes')
+
 
 
 # Risk - cause pairs look at risks all cause ylds
