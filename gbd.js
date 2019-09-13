@@ -310,7 +310,6 @@ d3.select("#total_death_string")
 			return d.Sex == "Both" }) // We can filter just persons
 	.text(function(d){
 	return "What caused the " + d3.format(",.0f")(d.Deaths) + " deaths in West Sussex in 2017?" }); // Concatenate a string
-// TODO: we could make this title dynamic based on which 'switch-one' button is checked on the bar chart?
 
 // Level 3 bubbles (persons)
 var request = new XMLHttpRequest();
@@ -409,21 +408,14 @@ var node = svg_fg_2.append("g")
   .on("drag", dragged)
   .on("end", dragended));
 
-// TODO: remove old values when updating
-// node
-//   .exit()
-//   .remove();
-
 // Features of the forces applied to the nodes:
 var simulation = d3.forceSimulation()
   .force("center", d3.forceCenter().x(width / 2).y(height/2)) // Attraction to the middle of the svg area and 150 px down
-  .force("charge", d3.forceManyBody().strength(.1)) // Nodes are attracted one each other of value is > 0
+  .force("charge", d3.forceManyBody().strength(.1)) // Nodes are attracted one each other if value is > 0
   .force("collide", d3.forceCollide().strength(.2).radius(function(d) {
       return (size(d.Value) + 3)})
       .iterations(1)) // Force that avoids circle overlapping
 
-  // Apply these forces to the nodes and update their positions.
-  // Once the force algorithm is happy with positions ('alpha' value is low enough), simulations will stop.
 simulation
 .nodes(data)
 .on("tick", function(d) { node
@@ -481,13 +473,10 @@ groups = d3.map(json, function(d){
 
 deaths_age = json.filter(function(d){
   return d.Measure === 'Deaths'});
-
 yll_age = json.filter(function(d){
   return d.Measure === 'YLLs (Years of Life Lost)'});
-
 yld_age = json.filter(function(d){
   return d.Measure === 'YLDs (Years Lived with Disability)'});
-
 daly_age = json.filter(function(d){
   return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
 
@@ -565,29 +554,42 @@ svg_fg_4
  .attr("x", - margin.top - 60)
  .text('Number');
 
-// TODO:  This is currently the max value, for DALYs, if we want the y axis to update based on the measure we need to figure out how do do it.
-
 // // Add Y axis
 var y_fg_4 = d3.scaleLinear()
-  .domain([0, 25000])
+  .domain([0, 2000])
   .range([height_fg_4, 0 ]);
-
-svg_fg_4
-  .append("g")
-  .call(d3.axisLeft(y_fg_4));
 
 var yAxis_fg_4 = svg_fg_4.append("g")
   .attr("class", "myYaxis")
 
+
 function update_age(data) {
 
 var stackedData = d3.stack()
-  .keys(cause_categories)
-    (data)
+    .keys(cause_categories)
+      (data)
 
 var measure_name = d3.map(data, function(d){
-  return(d.Measure)})
-  .keys();
+    return(d.Measure)})
+    .keys();
+
+var figure_4_y_max = [];
+switch(measure_name[0]) {
+case 'Deaths':
+  figure_4_y_max = 2000;
+  break;
+case 'YLLs (Years of Life Lost)':
+ figure_4_y_max = 15500;
+  break;
+case 'YLDs (Years Lived with Disability)':
+ figure_4_y_max = 11000;
+ break;
+case 'DALYs (Disability-Adjusted Life Years)':
+  figure_4_y_max = 25000;
+}
+
+y_fg_4
+  .domain([0, figure_4_y_max]);
 
 // This adds a transition effect on the change between datasets (i.e. if the yaxis needs to be longer or shorter).
 yAxis_fg_4
@@ -620,10 +622,6 @@ var age_bars_df = svg_fg_4.append("g")
   .on("mouseout", function() {
   return tooltip_age.style("visibility", "hidden");
   })
-
-  age_bars_df
-    .exit()
-    .remove()
 }
 
 update_age(deaths_age)
@@ -640,13 +638,10 @@ conditions = d3.map(json, function(d){
 
 deaths_condition = json.filter(function(d){
   return d.Measure === 'Deaths'});
-
 yll_condition = json.filter(function(d){
   return d.Measure === 'YLLs (Years of Life Lost)'});
-
 yld_condition = json.filter(function(d){
   return d.Measure === 'YLDs (Years Lived with Disability)'});
-
 daly_condition = json.filter(function(d){
   return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
 
@@ -723,89 +718,97 @@ svg_fg_5
  .attr("x", - margin.top - 60)
  .text('Number');
 
-// TODO:  This is currently the max value, for DALYs, if we want the y axis to update based on the measure we need to figure out how do do it.
-
 // // Add Y axis
 var y_fg_5 = d3.scaleLinear()
-    .domain([0, 50000])
+    .domain([0, 3000])
     .range([height_fg_5, 0 ]);
-
-  svg_fg_5
-    .append("g")
-    .call(d3.axisLeft(y_fg_5));
 
 var yAxis_fg_5 = svg_fg_5
   .append("g")
   .attr("class", "myYaxis")
 
-  function update_condition(data) {
+function update_condition(data) {
 
-  var stackedData = d3.stack()
+var stackedData = d3.stack()
     .keys(ages)
       (data)
 
-  var measure_name = d3.map(data, function(d){
-    return(d.Measure)})
-    .keys();
+var measure_name_fg_5 = d3.map(data, function(d){
+          return(d.Measure)})
+          .keys();
 
-  // This adds a transition effect on the change between datasets (i.e. if the yaxis needs to be longer or shorter).
-  yAxis_fg_5
-    .transition()
-    .duration(1000)
-    .call(d3.axisLeft(y_fg_5));
+var figure_5_y_max = [];
+ switch(measure_name_fg_5[0]) {
+ case 'Deaths':
+  figure_5_y_max = 3000;
+  break;
+case 'YLLs (Years of Life Lost)':
+ figure_5_y_max = 45000;
+ break;
+case 'YLDs (Years Lived with Disability)':
+ figure_5_y_max = 30000;
+ break;
+case 'DALYs (Disability-Adjusted Life Years)':
+ figure_5_y_max = 50000;
+ }
 
-  var condition_bars_df = svg_fg_5.append("g")
-    .selectAll("g")
-    .data(stackedData) // Enter in the stack data = loop key per key = group per group
-    .enter()
-    .append("g")
-    .attr("fill", function(d) {
-      return color_age_group(d.key); })
-    .selectAll("rect")
-    .data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
-    .enter()
-    .append("rect")
-    .attr("x", function(d) {
-      return x_fg_5(d.data.Cause); })
-    .attr("y", function(d) {
-      return y_fg_5(d[1]); })
-    .attr("height", function(d) {
-      return y_fg_5(d[0]) - y_fg_5(d[1]); })
-    .attr("width", x_fg_5.bandwidth())
-    .on("mouseover", function() {
-    return tooltip_condition_age.style("visibility", "visible");
+y_fg_5
+ .domain([0, figure_5_y_max]);
+
+// This adds a transition effect on the change between datasets (i.e. if the yaxis needs to be longer or shorter).
+yAxis_fg_5
+ .transition()
+ .duration(1000)
+ .call(d3.axisLeft(y_fg_5));
+
+var condition_bars_df = svg_fg_5.append("g")
+ .selectAll("g")
+ .data(stackedData) // Enter in the stack data = loop key per key = group per group
+ .enter()
+ .append("g")
+ .attr("fill", function(d) {
+  return color_age_group(d.key); })
+ .selectAll("rect")
+ .data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
+ .enter()
+ .append("rect")
+ .attr("x", function(d) {
+  return x_fg_5(d.data.Cause); })
+ .attr("y", function(d) {
+  return y_fg_5(d[1]); })
+ .attr("height", function(d) {
+  return y_fg_5(d[0]) - y_fg_5(d[1]); })
+ .attr("width", x_fg_5.bandwidth())
+ .on("mouseover", function() {
+  return tooltip_condition_age.style("visibility", "visible");
     })
-    .on("mousemove", showTooltip_condition_age)
-    .on("mouseout", function() {
-    return tooltip_condition_age.style("visibility", "hidden");
-    })
+ .on("mousemove", showTooltip_condition_age)
+ .on("mouseout", function() {
+  return tooltip_condition_age.style("visibility", "hidden");
+  })
 
-    condition_bars_df
-      .exit()
-      .remove()
-  }
+condition_bars_df
+ .exit()
+ .remove()
+}
+update_condition(deaths_condition)
 
-  update_condition(deaths_condition)
+// age by conditions proportion
 
-  // age by conditions proportion
+// This is the proportion of a conditions burden by the age of people. If the condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain age. It shows us that certain diseases impact people of particular ages disproportionately.
+var request = new XMLHttpRequest();
+    request.open("GET", "./Proportion_lifecourse_persons_by_condition_level_2_2017_west_sussex.json", false);
+    request.send(null);
+var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
 
-  // This is the proportion of a conditions burden by the age of people. If the condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain age. It shows us that certain diseases impact people of particular ages disproportionately.
-  var request = new XMLHttpRequest();
-      request.open("GET", "./Proportion_lifecourse_persons_by_condition_level_2_2017_west_sussex.json", false);
-      request.send(null);
-  var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
-
-  deaths_condition_proportion = json.filter(function(d){
-    return d.Measure === 'Deaths'});
-
-  yll_condition_proportion = json.filter(function(d){
-    return d.Measure === 'YLLs (Years of Life Lost)'});
-
-  yld_condition_proportion = json.filter(function(d){
-    return d.Measure === 'YLDs (Years Lived with Disability)'});
-
-  daly_condition_proportion = json.filter(function(d){
-    return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
+deaths_condition_proportion = json.filter(function(d){
+  return d.Measure === 'Deaths'});
+yll_condition_proportion = json.filter(function(d){
+  return d.Measure === 'YLLs (Years of Life Lost)'});
+yld_condition_proportion = json.filter(function(d){
+  return d.Measure === 'YLDs (Years Lived with Disability)'});
+daly_condition_proportion = json.filter(function(d){
+  return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
 
 var width_fg_5_prop = width_fg_4
 var height_fg_5_prop = height_fg_4
@@ -813,157 +816,147 @@ var height_fg_5_prop = height_fg_4
 var tooltip_condition_age_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
  .append("div")
  .style("opacity", 0)
-     .attr("class", "tooltip_bars")
-     .style("position", "absolute")
-     .style("z-index", "10")
-     .style("background-color", "white")
-     .style("border", "solid")
-     .style("border-width", "1px")
-     .style("border-radius", "5px")
-     .style("padding", "10px")
+ .attr("class", "tooltip_bars")
+ .style("position", "absolute")
+ .style("z-index", "10")
+ .style("background-color", "white")
+ .style("border", "solid")
+ .style("border-width", "1px")
+ .style("border-radius", "5px")
+ .style("padding", "10px")
 
-    var showTooltip_condition_age_prop = function(d) {
-      tooltip_condition_age_prop
-        .transition()
-        .duration(200);
-
-    var subgroupName_prop = d3.select(this.parentNode).datum().key;
-    var subgroupValue_prop = d.data[subgroupName_prop];
-
+var showTooltip_condition_age_prop = function(d) {
     tooltip_condition_age_prop
-     .html("<h3>" + d.data.Cause + '</h3><p>The estimated proportion of ' + d.data.Measure + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName_prop + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.1%")(subgroupValue_prop) + '</b></font>.</p>')
-     .style("opacity", 1)
-     .style("top", (event.pageY - 10) + "px")
-     .style("left", (event.pageX + 10) + "px")
-    }
+ .transition()
+ .duration(200);
 
-    // append the svg object to the body of the page
-    var svg_fg_5_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
-     .append("svg")
-     .attr("width", width)
-     .attr("height", height_fg_5_prop + 250)
-     .append("g")
-     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+var subgroupName_prop = d3.select(this.parentNode).datum().key;
+  var subgroupValue_prop = d.data[subgroupName_prop];
 
-    // Add X axis
-    var x_fg_5_prop = d3.scaleBand()
-     .domain(conditions)
-     .range([0, width_fg_5_prop])
-     .padding([0.2])
+tooltip_condition_age_prop
+ .html("<h3>" + d.data.Cause + '</h3><p>The estimated proportion of ' + d.data.Measure + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName_prop + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.1%")(subgroupValue_prop) + '</b></font>.</p>')
+ .style("opacity", 1)
+ .style("top", (event.pageY - 10) + "px")
+ .style("left", (event.pageX + 10) + "px")
+}
 
-    svg_fg_5_prop
-     .append("g")
-     .attr("transform", "translate(0," + height_fg_5_prop + ")")
-     .call(d3.axisBottom(x_fg_5_prop).tickSizeOuter(0));
+// append the svg object to the body of the page
+var svg_fg_5_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
+ .append("svg")
+ .attr("width", width)
+ .attr("height", height_fg_5_prop + 250)
+ .append("g")
+ .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    svg_fg_5_prop
-     .selectAll("text")
-     .attr("transform", "translate(-10,10)rotate(-90)")
-     .style("text-anchor", "end")
+// Add X axis
+var x_fg_5_prop = d3.scaleBand()
+ .domain(conditions)
+ .range([0, width_fg_5_prop])
+ .padding([0.2])
 
-    // Add X axis label:
-    svg_fg_5_prop
-     .append("text")
-     .attr("text-anchor", "end")
-     .attr("x", width/2)
-     .attr("y", height_fg_5_prop + margin.top + 100)
-     .text("Condition");
+svg_fg_5_prop
+ .append("g")
+ .attr("transform", "translate(0," + height_fg_5_prop + ")")
+ .call(d3.axisBottom(x_fg_5_prop).tickSizeOuter(0));
 
-    // Y axis label:
-    svg_fg_5_prop
-     .append("text")
-     .attr('id', 'axis_y_title')
-     .attr("text-anchor", "end")
-     .attr("transform", "rotate(-90)")
-     .attr("y", - margin.left + 10)
-     .attr("x", - margin.top - 60)
-     .text('Proportion');
+svg_fg_5_prop
+ .selectAll("text")
+ .attr("transform", "translate(-10,10)rotate(-90)")
+ .style("text-anchor", "end")
 
-    // TODO:  This is currently the max value, for DALYs, if we want the y axis to update based on the measure we need to figure out how do do it.
+// Add X axis label:
+svg_fg_5_prop
+ .append("text")
+ .attr("text-anchor", "end")
+ .attr("x", width/2)
+ .attr("y", height_fg_5_prop + margin.top + 100)
+ .text("Condition");
 
-    // // Add Y axis
-    var y_fg_5_prop = d3.scaleLinear()
-        .domain([0, 1])
-        .range([height_fg_5_prop, 0 ]);
+// Y axis label:
+svg_fg_5_prop
+ .append("text")
+ .attr('id', 'axis_y_title')
+ .attr("text-anchor", "end")
+ .attr("transform", "rotate(-90)")
+ .attr("y", - margin.left + 10)
+ .attr("x", - margin.top - 60)
+ .text('Proportion');
 
-      svg_fg_5_prop
-        .append("g")
-        .call(d3.axisLeft(y_fg_5_prop));
+// Add Y axis
+var y_fg_5_prop = d3.scaleLinear()
+  .domain([0, 1])
+  .range([height_fg_5_prop, 0 ]);
 
-    var yAxis_fg_5_prop = svg_fg_5_prop
-      .append("g")
-      .attr("class", "myYaxis")
+svg_fg_5_prop
+  .append("g")
+  .call(d3.axisLeft(y_fg_5_prop));
 
-      function update_condition_prop(data) {
+var yAxis_fg_5_prop = svg_fg_5_prop
+  .append("g")
+  .attr("class", "myYaxis")
 
-      var stackedData = d3.stack()
-        .keys(ages)
-          (data)
+function update_condition_prop(data) {
 
-      var measure_name = d3.map(data, function(d){
-        return(d.Measure)})
-        .keys();
+var stackedData = d3.stack()
+  .keys(ages)(data)
 
-      // This adds a transition effect on the change between datasets (i.e. if the yaxis needs to be longer or shorter).
-      yAxis_fg_5_prop
-        .transition()
-        .duration(1000)
-        .call(d3.axisLeft(y_fg_5_prop));
+var measure_name = d3.map(data, function(d){
+  return(d.Measure)})
+  .keys();
 
-      var condition_bars_df_prop = svg_fg_5_prop.append("g")
-        .selectAll("g")
-        .data(stackedData) // Enter in the stack data = loop key per key = group per group
-        .enter()
-        .append("g")
-        .attr("fill", function(d) {
-          return color_age_group(d.key); })
-        .selectAll("rect")
-        .data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
-        .enter()
-        .append("rect")
-        .attr("x", function(d) {
-          return x_fg_5_prop(d.data.Cause); })
-        .attr("y", function(d) {
-          return y_fg_5_prop(d[1]); })
-        .attr("height", function(d) {
-          return y_fg_5_prop(d[0]) - y_fg_5_prop(d[1]); })
-        .attr("width", x_fg_5.bandwidth())
-        .on("mouseover", function() {
-        return tooltip_condition_age_prop.style("visibility", "visible");
-        })
-        .on("mousemove", showTooltip_condition_age_prop)
-        .on("mouseout", function() {
-        return tooltip_condition_age_prop.style("visibility", "hidden");
-        })
+// This adds a transition effect on the change between datasets (i.e. if the yaxis needs to be longer or shorter).
+yAxis_fg_5_prop
+  .transition()
+  .duration(1000)
+  .call(d3.axisLeft(y_fg_5_prop));
 
-        condition_bars_df_prop
-          .exit()
-          .remove()
-      }
+var condition_bars_df_prop = svg_fg_5_prop.append("g")
+  .selectAll("g")
+  .data(stackedData) // Enter in the stack data = loop key per key = group per group
+  .enter()
+  .append("g")
+  .attr("fill", function(d) {
+    return color_age_group(d.key); })
+  .selectAll("rect")
+  .data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
+  .enter()
+  .append("rect")
+  .attr("x", function(d) {
+    return x_fg_5_prop(d.data.Cause); })
+  .attr("y", function(d) {
+    return y_fg_5_prop(d[1]); })
+  .attr("height", function(d) {
+    return y_fg_5_prop(d[0]) - y_fg_5_prop(d[1]); })
+  .attr("width", x_fg_5.bandwidth())
+  .on("mouseover", function() {
+    return tooltip_condition_age_prop.style("visibility", "visible");
+  })
+  .on("mousemove", showTooltip_condition_age_prop)
+  .on("mouseout", function() {
+    return tooltip_condition_age_prop.style("visibility", "hidden");
+  })
 
-      update_condition_prop(deaths_condition_proportion)
+condition_bars_df_prop
+  .exit()
+  .remove()
+}
 
-// possible bug
-// y_fg_5
-//   .domain([0, function(d) {
-//     if(measure_name === 'Deaths') return 3000;
-//     else if (measure_name === 'YLLs (Years of Life Lost)') return 45000;
-//     else if (measure_name === 'YLDs (Years Lived with Disability)') return 29000;
-//                return 48500; }])
-//    .range([height_fg_4, 0 ]);
+update_condition_prop(deaths_condition_proportion)
 
+// Slope chart top ten measures
+height_rank_change = 350
 
 // append the svg object to the body of the page
 var rank_change_svg = d3.select("#my_dataviz")
 .append("svg")
 .attr("width", width + margin.left + margin.right)
-.attr("height", height + margin.top + margin.bottom)
+.attr("height", height_rank_change + margin.top + margin.bottom)
 .append("g")
 .attr("transform",
       "translate(" + margin.left + "," + margin.top + ")");
 
 var request = new XMLHttpRequest();
-    request.open("GET", "./Rate_change_over_time_levels_0_1_2.json", false);
+    request.open("GET", "./Rate_change_over_time_levels_0_1_2_for_slope.json", false);
     request.send(null);
 var json = JSON.parse(request.responseText);
 
@@ -991,25 +984,24 @@ daly_rate_rank_change = json.filter(function(d){
          d.Area === 'West Sussex' &
         +d.Level === 2});
 
-years_to_show = ["Rank in 1997", "Rank in 2007", "Rank in 2017"]
-
+years_to_show = ["Rank_in_2007", "Rank_in_2017"]
 
 function update_top_10_change(data) {
 // Parse the Data
 var max_17 = d3.max(data, function(d) {
-  return +d['Rank in 2017'];
+  return +d['Rank_in_2017'];
   });
 var max_12 = d3.max(data, function(d) {
-  return +d['Rank in 2012'];
+  return +d['Rank_in_2012'];
   });
 var max_07 = d3.max(data, function(d) {
-  return +d['Rank in 2007'];
+  return +d['Rank_in_2007'];
   });
 var max_02 = d3.max(data, function(d) {
-  return +d['Rank in 2002'];
+  return +d['Rank_in_2002'];
   });
 var max_97 = d3.max(data, function(d) {
-  return +d['Rank in 1997'];
+  return +d['Rank_in_1997'];
   });
 
 // Use the highest value of rank across 1997, 2007 and 2017 to determine the y axis scale for consistency.
@@ -1017,8 +1009,8 @@ var y_rank_change = {}
   for (i in years_to_show) {
     name = years_to_show[i]
     y_rank_change[name] = d3.scaleLinear()
-      .domain([1, d3.max([max_97, max_07, max_17])] )
-      .range([0, height])
+      .domain([1, d3.max([max_07, max_17])] )
+      .range([0, height_rank_change])
   }
 
 // Decide the place for each line
@@ -1068,6 +1060,185 @@ rank_change_svg
 
 update_top_10_change(deaths_rate_rank_change)
 
+height_rate_change = 500
+
+var request = new XMLHttpRequest();
+   request.open("GET", "./Rate_change_over_time_level_2_west_sussex.json", false);
+   request.send(null);
+var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
+
+deaths_level_2_rank_change = json.filter(function(d){ // gets a subset of the json data
+  return  d.Area === 'West Sussex' &
+          d.Sex === 'Both' &
+          d.measure === 'Deaths'});
+
+yll_level_2_rank_change = json.filter(function(d){ // gets a subset of the json data
+  return  d.Area === 'West Sussex' &
+          d.Sex === 'Both' &
+          d.measure === 'YLLs (Years of Life Lost)'});
+
+yld_level_2_rank_change = json.filter(function(d){ // gets a subset of the json data
+  return  d.Area === 'West Sussex' &
+          d.Sex === 'Both' &
+          d.measure === 'YLDs (Years Lived with Disability)'});
+
+daly_level_2_rank_change = json.filter(function(d){ // gets a subset of the json data
+  return  d.Area === 'West Sussex' &
+          d.Sex === 'Both' &
+          d.measure === 'DALYs (Disability-Adjusted Life Years)'});
+
+// data = data.sort(function(a, b) {
+//   return d3.descending(a.Change_since_2012, b.Change_since_2012);
+//   })
+
+
+
+var tooltip_rate_change = d3.select("#my_level_2_rate_change_dataviz")
+  .append("div")
+  .style("opacity", 0)
+  .attr("class", "tooltip_r_change")
+  .style("position", "absolute")
+  .style("z-index", "10")
+  .style("background-color", "white")
+  .style("border", "solid")
+  .style("border-width", "1px")
+  .style("border-radius", "5px")
+  .style("padding", "10px")
+
+// The tooltip function
+var showTooltip_rate_change = function(d) {
+  tooltip_rate_change
+  .transition()
+  .duration(200)
+
+tooltip_rate_change
+ .style("opacity", 1)
+ .html("<h3>" + ' Why tooltip broken?</h3>')
+ .style("top", (event.pageY - 10) + "px")
+ .style("left", (event.pageX + 10) + "px")
+}
+
+var rate_change_svg = d3.select("#my_level_2_rate_change_dataviz")
+ .append("svg")
+ .attr("width", width + margin.left + margin.right)
+ .attr("height", height_rate_change + margin.top + margin.bottom)
+ .append("g")
+ .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+
+function update_level_2_rate_change(data) {
+
+var x_rate_change = d3.scaleLinear()
+ // .domain(d3.extent(data, function(d){
+ //   return d.Change_since_2012; }))
+ .domain([-40,40])
+ .range([0,width]);
+
+var y_rate_change = d3.scaleBand()
+.domain(cause_categories)
+ .rangeRound([0,height_rate_change])
+ .padding(0.15);
+
+ // Create the bars
+ var rate_change_bars = rate_change_svg
+  .selectAll("rect")
+  .data(data)
+
+rate_change_bars
+  .enter()
+  .append("rect")
+  .attr("x", function(d){
+    if (d.Change_since_2012 < 0){
+      return x_rate_change(d.Change_since_2012)}
+    else {
+      return x_rate_change(0)};
+  })
+  .attr("width", function(d){
+    if(d.Change_since_2012 < 0){
+      return x_rate_change(d.Change_since_2012 * -1) - x_rate_change(0)}
+    else{
+      return x_rate_change(d.Change_since_2012) - x_rate_change(0)};
+  })
+  .attr("y", function(d){
+    return y_rate_change(d.Cause); })
+  .attr("height", y_rate_change.bandwidth())
+  // .attr("fill", function(d){ if(d.Change_since_2012 > 0) {
+  //   return "#cc0000"}
+  //   else { return "#00cccc" };
+  // });
+  .style("fill", function(d) {
+      return color_cause_group(d.Cause)});
+
+rate_change_svg
+ .on("mouseover", function() {
+  return tooltip_rate_change.style("visibility", "visible");
+  })
+ .on("mousemove", showTooltip_rate_change)
+ .on("mouseout", function() {
+  return tooltip_rate_change.style("visibility", "hidden");
+  });
+
+rate_change_svg
+ .selectAll(".value") // This selects the 'value' key from the data array
+ .data(data)
+ .enter()
+ .append("text")
+ .attr("class", "value")
+ .attr("x", function(d){
+  if (d.Change_since_2012 < 0){
+  return (x_rate_change(d.Change_since_2012 * -1) - x_rate_change(0)) > 20 ? x_rate_change(d.Change_since_2012) + 2 : x_rate_change(d.Change_since_2012) - 10;}
+  else {
+  return (x_rate_change(d.Change_since_2012) - x_rate_change(0)) > 20 ? x_rate_change(d.Change_since_2012) - 2 : x_rate_change(d.Change_since_2012) + 10;}
+  })
+ .attr("y", function(d){ return y_rate_change(d.Cause); })
+ .attr("dy", y_rate_change.bandwidth() - 2.55)
+ .attr("text-anchor", function(d){
+  if (d.Change_since_2012 < 0){
+  return (x_rate_change(d.Change_since_2012 * -1) - x_rate_change(0)) > 70 ? "start" : "end";}
+  else {
+  return (x_rate_change(d.Change_since_2012) - x_rate_change(0)) > 70 ? "end" : "start";}
+  })
+ .style("fill", function(d){
+  if (d.Change_since_2012 < 0){
+  return (x_rate_change(d.Change_since_2012 * -1) - x_rate_change(0)) > 70 ? "#fff" : "#000";}
+  else {
+  return (x_rate_change(d.Change_since_2012) - x_rate_change(0)) > 70 ? "#fff" : "#000";} // I think this is saying if the x position is greater than 70px then white
+ })
+ .text(function(d){
+  if(d.Change_since_2012 < 0){ // add an if else function to say if > 0 then increase, if < 0 then decrease.
+  return d.Change_since_2012.toFixed(1) + '% decrease';}
+  else {
+  return d.Change_since_2012.toFixed(1) + '% increase';}
+  });
+
+rate_change_svg
+ .selectAll(".name")
+ .data(data)
+ .enter()
+ .append("text")
+ .attr("class", "name")
+ .attr("x", function(d){
+   return d.Change_since_2012 < 0 ? x_rate_change(0) + 2.55 : x_rate_change(0) - 2.55 })
+ .attr("y", function(d){
+   return y_rate_change(d.Cause); })
+ .attr("dy", y_rate_change.bandwidth() - 2.55)
+ .attr("text-anchor", function(d){
+   return d.Change_since_2012 < 0 ? "start" : "end"; })
+ .text(function(d){ return d.Cause; });
+
+ rate_change_svg
+  .append("line")
+  .attr("x1", x_rate_change(0))
+  .attr("x2", x_rate_change(0))
+  .attr("y1", 0)
+  .attr("y2", height_rate_change)
+  .attr("stroke", "#000")
+  .attr("stroke-width", "1px");
+
+}
+
+update_level_2_rate_change(daly_level_2_rank_change);
 
 
 // Line chart
@@ -1262,6 +1433,12 @@ focus_fg_6
  .attr("dx", 8)
  .attr("dy", "-.3em");
 
+ focus_fg_6
+ .append("text")
+ .attr("class", "y_area")
+ .style("opacity", 1)
+ .attr("dx", 8)
+ .attr("dy", "-.3em");
 
 
 // This is a function to update the chart with new data (it filters the larger dataset)
@@ -1312,7 +1489,14 @@ focus_fg_6
  .attr("transform",
            "translate(" + x(d.Year) + "," +
                           y(d.Estimate - 100) + ")")
- .text('Deaths: ' + d3.format('.0f')(d.Estimate));
+ .text('Deaths: ' + d3.format('.0f')(d.Estimate) + ' per 100,000');
+
+focus_fg_6
+ .select("text.y_area")
+ .attr("transform",
+           "translate(" + x(d.Year) + "," +
+                          y(d.Estimate - 70) + ")")
+ .text(d.Area);
 }
 
 line

@@ -25,6 +25,7 @@
 <h2 id = "total_death_string"></h2>
 
 <p>The figure below shows the top 10 causes of deaths in West Sussex, in 2017. These are the 'level two' cause groups. You can use the buttons at the top of the figure to toggle between viewing all people or just females or males.</p>
+<h3>Top ten causes of death; all ages; West Sussex; 2017</h3>
   <div class="switch-field">
   <input onclick="update_fg_1(deaths_persons_lv2)" type="radio" id="radio-one" name="switch-one" checked/>
   <label for="radio-one">Persons</label>
@@ -33,17 +34,18 @@
   <input onclick='update_fg_1(deaths_males_lv2)' type="radio" id="radio-three" name="switch-one" />
   <label for="radio-three">Males</label>
   </div>
-
 <div id="top_10_bars_by_sex_dataviz"></div>
 <p>In West Sussex, blah blah, differences in sexes, what leaves (MSK) for females).</p>
 <p>The leading burdens of disease in West Sussex in 2017 are given in the table below. You'll notice there are actually four top 10s and these reflect the various ways conditions affect our health.</p>
 
+<h3>Top ten causes of ill health and mortality; persons; all ages; West Sussex; 2017</h3>
 <div id = "top_10_table"> </div>
 <p>Discuss each of the metrics. What differences are there across top tens.</p>
 <p>Whilst the biggest contributers to mortality are generally the biggest contributers to disability and ill health, some conditions which have fairly low mortality rates can cause significant levels of disability.</p>
 
 <p>The figure below shows the estimated number of deaths in West Sussex in 2017 by cause (level 3 causes). Causes are coloured by the 'cause group' (level 2 cause). The size of the circle represents the number of deaths. Items are grouped by the broad disease group. Hover over a circle to see more information. You can toggle between the different measures to explore the different conditions that contribute to the burden of ill health and mortality.
 
+<h3>Level 3 causes of ill health and mortality; persons; all ages; West Sussex; 2017</h3>
   <div class="switch-field">
   <input onclick="update_bubbles(deaths_persons_lv3)" type="radio" id="radio-four" name="switch-two" checked/>
   <label for="radio-four">Deaths</label>
@@ -115,7 +117,6 @@
 <!-- slope chart -->
 
 
-
 <!-- Line chart deaths over time compared to England and maybe CIPFA neighbours -->
 <h3>All cause mortality (deaths); age standardised rate per 100,000 population; 1990 - 2017;<br>West Sussex and nearest neighbours</h3>
 <p>Select an area to view. The first drop down menu contains West Sussex and its 15 statistically nearest (in terms of demographics) neighbouring areas.</p>
@@ -125,9 +126,19 @@
 <select id = 'selectReferenceAreaButton'></select>
 <div id = "my_line_dataviz"> </div>
 
-<h3>All cause mortality (deaths); change in age standardised rate per 100,000 population; 1990 - 2017;<br>West Sussex and nearest neighbours</h3>
+<h3>All cause mortality (deaths); change in age standardised rate per 100,000 population; 2012 - 2017;<br>West Sussex and nearest neighbours</h3>
 <!-- x = condition, y = % change 07-17 -->
-
+<!-- <div class="switch-field">
+<input onclick="update_level_2_rate_change(deaths_level_2_rank_change)" type="radio" id="radio-change_1" name="switch-change" checked/>
+<label for="radio-change_1">Deaths</label>
+<input onclick="update_level_2_rate_change(yll_level_2_rank_change)" type="radio" id="radio-change_2" name="switch-change" checked/>
+<label for="radio-change_2">YLLs</label>
+<input onclick="update_level_2_rate_change(yld_level_2_rank_change)" type="radio" id="radio-change_3" name="switch-change" checked/>
+<label for="radio-change_3">YLDs</label>
+<input onclick='update_level_2_rate_change(daly_level_2_rank_change)' type="radio" id="radio-change_4" name="switch-change" />
+<label for="radio-change_4">DALY</label>
+</div> -->
+<div id="my_level_2_rate_change_dataviz"></div>
 
 <h1>Risk factors</h1>
 

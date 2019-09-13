@@ -552,7 +552,6 @@ Age_standardised_NN_ts_data <- unique(list.files("~/Documents/GBD_data_download/
   mutate(Cause = factor(Cause, levels =  unique(Cause))) %>% 
   select(Area, Sex, Year, Cause, Cause_outline, Cause_id, Level, Estimate, Lower_estimate, Upper_estimate, `Cause group`, Parent_id, measure, metric)
 
-unique(Age_standardised_NN_ts_data$Area)
 # There are no raw counts in the standardised set - only rates
 
 # we will be comparing our area against the region and england, and our nearest neighbours. 
@@ -611,8 +610,6 @@ Age_standardised_NN_ts_data %>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_level_2_1990_2017_', gsub(" ", "_", tolower(Area_x)), '_region_england.json'))
 
-
-
 # My thoughts are to do the analysis here, include columns for % change compared to 5 years (2012), 10 years (2007), and compared to 20 years (1997).
 
 Age_standardised_change_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("7d0121c1", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
@@ -639,7 +636,7 @@ Change_over_time_latest <- Age_standardised_change_data %>%
   rename(Estimate_2017 = Estimate) %>% 
   mutate(Label_2017 = paste0(format(round(Estimate_2017,0), big.mark = ',', trim = TRUE), ' (', format(round(Lower_estimate,0), big.mark = ',', trim = TRUE), '-', format(round(Upper_estimate,0), big.mark = ',', trim = TRUE), ')')) %>% 
   group_by(Area, Sex, Level, measure) %>% 
-  mutate(`Rank in 2017` = rank(-Estimate_2017))
+  mutate(`Rank_in_2017` = rank(-Estimate_2017))
 
 Change_over_time_a <- Age_standardised_change_data %>%
   filter(Year %in% c(1997, 2002, 2007, 2012)) %>% 
@@ -649,13 +646,13 @@ Change_over_time_a <- Age_standardised_change_data %>%
   left_join(Change_over_time_latest[c('Area', 'Sex', 'Cause', 'measure','Estimate_2017', 'Label_2017')], by = c('Area','Sex', 'Cause', 'measure')) %>% 
   ungroup() %>% 
   mutate(Change_to_2017 = (Estimate_2017 - Estimate) / Estimate *100) %>%
-  mutate(Change_label = paste0('Change since ', Year)) %>% 
-  mutate(Rank_label = paste0('Rank in ', Year)) %>% 
-  mutate(Estimate_label = paste0('Estimate in ', Year))
+  mutate(Change_label = paste0('Change_since_', Year)) %>% 
+  mutate(Rank_label = paste0('Rank_in_', Year)) %>% 
+  mutate(Estimate_label = paste0('Estimate_in_', Year))
 
 Change_over_time_b <- Change_over_time_a %>% 
   select(Area, Sex, Cause, measure, Change_to_2017, Change_label) %>% 
-  filter(Change_label != 'Change since 2017') %>% 
+  filter(Change_label != 'Change_since_2017') %>% 
   spread(Change_label, Change_to_2017)
 
 Change_over_time_c <- Change_over_time_a %>% 
@@ -671,27 +668,53 @@ Change_over_time <- Change_over_time_latest %>%
   left_join(Change_over_time_c, by = c('Area','Sex', 'Cause', 'measure')) %>% 
   left_join(Change_over_time_d, by = c('Area','Sex', 'Cause', 'measure')) %>% 
   select(-c(Year, Cause_id, Cause_outline, Parent_id, metric)) %>% 
-  mutate(`Change since 1997` = replace_na(`Change since 1997`, 0)) %>% 
-  mutate(`Change since 2002` = replace_na(`Change since 2002`, 0)) %>% 
-  mutate(`Change since 2007` = replace_na(`Change since 2007`, 0)) %>% 
-  mutate(`Change since 2012` = replace_na(`Change since 2012`, 0)) %>% 
-  mutate(`Rank in 1997` = replace_na(`Rank in 1997`, 0)) %>% 
-  mutate(`Rank in 2002` = replace_na(`Rank in 2002`, 0)) %>% 
-  mutate(`Rank in 2007` = replace_na(`Rank in 2007`, 0)) %>% 
-  mutate(`Rank in 2012` = replace_na(`Rank in 2012`, 0)) %>% 
-  mutate(`Estimate in 1997` = replace_na(`Estimate in 1997`, 0)) %>% 
-  mutate(`Estimate in 2002` = replace_na(`Estimate in 2002`, 0)) %>% 
-  mutate(`Estimate in 2007` = replace_na(`Estimate in 2007`, 0)) %>% 
-  mutate(`Estimate in 2012` = replace_na(`Estimate in 2012`, 0)) 
+  mutate(Change_since_1997 = replace_na(Change_since_1997, 0)) %>% 
+  mutate(Change_since_2002 = replace_na(Change_since_2002, 0)) %>% 
+  mutate(Change_since_2007 = replace_na(Change_since_2007, 0)) %>% 
+  mutate(Change_since_2012 = replace_na(Change_since_2012, 0)) %>% 
+  mutate(Rank_in_1997 = replace_na(Rank_in_1997, 0)) %>% 
+  mutate(Rank_in_2002 = replace_na(Rank_in_2002, 0)) %>% 
+  mutate(Rank_in_2007 = replace_na(Rank_in_2007, 0)) %>%  
+  mutate(Rank_in_2012 = replace_na(Rank_in_2012, 0)) %>% 
+  mutate(Estimate_in_1997 = replace_na(Estimate_in_1997, 0)) %>% 
+  mutate(Estimate_in_2002 = replace_na(Estimate_in_2002, 0)) %>% 
+  mutate(Estimate_in_2007 = replace_na(Estimate_in_2007, 0)) %>% 
+  mutate(Estimate_in_2012 = replace_na(Estimate_in_2012, 0)) 
 
 rm(Change_over_time_a, Change_over_time_b, Change_over_time_c, Change_over_time_d)
+
+Change_over_time %>% 
+  filter(Cause == 'Sense organ diseases') %>% 
+  View()
+
+Change_over_time %>% 
+  filter(Area == 'West Sussex') %>%
+  filter(Level == 2) %>% 
+  mutate(Cause = factor(Cause, levels = c("HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"))) %>%
+  arrange(Area, Sex, measure, Cause) %>% 
+  View()
 
 
 # This is the change over time for deaths at all levels by sex - show change in number and change in proportion
 Change_over_time %>% 
-  filter(`Rank in 2017` <= 10 | `Rank in 2012` <= 10 | `Rank in 2007` <= 10 | `Rank in 2002` <= 10 | `Rank in 1997` <= 10) %>% 
+  filter(Rank_in_2017 <= 10 | Rank_in_2012 <= 10 | Rank_in_2007 <= 10 | Rank_in_2002 <= 10 | Rank_in_1997 <= 10) %>% 
   toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_change_over_time_levels_0_1_2.json'))
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_change_over_time_levels_0_1_2_for_slope.json'))
+
+Change_over_time %>% 
+  filter(Area == 'West Sussex') %>%
+  filter(Level == 2) %>% 
+  mutate(Cause = factor(Cause, levels = c("HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"))) %>%
+  arrange(Area, Sex, measure, Cause) %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_change_over_time_level_2_', gsub(" ", "_", tolower(Area_x)), '.json'))
+
+
+
+read_csv('/Users/richtyler/Documents/Repositories/Testies/data.csv') %>% 
+  toJSON() %>% 
+  write_lines('/Users/richtyler/Documents/Repositories/Testies/data.json')
+
 
 # Disability adjusted life years ####
 
