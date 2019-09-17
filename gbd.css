@@ -1,3 +1,6 @@
+*{
+  font-family: 'Open Sans', sans-serif;
+}
 
 /* .main {
   max-width: 700px;
@@ -50,7 +53,7 @@
 
 h1 {
     font-size: 1.8rem;
-    font-family: "Garmond";
+    font-family: "Garamond", serif;
     font-weight: bold;
     color: #256cb2;
     /* font-family: "Verdana"; */
@@ -58,21 +61,20 @@ h1 {
 
 h2 {
     font-size: 1.2rem;
-    font-family: "Garmond";
+    font-family: "Garamond", serif;
     font-weight: bold;
     color: #256cb2;
   }
 
 p {
   font-size: .8rem;
-  font-family: "Verdana";
   text-align: justify;
   text-justify: inter-word;
 }
 
 p.tooltip {
   font-size: .8rem;
-  font-family: "Verdana";
+
   text-align: left !important;
   color: #ccc000;
 }
@@ -84,7 +86,7 @@ a {
 table {
 		width: 100%;
 		border-collapse: collapse;
-    font-family: "Verdana";
+
     font-size: .8rem;
     color: #000000;
 	}
@@ -186,7 +188,7 @@ svg {
 }
 
 .footer {
-  font-family: "Garmond";
+  font-family: "Garamond", serif;
   font-weight: bold;
   background-color: #ffffff;
   color: #256cb2;
@@ -248,4 +250,47 @@ svg {
   .footer  {
     order: 4;
   }
+}
+
+.cause_list{
+  position: relative;
+}
+
+.cause_list .side_tt{
+  display: none;
+}
+
+.cause_list:hover .side_tt{
+  display: block;
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  left: -400px;
+  width: 350px;
+  background: #f7f7f7;
+  color: #111;
+  padding: 15px;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.2);
+}
+
+.side_tt:after{
+  content: '';
+  width: 5px;
+  height: 5px;
+  position: absolute;
+  top: 0;
+  right: -13px;
+  border-left: 5px solid #222;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+
+
+.aside-1{
+  height: 100%;
+}
+
+.sticky{
+  position: sticky;
 }

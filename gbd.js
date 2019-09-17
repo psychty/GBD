@@ -202,8 +202,10 @@ bars_fig_1
   }
 
 // Initialize the plot with the first dataset
-update_fg_1(deaths_persons_lv2)
-update_fg_1(deaths_persons_lv2)
+setTimeout(() => {
+  update_fg_1(deaths_persons_lv2)
+}, 400)
+
 
 // Bring data in
 var request = new XMLHttpRequest();
@@ -218,13 +220,34 @@ function cause_group_1_summary() {
         list.innerHTML = item.Cause;
         list.className = 'cause_list';
         list.style.borderColor = color_lv_1_cause_group(index);
+        var tt = document.createElement('div');
+        tt.className = 'side_tt';
+        tt.style.borderColor = color_lv_1_cause_group(index);
+        var tt_h3_1 = document.createElement('h3');
+        tt_h3_1.innerHTML = item.Cause;
+        var tt_p1 = document.createElement('p');
+        tt_p1.innerHTML = item.deaths_label;
+        var tt_p2 = document.createElement('p');
+        tt_p2.innerHTML = item.yll_label;
+        var tt_p3 = document.createElement('p');
+        tt_p3.innerHTML = item.yld_label;
+        var tt_p4 = document.createElement('p');
+        tt_p4.innerHTML = item.daly_label;
+
+        tt.appendChild(tt_h3_1);
+        tt.appendChild(tt_p1);
+        tt.appendChild(tt_p2);
+        tt.appendChild(tt_p3);
+        tt.appendChild(tt_p4);
+        list.appendChild(tt);
         var div = document.getElementById("level_1_cause_summary");
+
         div.appendChild(list);
       })
     }
+
 cause_group_1_summary();
 
-// Bring data in
 var request = new XMLHttpRequest();
     request.open("GET", "./level_2_2017_west_sussex_summary.json", false);
     request.send(null);
@@ -360,6 +383,8 @@ tooltip_fg_2
   }
 
 function update_bubbles(data) {
+
+svg_fg_2.selectAll("*").remove(); // clear the svg and rebuild
 
 data = data.sort(function(a, b) {
   return d3.descending(a['Cause group'], b['Cause group']);
@@ -536,32 +561,31 @@ svg_fg_4
  .attr("transform", "translate(-10,10)rotate(-45)")
  .style("text-anchor", "end")
 
-// Add X axis label:
-svg_fg_4
- .append("text")
- .attr("text-anchor", "end")
- .attr("x", width/2)
- .attr("y", height_fg_4 + margin.top + 30)
- .text("Age group");
+ // Add X axis label:
+ svg_fg_4
+  .append("text")
+  .attr("text-anchor", "end")
+  .attr("x", width/2)
+  .attr("y", height_fg_4 + margin.top + 30)
+  .text("Age group");
 
-// Y axis label:
-svg_fg_4
- .append("text")
- .attr('id', 'axis_y_title')
- .attr("text-anchor", "end")
- .attr("transform", "rotate(-90)")
- .attr("y", - margin.left + 10)
- .attr("x", - margin.top - 60)
- .text('Number');
+ // Y axis label:
+ svg_fg_4
+  .append("text")
+  .attr('id', 'axis_y_title')
+  .attr("text-anchor", "end")
+  .attr("transform", "rotate(-90)")
+  .attr("y", - margin.left + 10)
+  .attr("x", - margin.top - 60)
+  .text('Number');
 
-// // Add Y axis
-var y_fg_4 = d3.scaleLinear()
-  .domain([0, 2000])
-  .range([height_fg_4, 0 ]);
+ // // Add Y axis
+ var y_fg_4 = d3.scaleLinear()
+   .domain([0, 2000])
+   .range([height_fg_4, 0 ]);
 
-var yAxis_fg_4 = svg_fg_4.append("g")
-  .attr("class", "myYaxis")
-
+ var yAxis_fg_4 = svg_fg_4.append("g")
+   .attr("class", "myYaxis")
 
 function update_age(data) {
 

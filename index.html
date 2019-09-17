@@ -1,134 +1,146 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Disease modelling - West Sussex</title>
-    <link rel="stylesheet" type="text/css" href="gbd.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Disease modelling - West Sussex</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="gbd.css">
 </head>
 
 <body>
 
-  <div class = "wrapper">
-    <div class = "header">
-        <h1>Burden of disease in West Sussex</h1>
-        <p>The Global Burden of Disease Study (GBD) is one of the most comprehensive worldwide epidemiological collaborations describing mortality and morbidity from major diseases and injuries and risk factors to health at global, national, regional, and local levels. It provides a standardised approach to estimating incidence (new cases) and prevalence (total number of cases) of ill health and death as well as a measure of the number of potential years lost due to disability, ill health and death.</p>
-        <p>Data are available for every year between 1990 and 2017 and each year new data and methodological innovations are fed into models, revising annual estimates for 360 diseases and injuries and 85 risk factors.</p>
-        <p>Where possible, local observational data (e.g. mortality and GP records or local studies) are included in the estimates but for a large number of diseases there is simply no recorded information on prevalence. The GBD ethos is that an uncertain estimate, even when data are sparse or not available, is preferable to no estimate at all. As a result, you should consider that there is a <b>margin of error when interpreting these results as they are simply estimates or <i>'best guesses'</i></b>.</p>
+  <div class="wrapper">
+    <div class="header">
+      <h1>Burden of disease in West Sussex</h1>
+      <p>The Global Burden of Disease Study (GBD) is one of the most comprehensive worldwide epidemiological collaborations describing mortality and morbidity from major diseases and injuries and risk factors to health at global, national, regional,
+        and local levels. It provides a standardised approach to estimating incidence (new cases) and prevalence (total number of cases) of ill health and death as well as a measure of the number of potential years lost due to disability, ill health
+        and death.</p>
+      <p>Data are available for every year between 1990 and 2017 and each year new data and methodological innovations are fed into models, revising annual estimates for 360 diseases and injuries and 85 risk factors.</p>
+      <p>Where possible, local observational data (e.g. mortality and GP records or local studies) are included in the estimates but for a large number of diseases there is simply no recorded information on prevalence. The GBD ethos is that an
+        uncertain estimate, even when data are sparse or not available, is preferable to no estimate at all. As a result, you should consider that there is a <b>margin of error when interpreting these results as they are simply estimates or <i>'best
+            guesses'</i></b>.</p>
     </div>
 
-<article class = "main">
+    <article class="main">
 
-<h1>Exploring the burden of disease in West Sussex in 2017</h1>
-<h2 id = "total_death_string"></h2>
+      <h1>Exploring the burden of disease in West Sussex in 2017</h1>
+      <h2 id="total_death_string"></h2>
 
-<p>The figure below shows the top 10 causes of deaths in West Sussex, in 2017. These are the 'level two' cause groups. You can use the buttons at the top of the figure to toggle between viewing all people or just females or males.</p>
-<h3>Top ten causes of death; all ages; West Sussex; 2017</h3>
-  <div class="switch-field">
-  <input onclick="update_fg_1(deaths_persons_lv2)" type="radio" id="radio-one" name="switch-one" checked/>
-  <label for="radio-one">Persons</label>
-  <input onclick="update_fg_1(deaths_females_lv2)" type="radio" id="radio-two" name="switch-one" />
-  <label for="radio-two">Females</label>
-  <input onclick='update_fg_1(deaths_males_lv2)' type="radio" id="radio-three" name="switch-one" />
-  <label for="radio-three">Males</label>
-  </div>
-<div id="top_10_bars_by_sex_dataviz"></div>
-<p>In West Sussex, blah blah, differences in sexes, what leaves (MSK) for females).</p>
-<p>The leading burdens of disease in West Sussex in 2017 are given in the table below. You'll notice there are actually four top 10s and these reflect the various ways conditions affect our health.</p>
+      <p>The figure below shows the top 10 causes of deaths in West Sussex, in 2017. These are the 'level two' cause groups. You can use the buttons at the top of the figure to toggle between viewing all people or just females or males.</p>
+      <h3>Top ten causes of death; all ages; West Sussex; 2017</h3>
+      <div class="switch-field">
+        <input onclick="update_fg_1(deaths_persons_lv2)" type="radio" id="radio-one" name="switch-one" checked />
+        <label for="radio-one">Persons</label>
+        <input onclick="update_fg_1(deaths_females_lv2)" type="radio" id="radio-two" name="switch-one" />
+        <label for="radio-two">Females</label>
+        <input onclick='update_fg_1(deaths_males_lv2)' type="radio" id="radio-three" name="switch-one" />
+        <label for="radio-three">Males</label>
+      </div>
+      <div id="top_10_bars_by_sex_dataviz"></div>
+      <p>In West Sussex, blah blah, differences in sexes, what leaves (MSK) for females).</p>
+      <p>The leading burdens of disease in West Sussex in 2017 are given in the table below. You'll notice there are actually four top 10s and these reflect the various ways conditions affect our health.</p>
 
-<h3>Top ten causes of ill health and mortality; persons; all ages; West Sussex; 2017</h3>
-<div id = "top_10_table"> </div>
-<p>Discuss each of the metrics. What differences are there across top tens.</p>
-<p>Whilst the biggest contributers to mortality are generally the biggest contributers to disability and ill health, some conditions which have fairly low mortality rates can cause significant levels of disability.</p>
+      <h3>Top ten causes of ill health and mortality; persons; all ages; West Sussex; 2017</h3>
+      <div id="top_10_table"> </div>
+      <p>Discuss each of the metrics. What differences are there across top tens.</p>
+      <p>Whilst the biggest contributers to mortality are generally the biggest contributers to disability and ill health, some conditions which have fairly low mortality rates can cause significant levels of disability.</p>
 
-<p>The figure below shows the estimated number of deaths in West Sussex in 2017 by cause (level 3 causes). Causes are coloured by the 'cause group' (level 2 cause). The size of the circle represents the number of deaths. Items are grouped by the broad disease group. Hover over a circle to see more information. You can toggle between the different measures to explore the different conditions that contribute to the burden of ill health and mortality.
+      <p>The figure below shows the estimated number of deaths in West Sussex in 2017 by cause (level 3 causes). Causes are coloured by the 'cause group' (level 2 cause). The size of the circle represents the number of deaths. Items are grouped by
+        the broad disease group. Hover over a circle to see more information. You can toggle between the different measures to explore the different conditions that contribute to the burden of ill health and mortality.
 
-<h3>Level 3 causes of ill health and mortality; persons; all ages; West Sussex; 2017</h3>
-  <div class="switch-field">
-  <input onclick="update_bubbles(deaths_persons_lv3)" type="radio" id="radio-four" name="switch-two" checked/>
-  <label for="radio-four">Deaths</label>
-  <input onclick="update_bubbles(yll_persons_lv3)" type="radio" id="radio-five" name="switch-two" />
-  <label for="radio-five">YLL</label>
-  <input onclick='update_bubbles(yld_persons_lv3)' type="radio" id="radio-six" name="switch-two" />
-  <label for="radio-six">YLD</label>
-  <input onclick='update_bubbles(daly_persons_lv3)' type="radio" id="radio-seven" name="switch-two" />
-  <label for="radio-seven">DALY</label>
-  </div>
+        <h3>Level 3 causes of ill health and mortality; persons; all ages; West Sussex; 2017</h3>
+        <div class="switch-field">
+          <input onclick="update_bubbles(deaths_persons_lv3)" type="radio" id="radio-four" name="switch-two" checked />
+          <label for="radio-four">Deaths</label>
+          <input onclick="update_bubbles(yll_persons_lv3)" type="radio" id="radio-five" name="switch-two" />
+          <label for="radio-five">YLL</label>
+          <input onclick='update_bubbles(yld_persons_lv3)' type="radio" id="radio-six" name="switch-two" />
+          <label for="radio-six">YLD</label>
+          <input onclick='update_bubbles(daly_persons_lv3)' type="radio" id="radio-seven" name="switch-two" />
+          <label for="radio-seven">DALY</label>
+        </div>
 
-<div id = "my_deaths_bubble_dataviz"> </div>
-<!-- Perhaps we can get this graphic to either move when the causes are clicked, or perhaps highlighted, or perhaps have the cause groups cluster together -->
-<!-- Would be good to be able to split males vs females (maybe also change the year but that will require some thinking and maybe lots and lots of arrays). -->
-<!-- or perhaps we have one figure for males (for all four types) and one for females (for all four types) -->
+        <div id="my_deaths_bubble_dataviz"> </div>
+        <!-- Perhaps we can get this graphic to either move when the causes are clicked, or perhaps highlighted, or perhaps have the cause groups cluster together -->
+        <!-- Would be good to be able to split males vs females (maybe also change the year but that will require some thinking and maybe lots and lots of arrays). -->
+        <!-- or perhaps we have one figure for males (for all four types) and one for females (for all four types) -->
 
-<p>The next bubble figure shows differences between males and females. Again, you can toggle between the different measures.</p>
-<div id = "my_deaths_by_sex_bubble_dataviz"> </div>
-
-<h2>How does ill health affect people of different ages?</h2>
-<p>We have already looked at measures of premature mortality and morbidity, that is ill health that occurs earlier than naturally expected, but we can also look at which conditions impact people across the lifecourse.</p>
-
-<div class="switch-field">
-<input onclick="update_age(deaths_age)" type="radio" id="radio-eight" name="switch-three" checked/>
-<label for="radio-eight">Deaths</label>
-<input onclick="update_age(yll_age)" type="radio" id="radio-nine" name="switch-three" />
-<label for="radio-nine">YLL</label>
-<input onclick='update_age(yld_age)' type="radio" id="radio-ten" name="switch-three" />
-<label for="radio-ten">YLD</label>
-<input onclick='update_age(daly_age)' type="radio" id="radio-eleven" name="switch-three" />
-<label for="radio-eleven">DALY</label>
-</div>
-<div id = "my_lifecourse_condition_dataviz"> </div>
-<!-- x = age y = value, fill = condition (level 2)-->
-
-<p>Whilst it is useful to see the number of deaths or years lost for a condition, it is also useful to see the proportion of the burden for each age group to answer the question 'if the condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain age?'. Answering this question shows us that certain diseases impact people of particular ages disproportionately. The switch below effects both the number and proportion of disease burden attributed to a condition and age group.</p>
-<div class="switch-field">
-<input onclick="update_condition(deaths_condition); update_condition_prop(deaths_condition_proportion);" type="radio" id="radio-twelve" name="switch-four" checked/>
-<label for="radio-twelve">Deaths</label>
-<input onclick="update_condition(yll_condition); update_condition_prop(yll_condition_proportion);" type="radio" id="radio-thirteen" name="switch-four" />
-<label for="radio-thirteen">YLL</label>
-<input onclick='update_condition(yld_condition); update_condition_prop(yld_condition_proportion)' type="radio" id="radio-fourteen" name="switch-four" />
-<label for="radio-fourteen">YLD</label>
-<input onclick='update_condition(daly_condition); update_condition_prop(daly_condition_proportion)' type="radio" id="radio-fifteen" name="switch-four" />
-<label for="radio-fifteen">DALY</label>
-</div>
-<div id = 'my_condition_lifecourse_dataviz'></div>
-<div id = 'my_condition_lifecourse_proportion_dataviz'></div>
-
-<h1>Exploring changes over time and across areas</h1>
-<p>So far we have looked at ill health for those in West Sussex using the 'crude' or unstandardised values, as this gives an idea of the scale of the burden of ill health for our population. We know from the section above that age is a very important determinent of ill health and disability and conditions affect people of different ages.</p>
-<p>To account for differences in population size and demographics, the remaining analyses use <font color = "#256cb2"><b>standardised estimates</b></font> which detail the number (e.g. deaths) per 100,000 population. For more information on standardisation, look at the 'Concepts' section on this left of this page.</p>
-
-<p>We revisit the top tens now, and the figure below shows the change in top ten causes of mortality and morbidity for West Sussex.</p>
-
-<div class="switch-field">
-<input onclick="update_top_10_change(deaths_rate_rank_change)" type="radio" id="radio-top_10_1" name="switch-two" checked/>
-<label for="radio-top_10_1">Deaths</label>
-<input onclick="update_top_10_change(yll_rate_rank_change)" type="radio" id="radio-top_10_2" name="switch-two" checked/>
-<label for="radio-top_10_2">YLLs</label>
-<input onclick="update_top_10_change(yld_rate_rank_change)" type="radio" id="radio-top_10_3" name="switch-two" checked/>
-<label for="radio-top_10_3">YLDs</label>
-<input onclick='update_top_10_change(daly_rate_rank_change)' type="radio" id="radio-top_10_4" name="switch-two" />
-<label for="radio-top_10_4">DALY</label>
-</div>
-<!-- Create a div where the graph will take place -->
-<div id="my_dataviz"></div>
-
-<!-- slope chart -->
+        <p>The next bubble figure shows differences between males and females. Again, you can toggle between the different measures.</p>
+        <div id="my_deaths_by_sex_bubble_dataviz"> </div>
 
 
-<!-- Line chart deaths over time compared to England and maybe CIPFA neighbours -->
-<h3>All cause mortality (deaths); age standardised rate per 100,000 population; 1990 - 2017;<br>West Sussex and nearest neighbours</h3>
-<p>Select an area to view. The first drop down menu contains West Sussex and its 15 statistically nearest (in terms of demographics) neighbouring areas.</p>
-<h1>Add ribon for confidence limits - add details of what this means - not just 95% CI</h1>
-<select id = 'selectAreaButton'></select>
-<p>You can also choose whether to compare the estimate with the South East region or England overall.</p>
-<select id = 'selectReferenceAreaButton'></select>
-<div id = "my_line_dataviz"> </div>
 
-<h3>All cause mortality (deaths); change in age standardised rate per 100,000 population; 2012 - 2017;<br>West Sussex and nearest neighbours</h3>
-<!-- x = condition, y = % change 07-17 -->
-<!-- <div class="switch-field">
+        <h2>How does ill health affect people of different ages?</h2>
+        <p>We have already looked at measures of premature mortality and morbidity, that is ill health that occurs earlier than naturally expected, but we can also look at which conditions impact people across the lifecourse.</p>
+
+        <div class="switch-field">
+          <input onclick="update_age(deaths_age)" type="radio" id="radio-eight" name="switch-three" checked />
+          <label for="radio-eight">Deaths</label>
+          <input onclick="update_age(yll_age)" type="radio" id="radio-nine" name="switch-three" />
+          <label for="radio-nine">YLL</label>
+          <input onclick='update_age(yld_age)' type="radio" id="radio-ten" name="switch-three" />
+          <label for="radio-ten">YLD</label>
+          <input onclick='update_age(daly_age)' type="radio" id="radio-eleven" name="switch-three" />
+          <label for="radio-eleven">DALY</label>
+        </div>
+        <div id="my_lifecourse_condition_dataviz"> </div>
+        <!-- x = age y = value, fill = condition (level 2)-->
+
+        <p>Whilst it is useful to see the number of deaths or years lost for a condition, it is also useful to see the proportion of the burden for each age group to answer the question 'if the condition is estimated to cause 100 deaths, how many of
+          those deaths are among people of a certain age?'. Answering this question shows us that certain diseases impact people of particular ages disproportionately. The switch below effects both the number and proportion of disease burden
+          attributed to a condition and age group.</p>
+        <div class="switch-field">
+          <input onclick="update_condition(deaths_condition); update_condition_prop(deaths_condition_proportion);" type="radio" id="radio-twelve" name="switch-four" checked />
+          <label for="radio-twelve">Deaths</label>
+          <input onclick="update_condition(yll_condition); update_condition_prop(yll_condition_proportion);" type="radio" id="radio-thirteen" name="switch-four" />
+          <label for="radio-thirteen">YLL</label>
+          <input onclick='update_condition(yld_condition); update_condition_prop(yld_condition_proportion)' type="radio" id="radio-fourteen" name="switch-four" />
+          <label for="radio-fourteen">YLD</label>
+          <input onclick='update_condition(daly_condition); update_condition_prop(daly_condition_proportion)' type="radio" id="radio-fifteen" name="switch-four" />
+          <label for="radio-fifteen">DALY</label>
+        </div>
+        <div id='my_condition_lifecourse_dataviz'></div>
+        <div id='my_condition_lifecourse_proportion_dataviz'></div>
+
+        <h1>Exploring changes over time and across areas</h1>
+        <p>So far we have looked at ill health for those in West Sussex using the 'crude' or unstandardised values, as this gives an idea of the scale of the burden of ill health for our population. We know from the section above that age is a very
+          important determinent of ill health and disability and conditions affect people of different ages.</p>
+        <p>To account for differences in population size and demographics, the remaining analyses use <font color="#256cb2"><b>standardised estimates</b></font> which detail the number (e.g. deaths) per 100,000 population. For more information on
+          standardisation, look at the 'Concepts' section on this left of this page.</p>
+
+        <p>We revisit the top tens now, and the figure below shows the change in top ten causes of mortality and morbidity for West Sussex.</p>
+
+        <div class="switch-field">
+          <input onclick="update_top_10_change(deaths_rate_rank_change)" type="radio" id="radio-top_10_1" name="switch-two" checked />
+          <label for="radio-top_10_1">Deaths</label>
+          <input onclick="update_top_10_change(yll_rate_rank_change)" type="radio" id="radio-top_10_2" name="switch-two" checked />
+          <label for="radio-top_10_2">YLLs</label>
+          <input onclick="update_top_10_change(yld_rate_rank_change)" type="radio" id="radio-top_10_3" name="switch-two" checked />
+          <label for="radio-top_10_3">YLDs</label>
+          <input onclick='update_top_10_change(daly_rate_rank_change)' type="radio" id="radio-top_10_4" name="switch-two" />
+          <label for="radio-top_10_4">DALY</label>
+        </div>
+        <!-- Create a div where the graph will take place -->
+        <div id="my_dataviz"></div>
+
+        <!-- slope chart -->
+
+
+        <!-- Line chart deaths over time compared to England and maybe CIPFA neighbours -->
+        <h3>All cause mortality (deaths); age standardised rate per 100,000 population; 1990 - 2017;<br>West Sussex and nearest neighbours</h3>
+        <p>Select an area to view. The first drop down menu contains West Sussex and its 15 statistically nearest (in terms of demographics) neighbouring areas.</p>
+        <h1>Add ribon for confidence limits - add details of what this means - not just 95% CI</h1>
+        <select id='selectAreaButton'></select>
+        <p>You can also choose whether to compare the estimate with the South East region or England overall.</p>
+        <select id='selectReferenceAreaButton'></select>
+        <div id="my_line_dataviz"> </div>
+
+        <h3>All cause mortality (deaths); change in age standardised rate per 100,000 population; 2012 - 2017;<br>West Sussex and nearest neighbours</h3>
+        <!-- x = condition, y = % change 07-17 -->
+        <!-- <div class="switch-field">
 <input onclick="update_level_2_rate_change(deaths_level_2_rank_change)" type="radio" id="radio-change_1" name="switch-change" checked/>
 <label for="radio-change_1">Deaths</label>
 <input onclick="update_level_2_rate_change(yll_level_2_rank_change)" type="radio" id="radio-change_2" name="switch-change" checked/>
@@ -138,72 +150,81 @@
 <input onclick='update_level_2_rate_change(daly_level_2_rank_change)' type="radio" id="radio-change_4" name="switch-change" />
 <label for="radio-change_4">DALY</label>
 </div> -->
-<div id="my_level_2_rate_change_dataviz"></div>
+        <div id="my_level_2_rate_change_dataviz"></div>
 
-<h1>Risk factors</h1>
+        <h1>Risk factors</h1>
 
-<h1>Condition Focus</h1>
-<p>In the next section we focus on the three disease groups which contributed the most disability adjusted life-years lost in West Sussex in 2017 (Cancers (neoplasms), Cardiovascular diseases and Musculoskeletal disorders).</p>
+        <h1>Condition Focus</h1>
+        <p>In the next section we focus on the three disease groups which contributed the most disability adjusted life-years lost in West Sussex in 2017 (Cancers (neoplasms), Cardiovascular diseases and Musculoskeletal disorders).</p>
 
-<h2>Cancers (neoplasms)</h2>
+        <h2>Cancers (neoplasms)</h2>
 
-<h2>Cardiovascular diseases</h2>
+        <h2>Cardiovascular diseases</h2>
 
-<h2>Musculoskeletal disorders</h2>
+        <h2>Musculoskeletal disorders</h2>
 
-<h2>Exploring conditions in more detail</h2>
-<p>It is not possible to provide a commentary on all 360 diseases/conditions but you can use the drop down boxes below to explore more detail on conditions.</p>
+        <h2>Exploring conditions in more detail</h2>
+        <p>It is not possible to provide a commentary on all 360 diseases/conditions but you can use the drop down boxes below to explore more detail on conditions.</p>
 
 
 
-</article>
+    </article>
 
-<aside class = "aside aside-1">
+    <aside class="aside aside-1">
+      <div class="sticky">
 
-<h2>Concepts</h2>
-<h3>Deaths</h3>
-<p>In England, vital registers are maintained by the Office for National Statistics (ONS), which record the underlying cause of death for every death. Whilst the GBD study uses these registers for estimates of deaths because there is a complete population coverage, a small proportion of causes of death arere-coded to other causes in line with GBD algorithms identifying non-specific, ill-defined or other causes not considered underlying causes by ONS.</p>
-<h3>Years of life lost</h3>
-<p>YLLs are calculated by subtracting the age at death from the longest possible life expectancy for a person at that age. For example, if the longest life expectancy for men in a given country is 75, but a man dies of cancer at 65, this would be 10 years of life lost due to cancer.</p>
-<h3>Years lived with disability</h3>
-<p>These are estimates of the number of years lived in less than ideal health. Some conditions such as influenza last for only a few days, whereas epilepsy can last a lifetime. It is measured by taking the prevalence of the condition multiplied by a disability weight which reflects the severity of different conditions and these are developed using a variety of data sources. For England, this includes national surveys, the national cancer registration system, hospital episode statistics and multiple published studies on various disease and condition topics.</p>
-<h3>Disability Adjusted Life Years (DALYs)</h3>
-<p>One DALY equals one lost year of healthy life and is the sum of years of life lost and years lived with disability. This is the best measure to consider the overall impact of a specific cause or group of causes on a population.</p>
+      <h2>Concepts</h2>
+      <h3>Deaths</h3>
+      <p>In England, vital registers are maintained by the Office for National Statistics (ONS), which record the underlying cause of death for every death. Whilst the GBD study uses these registers for estimates of deaths because there is a complete
+        population coverage, a small proportion of causes of death arere-coded to other causes in line with GBD algorithms identifying non-specific, ill-defined or other causes not considered underlying causes by ONS.</p>
+      <h3>Years of life lost</h3>
+      <p>YLLs are calculated by subtracting the age at death from the longest possible life expectancy for a person at that age. For example, if the longest life expectancy for men in a given country is 75, but a man dies of cancer at 65, this would
+        be 10 years of life lost due to cancer.</p>
+      <h3>Years lived with disability</h3>
+      <p>These are estimates of the number of years lived in less than ideal health. Some conditions such as influenza last for only a few days, whereas epilepsy can last a lifetime. It is measured by taking the prevalence of the condition multiplied
+        by a disability weight which reflects the severity of different conditions and these are developed using a variety of data sources. For England, this includes national surveys, the national cancer registration system, hospital episode
+        statistics and multiple published studies on various disease and condition topics.</p>
+      <h3>Disability Adjusted Life Years (DALYs)</h3>
+      <p>One DALY equals one lost year of healthy life and is the sum of years of life lost and years lived with disability. This is the best measure to consider the overall impact of a specific cause or group of causes on a population.</p>
 
-<h3>Standardised values</h3>
-<p>Looking at crude estimates helps to know what the true impact might be for your area and this can help to plan services (e.g. to anticipate the number of patients a service might need to cater for, the number of cases).</p>
-<p>You could compare these estimates with those in other areas, or over time, to see if things are better in some areas or are improving over time although any differences (or similarities) in estimates could be at least in part due the underlying differences in populations (e.g. areas with fewer or greater numbers of older people, or the shear size of the population).</p>
-<p>For example area A may have recorded 2,000 deaths and area B recorded 1,500 deaths. You might think that area A has a much bigger issue of mortality than area B. However, if area A has a population of 500,000, the rate of deaths is 400 deaths per 100,000 population. If area B has a population of 300,000, then the rate of deaths is higher in area B (500 per 100,000).</p>
-<p><i>Better example of standardising.</i></p>
+      <h3>Standardised values</h3>
+      <p>Looking at crude estimates helps to know what the true impact might be for your area and this can help to plan services (e.g. to anticipate the number of patients a service might need to cater for, the number of cases).</p>
+      <p>You could compare these estimates with those in other areas, or over time, to see if things are better in some areas or are improving over time although any differences (or similarities) in estimates could be at least in part due the
+        underlying differences in populations (e.g. areas with fewer or greater numbers of older people, or the shear size of the population).</p>
+      <p>For example area A may have recorded 2,000 deaths and area B recorded 1,500 deaths. You might think that area A has a much bigger issue of mortality than area B. However, if area A has a population of 500,000, the rate of deaths is 400
+        deaths per 100,000 population. If area B has a population of 300,000, then the rate of deaths is higher in area B (500 per 100,000).</p>
+      <p><i>Better example of standardising.</i></p>
 
-<h2>Further information</h2>
-<p>Data downloaded from the <a href = "http://ghdx.healthdata.org/gbd-results-tool", target="_blank">GBD online results tool;</a href> Institute for Health Metrics and Evaluation (IHME). Findings from the Global Burden of Disease Study 2017. Seattle, WA: IHME, 2018</p>
-<p>A note on spellings: As the GBD is produced in Seattle, USA, some conditions and cause names use English (U.S.) spellings.</p>
-<p>The 2017 overview for England, by the IHME, is available <a href = "http://www.healthdata.org/united-kingdom-england" target = "_blank">here</a href></p>
-</aside>
+      <h2>Further information</h2>
+      <p>Data downloaded from the <a href="http://ghdx.healthdata.org/gbd-results-tool" , target="_blank">GBD online results tool;</a href> Institute for Health Metrics and Evaluation (IHME). Findings from the Global Burden of Disease Study 2017. Seattle, WA: IHME, 2018</p>
+      <p>A note on spellings: As the GBD is produced in Seattle, USA, some conditions and cause names use English (U.S.) spellings.</p>
+      <p>The 2017 overview for England, by the IHME, is available <a href="http://www.healthdata.org/united-kingdom-england" target="_blank">here</a href></p>
+      </div>
+    </aside>
 
-<aside class="aside aside-2">
-    <h2>Cause groups</h2>
-    <p>The GBD 2017 diseases/conditions are split and aggregated into four hierarchical levels. Hover over the tiles below to find out more about the high level (levels 1 and 2) groups*.</p>
-    <p>Level 1 contains three broad cause groups:</p>
-    <div id = 'level_1_cause_summary'></div>
-    <p>These are then split into 22 level 2 cause groups:</p>
-    <div id = 'level_2_cause_summary'></div>
-    <p>In addition, there are 169 level 3 diseases/conditions and some of these are further expanded to an additional 165 level 4 diseases/conditions. For this analysis we explore levels 1, 2, and 3.</p>
-    <p><i>*Level 3 conditions can be explored using the bubble figures on this page or in the 'Exploring conditions in more detail' section.</i></p>
+    <aside class="aside aside-2">
+      <h2>Cause groups</h2>
+      <p>The GBD 2017 diseases/conditions are split and aggregated into four hierarchical levels. Hover over the tiles below to find out more about the high level (levels 1 and 2) groups*.</p>
+      <p>Level 1 contains three broad cause groups:</p>
+      <div id='level_1_cause_summary'></div>
+      <p>These are then split into 22 level 2 cause groups:</p>
+      <div id='level_2_cause_summary'></div>
+      <p>In addition, there are 169 level 3 diseases/conditions and some of these are further expanded to an additional 165 level 4 diseases/conditions. For this analysis we explore levels 1, 2, and 3.</p>
+      <p><i>*Level 3 conditions can be explored using the bubble figures on this page or in the 'Exploring conditions in more detail' section.</i></p>
 
-<h2>Age groups</h2>
-    <div id = 'age_summary'></div>
-</aside>
+      <h2>Age groups</h2>
+      <div id='age_summary'></div>
+    </aside>
 
-</div>
+  </div>
 
-<footer class="footer">M4de by Dr Rich Tyler<br><a href = "https://github.com/psychty",target = "_blank">github/psychty</a><br>July 2019</footer>
+  <footer class="footer">M4de by Dr Rich Tyler<br><a href="https://github.com/psychty" ,target="_blank">github/psychty</a><br>July 2019</footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
-<script src="https://d3js.org/d3-format.v1.min.js"></script>
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-<script src = 'gbd.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
+  <script src="https://d3js.org/d3-format.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src='gbd.js'></script>
 
 </body>
+
 </html>
