@@ -1372,17 +1372,44 @@ svg_fg_6
   .attr("x", - margin.top - 60)
   .text('Deaths per 100,000');
 
+
+var line_CI = svg_fg_6
+  .append("path")
+  .datum(deaths_all_cause.filter(function(d){
+    return d.Area === areas[0]})) // Initialize line with first value from 'allGroup'
+  .attr("fill", function(d){ return myColor("valueA") })
+  .attr("stroke", "#000000")
+  .attr("d", d3.area()
+  .x(function(d) { return x(d.Year) })
+    .y0(function(d) { return y(d.Lower_estimate) })
+    .y1(function(d) { return y(d.Upper_estimate) })
+  )
+
 var line = svg_fg_6
   .append('g')
   .append("path")
   .datum(deaths_all_cause.filter(function(d){
-    return d.Area === areas[0]})) // Initialize line with first value from 'allGroup'
+      return d.Area === areas[0]})) // Initialize line with first value from 'allGroup'
   .attr("d", d3.line()
   .x(function(d) { return x(d.Year) })
   .y(function(d) { return  y(+d.Estimate) }))
   .attr("stroke", function(d){ return myColor("valueA") })
   .style("stroke-width", 2)
   .style("fill", "none")
+
+
+var line_CI_ref = svg_fg_6
+ .append("path")
+.datum(deaths_se_eng.filter(function(d){
+      return d.Area === reference_areas[0]})) // Initialize line with first value from 'allGroup'
+    .attr("fill", '#dbdbdb')
+    .attr("stroke", "none")
+    .attr("d", d3.area()
+    .x(function(d) { return x(d.Year) })
+      .y0(function(d) { return y(d.Lower_estimate) })
+      .y1(function(d) { return y(d.Upper_estimate) })
+    )
+
 
 var line_ref = svg_fg_6
   .append('g')
@@ -1395,7 +1422,6 @@ var line_ref = svg_fg_6
   .attr("stroke", '#000000')
   .style("stroke-width", 2)
   .style("fill", "none")
-
 
 
 // Add a circle following the pointer
@@ -1499,6 +1525,20 @@ focus_fg_6
  .text(d.Area);
 }
 
+line_CI
+.datum(dataFilter)
+.transition()
+.duration(1000)
+.attr("fill", function(d){
+  return myColor(selectedGroup) })
+.attr("stroke", "none")
+.attr('opacity', 0.5)
+.attr("d", d3.area()
+.x(function(d) { return x(d.Year) })
+.y0(function(d) { return y(d.Lower_estimate) })
+.y1(function(d) { return y(d.Upper_estimate) })
+    )
+
 line
   .datum(dataFilter)
   .transition()
@@ -1509,6 +1549,18 @@ line
     )
   .attr("stroke", function(d){
     return myColor(selectedGroup) })
+
+line_CI_ref
+.datum(ref_data)
+.transition()
+.duration(1000)// Initialize line with first value from 'allGroup'
+.attr("fill", '#dbdbdb')
+.attr("stroke", "none")
+.attr("d", d3.area()
+.x(function(d) { return x(d.Year) })
+.y0(function(d) { return y(d.Lower_estimate) })
+.y1(function(d) { return y(d.Upper_estimate) })
+    )
 
   line_ref
     .datum(ref_data)
