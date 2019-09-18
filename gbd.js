@@ -1,6 +1,6 @@
 
 // set global width and heights to use for our svgs - you can choose not to use these and specify custom values
-var width = window.innerWidth / 100 * 55;
+var width = window.innerWidth / 2;
 var height = 500;
 
 // margins
@@ -111,7 +111,7 @@ var showTooltip_fg_1 = function(d) {
 
   tooltip_fg_1
   .style("opacity", 1)
-  .html("<h3>" + d.Cause + '</h3><p>The estimated number of deaths as a result of ' + d.Cause + ' in West Sussex in 2017 among ' + d.Sex.toLowerCase().replace('both', 'both males and female') + 's was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.Deaths_number) + '</b></font>.</p><p>This is the ' + d.Death_rank + 'th/nd/rd/st highest cause of death, accounting for ' + d3.format('.0%')(d.Deaths_proportion) + ' of the total number of deaths in 2017 for this population.</p>') // The nested .replace within .toLowerCase() replaces the string 'both' (not 'Both') with 'both males and female' and then we add the s and a line break.
+  .html("<h3>" + d.Cause + '</h3><p>The estimated number of deaths as a result of ' + d.Cause + ' in West Sussex in 2017 among ' + d.Sex.toLowerCase().replace('both', 'both males and female') + 's was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.Deaths_number) + '</b></font>.</p><p>This is the ' + d.Death_rank + ' cause of death, accounting for ' + d3.format('.0%')(d.Deaths_proportion) + ' of the total number of deaths in 2017 for this population.</p>') // The nested .replace within .toLowerCase() replaces the string 'both' (not 'Both') with 'both males and female' and then we add the s and a line break.
   .style("top", (event.pageY - 10) + "px")
   .style("left", (event.pageX + 10) + "px")
   }
@@ -201,10 +201,8 @@ bars_fig_1
   .remove()
   }
 
-// Initialize the plot with the first dataset
-setTimeout(() => {
   update_fg_1(deaths_persons_lv2)
-}, 400)
+  update_fg_1(deaths_persons_lv2)
 
 
 // Bring data in
@@ -260,10 +258,35 @@ function cause_group_2_summary() {
         list.innerHTML = item.Cause;
         list.className = 'cause_list';
         list.style.borderColor = color_cause_group(index);
+
+        var tt_lv2 = document.createElement('div');
+        tt_lv2.className = 'side_tt';
+        tt_lv2.style.borderColor = color_cause_group(index);
+        var tt_lv2_h3_1 = document.createElement('h3');
+        tt_lv2_h3_1.innerHTML = item.Cause;
+        var tt_lv2_p1 = document.createElement('p');
+        tt_lv2_p1.innerHTML = item.Description;
+        var tt_lv2_p2 = document.createElement('p');
+        tt_lv2_p2.innerHTML = item.deaths_label;
+        var tt_lv2_p3 = document.createElement('p');
+        tt_lv2_p3.innerHTML = item.yll_label;
+        var tt_lv2_p4 = document.createElement('p');
+        tt_lv2_p4.innerHTML = item.yld_label;
+        var tt_lv2_p5 = document.createElement('p');
+        tt_lv2_p5.innerHTML = item.daly_label;
+
+        tt_lv2.appendChild(tt_lv2_h3_1);
+        tt_lv2.appendChild(tt_lv2_p1);
+        tt_lv2.appendChild(tt_lv2_p2);
+        tt_lv2.appendChild(tt_lv2_p3);
+        tt_lv2.appendChild(tt_lv2_p4);
+        tt_lv2.appendChild(tt_lv2_p5);
+        list.appendChild(tt_lv2);
         var div = document.getElementById("level_2_cause_summary");
         div.appendChild(list);
       })
     }
+
 cause_group_2_summary();
 
 // Top ten table
@@ -364,7 +387,7 @@ daly_persons_lv3 = json.filter(function(d){
 var svg_fg_2 = d3.select("#my_deaths_bubble_dataviz")
   .append("svg")
   .attr("width", width)
-  .attr("height", height)
+  .attr("height", height + 50)
 
 // Create functions to show, move, and hide the tooltip
 var tooltip_fg_2 = d3.select("#my_deaths_bubble_dataviz")
@@ -384,7 +407,12 @@ tooltip_fg_2
 
 function update_bubbles(data) {
 
-svg_fg_2.selectAll("*").remove(); // clear the svg and rebuild
+// This selects the whole div, changes the r value for all circles to 0 and then removes the svg before new plots are rebuilt.
+svg_fg_2.selectAll("*")
+.transition()
+.duration(750)
+.attr("r", 0)
+.remove();
 
 data = data.sort(function(a, b) {
   return d3.descending(a['Cause group'], b['Cause group']);
@@ -478,6 +506,7 @@ function age_key_summary() {
         var list = document.createElement("li");
         list.innerHTML = item;
         list.className = 'cause_list';
+        list.style.width = '220px';
         list.style.borderColor = color_age_group(index);
         var div = document.getElementById("age_summary");
         div.appendChild(list);
@@ -971,7 +1000,7 @@ update_condition_prop(deaths_condition_proportion)
 height_rank_change = 350
 
 // append the svg object to the body of the page
-var rank_change_svg = d3.select("#my_dataviz")
+var rank_change_svg = d3.select("#top_10_change_datavis")
 .append("svg")
 .attr("width", width + margin.left + margin.right)
 .attr("height", height_rank_change + margin.top + margin.bottom)
@@ -1269,7 +1298,7 @@ update_level_2_rate_change(daly_level_2_rank_change);
 var height_fg_6 = 300;
 
 // append the svg object to the body of the page
-var svg_fg_6 = d3.select("#my_line_dataviz")
+var svg_fg_6 = d3.select("#deaths_over_time_nn_rate_datavis")
   .append("svg")
     .attr("width", width)
     .attr("height", height_fg_6 + margin.top + 100)
@@ -1485,11 +1514,17 @@ focus_fg_6
 
  focus_fg_6
  .append("text")
- .attr("class", "y_area")
+ .attr("class", "y_area2")
  .style("opacity", 1)
  .attr("dx", 8)
  .attr("dy", "-.3em");
 
+ focus_fg_6
+ .append("text")
+ .attr("class", "y_area")
+ .style("opacity", 1)
+ .attr("dx", 8)
+ .attr("dy", "-.3em");
 
 // This is a function to update the chart with new data (it filters the larger dataset)
 function update_fg_6(selectedGroup) {
@@ -1532,10 +1567,8 @@ focus_fg_6
 "translate(" + x(d.Year) + "," + y(d.Estimate) + ")")
  .attr("y2", height_fg_6 - y(d.Estimate))
 
-// Maybe better to utilise a tooltip function to build a html tooltip
 focus_fg_6
  .select("text.y1")
- // .html('<h3>' + d.Area + '</h3><p>Deaths in ' + d.Year + ' = ' + d3.format('.0f')(d.Estimate) +'</p>')
  .attr("transform",
            "translate(" + x(d.Year) + "," +
                           y(d.Estimate - 100) + ")")
@@ -1545,7 +1578,7 @@ focus_fg_6
  .select("text.y_area")
  .attr("transform",
            "translate(" + x(d.Year) + "," +
-                          y(d.Estimate - 70) + ")")
+                          y(d.Estimate - 65) + ")")
  .text(d.Area);
 }
 

@@ -285,10 +285,10 @@ level_1_cause_df %>%
 
 level_1_summary <- level_1_cause_df %>% 
   filter(Sex == 'Both') %>% 
-  mutate(deaths_label = paste0('This group of causes was estimated to be responsible for ', format(round(Deaths_number,0), big.mark = ',', trim = TRUE), ' deaths which represents ', round(Deaths_proportion * 100,1), '% of all deaths in ', Year, '.')) %>%
-  mutate(yll_label = paste0('This group of causes was estimated to be responsible for ', format(round(YLL_number,0), big.mark = ',', trim = TRUE), ' years of life lost which represents ', round(YLL_proportion * 100,1), '% of all YLLs in ', Year, '.')) %>% 
-  mutate(yld_label = paste0('This group of causes was estimated to be responsible for ', format(round(YLD_number,0), big.mark = ',', trim = TRUE), ' years of life lived with disability which represents ', round(YLD_proportion * 100,1), '% of all YLDs in ', Year, '.')) %>% 
-  mutate(daly_label = paste0('This group of causes was estimated to be responsible for ', format(round(DALY_number,0), big.mark = ',', trim = TRUE), ' disability adjusted life years lost which represents ', round(DALY_proportion * 100,1), '% of all DALYs in ', Year, '.')) %>% 
+  mutate(deaths_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(Deaths_number,0), big.mark = ',', trim = TRUE), '</font></b> deaths which represents <b>', round(Deaths_proportion * 100,1), '% of all deaths</b> in ', Year, '.')) %>%
+  mutate(yll_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(YLL_number,0), big.mark = ',', trim = TRUE), '</font></b> years of life lost which represents <b>', round(YLL_proportion * 100,1), '% of all YLLs</b> in ', Year, '.')) %>% 
+  mutate(yld_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(YLD_number,0), big.mark = ',', trim = TRUE), '</font></b> years of life lived with disability which represents <b>', round(YLD_proportion * 100,1), '% of all YLDs</b> in ', Year, '.')) %>% 
+  mutate(daly_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(DALY_number,0), big.mark = ',', trim = TRUE), '</font></b> disability adjusted life years lost which represents <b>', round(DALY_proportion * 100,1), '% of all DALYs</b> in ', Year, '.')) %>% 
   select(Cause, deaths_label, yll_label, yld_label, daly_label) %>% 
   mutate(Cause = factor(Cause, levels = c('Communicable, maternal, neonatal, and nutritional diseases', 'Non-communicable diseases', 'Injuries'))) %>% 
   arrange(Cause)
@@ -324,8 +324,13 @@ level_2_cause_df <- level_2_cause_df_a %>%
          YLD_number = `YLDs (Years Lived with Disability)`,
          YLL_number = `YLLs (Years of Life Lost)`) %>% 
   left_join(level_2_cause_df_b, by = c('Sex', 'Cause')) %>% 
-  select(Sex, Cause, Year, `Cause group`, Deaths_number, Deaths_proportion, Death_rank, YLL_number, YLL_proportion, YLL_rank, YLD_number, YLD_proportion, YLD_rank, DALY_number, DALY_proportion, DALY_rank)
-
+  select(Sex, Cause, Year, `Cause group`, Deaths_number, Deaths_proportion, Death_rank, YLL_number, YLL_proportion, YLL_rank, YLD_number, YLD_proportion, YLD_rank, DALY_number, DALY_proportion, DALY_rank) %>% 
+  mutate(Death_rank = ifelse(Death_rank == 1, ' largest ', ifelse(Death_rank == 22, ' lowest ', paste0(ordinal_format()(Death_rank), ' highest ')))) %>% 
+  mutate(YLL_rank = ifelse(Death_rank == 1, ' largest ', ifelse(YLL_rank == 22, ' lowest ', paste0(ordinal_format()(YLL_rank), ' highest ')))) %>%   
+  mutate(YLD_rank = ifelse(Death_rank == 1, ' largest ', ifelse(YLD_rank == 22, ' lowest ', paste0(ordinal_format()(YLD_rank), ' highest ')))) %>%   
+  mutate(DALY_rank = ifelse(Death_rank == 1, ' largest ', ifelse(DALY_rank == 22, ' lowest ', paste0(ordinal_format()(DALY_rank), ' highest '))))
+  
+  
 rm(level_2_cause_df_a, level_2_cause_df_b)
 
 level_2_cause_df %>% 
@@ -337,10 +342,10 @@ cause_description <- data.frame(Cause = c("HIV/AIDS and sexually transmitted inf
 
 level_2_summary <- level_2_cause_df %>% 
   filter(Sex == 'Both') %>% 
-  mutate(deaths_label = paste0('This group of causes was estimated to be responsible for ', format(round(Deaths_number,0), big.mark = ',', trim = TRUE), ' deaths which represents ', round(Deaths_proportion * 100,1), '% of all deaths in ', Year, '. ', Cause, ' had the ', ifelse(Death_rank == 1, ' highest ', ifelse(Death_rank == 22, ' lowest ', paste0(ordinal_format()(Death_rank), ' highest '))), 'number of deaths out of the 22 cause groups.')) %>% 
-  mutate(yll_label = paste0('This group of causes was estimated to be responsible for ', format(round(YLL_number,0), big.mark = ',', trim = TRUE), ' years of life lost which represents ', round(YLL_proportion * 100,1), '% of all YLLs in ', Year, '. ', Cause, ' had the ', ifelse(YLL_rank == 1, ' highest ', ifelse(YLL_rank == 22, ' lowest ', paste0(ordinal_format()(YLL_rank), ' highest '))), 'number of YLLs out of the 22 cause groups.')) %>% 
-  mutate(yld_label = paste0('This group of causes was estimated to be responsible for ', format(round(YLD_number,0), big.mark = ',', trim = TRUE), ' years of life lived with disability which represents ', round(YLD_proportion * 100,1), '% of all YLDs in ', Year, '. ', Cause, ' had the ', ifelse(YLD_rank == 1, ' highest ', ifelse(YLD_rank == 22, ' lowest ', paste0(ordinal_format()(YLD_rank), ' highest '))), 'number of YLDs out of the 22 cause groups.')) %>% 
-  mutate(daly_label = paste0('This group of causes was estimated to be responsible for ', format(round(DALY_number,0), big.mark = ',', trim = TRUE), ' disability adjusted life years lost which represents ', round(DALY_proportion * 100,1), '% of all DALYs in ', Year, '. ', Cause, ' had the ', ifelse(DALY_rank == 1, ' highest ', ifelse(DALY_rank == 22, ' lowest ', paste0(ordinal_format()(DALY_rank), ' highest '))), 'number of DALYs out of the 22 cause groups.')) %>% 
+  mutate(deaths_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(Deaths_number,0), big.mark = ',', trim = TRUE), '</font></b> deaths which represents <b>', round(Deaths_proportion * 100,1), '% of all deaths</b> in ', Year, '. ', Cause, ' had the <b>', ifelse(Death_rank == 1, ' highest ', ifelse(Death_rank == 22, ' lowest ', paste0(ordinal_format()(Death_rank), ' highest '))), '</b>number of deaths out of the 22 cause groups.')) %>% 
+  mutate(yll_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(YLL_number,0), big.mark = ',', trim = TRUE), '</font></b> years of life lost which represents <b>', round(YLL_proportion * 100,1), '% of all YLLs</b> in ', Year, '. ', Cause, ' had the <b>', ifelse(YLL_rank == 1, ' highest ', ifelse(YLL_rank == 22, ' lowest ', paste0(ordinal_format()(YLL_rank), ' highest '))), '</b>number of YLLs out of the 22 cause groups.')) %>% 
+  mutate(yld_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(YLD_number,0), big.mark = ',', trim = TRUE), '</font></b> years of life lived with disability which represents <b>', round(YLD_proportion * 100,1), '% of all YLDs</b> in ', Year, '. ', Cause, ' had the <b>', ifelse(YLD_rank == 1, ' highest ', ifelse(YLD_rank == 22, ' lowest ', paste0(ordinal_format()(YLD_rank), ' highest '))), '</b>number of YLDs out of the 22 cause groups.')) %>% 
+  mutate(daly_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(DALY_number,0), big.mark = ',', trim = TRUE), '</font></b> disability adjusted life years lost which represents <b>', round(DALY_proportion * 100,1), '% of all DALYs</b> in ', Year, '. ', Cause, ' had the <b>', ifelse(DALY_rank == 1, ' highest ', ifelse(DALY_rank == 22, ' lowest ', paste0(ordinal_format()(DALY_rank), ' highest '))), '</b>number of DALYs out of the 22 cause groups.')) %>% 
   mutate(Parent = paste0('This group is part of the ', `Cause group`, ' main group of causes.')) %>% 
   left_join(cause_description, by = 'Cause') %>% 
   select(Cause, Parent, Description, deaths_label, yll_label, yld_label, daly_label) %>% 
@@ -351,7 +356,6 @@ level_2_summary %>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_2_2017_', gsub(" ", "_", tolower(Area_x)), '_summary.json'))
   
-
 # Data for cause size bubbles 
 
 # area, sex, year, measure, value - switch between deaths, yll, yld and daly - number
@@ -396,8 +400,6 @@ lifecourse_numbers <- lifecourse_wsx_df %>%
 
 ages_summary <- lifecourse_numbers %>% 
   filter(Level == 0) 
-
-
 
 lifecourse_prop <- lifecourse_wsx_df %>% 
   filter(Metric == "Proportion of total burden caused by this condition")

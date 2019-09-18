@@ -2,14 +2,80 @@
   font-family: 'Open Sans', sans-serif;
 }
 
-/* .main {
-  max-width: 700px;
-} */
+div {
+    display: inline-block;
+}
 
+.select {
+  float: right;
+}
+
+.left_column {
+  float: left;
+  width: 18%;
+  top: 0;
+}
+
+.main    {
+  float: none;
+  width: 50%;
+  top: 0;
+  margin-left: 6%;
+  margin-right: 6%;
+}
+
+.right_column {
+  float: right;
+  width: 18%;
+  top: 0;
+}
+
+/* Fonts */
+
+h1 {
+    font-size: 1.8rem;
+    /* font-family: "Garamond", serif; */
+    font-weight: bold;
+    color: #256cb2;
+    /* font-family: "Verdana"; */
+}
+
+h2 {
+    font-size: 1.2rem;
+    /* font-family: "Garamond", serif; */
+    font-weight: bold;
+    color: #256cb2;
+  }
+
+p {
+  font-size: .8rem;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+a {
+  color: #cc0052;
+}
+
+.footer {
+  font-family: "Garamond", serif;
+  font-weight: bold;
+  background-color: #ffffff;
+  color: #256cb2;
+  font-size: 30px;
+  min-height: 60px;
+  padding-top: 10px;
+  padding-right: 25px;
+  padding-bottom: 20PX;
+  text-align: right;
+}
+
+/* Buttons */
 .switch-field {
     display: flex;
     overflow: hidden;
     align: centre;
+    float: right;
 }
 
 .switch-field input {
@@ -51,27 +117,6 @@
     border-radius: 0 4px 4px 0;
 }
 
-h1 {
-    font-size: 1.8rem;
-    font-family: "Garamond", serif;
-    font-weight: bold;
-    color: #256cb2;
-    /* font-family: "Verdana"; */
-}
-
-h2 {
-    font-size: 1.2rem;
-    font-family: "Garamond", serif;
-    font-weight: bold;
-    color: #256cb2;
-  }
-
-p {
-  font-size: .8rem;
-  text-align: justify;
-  text-justify: inter-word;
-}
-
 p.tooltip {
   font-size: .8rem;
 
@@ -79,10 +124,7 @@ p.tooltip {
   color: #ccc000;
 }
 
-a {
-  color: #cc0052;
-}
-
+/* Tables */
 table {
 		width: 100%;
 		border-collapse: collapse;
@@ -110,6 +152,8 @@ table {
 		text-align: left;
 	}
 
+
+/* Stylings for d3 elements */
 .node:hover {
   stroke: black;
 }
@@ -119,6 +163,8 @@ table {
   stroke: #EF5285;
   stroke-width: 2px;
 }
+
+/* Tooltips */
 
 .tooltip {
   max-width: 150px;
@@ -142,7 +188,6 @@ table {
   border: 1px solid #000;
 }
 
-
 .tooltip_r_change {
   max-width: 180px;
   padding-left: 5px;
@@ -154,20 +199,7 @@ table {
   border: 1px solid #000;
 }
 
-
-.wrapper {
-  display: flex;
-  flex-flow: row wrap;
-}
-
-/* We tell all items to be 100% width, via flex-basis */
-.wrapper > * {
-  flex: 1 100%;
-}
-
-svg {
-  background: #ffffff;
-}
+/* Summaries */
 
 .cause_list {
   display: block;
@@ -181,79 +213,11 @@ svg {
   font-family: inherit;
   margin: 0 0 3px;
   border-left: 8px solid #ccc;
+  position: relative;
 }
 
 .cause_list:hover{
   background: #ccc;
-}
-
-.footer {
-  font-family: "Garamond", serif;
-  font-weight: bold;
-  background-color: #ffffff;
-  color: #256cb2;
-  font-size: 30px;
-  min-height: 60px;
-  padding-top: 10px;
-  padding-right: 25px;
-  padding-bottom: 20PX;
-  text-align: right;
-}
-
-/* Small screens */
-@media all and (min-width: 400px) {
-  /* We tell both sidebars to share a row */
-  .main {
-    flex: 4 0px;
-    margin: auto;
-  }
-
-  .aside-1 {
-    flex: 1 auto;
-    max-width: 400px;
-  padding-right: 15px;}
-
-  .aside-2 {
-    flex: 1 auto;
-    max-width: 400px;
-  padding-right: 15px;}
-}
-
-
-/* Large screens */
-@media all and (min-width: 600px) {
-  /* Invert order of first sidebar and main
-   * And tell the main element to take twice as much width as the other two sidebars
-   */
-
-  .aside-1 {
-    order: 1;
-    max-width: 20%;
-    position: -webkit-sticky; /* Safari */
-    position: sticky;
-    top: 0;
-  }
-  .main    {
-    flex: 4 0px;
-    max-width: 55%;
-    order: 2;
-  }
-
-  .aside-2 {
-    order: 3;
-    max-width: 20%;
-    position: -webkit-sticky; /* Safari */
-    position: sticky;
-    top: 0;
-  }
-
-  .footer  {
-    order: 4;
-  }
-}
-
-.cause_list{
-  position: relative;
 }
 
 .cause_list .side_tt{
@@ -265,8 +229,8 @@ svg {
   position: absolute;
   z-index: 1000;
   top: 0;
-  left: -400px;
-  width: 350px;
+  left: -350px;
+  width: 300px;
   background: #f7f7f7;
   color: #111;
   padding: 15px;
@@ -284,11 +248,6 @@ svg {
   border-left: 5px solid #222;
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-}
-
-
-.aside-1{
-  height: 100%;
 }
 
 .sticky{
