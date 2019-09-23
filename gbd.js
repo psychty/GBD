@@ -361,8 +361,6 @@ d3.select("#total_death_string")
 
 // Level 3 bubbles from bubbles_gbd.js
 
-
-
 function age_key_summary() {
       ages.forEach(function(item, index) {
         var list = document.createElement("li");
@@ -375,7 +373,6 @@ function age_key_summary() {
       })
     }
 age_key_summary();
-
 
 // By age level 2 conditions figure 4
 var request = new XMLHttpRequest();
@@ -859,16 +856,14 @@ condition_bars_df_prop
 update_condition_prop(deaths_condition_proportion)
 
 // Slope chart top ten measures
-height_rank_change = 350
+height_rank_change = 450
 
 // append the svg object to the body of the page
 var rank_change_svg = d3.select("#top_10_change_datavis")
 .append("svg")
-.attr("width", width + margin.left + margin.right)
-.attr("height", height_rank_change + margin.top + margin.bottom)
-.append("g")
-.attr("transform",
-      "translate(" + margin.left + "," + margin.top + ")");
+.attr("width", width)
+.attr("height", height_rank_change + margin.top )
+.append("g");
 
 var request = new XMLHttpRequest();
     request.open("GET", "./Rate_change_over_time_levels_0_1_2_for_slope.json", false);
@@ -899,9 +894,14 @@ daly_rate_rank_change = json.filter(function(d){
          d.Area === 'West Sussex' &
         +d.Level === 2});
 
-years_to_show = ["Rank_in_2007", "Rank_in_2017"]
+years_to_show = ["Rank_in_2007", "Rank_in_2012", "Rank_in_2017"]
 
 function update_top_10_change(data) {
+
+rank_change_svg
+ .selectAll("*")
+ .remove();
+
 // Parse the Data
 var max_17 = d3.max(data, function(d) {
   return +d['Rank_in_2017'];
@@ -924,15 +924,19 @@ var y_rank_change = {}
   for (i in years_to_show) {
     name = years_to_show[i]
     y_rank_change[name] = d3.scaleLinear()
-      .domain([1, d3.max([max_07, max_17])] )
-      .range([0, height_rank_change])
+      .domain([1, d3.max([max_07, max_12, max_17])] )
+      .range([50, height_rank_change])
   }
+
+y_place_label = d3.scaleLinear()
+    .domain([1, d3.max([max_07, max_12, max_17])])
+    .range([50, height_rank_change])
 
 // Decide the place for each line
 x_rank_change = d3.scalePoint()
-  .range([0, width])
-  .padding(1)
-  .domain(years_to_show);
+  .domain(years_to_show)
+  // .range([0,width])
+  .range([width * .25, width * .65])
 
 // The path function returns x and y coordinates to draw the lines
 function path(d) {
@@ -952,7 +956,98 @@ rank_change_svg
 .style("stroke", function(d) {
     return color_cause_group(d.Cause)})
 .style("opacity", 1)
-.style('stroke-width', 2.5)
+.style('stroke-width', 2)
+
+// Create cause label
+rank_change_svg.selectAll('text.labels')
+  .data(data)
+  .enter()
+  .append('text')
+  .text(function(d) {
+    return d.Cause })
+  .style("stroke", function(d) {
+      return color_cause_group(d.Cause)})
+  .attr('text-anchor', 'end')
+  .attr('x', x_rank_change(years_to_show[0]) - 30)
+  .attr('y', function(d){
+      return y_place_label(d.Rank_in_2007)})
+  .attr('dy', '0em')
+  .style('font-size', '.8rem')
+  .style('fontWeight', 'normal');
+
+// Create cause 17 label
+rank_change_svg.selectAll('text.labels')
+ .data(data)
+ .enter()
+ .append('text')
+ .text(function(d) {
+   return d.Cause })
+ .style("stroke", function(d) {
+   return color_cause_group(d.Cause)})
+ .attr('text-anchor', 'start')
+ .attr('x', x_rank_change(years_to_show[2]) + 10)
+ .attr('y', function(d){
+   return y_place_label(d.Rank_in_2017)})
+ .attr('dy', '0em')
+ .style('font-size', '.8rem')
+ .style('fontWeight', 'normal');
+
+// Create cause 17 label
+rank_change_svg.selectAll('text.labels')
+.data(data)
+.enter()
+.append('text')
+.text(function(d) {
+    return d.Label_2017 + ' per 100,000'})
+.style("stroke", function(d) {
+    return color_cause_group(d.Cause)})
+.attr('text-anchor', 'start')
+.attr('x', x_rank_change(years_to_show[2]) + 10)
+.attr('y', function(d){
+    return y_place_label(d.Rank_in_2017)})
+.attr('dy', '1em')
+.style('font-size', '.8rem')
+.style('fontWeight', 'normal');
+
+
+rank_change_svg.selectAll('text.labels')
+.data(data)
+.enter()
+.append('text')
+.text(function(d) {
+    return '2007'})
+.attr('text-anchor', 'middle')
+.attr('x', x_rank_change(years_to_show[0]))
+.attr('y', 20)
+.attr('dy', '1em')
+.style('font-size', '1.2rem')
+.style('fontWeight', 'bold');
+
+rank_change_svg.selectAll('text.labels')
+.data(data)
+.enter()
+.append('text')
+.text(function(d) {
+    return '2012'})
+.attr('text-anchor', 'middle')
+.attr('x', x_rank_change(years_to_show[1]))
+.attr('y', 20)
+.attr('dy', '1em')
+.style('font-size', '1.2rem')
+.style('fontWeight', 'bold');
+
+rank_change_svg.selectAll('text.labels')
+.data(data)
+.enter()
+.append('text')
+.text(function(d) {
+    return '2017'})
+.attr('text-anchor', 'middle')
+.attr('x', x_rank_change(years_to_show[2]))
+.attr('y', 20)
+.attr('dy', '1em')
+.style('font-size', '1.2rem')
+.style('fontWeight', 'bold');
 
 // Draw the axis for each year and add label at the top
 rank_change_svg
@@ -966,10 +1061,11 @@ rank_change_svg
 .each(function(d) { d3.select(this).call(d3.axisLeft().scale(y_rank_change[d])); })
 .append("text")
 .style("text-anchor", "middle")
-.attr("y", -9)
+.attr("y", -11)
 .text(function(d) {return d; })
 .style("fill", "black")
-.style("fontWeight", 'bold')
+// .style()
+.style("font-weight", 'bold')
 
 }
 
@@ -1037,8 +1133,6 @@ var rate_change_svg = d3.select("#my_level_2_rate_change_dataviz")
  .attr("height", height_rate_change + margin.top + margin.bottom)
  .append("g")
  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
 
 function update_level_2_rate_change(data) {
 
