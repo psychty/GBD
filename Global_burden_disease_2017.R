@@ -70,8 +70,6 @@ GBD_2017_cause_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2
          Cause_outline = cause_outline,
          Level = level)
 
-
-
 Causes_in_each_level <- GBD_2017_cause_hierarchy %>% 
   select(Level) %>% 
   group_by(Level) %>% 
@@ -97,7 +95,6 @@ All_ages_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[g
   # mutate(Cause = ifelse(nchar(Cause) < 40, Cause, sub('(.{1,40})(\\s|$)', '\\1\n', Cause))) %>%
   mutate(Cause = factor(Cause, levels =  unique(Cause))) %>% 
   select(Area, Sex, Year, Cause, Cause_outline, Cause_id, Level, Estimate, Lower_estimate, Upper_estimate, `Cause group`, Parent_id, measure, metric)
-
 
 Cause_number <- All_ages_GBD_cause_data %>% 
   filter(metric == "Number") %>% 
@@ -248,7 +245,7 @@ WSx_top_10 %>%
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Top_10_YLL_YLD_DALY_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
   
 # Explore the top ten causes of death (numbers), YLL (numbers), YLDs (numbers) and DALYs.
-# Explore all level 2 causes for West Sussex ####
+
 level_1_cause_df_a <- Area_x_cause %>% 
   filter(Level == 1,
          Year == 2017) %>%
@@ -297,7 +294,7 @@ level_1_summary %>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_1_2017_', gsub(" ", "_", tolower(Area_x)), '_summary.json'))
 
-# Explore all level 2 causes for West Sussex ####
+
 level_2_cause_df_a <- Area_x_cause %>% 
   filter(Level == 2,
          Year == 2017) %>%
@@ -330,7 +327,6 @@ level_2_cause_df <- level_2_cause_df_a %>%
   mutate(YLD_rank = ifelse(Death_rank == 1, ' largest ', ifelse(YLD_rank == 22, ' lowest ', paste0(ordinal_format()(YLD_rank), ' highest ')))) %>%   
   mutate(DALY_rank = ifelse(Death_rank == 1, ' largest ', ifelse(DALY_rank == 22, ' lowest ', paste0(ordinal_format()(DALY_rank), ' highest '))))
   
-  
 rm(level_2_cause_df_a, level_2_cause_df_b)
 
 level_2_cause_df %>% 
@@ -342,10 +338,10 @@ cause_description <- data.frame(Cause = c("HIV/AIDS and sexually transmitted inf
 
 level_2_summary <- level_2_cause_df %>% 
   filter(Sex == 'Both') %>% 
-  mutate(deaths_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(Deaths_number,0), big.mark = ',', trim = TRUE), '</font></b> deaths which represents <b>', round(Deaths_proportion * 100,1), '% of all deaths</b> in ', Year, '. ', Cause, ' had the <b>', ifelse(Death_rank == 1, ' highest ', ifelse(Death_rank == 22, ' lowest ', paste0(ordinal_format()(Death_rank), ' highest '))), '</b>number of deaths out of the 22 cause groups.')) %>% 
-  mutate(yll_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(YLL_number,0), big.mark = ',', trim = TRUE), '</font></b> years of life lost which represents <b>', round(YLL_proportion * 100,1), '% of all YLLs</b> in ', Year, '. ', Cause, ' had the <b>', ifelse(YLL_rank == 1, ' highest ', ifelse(YLL_rank == 22, ' lowest ', paste0(ordinal_format()(YLL_rank), ' highest '))), '</b>number of YLLs out of the 22 cause groups.')) %>% 
-  mutate(yld_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(YLD_number,0), big.mark = ',', trim = TRUE), '</font></b> years of life lived with disability which represents <b>', round(YLD_proportion * 100,1), '% of all YLDs</b> in ', Year, '. ', Cause, ' had the <b>', ifelse(YLD_rank == 1, ' highest ', ifelse(YLD_rank == 22, ' lowest ', paste0(ordinal_format()(YLD_rank), ' highest '))), '</b>number of YLDs out of the 22 cause groups.')) %>% 
-  mutate(daly_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(DALY_number,0), big.mark = ',', trim = TRUE), '</font></b> disability adjusted life years lost which represents <b>', round(DALY_proportion * 100,1), '% of all DALYs</b> in ', Year, '. ', Cause, ' had the <b>', ifelse(DALY_rank == 1, ' highest ', ifelse(DALY_rank == 22, ' lowest ', paste0(ordinal_format()(DALY_rank), ' highest '))), '</b>number of DALYs out of the 22 cause groups.')) %>% 
+  mutate(deaths_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(Deaths_number,0), big.mark = ',', trim = TRUE), '</font></b> deaths which represents <b>', round(Deaths_proportion * 100,1), '% of all deaths</b> in ', Year, '. ', Cause, ' had the <b>', Death_rank , '</b>number of deaths out of the 22 cause groups.'))%>% 
+  mutate(yll_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(YLL_number,0), big.mark = ',', trim = TRUE), '</font></b> years of life lost which represents <b>', round(YLL_proportion * 100,1), '% of all YLLs</b> in ', Year, '. ', Cause, ' had the <b>', YLL_rank, '</b>number of YLLs out of the 22 cause groups.')) %>% 
+  mutate(yld_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(YLD_number,0), big.mark = ',', trim = TRUE), '</font></b> years of life lived with disability which represents <b>', round(YLD_proportion * 100,1), '% of all YLDs</b> in ', Year, '. ', Cause, ' had the <b>', YLD_rank, '</b>number of YLDs out of the 22 cause groups.')) %>% 
+  mutate(daly_label = paste0('This group of causes was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(DALY_number,0), big.mark = ',', trim = TRUE), '</font></b> disability adjusted life years lost which represents <b>', round(DALY_proportion * 100,1), '% of all DALYs</b> in ', Year, '. ', Cause, ' had the <b>', DALY_rank, '</b>number of DALYs out of the 22 cause groups.')) %>% 
   mutate(Parent = paste0('This group is part of the ', `Cause group`, ' main group of causes.')) %>% 
   left_join(cause_description, by = 'Cause') %>% 
   select(Cause, Parent, Description, deaths_label, yll_label, yld_label, daly_label) %>% 
@@ -685,17 +681,16 @@ Change_over_time <- Change_over_time_latest %>%
 
 rm(Change_over_time_a, Change_over_time_b, Change_over_time_c, Change_over_time_d)
 
-Change_over_time %>% 
-  filter(Cause == 'Sense organ diseases') %>% 
-  View()
-
-Change_over_time %>% 
-  filter(Area == 'West Sussex') %>%
-  filter(Level == 2) %>% 
-  mutate(Cause = factor(Cause, levels = c("HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"))) %>%
-  arrange(Area, Sex, measure, Cause) %>% 
-  View()
-
+# Change_over_time %>% 
+#   filter(Cause == 'Sense organ diseases') %>% 
+#   View()
+# 
+# Change_over_time %>% 
+#   filter(Area == 'West Sussex') %>%
+#   filter(Level == 2) %>% 
+#   mutate(Cause = factor(Cause, levels = c("HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"))) %>%
+#   arrange(Area, Sex, measure, Cause) %>% 
+#   View()
 
 # This is the change over time for deaths at all levels by sex - show change in number and change in proportion
 Change_over_time %>% 
@@ -712,388 +707,79 @@ Change_over_time %>%
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_change_over_time_level_2_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
 
+# Condition focus ####
 
-read_csv('/Users/richtyler/Documents/Repositories/Testies/data.csv') %>% 
+Condition_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("5f708e95", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
+  map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>%
+  rename(Area = location,
+         Lower_estimate = lower,
+         Upper_estimate = upper,
+         Estimate = val,
+         Year = year,
+         Sex = sex,
+         Age = age,
+         Cause = cause) %>%
+  mutate(metric = ifelse(metric == "Rate", "Rate per 100,000 population", ifelse(metric == "Percent", "Proportion of total burden caused by this condition", metric))) %>% 
+  left_join(GBD_2017_cause_hierarchy[c("Cause_name", "Cause_outline", "Cause_id", "Parent_id", "Level")], by = c("Cause" = "Cause_name")) %>% 
+  left_join(GBD_2017_cause_hierarchy[c("Cause_name", "Cause_id")], by = c("Parent_id" = "Cause_id")) %>% 
+  rename(`Cause group` = Cause_name) %>% 
+  mutate(Cause = factor(Cause, levels =  unique(Cause))) %>% 
+  filter((Age == 'Age-standardized') | (Age == 'All Ages' & metric == 'Number')) %>% 
+  mutate(metric = ifelse(metric == 'Rate per 100,000 population', 'Age-standardised rate per 100,000', ifelse(metric == 'Number', 'Number (all ages)', NA))) %>% 
+  select(Sex, metric, Year, Cause, `Cause group`,Estimate,Lower_estimate,Upper_estimate, measure)
+
+
+Condition_table_part_a <- Condition_data %>% 
+  filter(Year == 2017) %>% 
+  mutate(Estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Estimate,1),big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
+  mutate(Lower_estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Lower_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Lower_estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
+  mutate(Upper_estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Upper_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Upper_estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
+  mutate(Estimate = paste0(Estimate, ' (', Lower_estimate, '-', Upper_estimate, ')')) %>% 
+  select(-c(Lower_estimate, Upper_estimate)) %>% 
+  spread(metric, value = Estimate) %>% 
+  select(-Year)
+
+Condition_table_part_b <- Condition_data %>% 
+  select(-c(Lower_estimate, Upper_estimate)) %>% 
+  filter(Year == 2017) %>% 
+  filter(metric == 'Number (all ages)') %>% 
+  group_by(Sex, measure) %>% 
+  mutate(Estimate = paste0(round(Estimate/sum(Estimate, na.rm = TRUE)*100,1),'%')) %>% 
+  rename(`Proportion (based on number)` = Estimate) %>% 
+  select(-c(Year,metric))
+  
+Condition_table_part_c <- Condition_data %>% 
+  select(-c(Lower_estimate, Upper_estimate)) %>% 
+  filter(metric == 'Number (all ages)') %>% 
+  spread(Year, value = Estimate) %>% 
+  mutate(`Percentage change 2012 - 2017 (based on number)` = paste0(ifelse((`2017`-`2012`)/`2012` > 0, '+', ''), round((`2017`-`2012`)/`2012`*100,1), '%')) %>% 
+  select(-c(`2012`,`2017`,metric)) 
+
+Condition_table_part_d <- Condition_data %>% 
+  filter(Year == 2012) %>% 
+  mutate(Estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Estimate,1),big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
+  mutate(Lower_estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Lower_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Lower_estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
+  mutate(Upper_estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Upper_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Upper_estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
+  mutate(Estimate = paste0(Estimate, ' (', Lower_estimate, '-', Upper_estimate, ')')) %>% 
+  select(-c(Lower_estimate, Upper_estimate)) %>% 
+  spread(metric, value = Estimate) %>% 
+  select(-c(Year, `Age-standardised rate per 100,000`)) %>%  
+  rename(`Number (all ages) 2012` = `Number (all ages)`)
+
+Condition_table_part_a %>% 
+  left_join(Condition_table_part_b, by = c('Sex', 'Cause', 'Cause group', 'measure')) %>% 
+  left_join(Condition_table_part_c, by = c('Sex', 'Cause', 'Cause group', 'measure')) %>%
+  left_join(Condition_table_part_d, by = c('Sex', 'Cause', 'Cause group', 'measure')) %>%
+  rename(`Number (all ages) 2017` = `Number (all ages)`) %>% 
+  rename(`Age-standardised rate per 100,000 2017` = `Age-standardised rate per 100,000`) %>% 
+  rename(`Proportion (based on number) 2017` = `Proportion (based on number)`) %>% 
   toJSON() %>% 
-  write_lines('/Users/richtyler/Documents/Repositories/Testies/data.json')
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Level_3_condition_focus_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
-
-# Disability adjusted life years ####
-
-# DALY is a measure of overall disease burden. This aims to quantify premature mortality (YLL) and years lived in less than full health (YLD) to produce a metric of years lost due to ill-health, disability or premature death. Ranking the causes of DALYs in a population helps to identify health problems that have the biggest negative impact on society.
-
-# This is where we should culminate the focus of the briefing. 
-
-DALYs_rate_rank <- GBD_cause_data %>% 
-  filter(year %in% c(2006,2011,2016),
-         measure == "DALYs (Disability-Adjusted Life Years)",
-         age == "Age-standardized",
-         metric == "Rate") %>%  
-  select(location, sex, age, year, val, cause) %>% 
-  spread(year, val) %>% 
-  mutate(change_10_year = (`2016`-`2006`)/`2006`,
-         change_5_year = (`2016`-`2011`)/`2011`) %>% 
-  gather(`2006`:`2016`, key = year, value = val) %>% 
-  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
-  filter(level == 3) %>% 
-  group_by(location, sex, year) %>% 
-  arrange(desc(val)) %>% 
-  mutate(rank = row_number()) %>% 
-  select(location, sex, age, year, rank, change_5_year, change_10_year, cause, cause_outline) %>% 
-  spread(year, rank) %>% 
-  mutate(cause_group_code = substr(cause_outline, 1,1)) %>% 
-  left_join(GBD_2016_cause_hierarchy[c("cause_outline", "cause_name")], by = c("cause_group_code" = "cause_outline")) %>% 
-  rename(cause_group = cause_name) %>% 
-  mutate(cause_group = factor(cause_group, levels = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"))) %>% 
-  ungroup() %>% 
- mutate(location = factor(location, levels = c("West Sussex","Cambridgeshire","Devon","East Sussex", "Essex","Gloucestershire","Hampshire", "Kent","North Yorkshire","Northamptonshire","Oxfordshire","Somerset","Staffordshire","Suffolk","Warwickshire","Worcestershire", "South East England", "England", "United Kingdom"))) %>%
-  rename(Rank_2006 = `2006`,
-         Rank_2011 = `2011`,
-         Rank_2016 = `2016`)
-
-DALYs_rate_label <- GBD_cause_data %>% 
-  filter(year %in% c(2006,2011,2016),
-         measure == "DALYs (Disability-Adjusted Life Years)",
-         age == "Age-standardized",
-         metric == "Rate") %>%  
-  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
-  filter(level == 3) %>% 
-  mutate(Rate_label = paste0(format(round(val,0),big.mark = ",", trim = TRUE), " (", format(round(lower,0),big.mark = ",", trim = TRUE),"-", format(round(upper,0),big.mark = ",", trim = TRUE), ")")) %>% 
-  select(location, sex, age, year, Rate_label, cause) %>% 
-  spread(year, Rate_label)  %>% 
-  rename(Label_2006 = `2006`,
-         Label_2011 = `2011`,
-         Label_2016 = `2016`) %>% 
-  mutate(location = factor(location, levels = c("West Sussex","Cambridgeshire","Devon","East Sussex", "Essex","Gloucestershire","Hampshire", "Kent","North Yorkshire","Northamptonshire","Oxfordshire","Somerset","Staffordshire","Suffolk","Warwickshire","Worcestershire", "South East England", "England", "United Kingdom"))) %>% 
-  left_join(DALYs_rate_rank, by = c("location", "sex", "age","cause"))
-
-rm(DALYs_rate_rank)
-
-DALYs_males <- DALYs_rate_label %>% 
-  filter(location == "West Sussex",
-         sex == "Male",
-         Rank_2006 <= 10 | Rank_2011 <= 10 | Rank_2016 <= 10)
-
-DALYs_males_top_10 <- ggplot(DALYs_males) + 
-  geom_segment(aes(x = 1, xend = 2, y = Rank_2006, yend = Rank_2016), size = .7, lty = "dashed", show.legend = FALSE) +
-  geom_point(aes(x = 1, y = Rank_2006, col = cause_group), size = 7) +
-  geom_text(aes(x = 1, y = Rank_2006, label = paste0(Rank_2006)), col = "#ffffff", fontface = "bold") +
-  geom_point(aes(x = 2, y = Rank_2016, col = cause_group), size = 7) +
-  geom_text(aes(x = 2, y = Rank_2016, label = paste0(Rank_2016)), col = "#ffffff", fontface = "bold") +
-  scale_colour_manual(values = c("#C2464F", "#62A7B9", "#9DCB9C"), 
-                      breaks = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                      limits = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                      labels = c("Communicable, maternal,\nneonatal, and nutritional diseases", "Non-communicable\ndiseases", "Injuries\n"),
-                      name = "Cause\ngrouping") +
-  labs(title = paste0("Ten biggest contributors to disability and mortality combined among ", tolower(unique(DALYs_males$sex)), "s;"),
-       subtitle = paste0(unique(DALYs_males$location), "; age-standardised rate"), 
-       caption = "Measure: Disability-adjusted Life Years (DALYs)\nRate per 100,000 and 95% uncertainty interval given under each cause",
-       x = "",
-       y = "") +
-  scale_y_reverse() +
-  scale_x_continuous(limits = c(-1,6)) +
-  geom_text(aes(label = "2006 ranking", y = 0, x = 1), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "2016 ranking", y = 0, x = 2), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "% change 2006-2016", y = 0, x = 6), size = 3.5, col = "#000000", hjust = 1, fontface = "bold") +
-  geom_text(aes(label = paste0(cause, "\n", Label_2006), y = Rank_2006, x = 0.8), size = 3.5, col = "#000000", hjust = 1) +
-  geom_text(aes(label = paste0(cause, "\n", Label_2016), y = Rank_2016, x = 2.2), size = 3.5, col = "#000000", hjust = 0) +
-  geom_text(data = subset(DALYs_males, change_10_year <= 0),aes(label = paste0(abs(round(change_10_year*100,1)), "% ", ifelse(change_10_year == 0, "(no change)\n", ifelse(change_10_year < 0, "decline in\nrate per 100,000", "increase in\nrate per 100,000"))), y = Rank_2016, x = 6), size = 3.5, col = "#000000", hjust = 1) +
-  geom_text(data = subset(DALYs_males, change_10_year > 0), aes(label = paste0(abs(round(change_10_year*100,1)), "% ", ifelse(change_10_year == 0, "(no change)\n", ifelse(change_10_year < 0, "decline in\nrate per 100,000", "increase in\nrate per 100,000"))), y = Rank_2016, x = 6), size = 3.5, col = "#cc0000", hjust = 1) +
-  slope_theme()
-
-Top_10_DALYs_males <- Measures_perc_level_3 %>% 
-  select(location, age, sex, cause_outline, cause, cause_id, level, Parent_cause, year, `DALYs (Disability-Adjusted Life Years)`) %>% 
-  filter(location %in% DALYs_males$location,
-         sex %in% DALYs_males$sex,
-         cause %in% DALYs_males$cause) %>% 
-  spread(year, `DALYs (Disability-Adjusted Life Years)`) %>% 
-  select(location, age, sex, cause_outline, cause, cause_id, level, Parent_cause, `2006`,`2011`,`2016`) %>% 
-  left_join(DALYs_males[c("cause_outline", "Rank_2006", "Rank_2016", "cause_group")], by = "cause_outline") %>% 
-  arrange(Rank_2016)
-
-paste0("The top 10 causes of age standardised disability adjusted life years for males in 2016 accounted for ", round(sum(subset(Top_10_DALYs_males, Rank_2016 <= 10, select = "2016"))*100,1), "% of the total burden of disability and mortality combined among males in 2016.")
-
-paste0(subset(DALYs_males, Rank_2016 == 1, select = "cause"), " was the top cause of disability adjusted life years lost among males in West Sussex in 2016, contributing ", round(subset(Top_10_DALYs_males, cause == as.character(subset(DALYs_males, Rank_2016 == 1, select = "cause")), select = "2016")*100,1), "% of the total number of disability adjusted life years among males in this year. This cause of disability adjusted life years lost was ", ifelse(as.numeric(subset(DALYs_males, Rank_2016 == 1, select = "Rank_2006")) == 1, "also the top contributor to morbidity and mortality combined 10 years ago.", paste0(ifelse(as.numeric(subset(DALYs_males, Rank_2016 == 1, select = "Rank_2006")) < 10, paste0("ranked ", tolower(as.character(subset(number_names, Number == as.numeric(subset(DALYs_males, Rank_2016 == 1, select = "Rank_2006")), select = "Rank"))), " a decade ago."), ifelse(as.numeric(subset(DALYs_males, Rank_2016 == 1, select = "Rank_2006") == 10, "ranked tenth a decade ago.", " was not in the top ten ranking a decade ago."))))), " The overall proportion of years of life lost or lived with disability due to ", tolower(as.character(subset(DALYs_males, Rank_2016 == 1, select = "cause"))), " has ", as.character(ifelse(round(subset(Top_10_DALYs_males, cause == as.character(subset(DALYs_males, Rank_2016 == 1, select = "cause")), select = "2016")*100,1) == round(subset(Top_10_DALYs_males, cause == as.character(subset(DALYs_males, Rank_2016 == 1, select = "cause")), select = "2006")*100,1), paste0("stayed the same as in 2016"), ifelse(round(subset(Top_10_DALYs_males, cause == as.character(subset(DALYs_males, Rank_2016 == 1, select = "cause")), select = "2016")*100,1) > round(subset(Top_10_DALYs_males, cause == as.character(subset(DALYs_males, Rank_2016 == 1, select = "cause")), select = "2006")*100,1), paste0("increased since 2006 (", round(subset(Top_10_DALYs_males, cause == as.character(subset(DALYs_males, Rank_2016 == 1, select = "cause")), select = "2006")*100,1) ,"%)."), paste0("decreased since 2006 (", round(subset(Top_10_DALYs_males, cause == as.character(subset(DALYs_males, Rank_2016 == 1, select = "cause")), select = "2006")*100,1) ,"%).")))))
-
-DALYs_females <- DALYs_rate_label %>% 
-  filter(location == "West Sussex",
-         sex == "Female",
-         Rank_2006 <= 10 | Rank_2011 <= 10 | Rank_2016 <= 10)
-
-DALYs_females_top_10 <- ggplot(DALYs_females) + 
-  geom_segment(aes(x = 1, xend = 2, y = Rank_2006, yend = Rank_2016), size = .7, lty = "dashed", show.legend = FALSE) +
-  geom_point(aes(x = 1, y = Rank_2006, col = cause_group), size = 7) +
-  geom_text(aes(x = 1, y = Rank_2006, label = paste0(Rank_2006)), col = "#ffffff", fontface = "bold") +
-  geom_point(aes(x = 2, y = Rank_2016, col = cause_group), size = 7) +
-  geom_text(aes(x = 2, y = Rank_2016, label = paste0(Rank_2016)), col = "#ffffff", fontface = "bold") +
-  scale_colour_manual(values = c("#C2464F", "#62A7B9", "#9DCB9C"), 
-                      breaks = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                      limits = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), 
-                      labels = c("Communicable, maternal,\nneonatal, and nutritional diseases", "Non-communicable\ndiseases", "Injuries\n"),
-                      name = "Cause\ngrouping") +
-  labs(title = paste0("Ten biggest contributors to disability and mortality combined among ", tolower(unique(DALYs_females$sex)), "s;"),
-       subtitle = paste0(unique(DALYs_females$location), "; age-standardised rate"), 
-       caption = "Measure: Disability-adjusted Life Years (DALYs)\nRate per 100,000 and 95% uncertainty interval given under each cause",
-       x = "",
-       y = "") +
-  scale_y_reverse() +
-  scale_x_continuous(limits = c(-1,6)) +
-  geom_text(aes(label = "2006 ranking", y = 0, x = 1), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "2016 ranking", y = 0, x = 2), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "% change 2006-2016", y = 0, x = 6), size = 3.5, col = "#000000", hjust = 1, fontface = "bold") +
-  geom_text(aes(label = paste0(cause, "\n", Label_2006), y = Rank_2006, x = 0.8), size = 3.5, col = "#000000", hjust = 1) +
-  geom_text(aes(label = paste0(cause, "\n", Label_2016), y = Rank_2016, x = 2.2), size = 3.5, col = "#000000", hjust = 0) +
-  geom_text(data = subset(DALYs_females, change_10_year <= 0),aes(label = paste0(abs(round(change_10_year*100,1)), "% ", ifelse(change_10_year == 0, "(no change)\n", ifelse(change_10_year < 0, "decline in\nrate per 100,000", "increase in\nrate per 100,000"))), y = Rank_2016, x = 6), size = 3.5, col = "#000000", hjust = 1) +
-  geom_text(data = subset(DALYs_females, change_10_year > 0), aes(label = paste0(abs(round(change_10_year*100,1)), "% ", ifelse(change_10_year == 0, "(no change)\n", ifelse(change_10_year < 0, "decline in\nrate per 100,000", "increase in\nrate per 100,000"))), y = Rank_2016, x = 6), size = 3.5, col = "#cc0000", hjust = 1) +
-  slope_theme()
-
-Top_10_DALYs_females <- Measures_perc_level_3 %>% 
-  select(location, age, sex, cause_outline, cause, cause_id, level, Parent_cause, year, `DALYs (Disability-Adjusted Life Years)`) %>% 
-  filter(location %in% DALYs_females$location,
-         sex %in% DALYs_females$sex,
-         cause %in% DALYs_females$cause) %>% 
-  spread(year, `DALYs (Disability-Adjusted Life Years)`) %>% 
-  select(location, age, sex, cause_outline, cause, cause_id, level, Parent_cause, `2006`,`2011`,`2016`) %>% 
-  left_join(DALYs_females[c("cause_outline", "Rank_2006", "Rank_2016", "cause_group")], by = "cause_outline") %>% 
-  arrange(Rank_2016)
-
-paste0("The top 10 causes of age standardised disability adjusted life years for females in 2016 accounted for ", round(sum(subset(Top_10_DALYs_females, Rank_2016 <= 10, select = "2016"))*100,1), "% of the total burden of disability and mortality combined among females in 2016.")
-
-paste0(subset(DALYs_females, Rank_2016 == 1, select = "cause"), " was the top cause of disability adjusted life years lost among females in West Sussex in 2016, contributing ", round(subset(Top_10_DALYs_females, cause == as.character(subset(DALYs_females, Rank_2016 == 1, select = "cause")), select = "2016")*100,1), "% of the total number of disability adjusted life years among females in this year. This cause of disability adjusted life years lost was ", ifelse(as.numeric(subset(DALYs_females, Rank_2016 == 1, select = "Rank_2006")) == 1, "also the top contributor to morbidity and mortality combined 10 years ago.", paste0(ifelse(as.numeric(subset(DALYs_females, Rank_2016 == 1, select = "Rank_2006")) < 10, paste0("ranked ", tolower(as.character(subset(number_names, Number == as.numeric(subset(DALYs_females, Rank_2016 == 1, select = "Rank_2006")), select = "Rank"))), " a decade ago."), ifelse(as.numeric(subset(DALYs_females, Rank_2016 == 1, select = "Rank_2006") == 10, "ranked tenth a decade ago.", " was not in the top ten ranking a decade ago."))))), " The overall proportion of years of life lost or lived with disability due to ", tolower(as.character(subset(DALYs_females, Rank_2016 == 1, select = "cause"))), " has ", as.character(ifelse(round(subset(Top_10_DALYs_females, cause == as.character(subset(DALYs_females, Rank_2016 == 1, select = "cause")), select = "2016")*100,1) == round(subset(Top_10_DALYs_females, cause == as.character(subset(DALYs_females, Rank_2016 == 1, select = "cause")), select = "2006")*100,1), paste0("stayed the same as in 2016"), ifelse(round(subset(Top_10_DALYs_females, cause == as.character(subset(DALYs_females, Rank_2016 == 1, select = "cause")), select = "2016")*100,1) > round(subset(Top_10_DALYs_females, cause == as.character(subset(DALYs_females, Rank_2016 == 1, select = "cause")), select = "2006")*100,1), paste0("increased since 2006 (", round(subset(Top_10_DALYs_females, cause == as.character(subset(DALYs_females, Rank_2016 == 1, select = "cause")), select = "2006")*100,1) ,"%)."), paste0("decreased since 2006 (", round(subset(Top_10_DALYs_females, cause == as.character(subset(DALYs_females, Rank_2016 == 1, select = "cause")), select = "2006")*100,1) ,"%).")))))
-
-png(paste0("./GBD/DALYs_males_top_10.png"), width = 800, height = 500, res = 72, units = "px")
-DALYs_males_top_10
-dev.off()
-
-png(paste0("./GBD/DALYs_females_top_10.png"), width = 800, height = 500, res = 72, units = "px")
-DALYs_females_top_10
-dev.off()
-
-# DALYs comparison CIPFA neighbours ####
-
-Eng_DALYs <- GBD_cause_data %>% 
-  filter(year == max(GBD_cause_data$year, na.rm = TRUE),
-         measure == "DALYs (Disability-Adjusted Life Years)",
-         age == "Age-standardized",
-         metric == "Rate",
-         location %in% c("England")) %>%
-  left_join(WSx_NN, by = c("location" = "Area_Name")) %>% 
-  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
-  filter(level == 2) %>% 
-  select(measure, sex, age, cause, cause_outline, metric, year, val, lower, upper) %>% 
-  rename(Eng_val = val,
-         Eng_lower = lower,
-         Eng_upper = upper) %>% 
-  group_by(year, age, sex) %>% 
-  arrange(desc(Eng_val)) %>% 
-  mutate(Eng_Rate_rank = row_number())
-
-CIPFA_DALYs <- GBD_cause_data %>% 
-  filter(year == max(GBD_cause_data$year, na.rm = TRUE),
-         measure == "DALYs (Disability-Adjusted Life Years)",
-         age == "Age-standardized",
-         metric == "Rate",
-         location %in% c(WSx_NN$Area_Name, "West Sussex")) %>%
-  left_join(WSx_NN, by = c("location" = "Area_Name")) %>% 
-  left_join(GBD_2016_cause_hierarchy, by = c("cause" = "cause_name")) %>% 
-  filter(level == 2) %>% 
-  group_by(location, year, age, sex) %>% 
-  arrange(desc(val)) %>% 
-  mutate(Rate_rank = row_number()) %>% 
-  left_join(Eng_DALYs, by = c("measure", "sex", "age", "cause", "cause_outline", "metric", "year")) %>% 
-  mutate(sig_diff_eng = ifelse(lower > Eng_upper, "Significantly higher", ifelse(upper < Eng_lower, "Significantly lower", "Similar"))) %>% 
-  mutate(Rate_label = paste0(format(round(val,0),big.mark = ",", trim = TRUE), "\n(", format(round(lower,0),big.mark = ",", trim = TRUE),"-", format(round(upper,0),big.mark = ",", trim = TRUE), ")")) %>% 
-  ungroup()
-
-DALYs_rate_rank_table <- CIPFA_DALYs %>% 
-  mutate(Neighbour_rank = factor(Neighbour_rank, levels = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15))) %>% 
-  arrange(Neighbour_rank) %>% 
-  filter(sex == "Male") %>% 
-  mutate(location = factor(location, levels = unique(location))) %>% 
-  select(location, cause, val, sig_diff_eng) %>% 
-  spread(cause, round(val,1))
-
-write.csv(DALYs_rate_rank_table, "./GBD/DALYs_rate_rank_table.csv", row.names = FALSE, na = "")
-
-# The quickest thing to do here would be to export the DALYs_rate_rank_table into excel, colour the cells manually (the significance is denoted by the row they are in).
-
-
-# West Sussex Cause Trends ####
-
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/acb9352741f3471dded02667e2a2d181_files/IHME-GBD_2016_DATA-acb93527-1.zip", "./GBD/Query_3_trend_part_1.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/acb9352741f3471dded02667e2a2d181_files/IHME-GBD_2016_DATA-acb93527-2.zip", "./GBD/Query_3_trend_part_2.zip", mode = "wb")
- 
-# unzip("./GBD/Query_3_trend_part_1.zip", exdir = "./GBD")
-# unzip("./GBD/Query_3_trend_part_2.zip", exdir = "./GBD")
-
-GBD_cause_trend_data <- read_csv("./GBD/IHME-GBD_2016_DATA-acb93527-1.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(),year = col_integer())) %>% 
-  bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-acb93527-2.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(),year = col_integer())))
-
-# total change in disability for wsx ####
-
-total_dalys_trend <- GBD_cause_trend_data %>% 
-  filter(cause == "All causes", 
-         measure == "DALYs (Disability-Adjusted Life Years)",
-         sex != "Both",
-         age == "Age-standardized",
-         metric == "Rate")
-
-ggplot(total_dalys_trend, aes(x = year, y = val, group = sex)) +
-  geom_line(col = "#cc0000") +
-  facet_rep_wrap(~ sex, ncol = 2, repeat.tick.labels = TRUE) +
-  theme_minimal() +
-  scale_y_continuous(limits = c(0, 35000), breaks = seq(0,35000,5000), labels = comma) +
-  scale_x_continuous(breaks = seq(min(total_dalys_trend$year),max(total_dalys_trend$year), 1)) +
-  geom_ribbon(aes(ymin = lower, ymax = upper), linetype = 2, alpha = 0.2)  +
-  labs(title = paste0("Change in burden of disability and mortality combined among males and females; ", min(total_dalys_trend$year), "-", max(total_dalys_trend$year), ";"),
-     subtitle = paste0(unique(total_dalys_trend$location), "; age-standardised rate"), 
-     caption = "Measure: Disability-adjusted Life Years (DALYs)\nRate per 100,000 and 95% uncertainty interval given under each cause",
-     x = "",
-     y = "") +
-  stack_theme() +
-  theme(axis.text.x = element_text(angle = 90))
-
-# Change in top ten causes males west sussex ####
-
-download.file("http://s3.healthdata.org/gbd-api-2016-public/a368f2978aefd2505878d85e4009fc59_files/IHME-GBD_2016_DATA-a368f297-1.zip", "./GBD/UK_trend.zip", mode = "wb")
-unzip("./GBD/UK_trend.zip", exdir = "./GBD")
-
-Area_rate <- read_csv("./GBD/IHME-GBD_2016_DATA-a368f297-1.csv") %>% 
-  group_by(cause) %>% 
-  arrange(year) %>% 
-  mutate(Perc_change_rate = (val - lag(val))/lag(val),
-         LCI_change_rate = (lower - lag(lower))/lag(lower),
-         UCI_change_rate = (upper - lag(upper))/lag(upper)) %>%
-  ungroup() %>% 
-  mutate(cause = factor(cause, levels = c("All causes", "Alzheimer disease and other dementias","Breast cancer", "Chronic obstructive pulmonary disease","Cirrhosis and other chronic liver diseases", "Colon and rectum cancer" , "Ischemic heart disease", "Lower respiratory infections", "Stroke",  "Tracheal, bronchus, and lung cancer"))) 
-
-ggplot(Area_rate, aes(x = year, y = val, group = cause), fill = "#c8c8c8", col = "#ffffff") +
-  geom_line(col = "#cc0000") +
-  scale_x_continuous(breaks = seq(min(total_dalys_trend$year),max(total_dalys_trend$year), 1)) +
-  facet_rep_wrap(~ cause, ncol = 2, repeat.tick.labels = TRUE, scales = "free") +
-  geom_ribbon(aes(ymin = lower, ymax = upper), linetype = 2, alpha = 0.1) +  
-  labs(title = paste0("Change in burden of disability and mortality combined among males and females; ", min(Area_rate$year), "-", max(Area_rate$year), ";"),
-       subtitle = paste0(unique(Area_rate$location), "; age-standardised rate"), 
-       caption = "Measure: Disability-adjusted Life Years (DALYs)\nRate per 100,000 and 95% uncertainty interval given under each cause\nNOTE: y axis are not consistent across each figure.",
-       x = "",
-       y = "") +
-  stack_theme() +
-  theme(axis.text.x = element_text(angle = 90))
-
-
-
-paste0("A striking finding from the report is that on a day-to-day basis, the most common causes of burden for people are back pain, poor mental health, skin conditions and sight and hearing loss. These problems tend to attract less attention than causes of early death such as heart disease and cancer, but together they account for a huge amount of ill health and of course place a massive burden on the NHS and other care services.")
-
-# age standardised comparisons with nearest neighbours, add deprivation.
-
-
-ggplot(YLD_females) + 
-  geom_segment(aes(x = 1, xend = 2, y = Rank_2006, yend = Rank_2016), size = .7, lty = "dashed", show.legend = FALSE) +
-  geom_point(aes(x = 1, y = Rank_2006, col = cause_group), size = 7) +
-  geom_text(aes(x = 1, y = Rank_2006, label = paste0(YLD_females$Rank_2006)), col = "#ffffff", fontface = "bold") +
-  geom_point(aes(x = 2, y = Rank_2016, col = cause_group), size = 7) +
-  geom_text(aes(x = 2, y = Rank_2016, label = paste0(YLD_females$Rank_2016)), col = "#ffffff", fontface = "bold") +
-  scale_colour_manual(values = c("#C2464F", "#62A7B9", "#9DCB9C"), breaks = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), limits = c("Communicable, maternal, neonatal, and nutritional diseases", "Non-communicable diseases", "Injuries"), name = "Cause\ngrouping") +
-  labs(title = paste0("Ten biggest contributors to disability; ","West Sussex and CIPFA Neighbours", "; ", unique(YLD_females$age)),
-       subtitle = "Measure: Years lived with disability (YLD)",
-       x = "",
-       y = "") +
-  scale_y_reverse() +
-  scale_x_continuous(limits = c(-1,6)) +
-  geom_text(aes(label = "2006 ranking", y = 0, x = 1), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "2016 ranking", y = 0, x = 2), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-  geom_text(aes(label = "% change 2006-2016", y = 0, x = 6), size = 3.5, col = "#000000", hjust = 1, fontface = "bold") +
-  geom_text(aes(label = YLD_females$cause, y = YLD_females$Rank_2006, x = 0.8), size = 3.5, col = "#000000", hjust = 1, fontface = "bold") +
-  geom_text(aes(label = YLD_females$cause, y = YLD_females$Rank_2016, x = 2.2), size = 3.5, col = "#000000", hjust = 0, fontface = "bold") +
-  geom_text(aes(label = paste0(round(YLD_females$change*100,1), "%"), y = YLD_females$Rank_2016, x = 6), size = 3.5, col = "#000000", hjust = 1) +
-  theme(axis.text = element_blank(),
-        plot.title = element_text(colour = "#000000", face = "bold", size = 10),    
-        plot.subtitle = element_text(colour = "#000000", size = 9),
-        strip.text = element_text(colour = "#000000", size = 10, face = "bold"),
-        plot.margin = unit(c(0,2,0,0), "cm"),
-        # legend.position = c(.75,-.1), 
-        legend.position = "bottom", 
-        legend.title = element_text(colour = "#000000", size = 10, face = "bold"), 
-        legend.background = element_blank(), 
-        legend.key = element_rect(fill = "#ffffff", colour = "#ffffff"), 
-        legend.text = element_text(colour = "#000000", size = 8),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        panel.border = element_blank(),
-        strip.background = element_blank(), 
-        axis.ticks = element_blank(), 
-        axis.line = element_blank()) +
-  facet_wrap(~ location)
-
-paste0("The same causes feature as the most ")
-
-# age-standardised YLDs per 100,000
-
-# annual changes in YLDs for 10 latest leading causes 
-
-# Track changes over time
-
-# what are the key points from all this... 10-20 messages.
-
-# data source variation and unavailability of quality data could be a source of variation, as well as explain the limited variation compared to ylls
-
-# Comparing to other areas ####
-
-# Area codes #### 
-
-if(!(file.exists("~/Documents/Repositories/GBD/Area_lookup_table.csv") & file.exists("~/Documents/Repositories/GBD/Area_types_table.csv"))){
-  LAD <- read_csv(url("https://opendata.arcgis.com/datasets/a267b55f601a4319a9955b0197e3cb81_0.csv"), col_types = cols(LAD17CD = col_character(),LAD17NM = col_character(),  LAD17NMW = col_character(),  FID = col_integer()))
-  
-  Counties <- read_csv(url("https://opendata.arcgis.com/datasets/7e6bfb3858454ba79f5ab3c7b9162ee7_0.csv"), col_types = cols(CTY17CD = col_character(),  CTY17NM = col_character(),  Column2 = col_character(),  Column3 = col_character(),  FID = col_integer()))
-  
-  lookup <- read_csv(url("https://opendata.arcgis.com/datasets/41828627a5ae4f65961b0e741258d210_0.csv"), col_types = cols(LTLA17CD = col_character(),  LTLA17NM = col_character(),  UTLA17CD = col_character(),  UTLA17NM = col_character(),  FID = col_integer()))
-  
-  # This is a lower tier LA to upper tier LA lookup
-  UA <- subset(lookup, LTLA17NM == UTLA17NM)
-  
-  CCG <- read_csv(url("https://opendata.arcgis.com/datasets/4010cd6fc6ce42c29581c4654618e294_0.csv"), col_types = cols(CCG18CD = col_character(),CCG18CDH = col_skip(),CCG18NM = col_character(), FID = col_skip())) %>% 
-    rename(Area_Name = CCG18NM,
-           Area_Code = CCG18CD) %>% 
-    mutate(Area_Type = "Clinical Commissioning Group (2018)")
-  
-  Region <- read_csv(url("https://opendata.arcgis.com/datasets/cec20f3a9a644a0fb40fbf0c70c3be5c_0.csv"), col_types = cols(RGN17CD = col_character(),  RGN17NM = col_character(),  RGN17NMW = col_character(),  FID = col_integer()))
-  colnames(Region) <- c("Area_Code", "Area_Name", "Area_Name_Welsh", "FID")
-  
-  Region$Area_Type <- "Region"
-  Region <- Region[c("Area_Code", "Area_Name", "Area_Type")]
-  
-  LAD <- subset(LAD, substr(LAD$LAD17CD, 1, 1) == "E")
-  LAD$Area_Type <- ifelse(LAD$LAD17NM %in% UA$LTLA17NM, "Unitary Authority", "District")
-  colnames(LAD) <- c("Area_Code", "Area_Name", "Area_Name_Welsh", "FID", "Area_Type")
-  LAD <- LAD[c("Area_Code", "Area_Name", "Area_Type")]
-  
-  Counties$Area_type <- "County"
-  colnames(Counties) <- c("Area_Code", "Area_Name", "Col2", "Col3", "FID", "Area_Type")
-  Counties <- Counties[c("Area_Code", "Area_Name", "Area_Type")]
-  
-  England <- data.frame(Area_Code = "E92000001", Area_Name = "England", Area_Type = "Country")
-  
-  Areas <- rbind(LAD, CCG, Counties, Region, England)
-  rm(LAD, CCG, Counties, Region, England, UA)
-  
-  write.csv(lookup, "~/Documents/Repositories/GBD/Area_lookup_table.csv", row.names = FALSE)
-  write.csv(Areas, "~/Documents/Repositories/GBD/Area_types_table.csv", row.names = FALSE)
-}
-
-Lookup <- read_csv("~/Documents/Repositories/GBD/Area_lookup_table.csv", col_types = cols(LTLA17CD = col_character(),LTLA17NM = col_character(), UTLA17CD = col_character(),  UTLA17NM = col_character(), FID = col_character()))
-Areas <- read_csv("~/Documents/Repositories/GBD/Area_types_table.csv", col_types = cols(Area_Code = col_character(), Area_Name = col_character(), Area_Type = col_character()))
-
-# WSx_NN <- data.frame(Area_Code = nearest_neighbours(AreaCode = "E10000032", AreaTypeID = "102", measure = "CIPFA")) %>%   mutate(Neighbour_rank = row_number()) %>% 
-#   left_join(Areas, by = "Area_Code") %>% 
-#   bind_rows(data.frame(Area_Code = "E10000032", Neighbour_rank = 0, Area_Name = "West Sussex", Area_Type = "County"))
-
-
-# Risks ####
+# Risk ####
 
 GBD_2017_rei_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2017_REI_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric"))
 
-# This is 1.2 million records
 GBD_risk_data_wsx <- unique(list.files("~/Documents/GBD_data_download/Risk/")[grepl("efaea572", list.files("~/Documents/GBD_data_download/Risk/")) == TRUE]) %>% 
   map_df(~read_csv(paste0("~/Documents/GBD_data_download/Risk/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>% 
   rename(Area = location,
@@ -1103,138 +789,56 @@ GBD_risk_data_wsx <- unique(list.files("~/Documents/GBD_data_download/Risk/")[gr
          Year = year,
          Sex = sex,
          Age = age,
-         Cause = cause) %>% 
-  mutate(metric = ifelse(metric == "Rate", "Rate per 100,000 population", ifelse(metric == "Percent", "Proportion of total burden caused by this condition", metric)))
+         rei_name = rei,
+         Cause_name = cause) %>% 
+  mutate(metric = ifelse(metric == "Rate", "Rate per 100,000 population", ifelse(metric == "Percent", "Proportion of total burden caused by this condition", metric))) %>% 
+  left_join(GBD_2017_rei_hierarchy[c('rei_name', 'parent_id', 'level')], by = 'rei_name') %>% 
+  rename(Risk = rei_name,
+         Risk_level = level) %>% 
+  left_join(GBD_2017_rei_hierarchy[c('rei_id', 'rei_name')], by = c('parent_id' = 'rei_id')) %>%
+  select(-parent_id) %>% 
+  rename(`Risk group` = rei_name) %>% 
+  left_join(GBD_2017_cause_hierarchy[c('Cause_name', 'Parent_id', 'Level')], by = 'Cause_name') %>% 
+  rename(Cause = Cause_name) %>% 
+  left_join(GBD_2017_cause_hierarchy[c('Cause_id', 'Cause_name')], by = c('Parent_id' = 'Cause_id')) %>% 
+  rename(`Cause group` = Cause_name,
+         Cause_level = Level) %>% 
+  select(Area, Sex, Age, Year, Cause, `Cause group`, Cause_level, Risk, `Risk group`, Risk_level, measure, metric, Estimate, Lower_estimate, Upper_estimate)
 
 GBD_risk_data_all_cause_NN <- unique(list.files("~/Documents/GBD_data_download/Risk/")[grepl("defcbaed", list.files("~/Documents/GBD_data_download/Risk/")) == TRUE]) %>% 
-  map_df(~read_csv(paste0("~/Documents/GBD_data_download/Risk/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) 
+  map_df(~read_csv(paste0("~/Documents/GBD_data_download/Risk/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>% 
+  rename(Area = location,
+         Lower_estimate = lower,
+         Upper_estimate = upper,
+         Estimate = val,
+         Year = year,
+         Sex = sex,
+         Age = age,
+         rei_name = rei,
+         Cause = cause) %>% 
+  mutate(metric = ifelse(metric == "Rate", "Rate per 100,000 population", ifelse(metric == "Percent", "Proportion of total burden caused by this condition", metric))) %>% 
+  left_join(GBD_2017_rei_hierarchy[c('rei_name', 'parent_id', 'level')], by = 'rei_name') %>% 
+  rename(Risk = rei_name,
+         Risk_level = level) %>% 
+  left_join(GBD_2017_rei_hierarchy[c('rei_id', 'rei_name')], by = c('parent_id' = 'rei_id')) %>%
+  rename(`Risk group` = rei_name) %>% 
+  select(Area, Sex, Age, Year, Cause, Risk, `Risk group`, Risk_level, measure, metric, Estimate, Lower_estimate, Upper_estimate)
 
-unique(GBD_risk_data$cause)
-unique(GBD_risk_data$location)
-unique(GBD_risk_data$rei)
-unique(GBD_risk_data$year)
+level_1_risk_summary <- GBD_risk_data_all_cause_NN %>% 
+  filter(Area == Area_x) %>% 
+  filter(Year == 2017) %>% 
+  filter(Risk_level == 1) %>% 
+  filter(metric == 'Number') %>% 
+  filter(Sex == 'Both')
 
+Top_risks_2017_all_cause <- GBD_risk_data_all_cause_NN %>% 
+  filter(Year == 2017) %>% 
+  filter(Area == Area_x) %>% 
+  filter((Age == 'Age-standardized') | (Age == 'All Ages' & metric == 'Number')) %>% 
+  mutate(metric = ifelse(metric == 'Rate per 100,000 population', 'Age-standardised rate per 100,000', ifelse(metric == 'Number', 'Number (all ages)', NA)))
 
-Risk_all_cause <- GBD_risk_data %>% 
-  filter(cause == 'All causes')
+Risk_all_cause <- GBD_risk_data_all_cause_NN %>% 
+  filter(Year == 2017)
 
-
-
-# Risk - cause pairs look at risks all cause ylds
-
-# Risks related to top 10 causes of ylds
-
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/dfc1ea5299093e3a0e04df5eda95b29f_files/IHME-GBD_2016_DATA-dfc1ea52-1.zip", "./GBD/Query_2_n_part_1.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/dfc1ea5299093e3a0e04df5eda95b29f_files/IHME-GBD_2016_DATA-dfc1ea52-2.zip", "./GBD/Query_2_n_part_2.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/dfc1ea5299093e3a0e04df5eda95b29f_files/IHME-GBD_2016_DATA-dfc1ea52-3.zip", "./GBD/Query_2_n_part_3.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/dfc1ea5299093e3a0e04df5eda95b29f_files/IHME-GBD_2016_DATA-dfc1ea52-4.zip", "./GBD/Query_2_n_part_4.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/dfc1ea5299093e3a0e04df5eda95b29f_files/IHME-GBD_2016_DATA-dfc1ea52-5.zip", "./GBD/Query_2_n_part_5.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/dfc1ea5299093e3a0e04df5eda95b29f_files/IHME-GBD_2016_DATA-dfc1ea52-6.zip", "./GBD/Query_2_n_part_6.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/dfc1ea5299093e3a0e04df5eda95b29f_files/IHME-GBD_2016_DATA-dfc1ea52-7.zip", "./GBD/Query_2_n_part_7.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/dfc1ea5299093e3a0e04df5eda95b29f_files/IHME-GBD_2016_DATA-dfc1ea52-8.zip", "./GBD/Query_2_n_part_8.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/dfc1ea5299093e3a0e04df5eda95b29f_files/IHME-GBD_2016_DATA-dfc1ea52-9.zip", "./GBD/Query_2_n_part_9.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/dfc1ea5299093e3a0e04df5eda95b29f_files/IHME-GBD_2016_DATA-dfc1ea52-10.zip", "./GBD/Query_2_n_part_10.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/dfc1ea5299093e3a0e04df5eda95b29f_files/IHME-GBD_2016_DATA-dfc1ea52-11.zip", "./GBD/Query_2_n_part_11.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/dfc1ea5299093e3a0e04df5eda95b29f_files/IHME-GBD_2016_DATA-dfc1ea52-12.zip", "./GBD/Query_2_n_part_12.zip", mode = "wb")
-# download.file("http://s3.healthdata.org/gbd-api-2016-public/dfc1ea5299093e3a0e04df5eda95b29f_files/IHME-GBD_2016_DATA-dfc1ea52-13.zip", "./GBD/Query_2_n_part_13.zip", mode = "wb")
-
-# unzip("./GBD/Query_2_n_part_1.zip", exdir = "./GBD")
-# unzip("./GBD/Query_2_n_part_2.zip", exdir = "./GBD")
-# unzip("./GBD/Query_2_n_part_3.zip", exdir = "./GBD")
-# unzip("./GBD/Query_2_n_part_4.zip", exdir = "./GBD")
-# unzip("./GBD/Query_2_n_part_5.zip", exdir = "./GBD")
-# unzip("./GBD/Query_2_n_part_6.zip", exdir = "./GBD")
-# unzip("./GBD/Query_2_n_part_7.zip", exdir = "./GBD")
-# unzip("./GBD/Query_2_n_part_8.zip", exdir = "./GBD")
-# unzip("./GBD/Query_2_n_part_9.zip", exdir = "./GBD")
-# unzip("./GBD/Query_2_n_part_10.zip", exdir = "./GBD")
-# unzip("./GBD/Query_2_n_part_11.zip", exdir = "./GBD")
-# unzip("./GBD/Query_2_n_part_12.zip", exdir = "./GBD")
-# unzip("./GBD/Query_2_n_part_13.zip", exdir = "./GBD")
-
-# file.remove("./GBD/Query_2_n_part_1.zip","./GBD/Query_2_n_part_2.zip","./GBD/Query_2_n_part_3.zip","./GBD/Query_2_n_part_4.zip","./GBD/Query_2_n_part_5.zip","./GBD/Query_2_n_part_6.zip","./GBD/Query_2_n_part_7.zip","./GBD/Query_2_n_part_8.zip","./GBD/Query_2_n_part_9.zip","./GBD/Query_2_n_part_10.zip","./GBD/Query_2_n_part_11.zip","./GBD/Query_2_n_part_12.zip","./GBD/Query_2_n_part_13.zip")
-
-# GBD_risk_data <- read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-1.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character())) %>% 
-#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-2.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-3.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-4.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-5.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-6.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-7.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-8.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-9.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-10.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-11.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-12.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character()))) %>% 
-#   bind_rows(read_csv("./GBD/IHME-GBD_2016_DATA-dfc1ea52-13.csv", col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), rei = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_character())))
-# 
-# GBD_risk_group <- gbd_rei_hierarchy %>% 
-#   filter(level == 1, parent_id == 169)
-# 
-# Risk_DALY_1 <- GBD_risk_data %>% 
-#   filter(location == "West Sussex",
-#          year %in% c(2006, 2016),
-#          measure == "DALYs (Disability-Adjusted Life Years)",
-#          sex == "Female",
-#          age == "Age-standardized",
-#          metric == "Rate",
-#          cause == "All causes") %>% 
-#   select(location, sex, age, year, val, cause, rei) %>% 
-#   spread(year, val)  %>% 
-#   mutate(change = (Rank_2016-Rank_2006)/Rank_2006) %>% 
-#   gather(Rank_2006:Rank_2016, key = year, value = val) %>% 
-#   left_join(gbd_rei_hierarchy, by = c("rei" = "rei_name")) %>% 
-#   filter(level == 2) %>% 
-#   group_by(year) %>% 
-#   arrange(desc(val)) %>% 
-#   mutate(rank = row_number()) %>% 
-#   select(location, sex, age, year, rank, change, cause, rei, parent_id) %>% 
-#   spread(year, rank) %>% 
-#   filter(Rank_2006 <= 10 | Rank_2016 <= 10) %>% 
-#   left_join(GBD_risk_group[c("rei_id", "rei_name")], by = c("parent_id" = "rei_id")) %>% 
-#   rename(risk_group = rei_name) %>% 
-#   mutate(risk_group = factor(risk_group, levels = c("Behavioral risks","Environmental/occupational risks", "Metabolic risks")))
-# 
-# # Metabolic = "#F7DBBB"
-# # envrionment = "#B2EBDE"
-# # behaviour = "#CEB2EB"
-# 
-# ggplot(Risk_DALY_1) + 
-#   geom_segment(aes(x = 1, xend = 2, y = Rank_2006, yend = Rank_2016), size = .7, lty = "dashed", show.legend = FALSE) +
-#   geom_point(aes(x = 1, y = Rank_2006, col = risk_group), size = 7) +
-#   geom_text(aes(x = 1, y = Rank_2006, label = paste0(Risk_DALY_1$Rank_2006)), col = "#ffffff", fontface = "bold") +
-#   geom_point(aes(x = 2, y = Rank_2016, col = risk_group), size = 7) +
-#   geom_text(aes(x = 2, y = Rank_2016, label = paste0(Risk_DALY_1$Rank_2016)), col = "#ffffff", fontface = "bold") +
-#   scale_colour_manual(values = c("#CEB2EB", "#B2EBDE", "#F7DBBB"), breaks = c("Behavioral risks","Environmental/occupational risks", "Metabolic risks"), limits = c("Behavioral risks","Environmental/occupational risks", "Metabolic risks"), name = "Risk grouping") +
-#   labs(title = paste0("Ten biggest risk factors for disability; ",unique(Risk_DALY_1$location), "; ", unique(Risk_DALY_1$age)),
-#        subtitle = "Measure: Disability Adjusted Life Years (DALYs)",
-#        x = "",
-#        y = "") +
-#   scale_y_reverse() +
-#   scale_x_continuous(limits = c(-1,6)) +
-#   geom_text(aes(label = "2006 ranking", y = 0, x = 1), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-#   geom_text(aes(label = "2016 ranking", y = 0, x = 2), size = 3.5, col = "#000000", hjust = 0.5, fontface = "bold") +
-#   geom_text(aes(label = "% change 2006-2016", y = 0, x = 6), size = 3.5, col = "#000000", hjust = 1, fontface = "bold") +
-#   geom_text(aes(label = Risk_DALY_1$rei, y = Risk_DALY_1$Rank_2006, x = 0.8), size = 3.5, col = "#000000", hjust = 1, fontface = "bold") +
-#   geom_text(aes(label = Risk_DALY_1$rei, y = Risk_DALY_1$Rank_2016, x = 2.2), size = 3.5, col = "#000000", hjust = 0, fontface = "bold") +
-#   geom_text(aes(label = paste0(round(Risk_DALY_1$change*100,1), "%"), y = Risk_DALY_1$Rank_2016, x = 6), size = 3.5, col = "#000000", hjust = 1) +
-#   theme(axis.text = element_blank(),
-#         plot.title = element_text(colour = "#000000", face = "bold", size = 10),    
-#         plot.subtitle = element_text(colour = "#000000", size = 9),
-#         strip.text = element_text(colour = "#000000", size = 10, face = "bold"),
-#         plot.margin = unit(c(0,2,0,0), "cm"),
-#         # legend.position = c(.75,-.1), 
-#         legend.position = "bottom", 
-#         legend.title = element_text(colour = "#000000", size = 10, face = "bold"), 
-#         legend.background = element_blank(), 
-#         legend.key = element_rect(fill = "#ffffff", colour = "#ffffff"), 
-#         legend.text = element_text(colour = "#000000", size = 8),
-#         panel.grid.major = element_blank(), 
-#         panel.grid.minor = element_blank(),
-#         panel.background = element_blank(), 
-#         panel.border = element_blank(),
-#         strip.background = element_blank(), 
-#         axis.ticks = element_blank(), 
-#         axis.line = element_blank())
 
 

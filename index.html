@@ -21,7 +21,6 @@
 <body>
 
   <div class="wrapper">
-
     <div class="row">
       <div class="left_column">
         <h3>Deaths</h3>
@@ -56,22 +55,6 @@
         <div id="top_10_table"> </div>
         <p>Discuss each of the metrics. What differences are there across top tens.</p>
         <p>Whilst the biggest contributers to mortality are generally the biggest contributers to disability and ill health, some conditions which have fairly low mortality rates can cause significant levels of disability.</p>
-        <p>The figure below shows the estimated number of deaths in West Sussex in 2017 by cause (level 3 causes). Causes are coloured by the 'cause group' (level 2 cause). The size of the circle represents the number of deaths. Items are grouped by
-          the broad disease group. Hover over a circle to see more information. You can toggle between the different measures to explore the different conditions that contribute to the burden of ill health and mortality.
-        <h3>Level 3 causes of ill health and mortality; persons; all ages; West Sussex; 2017</h3>
-          <div class="switch-field">
-            <input onclick="update_bubbles(deaths_persons_lv3)" type="radio" id="radio-four" name="switch-two" checked />
-            <label for="radio-four">Deaths</label>
-            <input onclick="update_bubbles(yll_persons_lv3)" type="radio" id="radio-five" name="switch-two" />
-            <label for="radio-five">YLL</label>
-            <input onclick='update_bubbles(yld_persons_lv3)' type="radio" id="radio-six" name="switch-two" />
-            <label for="radio-six">YLD</label>
-            <input onclick='update_bubbles(daly_persons_lv3)' type="radio" id="radio-seven" name="switch-two" />
-            <label for="radio-seven">DALY</label>
-        </div>
-          <div id="my_deaths_bubble_dataviz"> </div>
-        <p>The next bubble figure shows differences between males and females. Again, you can toggle between the different measures.</p>
-        <div id="my_deaths_by_sex_bubble_dataviz"> </div>
       </div>
       <div class="right_column">
         <h3>Level 1 conditions</h3>
@@ -87,11 +70,27 @@
         <p><i>*Level 3 conditions can be explored using the bubble figures on this page or in the 'Exploring conditions in more detail' section.</i></p>
       </div>
     </div>
+      <div class = 'row'>
+        <div class = 'left_column'>
+          <h3>Level 3 causes</h3>
+          <p>This figure shows the estimated number of deaths in West Sussex in 2017 by cause (level 3 causes). Causes are coloured by the 'cause group' (see the summary on the right hand side for level 2 causes). The size of the circle represents the number of deaths. Items are grouped by the broad disease group. Hover over a circle to see more information.</p>
+          <p>You can toggle between the different measures to explore how the different conditions that contribute to the burden of ill health and mortality as well as explore the data for males, females, or both combined.</p>
+          <p>Each time a new selection is made, the circles are redrawn to scale (check the key on the right hand side).</p>
+          </div>
+      <div class= 'main'>
+        <h3 id = 'selected_bubbles_title'></h3>
+        <p>Sex: <select id='selectSexBubblesButton'></select> Measure <select id='selectMeasureBubblesButton'></select></p>
+        <div id="my_deaths_bubble_dataviz"></div>
+      </div>
+      <div class = 'right_column'>
+        <h3>Circle size key</h3>
+        <div id='chart_legend'></div>
+      </div>
     </div>
     <!-- 2017 by Age -->
     <div class="row">
       <div class = 'left_column'>
-        <p></p>
+        <p>Age specific</p>
       </div>
       <div class="main">
         <h1>How does ill health affect people of different ages?</h1>
@@ -108,8 +107,8 @@
           <label for="radio-eleven">DALY</label>
         </div>
         <div id="my_lifecourse_condition_dataviz"> </div>
-        <p>Whilst it is useful to see the number of deaths or years lost for a condition, it is also useful to see the proportion of the burden for each age group to answer the question 'if the condition is estimated to cause 100 deaths, how many of
-          those deaths are among people of a certain age?'. Answering this question shows us that certain diseases impact people of particular ages disproportionately. The switch below effects both the number and proportion of disease burden
+        <p>We can see from this that disability is concentrated on those of working age</p>
+        <p>Whilst it is useful to see the number of deaths or years lost for a condition, it is also useful to see the proportion of the burden for each age group to answer the question 'if the condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain age?'. Answering this question shows us that certain diseases impact people of particular ages disproportionately. The switch below effects both the number and proportion of disease burden
           attributed to a condition and age group.</p>
         <div class="switch-field">
           <input onclick="update_condition(deaths_condition); update_condition_prop(deaths_condition_proportion);" type="radio" id="radio-twelve" name="switch-four" checked />
@@ -144,13 +143,13 @@
         <p>To account for differences in population size and demographics, the remaining analyses use <font color="#256cb2"><b>standardised estimates</b></font> which detail the number (e.g. deaths) per 100,000 population.</p>
         <p>We revisit the top tens now, but this time showing the change in rank for those top ten causes of mortality and morbidity for West Sussex.</p>
         <div class="switch-field">
-          <input onclick="update_top_10_change(deaths_rate_rank_change)" type="radio" id="radio-top_10_1" name="switch-two" checked />
+          <input onclick="update_top_10_change(deaths_rate_rank_change)" type="radio" id="radio-top_10_1" name="switch-five" checked />
           <label for="radio-top_10_1">Deaths</label>
-          <input onclick="update_top_10_change(yll_rate_rank_change)" type="radio" id="radio-top_10_2" name="switch-two" checked />
+          <input onclick="update_top_10_change(yll_rate_rank_change)" type="radio" id="radio-top_10_2" name="switch-five"/>
           <label for="radio-top_10_2">YLLs</label>
-          <input onclick="update_top_10_change(yld_rate_rank_change)" type="radio" id="radio-top_10_3" name="switch-two" checked />
+          <input onclick="update_top_10_change(yld_rate_rank_change)" type="radio" id="radio-top_10_3" name="switch-five"/>
           <label for="radio-top_10_3">YLDs</label>
-          <input onclick='update_top_10_change(daly_rate_rank_change)' type="radio" id="radio-top_10_4" name="switch-two" />
+          <input onclick='update_top_10_change(daly_rate_rank_change)' type="radio" id="radio-top_10_4" name="switch-five"/>
           <label for="radio-top_10_4">DALY</label>
         </div>
         <div id="top_10_change_datavis"></div>
@@ -165,31 +164,52 @@
 
         <h3>All cause mortality (deaths); change in age standardised rate per 100,000 population; 2012 - 2017;<br>West Sussex and nearest neighbours</h3>
         <div id="my_level_2_rate_change_dataviz"></div>
-
-        <h1>Risk factors</h1>
+      </div>
+      <div class="right_column">
+      <p></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="left_column">
+        <h3>Risk factor</h3>
+        <p>A risk factor is defined as an attribute, behavior, or exposure, which is causally associated with an increased (or decreased) probability of a disease or injury. Risk factors can be protective if the probability of ill health decreases.</p>
+      </div>
+      <div class="main">
+        <h1>Attributing risk to the burden of disease</h1>
+        <!-- <p>Globally, 59·9% (58·4–61·3) of deaths and 45·2% (43·2–47·3) of DALYs could be attributed to the risk factors assessed in GBD 2016. For deaths, non-communicable diseases (NCDs) show the largest proportion attributable to measured risk factors, at 64·4% (62·6–66·2), with communicable, maternal, neonatal, and nutritional (CMNN) causes at 57·9% (55·4–61·0), and injuries at 25·8% (23·7–27·8). The picture was different for DALYs, however, where we observed that 58·2% (56·4–60·3) of DALYs in CMNN causes are attributable to risk factors, compared with 43·5% (40·7–46·7) in NCDs and 21·0% (19·3–22·7) for injuries. Leading causes of DALYs in CMNN causes, such as diarrhoea and lower respiratory infections (LRI), also showed more than 80% of DALYs can be attributed to risk factors (appendix 2 p 1).</p> -->
+      </div>
+      <div class="right_column">
+        <p>Nested within Level 0, Level 1 includes three risk categories: environmental and occupational, meta- bolic, and behavioural risk factors. This hierarchical structure continues, with each subsequent level including more detailed risks factors that are nested within the broader category above it. There are 19 risks at Level 2, 39 risks at Level 3, and 22 risks at Level 4</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="left_column">
+        <p></p>
+      </div>
+      <div class="main">
         <h1>Condition Focus</h1>
         <p>In the next section we focus on the three disease groups which contributed the most disability adjusted life-years lost in West Sussex in 2017 (Cancers (neoplasms), Cardiovascular diseases and Musculoskeletal disorders).</p>
         <h2>Cancers (neoplasms)</h2>
         <h2>Cardiovascular diseases</h2>
         <h2>Musculoskeletal disorders</h2>
         <h2>Exploring conditions in more detail</h2>
-        <p>It is not possible to provide a commentary on all 360 diseases/conditions but you can use the drop down boxes below to explore more detail on conditions.</p>
       </div>
       <div class="right_column">
+        <p>Condition</p>
       </div>
     </div>
+</div>
 
   </body>
 
   <footer class = 'footer'>M4de by Dr Rich Tyler<br><a href="https://github.com/psychty" ,target="_blank">github/psychty</a><br>July 2019</footer>
-
-<p>Data downloaded from the <a href="http://ghdx.healthdata.org/gbd-results-tool" , target="_blank">GBD online results tool;</a href> Institute for Health Metrics and Evaluation (IHME). Findings from the Global Burden of Disease Study 2017. Seattle, WA: IHME, 2018</p>
-<p>A note on spellings: As the GBD is produced in Seattle, USA, some conditions and cause names use English (U.S.) spellings.</p>
+    <p>Data downloaded from the <a href="http://ghdx.healthdata.org/gbd-results-tool" , target="_blank">GBD online results tool;</a href> Institute for Health Metrics and Evaluation (IHME). Findings from the Global Burden of Disease Study 2017. Seattle, WA: IHME, 2018</p>
+    <p>A note on spellings: As the GBD is produced in Seattle, USA, some conditions and cause names use English (U.S.) spellings.</p>
+    <script src="https://d3plus.org/js/d3plus.v2.0.0-alpha.22.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
   <script src="https://d3js.org/d3-format.v1.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   <script src='gbd.js'></script>
-
-
+  <script src='bubbles_gbd.js'></script>
 
   </html>

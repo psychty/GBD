@@ -22,6 +22,8 @@ var color_cause_group = d3.scaleOrdinal()
 
 var ages = ["Early Neonatal","Late Neonatal","Post Neonatal","1 to 4","5 to 9","10 to 14","15 to 19","20 to 24","25 to 29","30 to 34","35 to 39","40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79","80 to 84","85 to 89","90 to 94","95 plus"]
 
+var measure_categories = ['Deaths', 'YLLs (Years of Life Lost)', 'YLDs (Years Lived with Disability)', 'DALYs (Disability-Adjusted Life Years)']
+
 var color_age_group = d3.scaleOrdinal()
   .domain(ages)
   .range(["#ff82a1","#d0005a","#903331","#ffa479","#ae7300","#eba100","#e9c254","#b99700","#6dba1c","#3b5b2c","#a2d39b","#00bb53","#008f69","#5adbb5","#00b1b8","#02b8fe","#0184e1","#7d7bff","#daa3ff","#713d85","#c85ae0","#e0afdd","#7c3e5f"]);
@@ -357,149 +359,9 @@ d3.select("#total_death_string")
 	.text(function(d){
 	return "What caused the " + d3.format(",.0f")(d.Deaths) + " deaths in West Sussex in 2017?" }); // Concatenate a string
 
-// Level 3 bubbles (persons)
-var request = new XMLHttpRequest();
-request.open("GET", "./Number_bubbles_df_level_3_2017_west_sussex.json", false);
-request.send(null);
-var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
+// Level 3 bubbles from bubbles_gbd.js
 
-deaths_persons_lv3 = json.filter(function(d){
-	    return d.Sex === "Both" &
-	      +d.Year === 2017 &
-        d.Measure === 'Deaths'});
 
-yll_persons_lv3 = json.filter(function(d){
-      return d.Sex === "Both" &
-        +d.Year === 2017 &
-         d.Measure === 'YLLs (Years of Life Lost)'});
-
-yld_persons_lv3 = json.filter(function(d){
-	    return d.Sex === "Both" &
-	      +d.Year === 2017 &
-         d.Measure === 'YLDs (Years Lived with Disability)'});
-
-daly_persons_lv3 = json.filter(function(d){
-	    return d.Sex === "Both" &
-	      +d.Year === 2017 &
-         d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
-
-// append the svg object to the body of the page
-var svg_fg_2 = d3.select("#my_deaths_bubble_dataviz")
-  .append("svg")
-  .attr("width", width)
-  .attr("height", height + 50)
-
-// Create functions to show, move, and hide the tooltip
-var tooltip_fg_2 = d3.select("#my_deaths_bubble_dataviz")
-  .append("div")
-  .attr("class", "tooltip")
-  .style("position", "absolute")
-  .style("z-index", "10")
-  .style("visibility", "hidden");
-
-// This creates the function for what to do when someone moves the mouse over a circle (e.g. move the tooltip in relation to the mouse cursor).
-var showTooltip_fg_2 = function(d) {
-tooltip_fg_2
-  .html("<p>In West Sussex, in " + d.Year + ", there were <strong>" + d3.format(",.0f")(d.Value) + "</strong> " + d.Measure + " caused by " + d.Cause + ".</p><p>This is part of the <strong>" + d['Cause group'] + "</strong> disease group.</p>")
-  .style("top", (event.pageY - 10) + "px")
-  .style("left", (event.pageX + 10) + "px")
-  }
-
-function update_bubbles(data) {
-
-// This selects the whole div, changes the r value for all circles to 0 and then removes the svg before new plots are rebuilt.
-svg_fg_2.selectAll("*")
-.transition()
-.duration(750)
-.attr("r", 0)
-.remove();
-
-data = data.sort(function(a, b) {
-  return d3.descending(a['Cause group'], b['Cause group']);
-  });
-
-// Grab the lowest number of deaths
-var min_deaths = d3.min(data, function(d) {
-  return +d.Value;
-  })
-
-// Grab the highest number of deaths
-var max_deaths = d3.max(data, function(d) {
-  return +d.Value;
-  })
-
-// Size scale for bubbles
-var size = d3.scaleLinear()
-  .domain([0, max_deaths])
-  .range([1, 85]) // circle will always be between 1 and 85 px wide
-
-// Initialize the circle
-var node = svg_fg_2.append("g")
-  .selectAll("circle")
-  .data(data)
-  .enter()
-  .append("circle")
-  .attr("class", "node")
-  .attr("r", function(d) {
-      return size(d.Value)
-      })
-  .attr("cx", width / 2)
-  .attr("cy", height / 2)
-  .style("fill", function(d) {
-      return color_cause_group(d['Cause group'])
-      })
-  .style("fill-opacity", 1)
-  .on("mouseover", function() {
-      return tooltip_fg_2.style("visibility", "visible");
-    })
-  .on("mousemove", showTooltip_fg_2)
-  .on("mouseout", function() {
-      return tooltip_fg_2.style("visibility", "hidden");
-    })
-  .call(d3.drag()
-  .on("start", dragstarted)
-  .on("drag", dragged)
-  .on("end", dragended));
-
-// Features of the forces applied to the nodes:
-var simulation = d3.forceSimulation()
-  .force("center", d3.forceCenter().x(width / 2).y(height/2)) // Attraction to the middle of the svg area and 150 px down
-  .force("charge", d3.forceManyBody().strength(.1)) // Nodes are attracted one each other if value is > 0
-  .force("collide", d3.forceCollide().strength(.2).radius(function(d) {
-      return (size(d.Value) + 3)})
-      .iterations(1)) // Force that avoids circle overlapping
-
-simulation
-.nodes(data)
-.on("tick", function(d) { node
-.attr("cx", function(d) {
-    return d.x; })
-.attr("cy", function(d) {
-    return d.y; })
-  });
-
-// What happens when a circle is dragged?
-function dragstarted(d) {
-  if (!d3.event.active) simulation.alphaTarget(.03).restart(); d.fx = d.x;
-    d.fy = d.y;
-  }
-
-function dragged(d) {
-    d.fx = d3.event.x;
-     d.fy = d3.event.y;
-  }
-
-function dragended(d) {
-  if (!d3.event.active) simulation.alphaTarget(.03); d.fx = null;
-    d.fy = null;
-   }
-
-}
-
-// Initialize the plot with the first dataset
-update_bubbles(deaths_persons_lv3)
-
-// Bubbles by sex will be added as figure 3
 
 function age_key_summary() {
       ages.forEach(function(item, index) {
@@ -1143,8 +1005,6 @@ daly_level_2_rank_change = json.filter(function(d){ // gets a subset of the json
 // data = data.sort(function(a, b) {
 //   return d3.descending(a.Change_since_2012, b.Change_since_2012);
 //   })
-
-
 
 var tooltip_rate_change = d3.select("#my_level_2_rate_change_dataviz")
   .append("div")
