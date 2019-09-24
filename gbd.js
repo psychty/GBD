@@ -16,9 +16,19 @@ var height_fg_1 = 400 - margin.top - margin.bottom;
 // Specify a colour palette and order
 var cause_categories = ["HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"]
 
+var risk_categories = ["Air pollution", "Occupational risks", "Other environmental risks",  "Unsafe water, sanitation, and handwashing", "Alcohol use", "Childhood maltreatment", "Dietary risks", "Drug use", "Intimate partner violence", "Low physical activity", "Child and maternal malnutrition", "Tobacco", "Unsafe sex", "High systolic blood pressure", "High body-mass index", "High fasting plasma glucose", "High LDL cholesterol","Impaired kidney function", "Low bone mineral density"]
+
 var color_cause_group = d3.scaleOrdinal()
   .domain(cause_categories)
   .range(["#F8DDEB", "#F2B9BF", "#EE9187", "#EA695C", "#D84D42", "#AD3730", "#7A1C1C", '#BCD6F7','#97C4F0','#67A8E7','#528CDB','#376ACB',"#1845A5", '#CFD6F6','#ADB9ED','#8B96DD','#6978D0', "#4E4FB8", "#3E3294", "#B5DCD0", "#76B786", '#477A49']);
+
+var color_risk_group = d3.scaleOrdinal()
+  .domain(risk_categories)
+  .range(["#ff82c2", "#ff5eb0", "#e54597", "#b23575","#b2ecf3", "#99e6f0", "#80e0ec", "#66d9e8", "#4dd3e5", "#1ac7dd", "#00adc4", "#008798", "#00606d","#c0b3d4", "#a08dbe", "#8166a9", "#71549e", "#4e3476", "#3a2758"]);
+
+var color_lv_1_risk_group = d3.scaleOrdinal()
+ .domain(['Environmental/occupational risks', 'Behavioral risks', 'Metabolic risks', 'Burden not attributable to GBD risk factors'])
+ .range(["#ff4da8","#01c1da","#624194","#DBDBDB"])
 
 var ages = ["Early Neonatal","Late Neonatal","Post Neonatal","1 to 4","5 to 9","10 to 14","15 to 19","20 to 24","25 to 29","30 to 34","35 to 39","40 to 44","45 to 49","50 to 54","55 to 59","60 to 64","65 to 69","70 to 74","75 to 79","80 to 84","85 to 89","90 to 94","95 plus"]
 
@@ -1600,6 +1610,93 @@ var selectedRefOption = d3.select("#selectReferenceAreaButton").property('value'
 
 update_fg_6(areas[0])
 
-// bar chart west sussex compared to SE and England.
+// Bring data in
+var request = new XMLHttpRequest();
+    request.open("GET", "./level_1_risk_2017_west_sussex_summary.json", false);
+    request.send(null);
+
+var lv_1_summary_risk = JSON.parse(request.responseText);
+
+function risk_group_1_summary() {
+      lv_1_summary_risk.forEach(function(item, index) {
+        var list = document.createElement("li");
+        list.innerHTML = item.Risk;
+        list.className = 'cause_list';
+        list.style.borderColor = color_lv_1_risk_group(index);
+        var tt = document.createElement('div');
+        tt.className = 'side_tt';
+        tt.style.borderColor = color_lv_1_risk_group(index);
+        var tt_h3_1 = document.createElement('h3');
+        tt_h3_1.innerHTML = item.Risk;
+        var tt_p1 = document.createElement('p');
+        tt_p1.innerHTML = item['Description'];
+        var tt_p2 = document.createElement('p');
+        tt_p2.innerHTML = item['Deaths'];
+        var tt_p3 = document.createElement('p');
+        tt_p3.innerHTML = item['YLLs (Years of Life Lost)'];
+        var tt_p4 = document.createElement('p');
+        tt_p4.innerHTML = item['YLDs (Years Lived with Disability)'];
+        var tt_p5 = document.createElement('p');
+        tt_p5.innerHTML = item['DALYs (Disability-Adjusted Life Years)'];
+
+
+        tt.appendChild(tt_h3_1);
+        tt.appendChild(tt_p1);
+        tt.appendChild(tt_p2);
+        tt.appendChild(tt_p3);
+        tt.appendChild(tt_p4);
+        tt.appendChild(tt_p5);
+        list.appendChild(tt);
+        var div = document.getElementById("level_1_risk_summary");
+
+        div.appendChild(list);
+      })
+    }
+
+risk_group_1_summary();
+
+var request = new XMLHttpRequest();
+    request.open("GET", "./level_2_risk_2017_west_sussex_summary.json", false);
+    request.send(null);
+
+var level_2_risk_summary = JSON.parse(request.responseText);
+
+function risk_group_2_summary() {
+      level_2_risk_summary.forEach(function(item, index) {
+        var list = document.createElement("li");
+        list.innerHTML = item.Risk;
+        list.className = 'cause_list';
+        list.style.borderColor = color_risk_group(index);
+
+        var tt_lv2 = document.createElement('div');
+        tt_lv2.className = 'side_tt';
+        tt_lv2.style.borderColor = color_risk_group(index);
+        var tt_lv2_h3_1 = document.createElement('h3');
+        tt_lv2_h3_1.innerHTML = item.Risk;
+        var tt_lv2_p1 = document.createElement('p');
+        tt_lv2_p1.innerHTML = item.Description;
+        var tt_lv2_p2 = document.createElement('p');
+        tt_lv2_p2.innerHTML = item['Deaths'];
+        var tt_lv2_p3 = document.createElement('p');
+        tt_lv2_p3.innerHTML = item['YLLs (Years of Life Lost)'];
+        var tt_lv2_p4 = document.createElement('p');
+        tt_lv2_p4.innerHTML = item['YLDs (Years Lived with Disability)'];
+        var tt_lv2_p5 = document.createElement('p');
+        tt_lv2_p5.innerHTML = item['DALYs (Disability-Adjusted Life Years)'];
+
+        tt_lv2.appendChild(tt_lv2_h3_1);
+        tt_lv2.appendChild(tt_lv2_p1);
+        tt_lv2.appendChild(tt_lv2_p2);
+        tt_lv2.appendChild(tt_lv2_p3);
+        tt_lv2.appendChild(tt_lv2_p4);
+        tt_lv2.appendChild(tt_lv2_p5);
+        list.appendChild(tt_lv2);
+        var div = document.getElementById("level_2_risk_summary");
+        div.appendChild(list);
+      })
+    }
+
+risk_group_2_summary();
+
 
 // Look at the three conditions, maybe introduce risk factors too...

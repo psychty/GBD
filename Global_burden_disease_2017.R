@@ -323,9 +323,9 @@ level_2_cause_df <- level_2_cause_df_a %>%
   left_join(level_2_cause_df_b, by = c('Sex', 'Cause')) %>% 
   select(Sex, Cause, Year, `Cause group`, Deaths_number, Deaths_proportion, Death_rank, YLL_number, YLL_proportion, YLL_rank, YLD_number, YLD_proportion, YLD_rank, DALY_number, DALY_proportion, DALY_rank) %>% 
   mutate(Death_rank = ifelse(Death_rank == 1, ' largest ', ifelse(Death_rank == 22, ' lowest ', paste0(ordinal_format()(Death_rank), ' highest ')))) %>% 
-  mutate(YLL_rank = ifelse(Death_rank == 1, ' largest ', ifelse(YLL_rank == 22, ' lowest ', paste0(ordinal_format()(YLL_rank), ' highest ')))) %>%   
-  mutate(YLD_rank = ifelse(Death_rank == 1, ' largest ', ifelse(YLD_rank == 22, ' lowest ', paste0(ordinal_format()(YLD_rank), ' highest ')))) %>%   
-  mutate(DALY_rank = ifelse(Death_rank == 1, ' largest ', ifelse(DALY_rank == 22, ' lowest ', paste0(ordinal_format()(DALY_rank), ' highest '))))
+  mutate(YLL_rank = ifelse(YLL_rank == 1, ' largest ', ifelse(YLL_rank == 22, ' lowest ', paste0(ordinal_format()(YLL_rank), ' highest ')))) %>%   
+  mutate(YLD_rank = ifelse(YLD_rank == 1, ' largest ', ifelse(YLD_rank == 22, ' lowest ', paste0(ordinal_format()(YLD_rank), ' highest ')))) %>%   
+  mutate(DALY_rank = ifelse(DALY_rank == 1, ' largest ', ifelse(DALY_rank == 22, ' lowest ', paste0(ordinal_format()(DALY_rank), ' highest '))))
   
 rm(level_2_cause_df_a, level_2_cause_df_b)
 
@@ -824,21 +824,103 @@ GBD_risk_data_all_cause_NN <- unique(list.files("~/Documents/GBD_data_download/R
   rename(`Risk group` = rei_name) %>% 
   select(Area, Sex, Age, Year, Cause, Risk, `Risk group`, Risk_level, measure, metric, Estimate, Lower_estimate, Upper_estimate)
 
+
+Total_burden <- level_1_cause_df %>% 
+  filter(Sex == 'Both') %>% 
+  summarise(Deaths_number = sum(Deaths_number, na.rm = TRUE),
+            YLL_number = sum(YLL_number, na.rm = TRUE),
+            YLD_number = sum(YLD_number, na.rm = TRUE),
+            DALY_number = sum(DALY_number, na.rm = TRUE)) %>% 
+  gather() %>% 
+  mutate(measure = ifelse(key == 'Deaths_number', 'Deaths', ifelse(key == 'YLL_number', 'YLLs (Years of Life Lost)', ifelse(key == 'YLD_number', 'YLDs (Years Lived with Disability)', ifelse(key == 'DALY_number', 'DALYs (Disability-Adjusted Life Years)', NA))))) %>% 
+  select(-key) %>% 
+  rename(Total = value)
+
 level_1_risk_summary <- GBD_risk_data_all_cause_NN %>% 
   filter(Area == Area_x) %>% 
   filter(Year == 2017) %>% 
   filter(Risk_level == 1) %>% 
   filter(metric == 'Number') %>% 
-  filter(Sex == 'Both')
+  filter(Sex == 'Both') %>% 
+  select(-c(Upper_estimate, Lower_estimate)) %>% 
+  left_join(Total_burden, by = 'measure') %>% 
+  mutate(`Proportion burden explained by risk` = Estimate / Total) %>% 
+  mutate(Measure = ifelse(measure == 'Deaths', 'deaths', ifelse(measure == 'YLLs (Years of Life Lost)', 'YLLs', ifelse(measure == 'YLDs (Years Lived with Disability)', 'YLDs', ifelse(measure == 'DALYs (Disability-Adjusted Life Years)', 'DALYs', NA))))) %>% 
+  select(Risk, measure, Measure, Estimate, Total, `Proportion burden explained by risk`) %>% 
+mutate(label = paste0('This group of risks was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(Estimate,0), big.mark = ',', trim = TRUE), '</font></b> ', Measure, ' which represents <b>', round(`Proportion burden explained by risk` * 100,1), '% of all ', Measure, '</b> in 2017 (', format(round(Total,0), big.mark = ',', trim = TRUE), ' ', Measure, ').')) %>% 
+  select(Risk, measure, label) %>% 
+  spread(measure, label) %>% 
+  mutate(Description = ifelse(Risk == 'Environmental/occupational risks', 'Environmental/occupational risks include air pollution, unsafe water and sanitation (including handwashing) and occupational risks/exposures', ifelse(Risk == 'Behavioral risks', 'Behavioral risks include diet, substance use, malnutrition, physical activity and maltreatment including interpersonal violence.', ifelse(Risk == 'Metabolic risks', 'Metabolic risks include high blood pressure, body mass index, low-density lipoprotein, and impaired kidney function.', ifelse(Risk == 'Burden not attributable to GBD risk factors', 'The GBD study is not able to study every possible risk factor for each condition/impairment and as such there will always be some unexplained variation for some of the burden. Some conditions are well understood than others and it is useful to understand how much of the burden of a disease we think can be explained by known risk factors.', NA))))) %>% 
+  mutate(Risk = factor(Risk, level = c('Environmental/occupational risks', 'Behavioral risks', 'Metabolic risks', 'Burden not attributable to GBD risk factors'))) %>% 
+  arrange(Risk)
 
-Top_risks_2017_all_cause <- GBD_risk_data_all_cause_NN %>% 
-  filter(Year == 2017) %>% 
+level_1_risk_summary %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_1_risk_2017_', gsub(" ", "_", tolower(Area_x)), '_summary.json'))
+
+
+level_2_risk_summary <- GBD_risk_data_all_cause_NN %>% 
   filter(Area == Area_x) %>% 
+  filter(Year == 2017) %>% 
+  filter(Risk_level == 2) %>% 
+  filter(metric == 'Number') %>% 
+  filter(Sex == 'Both') %>% 
+  select(-c(Upper_estimate, Lower_estimate)) %>% 
+  left_join(Total_burden, by = 'measure') %>% 
+  mutate(`Proportion burden explained by risk` = Estimate / Total) %>% 
+  mutate(Measure = ifelse(measure == 'Deaths', 'deaths', ifelse(measure == 'YLLs (Years of Life Lost)', 'YLLs', ifelse(measure == 'YLDs (Years Lived with Disability)', 'YLDs', ifelse(measure == 'DALYs (Disability-Adjusted Life Years)', 'DALYs', NA))))) %>% 
+  select(Risk, measure, Measure, Estimate, Total, `Proportion burden explained by risk`) %>% 
+  mutate(label = paste0('This group of risks was estimated to be responsible for <font color = "#1e4b7a"><b>', format(round(Estimate,0), big.mark = ',', trim = TRUE), '</font></b> ', Measure, ' which represents <b>', round(`Proportion burden explained by risk` * 100,1), '% of all ', Measure, '</b> in 2017 (', format(round(Total,0), big.mark = ',', trim = TRUE), ' ', Measure, ').')) %>% 
+  select(Risk, measure, label) %>% 
+  spread(measure, label) %>% 
+  mutate(Description = ifelse(Risk == 'Dietary risks', 'Dietary risks include low intake of whole grains, fruits and vegetables, nuts and seeds, fibre, calcium, and omega 3 as well as high intake of processed and red meat, sodium, trans fats and sugar.', ifelse(Risk == 'Tobacco use', 'Tobaaco use includes smoking tobacco as well as chewing tobacco and exposure to secondhand smoke.', ifelse(Risk == 'Air pollution', 'Air pollution is split into particulate matter exposure as well as ozone', ifelse(Risk == 'Occupational risks', 'Occupational risks include exposure to occupational carcinogens, particulates, asthmagens and noise as well as occupational injury.', ifelse(Risk == 'Malnutrition', 'Malnutrition includes iron, zinc and vitamin A deficiency, low birth weight and short gestation, as well as suboptimal breastfeeding.', ifelse(Risk == 'Other environmental risks', 'Other environmental risks include exposure to lead and radon.', NA))))))) %>% 
+  mutate(Risk = factor(Risk, level = c("Air pollution", "Occupational risks", "Other environmental risks",  "Unsafe water, sanitation, and handwashing", "Alcohol use", "Childhood maltreatment", "Dietary risks", "Drug use", "Intimate partner violence", "Low physical activity", "Child and maternal malnutrition", "Tobacco", "Unsafe sex", "High systolic blood pressure", "High body-mass index", "High fasting plasma glucose", "High LDL cholesterol","Impaired kidney function", "Low bone mineral density"))) %>% 
+  arrange(Risk)
+
+level_2_risk_summary  %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_2_risk_2017_', gsub(" ", "_", tolower(Area_x)), '_summary.json'))
+
+# Overlap
+
+Overlap_df <- read_csv('/Users/richtyler/Documents/GBD_data_download/Risk/Risk_overlap_data.csv', col_types = cols(Location = col_character(),Year = col_double(),Age = col_character(),Sex = col_character(),`Cause of death or injury` = col_character(),  `Attributable to` = col_character(), Measure = col_character(),Value = col_double())) %>% 
+  rename(Cause = `Cause of death or injury`,
+         Risk = `Attributable to`)
+
+Overlap_df %>% 
+  filter(Risk %in% c('Burden attributable to GBD risk factors', 'Burden not attributable to GBD risk factors')) %>% 
+  mutate(Type = ifelse(substr(Measure, 0, 7) == 'Percent', 'Proportion', 'Number')) %>%
+  mutate(Measure = gsub('Percent of total ', '', Measure)) %>% 
+  spread(Type, Value) %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_2_risk_explained_burden_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
+
+Overlap_df%>%
+  filter(Risk  != 'Burden attributable to GBD risk factors') %>% 
+  filter(!grepl('attributable to GBD risk factors', Measure)) %>%
+  mutate(Risk = gsub('∩', '&', Risk)) %>% 
+  mutate(Type = ifelse(substr(Measure, 0, 7) == 'Percent', 'Proportion', 'Number')) %>%
+  mutate(Measure = gsub('Percent of total ', '', Measure)) %>% 
+  spread(Type, Value) %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_1_2_risk_2017_', gsub(" ", "_", tolower(Area_x)), '_overlap.json'))
+
+# Age standardised top 10.
+
+GBD_risk_data_all_cause_NN %>% 
+  filter(Year == 2017) %>% 
+  # filter(Area == Area_x) %>%
+  filter(Risk_level == 2) %>% 
   filter((Age == 'Age-standardized') | (Age == 'All Ages' & metric == 'Number')) %>% 
-  mutate(metric = ifelse(metric == 'Rate per 100,000 population', 'Age-standardised rate per 100,000', ifelse(metric == 'Number', 'Number (all ages)', NA)))
-
-Risk_all_cause <- GBD_risk_data_all_cause_NN %>% 
-  filter(Year == 2017)
-
-
-
+  mutate(metric = ifelse(metric == 'Rate per 100,000 population', 'Age-standardised rate per 100,000', ifelse(metric == 'Number', 'Number (all ages)', NA))) %>% 
+  group_by(Area, Sex, Year, Cause, measure, metric) %>% 
+  mutate(Rank = rank(-Estimate)) %>% 
+  mutate(Estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Estimate,1),big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
+  mutate(Lower_estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Lower_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Lower_estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
+  mutate(Upper_estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Upper_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Upper_estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
+  mutate(Estimate_label = paste0(Estimate, ' (', Lower_estimate, '-', Upper_estimate, ')')) %>% 
+  ungroup() %>%
+  filter(metric == 'Age-standardised rate per 100,000') %>% 
+  select(-c(Lower_estimate, Upper_estimate, Age, Year, Cause, Risk_level, Estimate)) %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_2_risk_all_cause_NN_2017.json'))
