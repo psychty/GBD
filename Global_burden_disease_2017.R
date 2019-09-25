@@ -887,6 +887,9 @@ Overlap_df <- read_csv('/Users/richtyler/Documents/GBD_data_download/Risk/Risk_o
   rename(Cause = `Cause of death or injury`,
          Risk = `Attributable to`)
 
+
+
+
 Overlap_df %>% 
   filter(Risk %in% c('Burden attributable to GBD risk factors', 'Burden not attributable to GBD risk factors')) %>% 
   mutate(Type = ifelse(substr(Measure, 0, 7) == 'Percent', 'Proportion', 'Number')) %>%
@@ -904,6 +907,80 @@ Overlap_df%>%
   spread(Type, Value) %>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_1_2_risk_2017_', gsub(" ", "_", tolower(Area_x)), '_overlap.json'))
+
+
+Working_df <- Overlap_df%>%
+  filter(Risk  != 'Burden attributable to GBD risk factors') %>% 
+  filter(!grepl('attributable to GBD risk factors', Measure)) %>%
+  mutate(Risk = gsub('∩', '&', Risk)) %>% 
+  mutate(Type = ifelse(substr(Measure, 0, 7) == 'Percent', 'Proportion', 'Number')) %>%
+  mutate(Measure = gsub('Percent of total ', '', Measure)) %>% 
+  spread(Type, Value) %>% 
+  filter(Cause == 'All causes') %>% 
+  filter(Measure == 'Deaths')
+
+Overall_overlap_a <- Working_df %>% 
+  group_by(Cause, Measure) %>% 
+  filter(grepl('Environment', Risk)) %>% 
+  summarise(Number = sum(Number, na.rm = TRUE)) %>% 
+  mutate(Risk = 'Environment/Occupational risks') %>% 
+  select(Risk, Cause, Measure, Number) %>% 
+  mutate(sets = '[0]')
+
+Overall_overlap_b <- Working_df %>% 
+  group_by(Cause, Measure) %>% 
+  filter(grepl('Behavioral', Risk)) %>% 
+  summarise(Number = sum(Number, na.rm = TRUE)) %>% 
+  mutate(Risk = 'Behavioral risks') %>% 
+  select(Risk, Cause, Measure, Number) %>% 
+  mutate(sets = '[1]')
+
+Overall_overlap_c <- Working_df %>% 
+  group_by(Cause, Measure) %>% 
+  filter(grepl('Metabolic', Risk)) %>% 
+  summarise(Number = sum(Number, na.rm = TRUE))  %>% 
+  mutate(Risk = 'Metabolic risks') %>% 
+  select(Risk, Cause, Measure, Number) %>% 
+  mutate(sets = '[2]')
+
+Overall_overlap_d <- Working_df %>% 
+  filter(Risk == 'Burden not attributable to GBD risk factors') %>% 
+  select(Risk, Cause, Measure, Number) %>% 
+  mutate(sets = '[3]')
+
+Overall_overlap_e <- Working_df %>% 
+  filter(Risk == 'Behavioral & Environmental')%>% 
+  select(Risk, Cause, Measure, Number) %>% 
+  mutate(sets = '[0,1]')
+ 
+Overall_overlap_f <- Working_df %>% 
+  filter(Risk == 'Environmental & Metabolic')%>% 
+  select(Risk, Cause, Measure, Number) %>% 
+  mutate(sets = '[0,2]')
+
+Overall_overlap_g <- Working_df %>% 
+  filter(Risk == 'Behavioral & Environmental & Metabolic')%>% 
+  select(Risk, Cause, Measure, Number) %>% 
+  mutate(sets = '[0,1,2]')
+
+Overall_overlap_h <- Working_df %>% 
+  filter(Risk == 'Behavioral & Metabolic')%>% 
+  select(Risk, Cause, Measure, Number) %>% 
+  mutate(sets = '[1,2]')
+
+
+Overall_overlap <- Overall_overlap_a %>% 
+  bind_rows(Overall_overlap_b) %>% 
+  bind_rows(Overall_overlap_c) %>% 
+  bind_rows(Overall_overlap_d) %>% 
+  bind_rows(Overall_overlap_e) %>% 
+  bind_rows(Overall_overlap_f) %>% 
+  bind_rows(Overall_overlap_g) %>% 
+  bind_rows(Overall_overlap_h) 
+
+Overall_overlap %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/all_cause_risk_2017_', gsub(" ", "_", tolower(Area_x)), '_overlap.json'))
 
 # Age standardised top 10.
 
