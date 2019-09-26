@@ -946,7 +946,7 @@ y_place_label = d3.scaleLinear()
 x_rank_change = d3.scalePoint()
   .domain(years_to_show)
   // .range([0,width])
-  .range([width * .25, width * .65])
+  .range([width * .3, width * .65])
 
 // The path function returns x and y coordinates to draw the lines
 function path(d) {
@@ -975,14 +975,31 @@ rank_change_svg.selectAll('text.labels')
   .append('text')
   .text(function(d) {
     return d.Cause })
-  .style("stroke", function(d) {
+  .style('stroke', function(d) {
       return color_cause_group(d.Cause)})
   .attr('text-anchor', 'end')
   .attr('x', x_rank_change(years_to_show[0]) - 30)
   .attr('y', function(d){
       return y_place_label(d.Rank_in_2007)})
   .attr('dy', '0em')
-  .style('font-size', '.8rem')
+  .style('font-size', '.7rem')
+  .style('fontWeight', 'normal');
+
+// Create cause 07 label
+rank_change_svg.selectAll('text.labels')
+ .data(data)
+ .enter()
+ .append('text')
+ .text(function(d) {
+    return d.Label_2007 + ' per 100,000'})
+ .style("stroke", function(d) {
+    return color_cause_group(d.Cause)})
+ .attr('text-anchor', 'end')
+ .attr('x', x_rank_change(years_to_show[0]) - 30)
+ .attr('y', function(d){
+    return y_place_label(d.Rank_in_2007)})
+.attr('dy', '1em')
+  .style('font-size', '.7rem')
   .style('fontWeight', 'normal');
 
 // Create cause 17 label
@@ -999,7 +1016,7 @@ rank_change_svg.selectAll('text.labels')
  .attr('y', function(d){
    return y_place_label(d.Rank_in_2017)})
  .attr('dy', '0em')
- .style('font-size', '.8rem')
+ .style('font-size', '.7rem')
  .style('fontWeight', 'normal');
 
 // Create cause 17 label
@@ -1016,7 +1033,7 @@ rank_change_svg.selectAll('text.labels')
 .attr('y', function(d){
     return y_place_label(d.Rank_in_2017)})
 .attr('dy', '1em')
-.style('font-size', '.8rem')
+.style('font-size', '.7rem')
 .style('fontWeight', 'normal');
 
 
@@ -1080,6 +1097,8 @@ rank_change_svg
 }
 
 update_top_10_change(deaths_rate_rank_change)
+
+
 
 height_rate_change = 500
 

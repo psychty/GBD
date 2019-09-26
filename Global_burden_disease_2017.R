@@ -636,6 +636,14 @@ Change_over_time_latest <- Age_standardised_change_data %>%
   group_by(Area, Sex, Level, measure) %>% 
   mutate(`Rank_in_2017` = rank(-Estimate_2017))
 
+Change_over_time_2007 <- Age_standardised_change_data %>% 
+  filter(Year == 2007) %>% 
+  rename(Estimate_2007 = Estimate) %>% 
+  mutate(Label_2007 = paste0(format(round(Estimate_2007,0), big.mark = ',', trim = TRUE), ' (', format(round(Lower_estimate,0), big.mark = ',', trim = TRUE), '-', format(round(Upper_estimate,0), big.mark = ',', trim = TRUE), ')')) %>% 
+  select(Area, Sex, Cause, measure, Label_2007) 
+
+names()
+
 Change_over_time_a <- Age_standardised_change_data %>%
   filter(Year %in% c(1997, 2002, 2007, 2012)) %>% 
   select(Area, Sex, Year, Cause, Level, measure, Estimate) %>% 
