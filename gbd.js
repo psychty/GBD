@@ -487,6 +487,10 @@ svg_fg_4
 
 function update_age(data) {
 
+  svg_fg_4
+   .selectAll("rect")
+   .remove();
+
 var stackedData = d3.stack()
     .keys(cause_categories)
       (data)
@@ -650,6 +654,10 @@ var yAxis_fg_5 = svg_fg_5
   .attr("class", "myYaxis")
 
 function update_condition(data) {
+
+  svg_fg_5
+   .selectAll("rect")
+   .remove();
 
 var stackedData = d3.stack()
     .keys(ages)
@@ -818,6 +826,11 @@ var yAxis_fg_5_prop = svg_fg_5_prop
   .attr("class", "myYaxis")
 
 function update_condition_prop(data) {
+
+
+svg_fg_5_prop
+ .selectAll("rect")
+ .remove();
 
 var stackedData = d3.stack()
   .keys(ages)(data)
@@ -1107,6 +1120,10 @@ var request = new XMLHttpRequest();
    request.send(null);
 var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
 
+// json = json.sort(function(a, b) {
+//   return d3.descending(a.Change_since_2012, b.Change_since_2012);
+//   })
+
 deaths_level_2_rank_change = json.filter(function(d){ // gets a subset of the json data
   return  d.Area === 'West Sussex' &
           d.Sex === 'Both' &
@@ -1127,9 +1144,7 @@ daly_level_2_rank_change = json.filter(function(d){ // gets a subset of the json
           d.Sex === 'Both' &
           d.measure === 'DALYs (Disability-Adjusted Life Years)'});
 
-// data = data.sort(function(a, b) {
-//   return d3.descending(a.Change_since_2012, b.Change_since_2012);
-//   })
+
 
 var tooltip_rate_change = d3.select("#my_level_2_rate_change_dataviz")
   .append("div")
@@ -1165,10 +1180,12 @@ var rate_change_svg = d3.select("#my_level_2_rate_change_dataviz")
 
 function update_level_2_rate_change(data) {
 
+  rate_change_svg
+   .selectAll("*")
+   .remove();
+
 var x_rate_change = d3.scaleLinear()
- // .domain(d3.extent(data, function(d){
- //   return d.Change_since_2012; }))
- .domain([-40,40])
+ .domain([-40,50])
  .range([0,width]);
 
 var y_rate_change = d3.scaleBand()
@@ -1274,7 +1291,7 @@ rate_change_svg
 
 }
 
-update_level_2_rate_change(daly_level_2_rank_change);
+update_level_2_rate_change(deaths_level_2_rank_change);
 
 
 // Line chart

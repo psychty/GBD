@@ -183,7 +183,17 @@
       </div>
         <div id="deaths_over_time_nn_rate_datavis"> </div>
 
-        <h3>All cause mortality (deaths); change in age standardised rate per 100,000 population; 2012 - 2017;<br>West Sussex and nearest neighbours</h3>
+      <h3>Change in age standardised rate per 100,000 population; 2012 - 2017;<br>West Sussex; persons</h3>
+      <div class="switch-field">
+        <input onclick="update_level_2_rate_change(deaths_level_2_rank_change)" type="radio" id="radio-change_1" name="switch-six" checked />
+        <label for="radio-change_1">Deaths</label>
+        <input onclick="update_level_2_rate_change(yll_level_2_rank_change)" type="radio" id="radio-change_2" name="switch-six"/>
+        <label for="radio-change_2">YLLs</label>
+        <input onclick="update_level_2_rate_change(yld_level_2_rank_change)" type="radio" id="radio-change_3" name="switch-six"/>
+        <label for="radio-change_3">YLDs</label>
+        <input onclick='update_level_2_rate_change(daly_level_2_rank_change)' type="radio" id="radio-change_4" name="switch-six"/>
+        <label for="radio-change_4">DALY</label>
+      </div>
         <div id="my_level_2_rate_change_dataviz"></div>
       </div>
       <div class="right_column">

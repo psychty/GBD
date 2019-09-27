@@ -103,6 +103,13 @@ Cause_number <- All_ages_GBD_cause_data %>%
   spread(measure, Estimate) %>% 
   ungroup() 
 
+
+level_3_top_cause <- Cause_number %>% 
+  filter(Level == 3,
+         Sex == 'Both',
+         Area == Area_x,
+         Year == 2017)
+
 # Percent is the proportion of the deaths in the given location for the given sex, year, and level.
 Cause_perc <- All_ages_GBD_cause_data %>% 
   filter(metric == "Proportion of total burden caused by this condition") %>% 
@@ -642,8 +649,6 @@ Change_over_time_2007 <- Age_standardised_change_data %>%
   mutate(Label_2007 = paste0(format(round(Estimate_2007,0), big.mark = ',', trim = TRUE), ' (', format(round(Lower_estimate,0), big.mark = ',', trim = TRUE), '-', format(round(Upper_estimate,0), big.mark = ',', trim = TRUE), ')')) %>% 
   select(Area, Sex, Cause, measure, Label_2007) 
 
-names()
-
 Change_over_time_a <- Age_standardised_change_data %>%
   filter(Year %in% c(1997, 2002, 2007, 2012)) %>% 
   select(Area, Sex, Year, Cause, Level, measure, Estimate) %>% 
@@ -673,6 +678,7 @@ Change_over_time <- Change_over_time_latest %>%
   left_join(Change_over_time_b, by = c('Area','Sex', 'Cause', 'measure')) %>% 
   left_join(Change_over_time_c, by = c('Area','Sex', 'Cause', 'measure')) %>% 
   left_join(Change_over_time_d, by = c('Area','Sex', 'Cause', 'measure')) %>% 
+  left_join(Change_over_time_2007, by = c('Area','Sex', 'Cause', 'measure')) %>% 
   select(-c(Year, Cause_id, Cause_outline, Parent_id, metric)) %>% 
   mutate(Change_since_1997 = replace_na(Change_since_1997, 0)) %>% 
   mutate(Change_since_2002 = replace_na(Change_since_2002, 0)) %>% 
@@ -687,7 +693,7 @@ Change_over_time <- Change_over_time_latest %>%
   mutate(Estimate_in_2007 = replace_na(Estimate_in_2007, 0)) %>% 
   mutate(Estimate_in_2012 = replace_na(Estimate_in_2012, 0)) 
 
-rm(Change_over_time_a, Change_over_time_b, Change_over_time_c, Change_over_time_d)
+rm(Change_over_time_a, Change_over_time_b, Change_over_time_c, Change_over_time_d, Change_over_time_2007)
 
 # Change_over_time %>% 
 #   filter(Cause == 'Sense organ diseases') %>% 
