@@ -429,10 +429,11 @@ var subgroupName = d3.select(this.parentNode).datum().key;
 var subgroupValue = d.data[subgroupName];
 
 tooltip_age
-  .html("<h3>" + subgroupName + '</h3><p>The estimated number of ' + d.Measure + ' as a result of ' + subgroupName + ' in West Sussex in 2017 among both males and females was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(subgroupValue) + '</b></font>.</p>')
+  .html("<h3>" + subgroupName + '</h3><p>The estimated number of ' + label_key(d.data.Measure) + ' as a result of ' + subgroupName.toLowerCase() + ' in West Sussex in 2017 among both males and females aged ' + d.data.Age + ' was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(subgroupValue) + '</b></font>.</p><p>This is <font color = "#1e4b7a"><b>' + d3.format(",.0%")(subgroupValue/d.data.Total_in_age) + '</b></font> of the total ' + label_key(d.data.Measure) + ' in West Sussex among this age group (<font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.data.Total_in_age) + '</b></font>)</p>')
   .style("opacity", 1)
   .style("top", (event.pageY - 10) + "px")
   .style("left", (event.pageX + 10) + "px")
+
   }
 
 // append the svg object to the body of the page
@@ -464,7 +465,7 @@ svg_fg_4
   .append("text")
   .attr("text-anchor", "end")
   .attr("x", width/2)
-  .attr("y", height_fg_4 + margin.top + 30)
+  .attr("y", height_fg_4 + margin.top + 35)
   .text("Age group");
 
  // Y axis label:
@@ -596,10 +597,11 @@ var subgroupName = d3.select(this.parentNode).datum().key;
 var subgroupValue = d.data[subgroupName];
 
 tooltip_condition_age
- .html("<h3>" + d.data.Cause + '</h3><p>The estimated number of ' + d.data.Measure + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(subgroupValue) + '</b></font>.</p>')
+ .html("<h3>" + d.data.Cause + '</h3><p>The estimated number of ' + d.Measure + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(subgroupValue) + '</b></font>.</p><p>This is <font color = "#1e4b7a"><b>' + d3.format(",.0%")(subgroupValue/d.data.Total_in_condition) + '</b></font> of the total ' + label_key(d.data.Measure) + ' in West Sussex from this cause (<font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.data.Total_in_condition) + '</b></font>)</p>')
  .style("opacity", 1)
  .style("top", (event.pageY - 10) + "px")
  .style("left", (event.pageX + 10) + "px")
+
 }
 
 // append the svg object to the body of the page
@@ -631,7 +633,7 @@ svg_fg_5
  .append("text")
  .attr("text-anchor", "end")
  .attr("x", width/2)
- .attr("y", height_fg_5 + margin.top + 100)
+ .attr("y", height_fg_5 + margin.top + 150)
  .text("Condition");
 
 // Y axis label:
@@ -799,7 +801,7 @@ svg_fg_5_prop
  .append("text")
  .attr("text-anchor", "end")
  .attr("x", width/2)
- .attr("y", height_fg_5_prop + margin.top + 100)
+ .attr("y", height_fg_5_prop + margin.top + 150)
  .text("Condition");
 
 // Y axis label:
@@ -826,7 +828,6 @@ var yAxis_fg_5_prop = svg_fg_5_prop
   .attr("class", "myYaxis")
 
 function update_condition_prop(data) {
-
 
 svg_fg_5_prop
  .selectAll("rect")

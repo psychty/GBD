@@ -17,6 +17,10 @@ var color_cause_group = d3.scaleOrdinal()
 
 var measure_categories = ['Deaths', 'YLLs (Years of Life Lost)', 'YLDs (Years Lived with Disability)', 'DALYs (Disability-Adjusted Life Years)']
 
+var label_key = d3.scaleOrdinal()
+  .domain(measure_categories)
+  .range(['deaths', 'YLLs', 'YLDs',' DALYs'])
+
 var xLabel = 190
 var xCircle = 100
 var yCircle = 190
@@ -66,7 +70,7 @@ var tooltip_fg_2 = d3.select("#my_deaths_bubble_dataviz")
 // This creates the function for what to do when someone moves the mouse over a circle (e.g. move the tooltip in relation to the mouse cursor).
 var showTooltip_fg_2 = function(d) {
 tooltip_fg_2
- .html("<p>In West Sussex, in " + d.Year + ", there were <strong>" + d3.format(",.0f")(d.Value) + "</strong> " + d.Measure + " caused by " + d.Cause + ".</p><p>This is part of the <strong>" + d['Cause group'] + "</strong> disease group.</p>")
+ .html("<p>In " + d.Year + ", there were <strong>" + d3.format(",.0f")(d.Value) + "</strong> " + label_key(d.Measure) + " among " + d.Sex.toLowerCase().replace('both', 'both males and female') + "s caused by " + d.Cause + ".</p><p>This is part of the <strong>" + d['Cause group'] + "</strong> disease group.</p>")
  .style("top", (event.pageY - 10) + "px")
  .style("left", (event.pageX + 10) + "px")
   }
@@ -128,7 +132,7 @@ var max_value = d3.max(data, function(d) {
 d3.select("#selected_bubbles_title")
   	.data(data) // The array
   	.text(function(d){
-  	return "Level 3 causes of " + d.Measure.replace('Deaths', 'death') + '; ' + d.Sex.toLowerCase().replace('both', 'both males and female') + 's; all ages; West Sussex; 2017' }); // Concatenate a string
+  	return "Level 3 causes of " + label_key(d.Measure) + '; ' + d.Sex.toLowerCase().replace('both', 'both males and female') + 's; all ages; West Sussex; 2017' }); // Concatenate a string
 
 // Size scale for bubbles
 var size = d3.scaleLinear()
@@ -245,7 +249,8 @@ svg_size_key
  return yCircle - size(d)
  })
  .text(function(d) {
- return d3.format(",.0f")(d) + ' ' + selectedMeasureBubblesOption.toLowerCase()
+ // return d3.format(",.0f")(d) + ' ' + selectedMeasureBubblesOption.toLowerCase()
+  return d3.format(",.0f")(d) + ' ' + label_key(selectedMeasureBubblesOption)
  })
  .attr("font-size", 11)
  .attr('alignment-baseline', 'top')

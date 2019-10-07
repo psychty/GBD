@@ -439,6 +439,7 @@ lifecourse_age <- lifecourse_numbers %>%
   mutate(`Diabetes and kidney diseases` = replace_na(`Diabetes and kidney diseases`, 0)) 
 
 lifecourse_age %>% 
+  mutate(Total_in_age = rowSums(.[3:ncol(.)])) %>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Numbers_lifecourse_persons_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
@@ -486,6 +487,7 @@ lifecourse_condition <- lifecourse_numbers %>%
   arrange(Cause)
   
 lifecourse_condition %>% 
+  mutate(Total_in_condition = rowSums(.[3:ncol(.)])) %>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Numbers_lifecourse_persons_by_condition_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
