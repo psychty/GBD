@@ -19,17 +19,18 @@
       <div class="row">
         <div class="left_column">
           <h3>The Global Burden of Disease Study (GBD)</h3>
-          <p>The GBD is one of the most comprehensive worldwide epidemiological collaborations describing mortality and morbidity from major diseases and injuries and risk factors to health at global, national, regional, and local levels. It provides a standardised approach to estimating incidence (new cases) and prevalence (total number of cases) of ill health and death as well as a measure of the number of potential years lost due to disability, ill health and death.</p>
+          <p>The GBD is one of the most comprehensive worldwide epidemiological collaborations describing life expectancy, as well as mortality and morbidity from major diseases and injuries and risk factors to health at global, national, regional, and local levels. It provides a standardised approach to estimating incidence (new cases) and prevalence (total number of cases) of ill health and death as well as a measure of the number of potential years lost due to disability, ill health and death.</p>
           <p>Data are available for every year between 1990 and 2017 and each year new data and methodological innovations are fed into models, revising annual estimates for 360 diseases and injuries and 85 risk factors.</p>
-          <p>Where possible, local observational data (e.g. mortality and GP records or local studies) are included in the estimates but for a large number of diseases there is simply no recorded information on prevalence.</p>
 
         </div>
         <div class="main">
           <h1>Key findings</h1>
 <ul class = 'summary'>
-  <li>Exploring common causes of premature death and disability at higher geographies can mask substantial variation within those areas.</li>
-  <li>Low back and neck pain are leading causes of overall disease burden as measured by Disability Adjusted Life Years lost in West Sussex.</li>
-  <li>Non-fatal conditions are accounting for an increasingly large amount of overall burden on the health of the nation.</li>
+  <li>Life expectancy improvements have stalled, whilst healthy life expectancy has decreased meaning that we are spending on average one in every eight years in less than ideal health</li>
+  <li>In 2017, life expectancy at birth was estimated to be 81.7 years, with females having a higher life expectancy (83.5 years) compared to males (79.9 years).</li>
+  <li><b>Cardiovascular diseases</b> such as stroke, heart attack, and coronary atery disease are the largest causes of death in West Sussex, although <b>cancers (neoplasms)</b> cause the most premature mortality (years of life lost).</li>
+  <li>Non-fatal conditions are accounting for an increasingly large amount of overall burden of ill health.</li>
+  <li><b>Musculoskeletal conditions</b> such as low back and neck pain are the third largest cause of overall disease burden as measured by Disability Adjusted Life Years lost in West Sussex.</li>
   <li>The findings from the GBD at a local, regional and national level helps policy makers to allocate resources based on the level of burden and target key risk factors.</li>
 </ul>
         </div>
@@ -41,6 +42,29 @@
           <p>Whilst risk factors are presented in three groups, these should not be viewed as mutually exclusive. It is clear that behavioural risks (such as diet) are associated with metabolic risks (such as obesity)</p>
         </div>
       </div>
+
+      <div class="row">
+        <div class="left_column">
+          <h3>Life expectancy</h3>
+          <p>Life expectancy is a measure of the number of years an average person can expect to live at a given age. For this analysis, we explore the life expactancy at birth (up to 1 year old age).</p>
+          <h3>Healthy life expectancy</h3>
+          <p>Healthy life expectancy takes into acount the non-fatal burden of disease and summarises the number of years an average person can expect to live without poor health. The difference between Healthy life expectancy and Life expectancy generally, gives us an idea of the average time people spend in poor health.</p>
+        </div>
+        <div class="main">
+          <h1>Is life expectancy improving in West Sussex?</h1>
+          <p>Life expectancy has increased in the last 20 years since 1997, from 79 years to 81.7 years (81.3 years to 83.5 years among females and from 76.5 years to 79.9 years among males).</p>
+          <p>However, in the last five years life expectancy at birth has actually gone down (from 82.2 years in 2012). There were also decreases for male and female life expectancy.</p>
+          <p>Healthy life expectancy </p>
+          <p>Moreover, the gap between healthy life expectancy and overall life expectancy has increased over time. These are years lived in poor health</p>
+          <h3>Life expectancy and health life expectancy at birth by sex; West Sussex; 1990 - 2017</h3>
+          <div id='le_timeseries_datavis'></div>
+        </div>
+      <div class="right_column">
+        <p> </p>
+      </div>
+    </div>
+
+
     <div class="row">
       <div class="left_column">
         <h3>Deaths</h3>
@@ -58,7 +82,9 @@
       </div>
       <div class="main">
         <h1 id="total_death_string"></h1>
+        <p>In 2017, almost 90% of deaths (8,522 deaths) in West Sussex were caused by non-communicable diseases (these are coloured blue/purple in the figure below). Communicable, maternal, neonatal and nutritional diseases accounted for 7% of deaths (677 deaths) and the majority of these are respiratory infections. Injuries caused 3% (279 deaths).</p>
         <p>The figure below shows the top 10 causes of deaths in West Sussex, in 2017. These are the 'level two' cause groups. You can use the buttons at the top of the figure to toggle between viewing all people or just females or males.</p>
+        <p>In West Sussex, cardiovascular diseases account for <b>almost one in every three deaths</b> in 2017 (2,839 deaths). The second largest cause of death was neoplasms (2,752 deaths).</p>
         <h3>Top ten causes of death (level 2 groups); all ages; West Sussex; 2017</h3>
         <div class="switch-field">
           <input onclick="update_fg_1(deaths_persons_lv2)" type="radio" id="radio-one" name="switch-one" checked />
@@ -69,12 +95,17 @@
           <label for="radio-three">Males</label>
         </div>
         <div id="top_10_bars_by_sex_dataviz"></div>
-        <p>In West Sussex, blah blah, differences in sexes, what leaves (MSK) for females).</p>
-        <p>The leading burdens of disease in West Sussex in 2017 are given in the table below. You'll notice there are actually four top 10s and these reflect the various ways conditions affect our health.</p>
+        <p>There are a number of differences in the top ten causes of death for males and females. For males, neoplasms are the top cause of death followed by cardiovascular diseases and neurological conditions. The top three causes of death for females follow the same pattern as for all people combined.</p>
+        <p>Self harm is the 10th biggest level 2 cause of death overall in West Sussex (82 deaths, around 1% of all deaths in the county) and for males specifically (61 deaths). For females, however, self-harm does not appear in the top ten level 2 causes of death and is replaced by musculoskeletal disorders as having a greater impact on mortality in West Sussex estimated to be attributable to 50 deaths in 2017 among females.</p>
+        <h1>Other ways to measure the burden of disease</h1>
+        <p>The leading burdens of disease in West Sussex in 2017 are given in the table below. You'll notice there are actually four top 10s and these reflect the various ways conditions affect our health. Descriptions of each measure of burden are given to the left.</p>
         <h3>Top ten causes of ill health and mortality; persons; all ages; West Sussex; 2017</h3>
         <div id="top_10_table"> </div>
-        <p>Discuss each of the metrics. What differences are there across top tens.</p>
-        <p>Whilst the biggest contributers to mortality are generally the biggest contributers to disability and ill health, some conditions which have fairly low mortality rates can cause significant levels of disability.</p>
+        <p>Whilst cardiovascular diseases and neoplasms are the biggest contributers to mortality, some conditions which have fairly low mortality rates can cause significant levels of disability.</p>
+        <p>For example, </p>
+        <p>The Disability Adjusted Life Years lost (DALY) measure is the best measure of the combined burden of a disease as it includes the impact of premature mortality as well as years of life lived with the burden of a disease. Whilst the number of deaths in West Sussex was 9,478, if you break down this mortality to the number of premature years potentially lost, the burden exceeds 126,700 years.</p>
+        <p>Importantly, the number of years of life lost (premature death) is comparable with the total estimated number of years people in West Sussex spend living with disability. This indicates that in West Sussex, people are living as much of their life in less than ideal health as they are losing potential years of their life outright. Obviously the level of disability experienced by individuals will vary from minimal interruption to significant disruption of daily life and dependence on others for care.</p>
+        <p>We can see from this measure that neoplasms have the biggest overall impact on health in West Sussex accounting for <b>one in five</b> DALYs, followed by cardiovascular diseases (<b>about one in six</b> DALYs). More than one in every 10 DALYs lost to people in West Sussex (29,655) and musculoskeletal disorders
       </div>
       <div class="right_column">
         <p>The GBD 2017 diseases/conditions are split and aggregated into four hierarchical levels. <b>Hover over the tiles below</b> to find out more about the high level (levels 1 and 2) groups*.</p>
@@ -251,7 +282,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
   <script src="https://d3js.org/d3-format.v1.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+ <script src = 'le.js'></script>
   <script src='gbd.js'></script>
   <script src='bubbles_gbd.js'></script>
+
 
   </html>

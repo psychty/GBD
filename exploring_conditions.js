@@ -95,7 +95,7 @@ rows
 
 }
 
-// This says run the update_fg_6 function when there is a change on the 'selectAreaButton' div based on whatever the new value selected is.
+// This says run the update_le_ts function when there is a change on the 'selectAreaButton' div based on whatever the new value selected is.
 d3.select("#selectCauseButton").on("change", function(d) {
 var selectedCauseOption = d3.select('#selectCauseButton').property("value")
 var selectedSexOption = d3.select('#selectSexButton').property("value")
@@ -104,7 +104,7 @@ var selectedMeasureOption = d3.select('#selectMeasureButton').property("value")
       update_table(selectedCauseOption)
 })
 
-// This says run the update_fg_6 function when there is a change on the 'selectAreaButton' div based on whatever the new value selected is.
+// This says run the update_le_ts function when there is a change on the 'selectAreaButton' div based on whatever the new value selected is.
 d3.select("#selectSexButton").on("change", function(d) {
 var selectedCauseOption = d3.select('#selectCauseButton').property("value")
 var selectedSexOption = d3.select('#selectSexButton').property("value")
@@ -113,7 +113,7 @@ var selectedMeasureOption = d3.select('#selectMeasureButton').property("value")
       update_table(selectedCauseOption)
 })
 
-// This says run the update_fg_6 function when there is a change on the 'selectAreaButton' div based on whatever the new value selected is.
+// This says run the update_le_ts function when there is a change on the 'selectAreaButton' div based on whatever the new value selected is.
 d3.select("#selectMeasureButton").on("change", function(d) {
 var selectedCauseOption = d3.select('#selectCauseButton').property("value")
 var selectedSexOption = d3.select('#selectSexButton').property("value")

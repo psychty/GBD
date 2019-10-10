@@ -17,10 +17,6 @@ var color_cause_group = d3.scaleOrdinal()
 
 var measure_categories = ['Deaths', 'YLLs (Years of Life Lost)', 'YLDs (Years Lived with Disability)', 'DALYs (Disability-Adjusted Life Years)']
 
-var label_key = d3.scaleOrdinal()
-  .domain(measure_categories)
-  .range(['deaths', 'YLLs', 'YLDs',' DALYs'])
-
 var xLabel = 190
 var xCircle = 100
 var yCircle = 190

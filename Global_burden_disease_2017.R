@@ -1,48 +1,44 @@
+# Nearest neighbours
+LAD <- read_csv(url("https://opendata.arcgis.com/datasets/a267b55f601a4319a9955b0197e3cb81_0.csv"), col_types = cols(LAD17CD = col_character(),LAD17NM = col_character(),  LAD17NMW = col_character(),  FID = col_integer()))
 
-stack_theme = function(){
-  theme( 
-    axis.text.y = element_text(colour = "#000000", size = 9), 
-    axis.text.x = element_text(colour = "#000000", angle = 0, hjust = 1, vjust = .5, size = 8), 
-    axis.title =  element_text(colour = "#000000", size = 9, face = "bold"),     
-    plot.title = element_text(colour = "#000000", face = "bold", size = 10),    
-    plot.subtitle = element_text(colour = "#000000", size = 9),
-    panel.grid.major.x = element_blank(), 
-    panel.grid.minor.x = element_blank(),
-    panel.background = element_rect(fill = "#FFFFFF"), 
-    panel.grid.major.y = element_line(colour = "#E7E7E7", size = .3),
-    panel.grid.minor.y = element_blank(), 
-    strip.text = element_text(colour = "#000000", size = 10, face = "bold"), 
-    strip.background = element_blank(), 
-    axis.ticks = element_line(colour = "#E7E7E7"), 
-    legend.position = "bottom", 
-    legend.title = element_text(colour = "#000000", size = 10, face = "bold"), 
-    legend.background = element_rect(fill = "#ffffff"), 
-    legend.key = element_rect(fill = "#ffffff", colour = "#ffffff"), 
-    legend.text = element_text(colour = "#000000", size = 9), 
-    axis.line = element_line(colour = "#dbdbdb")
-  ) 
-}
+Counties <- read_csv(url("https://opendata.arcgis.com/datasets/7e6bfb3858454ba79f5ab3c7b9162ee7_0.csv"), col_types = cols(CTY17CD = col_character(),  CTY17NM = col_character(),  Column2 = col_character(),  Column3 = col_character(),  FID = col_integer()))
 
-slope_theme = function(){
-  theme(axis.text = element_blank(),
-        plot.title = element_text(colour = "#000000", face = "bold", size = 10),    
-        plot.subtitle = element_text(colour = "#000000", size = 9),
-        strip.text = element_text(colour = "#000000", size = 10, face = "bold"),
-        plot.margin = unit(c(0,2,0,0), "cm"),
-        # legend.position = c(.75,-.1), 
-        legend.position = "top", 
-        legend.title = element_text(colour = "#000000", size = 10, face = "bold"), 
-        legend.background = element_blank(), 
-        legend.key = element_rect(fill = "#ffffff", colour = "#ffffff"), 
-        legend.text = element_text(colour = "#000000", size = 8),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        panel.border = element_blank(),
-        strip.background = element_blank(), 
-        axis.ticks = element_blank(), 
-        axis.line = element_blank()
-  )}
+lookup <- read_csv(url("https://opendata.arcgis.com/datasets/41828627a5ae4f65961b0e741258d210_0.csv"), col_types = cols(LTLA17CD = col_character(),  LTLA17NM = col_character(),  UTLA17CD = col_character(),  UTLA17NM = col_character(),  FID = col_integer()))
+
+# This is a lower tier LA to upper tier LA lookup
+UA <- subset(lookup, LTLA17NM == UTLA17NM)
+
+Region <- read_csv(url("https://opendata.arcgis.com/datasets/cec20f3a9a644a0fb40fbf0c70c3be5c_0.csv"), col_types = cols(RGN17CD = col_character(),  RGN17NM = col_character(),  RGN17NMW = col_character(),  FID = col_integer()))
+colnames(Region) <- c("Area_Code", "Area_Name", "Area_Name_Welsh", "FID")
+
+Region$Area_Type <- "Region"
+Region <- Region[c("Area_Code", "Area_Name", "Area_Type")]
+
+LAD <- subset(LAD, substr(LAD$LAD17CD, 1, 1) == "E")
+LAD$Area_Type <- ifelse(LAD$LAD17NM %in% UA$LTLA17NM, "Unitary Authority", "District")
+colnames(LAD) <- c("Area_Code", "Area_Name", "Area_Name_Welsh", "FID", "Area_Type")
+LAD <- LAD[c("Area_Code", "Area_Name", "Area_Type")]
+
+Counties$Area_type <- "County"
+colnames(Counties) <- c("Area_Code", "Area_Name", "Col2", "Col3", "FID", "Area_Type")
+Counties <- Counties[c("Area_Code", "Area_Name", "Area_Type")]
+
+England <- data.frame(Area_Code = "E92000001", Area_Name = "England", Area_Type = "Country")
+
+Areas <- rbind(LAD, Counties, Region, England)
+rm(LAD, Counties, Region, England, UA)
+
+WSx_NN <- data.frame(Area_Code = nearest_neighbours(AreaCode = "E10000032", AreaTypeID = "102", measure = "CIPFA")) %>%   
+  mutate(Neighbour_rank = row_number()) %>% 
+  left_join(Areas, by = "Area_Code") %>% 
+  select(Area_Name, Neighbour_rank) 
+
+Area_rank = data.frame(Area_Name = c('West Sussex','South East England',"England"), Neighbour_rank = c(0,1,2)) %>% 
+  bind_rows(WSx_NN) %>% 
+  mutate(Neighbour_rank = row_number()) %>% 
+  rename(Area = Area_Name)
+
+
 
 # http://ghdx.healthdata.org/gbd-results-tool
 # http://www.healthdata.org/united-kingdom
@@ -75,6 +71,28 @@ Causes_in_each_level <- GBD_2017_cause_hierarchy %>%
   group_by(Level) %>% 
   summarise(n())
 
+# Life expectancy and HALE #### 
+
+read_csv("~/Documents/GBD_data_download/LE_GBD_timeseries.csv") %>% 
+  left_join(Area_rank, by = 'Area') %>% 
+  rename(Estimate = val,
+         Lower_estimate = lower,
+         Upper_estimate = upper) %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/LE_HALE_1990_2017_NN.json'))
+
+toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Total_deaths_yll_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
+
+LE_change <- read_csv("~/Documents/GBD_data_download/LE_GBD_change.csv")
+LE_ts_stack <- read_csv("~/Documents/GBD_data_download/LE_GBD_timeseries_stacked.csv")
+
+LE_change_poor_health <- read_csv("~/Documents/GBD_data_download/LE_GBD_change_difference.csv")
+
+
+
+
+
 # Cause of mortality and morbidity ####
 # This is 3.5 million records
 All_ages_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("e004c73d", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
@@ -96,6 +114,8 @@ All_ages_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[g
   mutate(Cause = factor(Cause, levels =  unique(Cause))) %>% 
   select(Area, Sex, Year, Cause, Cause_outline, Cause_id, Level, Estimate, Lower_estimate, Upper_estimate, `Cause group`, Parent_id, measure, metric)
 
+unique(All_ages_GBD_cause_data$Area)
+
 Cause_number <- All_ages_GBD_cause_data %>% 
   filter(metric == "Number") %>% 
   group_by(measure, Year, Area, Sex) %>%   
@@ -106,6 +126,12 @@ Cause_number <- All_ages_GBD_cause_data %>%
 
 level_3_top_cause <- Cause_number %>% 
   filter(Level == 3,
+         Sex == 'Both',
+         Area == Area_x,
+         Year == 2017)
+
+level_0_top_cause <- Cause_number %>% 
+  filter(Level == 0,
          Sex == 'Both',
          Area == Area_x,
          Year == 2017)
@@ -562,45 +588,6 @@ Age_standardised_NN_ts_data <- unique(list.files("~/Documents/GBD_data_download/
 # There are no raw counts in the standardised set - only rates
 
 # we will be comparing our area against the region and england, and our nearest neighbours. 
-# Nearest neighbours
-LAD <- read_csv(url("https://opendata.arcgis.com/datasets/a267b55f601a4319a9955b0197e3cb81_0.csv"), col_types = cols(LAD17CD = col_character(),LAD17NM = col_character(),  LAD17NMW = col_character(),  FID = col_integer()))
-
-Counties <- read_csv(url("https://opendata.arcgis.com/datasets/7e6bfb3858454ba79f5ab3c7b9162ee7_0.csv"), col_types = cols(CTY17CD = col_character(),  CTY17NM = col_character(),  Column2 = col_character(),  Column3 = col_character(),  FID = col_integer()))
-
-lookup <- read_csv(url("https://opendata.arcgis.com/datasets/41828627a5ae4f65961b0e741258d210_0.csv"), col_types = cols(LTLA17CD = col_character(),  LTLA17NM = col_character(),  UTLA17CD = col_character(),  UTLA17NM = col_character(),  FID = col_integer()))
-
-# This is a lower tier LA to upper tier LA lookup
-UA <- subset(lookup, LTLA17NM == UTLA17NM)
-
-Region <- read_csv(url("https://opendata.arcgis.com/datasets/cec20f3a9a644a0fb40fbf0c70c3be5c_0.csv"), col_types = cols(RGN17CD = col_character(),  RGN17NM = col_character(),  RGN17NMW = col_character(),  FID = col_integer()))
-colnames(Region) <- c("Area_Code", "Area_Name", "Area_Name_Welsh", "FID")
-
-Region$Area_Type <- "Region"
-Region <- Region[c("Area_Code", "Area_Name", "Area_Type")]
-
-LAD <- subset(LAD, substr(LAD$LAD17CD, 1, 1) == "E")
-LAD$Area_Type <- ifelse(LAD$LAD17NM %in% UA$LTLA17NM, "Unitary Authority", "District")
-colnames(LAD) <- c("Area_Code", "Area_Name", "Area_Name_Welsh", "FID", "Area_Type")
-LAD <- LAD[c("Area_Code", "Area_Name", "Area_Type")]
-
-Counties$Area_type <- "County"
-colnames(Counties) <- c("Area_Code", "Area_Name", "Col2", "Col3", "FID", "Area_Type")
-Counties <- Counties[c("Area_Code", "Area_Name", "Area_Type")]
-
-England <- data.frame(Area_Code = "E92000001", Area_Name = "England", Area_Type = "Country")
-
-Areas <- rbind(LAD, Counties, Region, England)
-rm(LAD, Counties, Region, England, UA)
-
-WSx_NN <- data.frame(Area_Code = nearest_neighbours(AreaCode = "E10000032", AreaTypeID = "102", measure = "CIPFA")) %>%   
-  mutate(Neighbour_rank = row_number()) %>% 
-  left_join(Areas, by = "Area_Code") %>% 
-  select(Area_Name, Neighbour_rank) 
-
-Area_rank = data.frame(Area_Name = c('West Sussex','South East England',"England"), Neighbour_rank = c(0,1,2)) %>% 
-  bind_rows(WSx_NN) %>% 
-  mutate(Neighbour_rank = row_number()) %>% 
-  rename(Area = Area_Name)
 
 Age_standardised_NN_ts_data %>% 
   filter(Level == 0) %>% 
@@ -840,7 +827,6 @@ GBD_risk_data_all_cause_NN <- unique(list.files("~/Documents/GBD_data_download/R
   rename(`Risk group` = rei_name) %>% 
   select(Area, Sex, Age, Year, Cause, Risk, `Risk group`, Risk_level, measure, metric, Estimate, Lower_estimate, Upper_estimate)
 
-
 Total_burden <- level_1_cause_df %>% 
   filter(Sex == 'Both') %>% 
   summarise(Deaths_number = sum(Deaths_number, na.rm = TRUE),
@@ -874,7 +860,6 @@ level_1_risk_summary %>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_1_risk_2017_', gsub(" ", "_", tolower(Area_x)), '_summary.json'))
 
-
 level_2_risk_summary <- GBD_risk_data_all_cause_NN %>% 
   filter(Area == Area_x) %>% 
   filter(Year == 2017) %>% 
@@ -902,9 +887,6 @@ level_2_risk_summary  %>%
 Overlap_df <- read_csv('/Users/richtyler/Documents/GBD_data_download/Risk/Risk_overlap_data.csv', col_types = cols(Location = col_character(),Year = col_double(),Age = col_character(),Sex = col_character(),`Cause of death or injury` = col_character(),  `Attributable to` = col_character(), Measure = col_character(),Value = col_double())) %>% 
   rename(Cause = `Cause of death or injury`,
          Risk = `Attributable to`)
-
-
-
 
 Overlap_df %>% 
   filter(Risk %in% c('Burden attributable to GBD risk factors', 'Burden not attributable to GBD risk factors')) %>% 

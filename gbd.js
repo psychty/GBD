@@ -34,6 +34,10 @@ var ages = ["Early Neonatal","Late Neonatal","Post Neonatal","1 to 4","5 to 9","
 
 var measure_categories = ['Deaths', 'YLLs (Years of Life Lost)', 'YLDs (Years Lived with Disability)', 'DALYs (Disability-Adjusted Life Years)']
 
+var label_key = d3.scaleOrdinal()
+  .domain(measure_categories)
+  .range(['deaths', 'YLLs', 'YLDs',' DALYs'])
+
 var color_age_group = d3.scaleOrdinal()
   .domain(ages)
   .range(["#ff82a1","#d0005a","#903331","#ffa479","#ae7300","#eba100","#e9c254","#b99700","#6dba1c","#3b5b2c","#a2d39b","#00bb53","#008f69","#5adbb5","#00b1b8","#02b8fe","#0184e1","#7d7bff","#daa3ff","#713d85","#c85ae0","#e0afdd","#7c3e5f"]);
@@ -597,7 +601,7 @@ var subgroupName = d3.select(this.parentNode).datum().key;
 var subgroupValue = d.data[subgroupName];
 
 tooltip_condition_age
- .html("<h3>" + d.data.Cause + '</h3><p>The estimated number of ' + d.Measure + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(subgroupValue) + '</b></font>.</p><p>This is <font color = "#1e4b7a"><b>' + d3.format(",.0%")(subgroupValue/d.data.Total_in_condition) + '</b></font> of the total ' + label_key(d.data.Measure) + ' in West Sussex from this cause (<font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.data.Total_in_condition) + '</b></font>)</p>')
+ .html("<h3>" + d.data.Cause + '</h3><p>The estimated number of ' + label_key(d.data.Measure) + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(subgroupValue) + '</b></font>.</p><p>This is <font color = "#1e4b7a"><b>' + d3.format(",.0%")(subgroupValue/d.data.Total_in_condition) + '</b></font> of the total ' + label_key(d.data.Measure) + ' in West Sussex from this cause (<font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.data.Total_in_condition) + '</b></font>)</p>')
  .style("opacity", 1)
  .style("top", (event.pageY - 10) + "px")
  .style("left", (event.pageX + 10) + "px")
@@ -766,7 +770,7 @@ var subgroupName_prop = d3.select(this.parentNode).datum().key;
   var subgroupValue_prop = d.data[subgroupName_prop];
 
 tooltip_condition_age_prop
- .html("<h3>" + d.data.Cause + '</h3><p>The estimated proportion of ' + d.data.Measure + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName_prop + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.1%")(subgroupValue_prop) + '</b></font>.</p>')
+ .html("<h3>" + d.data.Cause + '</h3><p>The estimated proportion of ' + label_key(d.data.Measure) + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName_prop + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.1%")(subgroupValue_prop) + '</b></font>.</p>')
  .style("opacity", 1)
  .style("top", (event.pageY - 10) + "px")
  .style("left", (event.pageX + 10) + "px")
@@ -1407,6 +1411,7 @@ svg_fg_6
    .attr("x", (width/100)*70)
    .attr("y", height_fg_6/100*20)
    .attr("text-anchor", "start")
+   .style('font-size', '10px')
    .text("The black line indicates");
 
 svg_fg_6
@@ -1414,6 +1419,7 @@ svg_fg_6
   .attr("x", (width/100)*70)
   .attr("y", (height_fg_6/100)*25)
   .attr("text-anchor", "start")
+     .style('font-size', '10px')
   .text("the comparator");
 
 // Y axis label:
@@ -1573,6 +1579,7 @@ focus_fg_6
  .attr("transform",
            "translate(" + x(d.Year) + "," +
                           y(d.Estimate - 100) + ")")
+ .style('font-size', '11px')
  .text('Deaths: ' + d3.format('.0f')(d.Estimate) + ' per 100,000');
 
 focus_fg_6
@@ -1580,6 +1587,7 @@ focus_fg_6
  .attr("transform",
            "translate(" + x(d.Year) + "," +
                           y(d.Estimate - 65) + ")")
+ .style('font-size', '11px')
  .text(d.Area);
 }
 
