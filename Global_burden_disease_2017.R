@@ -1,3 +1,12 @@
+
+# This uses the easypackages package to load several libraries at once. Note: it should only be used when you are confident that all packages are installed as it will be more difficult to spot load errors compared to loading each one individually.
+library(easypackages)
+
+libraries(c("readxl", "readr", "plyr", "dplyr", "ggplot2", "png", "tidyverse", "reshape2", "scales", "viridis", "rgdal", "officer", "flextable", "tmaptools", "lemon", "fingertipsR", "PHEindicatormethods", "jsonlite"))
+
+Area_x <- "West Sussex"
+options(scipen = 999)
+
 # Nearest neighbours
 LAD <- read_csv(url("https://opendata.arcgis.com/datasets/a267b55f601a4319a9955b0197e3cb81_0.csv"), col_types = cols(LAD17CD = col_character(),LAD17NM = col_character(),  LAD17NMW = col_character(),  FID = col_integer()))
 
@@ -51,13 +60,7 @@ Area_rank = data.frame(Area_Name = c('West Sussex','South East England',"England
 # Incidence data published for 2017 - included in download
 # Prevalence data published for 2017
 
-# This uses the easypackages package to load several libraries at once. Note: it should only be used when you are confident that all packages are installed as it will be more difficult to spot load errors compared to loading each one individually.
-library(easypackages)
 
-libraries(c("readxl", "readr", "plyr", "dplyr", "ggplot2", "png", "tidyverse", "reshape2", "scales", "viridis", "rgdal", "officer", "flextable", "tmaptools", "lemon", "fingertipsR", "PHEindicatormethods", "jsonlite"))
-
-Area_x <- "West Sussex"
-options(scipen = 999)
 
 GBD_2017_cause_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2017_CAUSE_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric", "text", "text")) %>% 
   rename(Cause_name = cause_name,
@@ -84,13 +87,20 @@ read_csv("~/Documents/GBD_data_download/LE_GBD_timeseries.csv") %>%
 toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Total_deaths_yll_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
-LE_change <- read_csv("~/Documents/GBD_data_download/LE_GBD_change.csv")
-LE_ts_stack <- read_csv("~/Documents/GBD_data_download/LE_GBD_timeseries_stacked.csv")
+read_csv("~/Documents/GBD_data_download/LE_GBD_change.csv") %>% 
+  left_join(Area_rank, by = 'Area') %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/LE_HALE_change_1990_2017_.json'))
 
-LE_change_poor_health <- read_csv("~/Documents/GBD_data_download/LE_GBD_change_difference.csv")
+read_csv("~/Documents/GBD_data_download/LE_GBD_timeseries_stacked.csv") %>% 
+  left_join(Area_rank, by = 'Area') %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/LE_HALE_stacked_ts_1990_2017_NN.json'))
 
-
-
+read_csv("~/Documents/GBD_data_download/LE_GBD_change_difference.csv") %>% 
+  left_join(Area_rank, by = 'Area') %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/LE_HALE_time_in_poor_health_1990_2017_.json'))
 
 
 # Cause of mortality and morbidity ####
