@@ -76,6 +76,34 @@ Causes_in_each_level <- GBD_2017_cause_hierarchy %>%
 
 # Life expectancy and HALE #### 
 
+LE <- read_csv("~/Documents/GBD_data_download/LE_GBD_timeseries.csv") %>% 
+  left_join(Area_rank, by = 'Area') %>% 
+  rename(Estimate = val,
+         Lower_estimate = lower,
+         Upper_estimate = upper) %>% 
+  filter(Area == 'West Sussex') %>% 
+  filter(Sex != 'Both') %>% 
+  select(measure, Sex, Year, Estimate) %>% 
+  spread(Sex, Estimate) %>% 
+  mutate(Gap = Female - Male)
+
+ggplot(LE, aes(x = Year, y = Gap, group = measure, color = measure))+
+  geom_line() +
+  geom_point() +
+  scale_y_continuous(limits = c(0,6),
+                     breaks = seq(0,6,0.5)) +
+  scale_x_continuous(breaks = seq(1990, 2017, 1)) +
+  theme(axis.text.x = element_text(angle = 90))
+
+ggplot(LE, aes(x = Year, y = Male, group = measure, color = measure))+
+  geom_line() +
+  geom_point() +
+  geom_line(aes(x = Year, y = Female, group = measure, color = measure)) +
+  scale_y_continuous(limits = c(65, 85),
+                     breaks = seq(65,85,1)) +
+  scale_x_continuous(breaks = seq(1990, 2017, 1)) +
+  theme(axis.text.x = element_text(angle = 90))
+
 read_csv("~/Documents/GBD_data_download/LE_GBD_timeseries.csv") %>% 
   left_join(Area_rank, by = 'Area') %>% 
   rename(Estimate = val,
@@ -84,16 +112,16 @@ read_csv("~/Documents/GBD_data_download/LE_GBD_timeseries.csv") %>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/LE_HALE_1990_2017_NN.json'))
 
-toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Total_deaths_yll_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
-
-read_csv("~/Documents/GBD_data_download/LE_GBD_change.csv") %>% 
-  left_join(Area_rank, by = 'Area') %>% 
+HALE_LE_change <- read_csv("~/Documents/GBD_data_download/LE_GBD_change.csv") %>% 
+  left_join(Area_rank, by = 'Area') #%>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/LE_HALE_change_1990_2017_.json'))
 
+
 read_csv("~/Documents/GBD_data_download/LE_GBD_timeseries_stacked.csv") %>% 
   left_join(Area_rank, by = 'Area') %>% 
+  rename(HALE = `HALE (Healthy life expectancy)`) %>% 
+  mutate(label = paste0('<p>The overall life expectancy in ', Area, ' at birth in ', Year, ' ', ifelse(Sex == 'Both', '(for males and females combined)', paste0(' among ', tolower(Sex), 's')), ' was <font color = "#1e4b7a"><b>', round(`Life expectancy`,1), ' years</b></font>.</p><p>On average, a person born in this year could expect to live <font color = "#1e4b7a"><b>', round(HALE, 1), ' years in good health</b></font> but spend ', round(Difference, 1), ' years living with at least some level of disability or ill health.</p><p>This means living around <font color = "#1e4b7a"><b>', round(Difference/`Life expectancy` * 100, 1), '% of life with an illness or disability.</b></font></p>')) %>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/LE_HALE_stacked_ts_1990_2017_NN.json'))
 
@@ -279,9 +307,12 @@ DALY_10 <- Area_x_cause %>%
 WSx_top_10 <- Deaths_10 %>% 
   left_join(YLL_10, by = c('Sex', 'Rank')) %>% 
   left_join(YLD_10, by = c('Sex', 'Rank')) %>% 
-  left_join(DALY_10, by = c('Sex', 'Rank')) 
-
-rm(DALY_10, Deaths_10, YLD_10, YLL_10)
+  left_join(DALY_10, by = c('Sex', 'Rank')) %>% 
+  mutate(Deaths = paste0(Rank, ') ', `Cause of death`, ' (', format(round(Deaths,0), big.mark = ',', trim = TRUE), ')')) %>% 
+  mutate(`YLLs (Years of Life Lost)` = paste0(Rank, ') ', `Cause of years of life lost`, ' (', format(round(`YLLs (Years of Life Lost)`,0), big.mark = ',', trim = TRUE), ')')) %>% 
+  mutate(`YLDs (Years Lived with Disability)` = paste0(Rank, ') ', `Cause of years lived with disability`, ' (', format(round(`YLDs (Years Lived with Disability)`,0), big.mark = ',', trim = TRUE), ')')) %>% 
+  mutate(`DALYs (Disability-Adjusted Life Years)` = paste0(Rank, ') ', `Cause of disability adjusted life years lost`, ' (', format(round(`DALYs (Disability-Adjusted Life Years)`,0), big.mark = ',', trim = TRUE), ')')) %>% 
+  select(Sex, Rank, Deaths, `YLLs (Years of Life Lost)`, `YLDs (Years Lived with Disability)`, `DALYs (Disability-Adjusted Life Years)`)
 
 WSx_top_10 %>% 
   toJSON() %>% 

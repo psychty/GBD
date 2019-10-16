@@ -66,15 +66,31 @@ var tooltip_fg_2 = d3.select("#my_deaths_bubble_dataviz")
 // This creates the function for what to do when someone moves the mouse over a circle (e.g. move the tooltip in relation to the mouse cursor).
 var showTooltip_fg_2 = function(d) {
 tooltip_fg_2
- .html("<p>In " + d.Year + ", there were <strong>" + d3.format(",.0f")(d.Value) + "</strong> " + label_key(d.Measure) + " among " + d.Sex.toLowerCase().replace('both', 'both males and female') + "s caused by " + d.Cause + ".</p><p>This is part of the <strong>" + d['Cause group'] + "</strong> disease group.</p>")
+ .html("<p>In " + d.Year + ", there were <strong>" + d3.format(",.0f")(d.Value) + "</strong> " + label_key(d.Measure) + " among " + d.Sex.toLowerCase().replace('both', 'both males and female') + "s caused by <strong>" + d.Cause + "</strong>.</p><p>This is part of the " + d['Cause group'] + " disease group.</p>")
  .style("top", (event.pageY - 10) + "px")
  .style("left", (event.pageX + 10) + "px")
   }
 
-  data = json.filter(function(d){
-      return d.Sex === 'Both' &
-            +d.Year === 2017 &
-            d.Measure === measure_categories[0]});
+data = json.filter(function(d){
+  return d.Sex === 'Both' &
+  +d.Year === 2017 &
+  d.Measure === measure_categories[0]});
+
+var forceXSplit = d3.forceX(function(d) {
+  if (d['Cause group'] === 'Neoplasms') {
+    return width / 100 * 25 }
+    else {
+    return width / 100 * 75 }
+          })
+.strength(0.05)
+
+var forceYSplit = d3.forceY(function(d) {
+  if (d['Cause group'] === 'Neoplasms') {
+    return height /2 }
+    else {
+    return height /2 }
+          })
+  .strength(0)
 
 
 // I think I probably will need to grab the bubble size key and update that too when switch-two is changed as the scale is updated (people might think size of deaths bubble is the same as yll when its like 5x as big)
@@ -99,11 +115,6 @@ svg_fg_2
 svg_size_key
  .selectAll("*")
  .remove();
-
- // var svg_size_key = d3.select("#chart_legend")
- //   .append("svg")
- //   .attr("width", 350)
- //   .attr("height", 400)
 
 data = json.filter(function(d){
     return d.Sex === selectedSexBubblesOption &
@@ -145,8 +156,6 @@ var node = svg_fg_2.append("g")
  .attr("r", function(d) {
    return size(d.Value)
    })
- .attr("cx", width / 2)
- .attr("cy", height / 2)
  .style("fill", function(d) {
   return color_cause_group(d['Cause group'])
   })
@@ -165,8 +174,8 @@ var node = svg_fg_2.append("g")
 
 // Features of the forces applied to the nodes:
 var simulation = d3.forceSimulation()
- .force("center", d3.forceCenter().x(width / 2).y(height/2)) // Attraction to the middle of the svg area and 150 px down
- .force("charge", d3.forceManyBody().strength(.1)) // Nodes are attracted one each other if value is > 0
+ .force("center", d3.forceCenter().x(width/100*75).y(height/2))
+ .force("charge", d3.forceManyBody().strength(.1))
  .force("collide", d3.forceCollide().strength(.2).radius(function(d) {
     return (size(d.Value) + 3)})
     .iterations(1)) // Force that avoids circle overlapping
@@ -179,6 +188,12 @@ simulation
  .attr("cy", function(d) {
       return d.y; })
     });
+
+simulation
+.force("x", forceXSplit)
+.force("y", forceYSplit)
+.alphaTarget(0.1)
+.restart()
 
 // What happens when a circle is dragged?
 function dragstarted(d) {
@@ -198,7 +213,6 @@ function dragended(d) {
 
 // Key size
 var valuesToShow = [10, max_value / 4, max_value / 2, max_value]
-
 
 svg_size_key
  .selectAll("legend")
@@ -245,7 +259,6 @@ svg_size_key
  return yCircle - size(d)
  })
  .text(function(d) {
- // return d3.format(",.0f")(d) + ' ' + selectedMeasureBubblesOption.toLowerCase()
   return d3.format(",.0f")(d) + ' ' + label_key(selectedMeasureBubblesOption)
  })
  .attr("font-size", 11)

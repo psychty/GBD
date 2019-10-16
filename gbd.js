@@ -9,6 +9,9 @@ var margin = {top: 30,
               bottom: 150,
               left: 60};
 
+var sex = ['Male', 'Female', 'Both']
+
+
 // Now we can use the global width with
 var width_fg_1 = width - margin.left - margin.right;
 var height_fg_1 = 400 - margin.top - margin.bottom;
@@ -348,16 +351,17 @@ var cells = rows.selectAll('td')
 	  })
 	.enter()
   .append('td')
-	.text(function(d,i) {
-		if(i == 2) return d3.format(",.0f")(d.value); // + " items"; // Hurrah d3.format() works!
-			else if (i == 4) return d3.format(",.0f")(d.value); // comma separators and round values
-				else if (i == 6) return d3.format(",.0f")(d.value);
-					else if (i == 8) return d3.format(",.0f")(d.value);
-		 return d.value; });
+  .text(function(d) {return d.value})
+	// .text(function(d,i) {
+	// 	if(i == 2) return d3.format(",.0f")(d.value); // + " items"; // Hurrah d3.format() works!
+	// 		else if (i == 4) return d3.format(",.0f")(d.value); // comma separators and round values
+	// 			else if (i == 6) return d3.format(",.0f")(d.value);
+	// 				else if (i == 8) return d3.format(",.0f")(d.value);
+	// 	 return d.value; });
 	  return table;
 }
 
-var topTable =	tabulate_top10(top_10_data_persons, ['Rank', 'Cause of death', 'Deaths','Cause of years of life lost', 'YLLs (Years of Life Lost)','Cause of years lived with disability','YLDs (Years Lived with Disability)','Cause of disability adjusted life years lost','DALYs (Disability-Adjusted Life Years)']);
+var topTable =	tabulate_top10(top_10_data_persons, ['Deaths','YLLs (Years of Life Lost)','YLDs (Years Lived with Disability)','DALYs (Disability-Adjusted Life Years)']);
 
 // Dynamic string of total deaths
 var request = new XMLHttpRequest();
@@ -425,10 +429,6 @@ var tooltip_age = d3.select("#my_lifecourse_condition_dataviz")
 
 var showTooltip_age = function(d) {
 
-tooltip_age
-  .transition()
-  .duration(200);
-
 var subgroupName = d3.select(this.parentNode).datum().key;
 var subgroupValue = d.data[subgroupName];
 
@@ -437,14 +437,22 @@ tooltip_age
   .style("opacity", 1)
   .style("top", (event.pageY - 10) + "px")
   .style("left", (event.pageX + 10) + "px")
+  .style("visibility", "visible")
 
+  d3.selectAll(".myRect").style("opacity", 0.5) // Reduce opacity of all rect
+  d3.selectAll("." + subgroupName).style("opacity", 1)
+  }
+
+var mouseleave = function(d) {
+  d3.selectAll(".myRect").style("opacity",1)
+  tooltip_age.style("visibility", "hidden")
   }
 
 // append the svg object to the body of the page
 var svg_fg_4 = d3.select("#my_lifecourse_condition_dataviz")
  .append("svg")
  .attr("width", width)
- .attr("height", height_fg_4 +100)
+ .attr("height", height_fg_4 + 100)
  .append("g")
  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -528,13 +536,15 @@ yAxis_fg_4
   .duration(1000)
   .call(d3.axisLeft(y_fg_4));
 
-var age_bars_df = svg_fg_4.append("g")
+svg_fg_4
+  .append("g")
   .selectAll("g")
   .data(stackedData) // Enter in the stack data = loop key per key = group per group
   .enter()
   .append("g")
   .attr("fill", function(d) {
     return color_cause_group(d.key); })
+  .attr("class", function(d){ return "myRect " + d.key }) // Add a class to each subgroup: their name
   .selectAll("rect")
   .data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
   .enter()
@@ -546,13 +556,8 @@ var age_bars_df = svg_fg_4.append("g")
   .attr("height", function(d) {
     return y_fg_4(d[0]) - y_fg_4(d[1]); })
   .attr("width", x_fg_4.bandwidth())
-  .on("mouseover", function() {
-  return tooltip_age.style("visibility", "visible");
-  })
   .on("mousemove", showTooltip_age)
-  .on("mouseout", function() {
-  return tooltip_age.style("visibility", "hidden");
-  })
+  .on('mouseout', mouseleave)
 }
 
 update_age(deaths_age)
@@ -1221,12 +1226,12 @@ rate_change_bars
   .attr("y", function(d){
     return y_rate_change(d.Cause); })
   .attr("height", y_rate_change.bandwidth())
-  // .attr("fill", function(d){ if(d.Change_since_2012 > 0) {
-  //   return "#cc0000"}
-  //   else { return "#00cccc" };
-  // });
-  .style("fill", function(d) {
-      return color_cause_group(d.Cause)});
+  .attr("fill", function(d){ if(d.Change_since_2012 > 0) {
+    return "#cc0000"}
+    else { return "#00cccc" };
+  });
+  // .style("fill", function(d) {
+  //     return color_cause_group(d.Cause)});
 
 rate_change_svg
  .on("mouseover", function() {
@@ -1245,23 +1250,23 @@ rate_change_svg
  .attr("class", "value")
  .attr("x", function(d){
   if (d.Change_since_2012 < 0){
-  return (x_rate_change(d.Change_since_2012 * -1) - x_rate_change(0)) > 20 ? x_rate_change(d.Change_since_2012) + 2 : x_rate_change(d.Change_since_2012) - 10;}
+  return (x_rate_change(d.Change_since_2012 * -1) - x_rate_change(0)) > 20 ? x_rate_change(d.Change_since_2012) - 5 : x_rate_change(d.Change_since_2012) - 1;}
   else {
-  return (x_rate_change(d.Change_since_2012) - x_rate_change(0)) > 20 ? x_rate_change(d.Change_since_2012) - 2 : x_rate_change(d.Change_since_2012) + 10;}
+  return (x_rate_change(d.Change_since_2012) - x_rate_change(0)) > 20 ? x_rate_change(d.Change_since_2012) + 5 : x_rate_change(d.Change_since_2012) + 1;}
   })
  .attr("y", function(d){ return y_rate_change(d.Cause); })
  .attr("dy", y_rate_change.bandwidth() - 2.55)
  .attr("text-anchor", function(d){
   if (d.Change_since_2012 < 0){
-  return (x_rate_change(d.Change_since_2012 * -1) - x_rate_change(0)) > 70 ? "start" : "end";}
+  return (x_rate_change(d.Change_since_2012 * -1) - x_rate_change(0)) > 90 ? "start" : "end";}
   else {
-  return (x_rate_change(d.Change_since_2012) - x_rate_change(0)) > 70 ? "end" : "start";}
+  return (x_rate_change(d.Change_since_2012) - x_rate_change(0)) > 90 ? "end" : "start";}
   })
  .style("fill", function(d){
   if (d.Change_since_2012 < 0){
-  return (x_rate_change(d.Change_since_2012 * -1) - x_rate_change(0)) > 70 ? "#fff" : "#000";}
+  return (x_rate_change(d.Change_since_2012 * -1) - x_rate_change(0)) > 90 ? "#fff" : "#000";}
   else {
-  return (x_rate_change(d.Change_since_2012) - x_rate_change(0)) > 70 ? "#fff" : "#000";} // I think this is saying if the x position is greater than 70px then white
+  return (x_rate_change(d.Change_since_2012) - x_rate_change(0)) > 90 ? "#fff" : "#000";} // I think this is saying if the x position is greater than 70px then white
  })
  .text(function(d){
   if(d.Change_since_2012 < 0){ // add an if else function to say if > 0 then increase, if < 0 then decrease.
