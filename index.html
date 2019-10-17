@@ -33,6 +33,7 @@
   <li><b>Musculoskeletal conditions</b> such as low back and neck pain are the third largest cause of overall disease burden as measured by Disability Adjusted Life Years lost in West Sussex.</li>
   <li>The findings from the GBD at a local, regional and national level helps policy makers to allocate resources based on the level of burden and target key risk factors.</li>
 </ul>
+<p>There is a vast wealth of data available in the GBD, and it is impossible to try to cover it all in this analysis, which serves to present an overall picture of burden of disease in West Sussex. The data is all publically available from the <a href="http://ghdx.healthdata.org/gbd-results-tool" , target="_blank">GBD online results tool;</a href> but please get in contact with me if you want some help accessing or exploring particular questions that arise from this preliminary analysis.</p>
         </div>
         <div class="right_column">
           <h3>Caveats and limitations</h3>
@@ -119,7 +120,8 @@
         <p>The Disability Adjusted Life Years lost (DALY) measure is the best measure of the combined burden of a disease as it includes the impact of premature mortality as well as years of life lived with the burden of a disease. Whilst the number of deaths in West Sussex was 9,478, if you break down this mortality to the number of premature years potentially lost, the burden exceeds 126,700 years.</p>
         <p>Importantly, the number of years of life lost (premature death) is comparable with the total estimated number of years people in West Sussex spend living with disability. This indicates that in West Sussex, people are living as much of their life in less than ideal health as they are losing potential years of their life outright. Obviously the level of disability experienced by individuals will vary from minimal interruption to significant disruption of daily life and dependence on others for care.</p>
         <p>We can see from this measure that neoplasms have the biggest overall impact on health in West Sussex accounting for <b>one in five</b> DALYs, followed by cardiovascular diseases (<b>about one in six</b> DALYs). More than one in every 10 DALYs lost to people in West Sussex (29,655) and musculoskeletal disorders.</p>
-        <p>We now look to explore these condition groups in more detail. Remember, you can hover over the tiles on the right hand side to find out more about each condition group.</p>
+        <p>We now look to explore these condition groups in more detail. Remember, you can hover over the tiles on the right hand side to find out more about each condition group. It should be noted that at this level (level 3), neoplasms are split by each cancer site (e.g. brain, lung etc). These have been grouped together on the left hand side of the figure.</p>
+        <p>The figure illustrates that at this level, ischemic heart disease is the biggest cause of death in West Sussex (1,292 deaths), followed by Alzheimer's disease and other dementias (1,146 deaths), stroke (754 deaths), lower respiratory infections (617 deaths) and chronic obstructure pulmonary disease (COPD, 530 deaths). The same conditions make up the top five causes of deaths for males although for females, Alzheimer's and other dementias are the biggest cause of death (770 deaths) followed by heart disease (557 deaths).</p>
       </div>
       <div class="right_column">
         <h3>Conditions</h3>
@@ -140,30 +142,23 @@
       <div class = 'row'>
         <div class = 'left_column'>
           <h3>Level 3 causes</h3>
+          <p class = 'side'>Causes are coloured by the 'cause group' (see the summary on the right hand side for level 2 causes).</p>
+          <p class = 'side'>Importantly, the figure visualises the difference in burden for each cause as the size of the circle represents the number of deaths (or YLLs, YLDs or DALYs). Items are grouped by the broad disease group. Hover over a circle to see more information.</p>
           <p class = 'side'>You can toggle between the different measures to explore how the different conditions that contribute to the burden of ill health and mortality as well as explore the data for males, females, or both combined.</p>
           <p class = 'side'>Each time a new selection is made, the circles are redrawn to scale (check the key on the right hand side).</p>
           </div>
       <div class= 'main'>
         <h3 id = 'selected_bubbles_title'></h3>
-        <p>This figure shows the estimated number of deaths in West Sussex in 2017 by cause (level 3 causes). Causes are coloured by the 'cause group' (see the summary on the right hand side for level 2 causes). The size of the circle represents the number of deaths. Items are grouped by the broad disease group. Hover over a circle to see more information.</p>
-        <p>It should be noted that at this level, neoplasms are categorised by each site (e.g. brain, lung etc)</p>
-        <p>Sex: <select id='selectSexBubblesButton'></select> Measure <select id='selectMeasureBubblesButton'></select></p>
+        <p>Measure <select id='selectMeasureBubblesButton'></select>        Sex: <select id='selectSexBubblesButton'></select></p>
         <div id="my_deaths_bubble_dataviz"></div>
-        <p>The figure illustrates that at this level, ischemic heart disease  </p>
-      </div>
-      <div class = 'right_column'>
-        <h3>Circle size key</h3>
-        <div id='chart_legend'></div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class = 'left_column'>
-        <p class = 'side'>Age specific</p>
-      </div>
-      <div class="main">
+        <p>Ischemic heart disease is also the largest contributer to premature mortality estimated to cause 15,731 years of life lost, which is almost double the next biggest cause of premature mortality (Alzheimer's disease and other dementias; 8,672 YLLs).</p><p>For females, Alzheimer's and other dementias and heart disease are the top two causes of premature mortality although of note is that cancers of the breast and lung and trachael cancers as well as stroke all contribute comparable burden on premature mortality.</p>
+        <p>Exploring the non-fatal burden of disease (years of life lived with disability) shows that low back pain is the biggest cause of disability (16,066 YLDs), followed by headache disorders (7,422 YLDs), depressive disorders (6,052 YLDs), neck pain (5,978 YLDs) and hearing loss (including age-related hearing loss; 5,041 YLDs). Of note, diabetes and falls contribute comparable levels of burden (4,887 and 4,877 years lived with disability) but just miss out on the top five conditions. Also of note is that neoplams, in comparison, contribute little to years lived with disability.</p>
+        <p>There are some interesting differences among male and female causes of YLDs. For females, the same top four contions cause the most disability burden, although COPD replaces hearing loss as the fifth biggest cause of YLDs. For males, low back pain and hearing loss are the top two conditions for YLDs, although diabetes is the third biggest cause of disability, followed by headache disorders and neck pain.</p>
+        <p>When premature mortality and disability are considered together, ischemic heart disease is the biggest cause of burden with 16,611 disability adjusted life years lost in West Sussex, in 2017. This is followed closely by low back pain with 16,066 years lost.</p>
+        <p>Two thirds of DALYs lost as a result of ischemic heart disease in 2017 were among males (11,033 DALYs) and for males is the biggest cause of burden by a considerable margin. Conversely, 44% (7,038 DALYs) of the overall burden of low back pain was among males.</p>
         <h1>How does ill health affect people of different ages?</h1>
-        <p>We have already looked at measures of premature mortality and morbidity, that is ill health that occurs earlier than naturally expected, but we can also look at which conditions impact people across the lifecourse.</p>
+        <p>Some conditions affect people at particular stages in their lives. Thankfully, a large proportion of deaths happen after the age of 75 in West Sussex (73%, 6,907 deaths in 2017). However, the non-fatal burden of disease can happen much earlier in the life course; with disability concentrated among those of working age.</p>
+        <p>In this section we explore the age at which death and disability occur, to consider which health conditions may be of particular concern for certain age groups.</p>
         <h3>Burden of disease by age group; persons; West Sussex; 2017</h3>
         <div class="switch-field">
           <input onclick="update_age(deaths_age)" type="radio" id="radio-eight" name="switch-three" checked />
@@ -175,9 +170,23 @@
           <input onclick='update_age(daly_age)' type="radio" id="radio-eleven" name="switch-three" />
           <label for="radio-eleven">DALY</label>
         </div>
-        <div id="my_lifecourse_condition_dataviz"> </div>
-        <p>We can see from this that disability is concentrated on those of working age</p>
-        <p>Whilst it is useful to see the number of deaths or years lost for a condition, it is also useful to see the proportion of the burden for each age group to answer the question 'if the condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain age?'. Answering this question shows us that certain diseases impact people of particular ages disproportionately. The switch below effects both the number and proportion of disease burden
+        <div id="my_lifecourse_condition_dataviz"></div>
+        <p>
+      </div>
+      <div class = 'right_column'>
+        <h3>Circle size key</h3>
+        <div id='chart_legend'></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class = 'left_column'>
+        <p class = 'side'>.</p>
+      </div>
+      <div class="main">
+
+
+        <p>It is also useful to see the proportion of the burden for each age group to answer the question 'if the condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain age?'. Answering this question shows us that certain diseases impact people of particular ages disproportionately. The switch below effects both the number and proportion of disease burden
           attributed to a condition and age group.</p>
         <div class="switch-field">
           <input onclick="update_condition(deaths_condition); update_condition_prop(deaths_condition_proportion);" type="radio" id="radio-twelve" name="switch-four" checked />
@@ -193,7 +202,7 @@
         <div id='my_condition_lifecourse_proportion_dataviz'></div>
         </div>
       <div class="right_column">
-        <h2>Age groups</h2>
+        <h3>Age groups</h3>
         <div id='age_summary'></div>
       </div>
     </div>
@@ -300,7 +309,9 @@
   <script src="https://d3js.org/d3-format.v1.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
  <script src = 'le.js'></script>
-  <script src='gbd.js'></script>
+
+  <!-- <script src='gbd.js'></script> -->
+   <script src = 'burden_by_age.js'></script>
   <script src='bubbles_gbd.js'></script>
 
 

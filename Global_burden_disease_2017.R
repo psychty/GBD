@@ -152,8 +152,6 @@ All_ages_GBD_cause_data <- unique(list.files("~/Documents/GBD_data_download/")[g
   mutate(Cause = factor(Cause, levels =  unique(Cause))) %>% 
   select(Area, Sex, Year, Cause, Cause_outline, Cause_id, Level, Estimate, Lower_estimate, Upper_estimate, `Cause group`, Parent_id, measure, metric)
 
-unique(All_ages_GBD_cause_data$Area)
-
 Cause_number <- All_ages_GBD_cause_data %>% 
   filter(metric == "Number") %>% 
   group_by(measure, Year, Area, Sex) %>%   
@@ -164,15 +162,24 @@ Cause_number <- All_ages_GBD_cause_data %>%
 
 level_3_top_cause <- Cause_number %>% 
   filter(Level == 3,
-         Sex == 'Both',
          Area == Area_x,
-         Year == 2017)
+         Year == 2017) %>% 
+  group_by(Sex) %>% 
+  mutate(Rank = rank(-`YLDs (Years Lived with Disability)`)) %>% 
+  filter(Rank <= 10)
 
 level_0_top_cause <- Cause_number %>% 
   filter(Level == 0,
          Sex == 'Both',
          Area == Area_x,
          Year == 2017)
+
+level_2_top_cause <- Cause_number %>% 
+  filter(Level == 2,
+      #   Sex == 'Both',
+         Area == Area_x,
+         Year == 2017)
+
 
 # Percent is the proportion of the deaths in the given location for the given sex, year, and level.
 Cause_perc <- All_ages_GBD_cause_data %>% 
@@ -505,9 +512,11 @@ lifecourse_age <- lifecourse_numbers %>%
   mutate(`Substance use disorders` = replace_na(`Substance use disorders`, 0)) %>% 
   mutate(`Diabetes and kidney diseases` = replace_na(`Diabetes and kidney diseases`, 0)) 
 
-lifecourse_age %>% 
-  mutate(Total_in_age = rowSums(.[3:ncol(.)])) %>% 
-  toJSON() %>% 
+lc <-lifecourse_age %>% 
+  mutate(Total_in_age = rowSums(.[3:ncol(.)]))# %>% 
+  
+
+toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Numbers_lifecourse_persons_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
 lifecourse_age %>% 

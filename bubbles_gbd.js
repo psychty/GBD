@@ -50,10 +50,10 @@ var request = new XMLHttpRequest();
   var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
 
 // append the svg object to the body of the page
-var svg_fg_2 = d3.select("#my_deaths_bubble_dataviz")
+var svg_bubbles = d3.select("#my_deaths_bubble_dataviz")
  .append("svg")
  .attr("width", width)
- .attr("height", height + 50)
+ .attr("height", height)
 
 // Create functions to show, move, and hide the tooltip
 var tooltip_fg_2 = d3.select("#my_deaths_bubble_dataviz")
@@ -66,7 +66,7 @@ var tooltip_fg_2 = d3.select("#my_deaths_bubble_dataviz")
 // This creates the function for what to do when someone moves the mouse over a circle (e.g. move the tooltip in relation to the mouse cursor).
 var showTooltip_fg_2 = function(d) {
 tooltip_fg_2
- .html("<p>In " + d.Year + ", there were <strong>" + d3.format(",.0f")(d.Value) + "</strong> " + label_key(d.Measure) + " among " + d.Sex.toLowerCase().replace('both', 'both males and female') + "s caused by <strong>" + d.Cause + "</strong>.</p><p>This is part of the " + d['Cause group'] + " disease group.</p>")
+ .html("<h3>" + d.Cause + "</h3><p>In " + d.Year + ", there were <strong>" + d3.format(",.0f")(d.Value) + "</strong> " + label_key(d.Measure) + " among " + d.Sex.toLowerCase().replace('both', 'both males and female') + "s caused by " + d.Cause + ".</p><p>This is part of the " + d['Cause group'] + " disease group.</p>")
  .style("top", (event.pageY - 10) + "px")
  .style("left", (event.pageX + 10) + "px")
   }
@@ -78,20 +78,19 @@ data = json.filter(function(d){
 
 var forceXSplit = d3.forceX(function(d) {
   if (d['Cause group'] === 'Neoplasms') {
-    return width / 100 * 25 }
+    return width / 10 }
     else {
-    return width / 100 * 75 }
+    return width / 2 }
           })
 .strength(0.05)
 
 var forceYSplit = d3.forceY(function(d) {
   if (d['Cause group'] === 'Neoplasms') {
-    return height /2 }
+    return height / 2 }
     else {
-    return height /2 }
+    return height / 2 }
           })
-  .strength(0)
-
+  .strength(0.05)
 
 // I think I probably will need to grab the bubble size key and update that too when switch-two is changed as the scale is updated (people might think size of deaths bubble is the same as yll when its like 5x as big)
 var svg_size_key = d3.select("#chart_legend")
@@ -104,8 +103,13 @@ function update_bubbles(data) {
 var selectedSexBubblesOption = d3.select('#selectSexBubblesButton').property("value")
 var selectedMeasureBubblesOption = d3.select('#selectMeasureBubblesButton').property("value")
 
+// This selects the text on the figure and removes it imediately
+svg_bubbles
+ .selectAll("text")
+ .remove();
+
 // This selects the whole div, changes the r value for all circles to 0 and then removes the svg before new plots are rebuilt.
-svg_fg_2
+svg_bubbles
  .selectAll("*")
  .transition()
  .duration(750)
@@ -137,17 +141,17 @@ var max_value = d3.max(data, function(d) {
 
 // Select the div id total_death_string (this is where you want the result of this to be displayed in the html page)
 d3.select("#selected_bubbles_title")
-  	.data(data) // The array
+  	.data(data)
   	.text(function(d){
-  	return "Level 3 causes of " + label_key(d.Measure) + '; ' + d.Sex.toLowerCase().replace('both', 'both males and female') + 's; all ages; West Sussex; 2017' }); // Concatenate a string
+  	return "Level 3 causes of " + label_key(d.Measure) + '; ' + d.Sex.toLowerCase().replace('both', 'both males and female') + 's; all ages; West Sussex; 2017' });
 
 // Size scale for bubbles
 var size = d3.scaleLinear()
   .domain([0, max_value])
-  .range([1, 85]) // circle will always be between 1 and 85 px wide
+  .range([1, 75]) // circle scale
 
 // Initialize the circle
-var node = svg_fg_2.append("g")
+var node = svg_bubbles.append("g")
  .selectAll("circle")
  .data(data)
  .enter()
@@ -159,6 +163,7 @@ var node = svg_fg_2.append("g")
  .style("fill", function(d) {
   return color_cause_group(d['Cause group'])
   })
+ .style('stroke', '#fff')
  .style("fill-opacity", 1)
  .on("mouseover", function() {
    return tooltip_fg_2.style("visibility", "visible");
@@ -174,7 +179,7 @@ var node = svg_fg_2.append("g")
 
 // Features of the forces applied to the nodes:
 var simulation = d3.forceSimulation()
- .force("center", d3.forceCenter().x(width/100*75).y(height/2))
+ .force("center", d3.forceCenter().x(width/2).y(height/2))
  .force("charge", d3.forceManyBody().strength(.1))
  .force("collide", d3.forceCollide().strength(.2).radius(function(d) {
     return (size(d.Value) + 3)})
@@ -192,10 +197,12 @@ simulation
 simulation
 .force("x", forceXSplit)
 .force("y", forceYSplit)
-.alphaTarget(0.1)
-.restart()
+.force("collide", d3.forceCollide().strength(.2).radius(function(d) {
+   return (size(d.Value) + 1)}))
+// .iterations(2)
+.alphaTarget(0);
+// .restart();
 
-// What happens when a circle is dragged?
 function dragstarted(d) {
   if (!d3.event.active) simulation.alphaTarget(.03).restart(); d.fx = d.x;
     d.fy = d.y;
@@ -210,6 +217,26 @@ function dragended(d) {
   if (!d3.event.active) simulation.alphaTarget(.03); d.fx = null;
     d.fy = null;
    }
+
+svg_bubbles
+.append("text")
+.attr('id', 'bubble_label_text')
+.attr("text-anchor", "start")
+.attr("y", function(d) {
+  if (selectedMeasureBubblesOption === 'YLLs (Years of Life Lost)') {
+    return 150 }
+    else {
+    return 180 }
+          })
+.attr("x", 60)
+.text('Neoplasms');
+
+svg_bubbles
+.append("text")
+.attr("text-anchor", "start")
+.attr("y", 80)
+.attr("x", width / 3)
+.text('Other conditions');
 
 // Key size
 var valuesToShow = [10, max_value / 4, max_value / 2, max_value]

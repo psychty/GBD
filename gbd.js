@@ -392,176 +392,6 @@ function age_key_summary() {
     }
 age_key_summary();
 
-// By age level 2 conditions figure 4
-var request = new XMLHttpRequest();
-    request.open("GET", "./Numbers_lifecourse_persons_level_2_2017_west_sussex.json", false);
-    request.send(null);
-var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
-
-groups = d3.map(json, function(d){
-  return(d.Age)})
-  .keys();
-
-deaths_age = json.filter(function(d){
-  return d.Measure === 'Deaths'});
-yll_age = json.filter(function(d){
-  return d.Measure === 'YLLs (Years of Life Lost)'});
-yld_age = json.filter(function(d){
-  return d.Measure === 'YLDs (Years Lived with Disability)'});
-daly_age = json.filter(function(d){
-  return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
-
-// Now we can use the global width with
-var width_fg_4 = width - margin.left - margin.right;
-var height_fg_4 = 400 - margin.top - margin.bottom;
-
-var tooltip_age = d3.select("#my_lifecourse_condition_dataviz")
-  .append("div")
-  .style("opacity", 0)
-  .attr("class", "tooltip_bars")
-  .style("position", "absolute")
-  .style("z-index", "10")
-  .style("background-color", "white")
-  .style("border", "solid")
-  .style("border-width", "1px")
-  .style("border-radius", "5px")
-  .style("padding", "10px")
-
-var showTooltip_age = function(d) {
-
-var subgroupName = d3.select(this.parentNode).datum().key;
-var subgroupValue = d.data[subgroupName];
-
-tooltip_age
-  .html("<h3>" + subgroupName + '</h3><p>The estimated number of ' + label_key(d.data.Measure) + ' as a result of ' + subgroupName.toLowerCase() + ' in West Sussex in 2017 among both males and females aged ' + d.data.Age + ' was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(subgroupValue) + '</b></font>.</p><p>This is <font color = "#1e4b7a"><b>' + d3.format(",.0%")(subgroupValue/d.data.Total_in_age) + '</b></font> of the total ' + label_key(d.data.Measure) + ' in West Sussex among this age group (<font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.data.Total_in_age) + '</b></font>)</p>')
-  .style("opacity", 1)
-  .style("top", (event.pageY - 10) + "px")
-  .style("left", (event.pageX + 10) + "px")
-  .style("visibility", "visible")
-
-  d3.selectAll(".myRect").style("opacity", 0.5) // Reduce opacity of all rect
-  d3.selectAll("." + subgroupName).style("opacity", 1)
-  }
-
-var mouseleave = function(d) {
-  d3.selectAll(".myRect").style("opacity",1)
-  tooltip_age.style("visibility", "hidden")
-  }
-
-// append the svg object to the body of the page
-var svg_fg_4 = d3.select("#my_lifecourse_condition_dataviz")
- .append("svg")
- .attr("width", width)
- .attr("height", height_fg_4 + 100)
- .append("g")
- .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-// Add X axis
-var x_fg_4 = d3.scaleBand()
-  .domain(groups)
-  .range([0, width_fg_4])
-  .padding([0.2])
-
-svg_fg_4
-  .append("g")
-  .attr("transform", "translate(0," + height_fg_4 + ")")
-  .call(d3.axisBottom(x_fg_4).tickSizeOuter(0));
-
-svg_fg_4
- .selectAll("text")
- .attr("transform", "translate(-10,10)rotate(-45)")
- .style("text-anchor", "end")
-
- // Add X axis label:
- svg_fg_4
-  .append("text")
-  .attr("text-anchor", "end")
-  .attr("x", width/2)
-  .attr("y", height_fg_4 + margin.top + 35)
-  .text("Age group");
-
- // Y axis label:
- svg_fg_4
-  .append("text")
-  .attr('id', 'axis_y_title')
-  .attr("text-anchor", "end")
-  .attr("transform", "rotate(-90)")
-  .attr("y", - margin.left + 10)
-  .attr("x", - margin.top - 60)
-  .text('Number');
-
- // // Add Y axis
- var y_fg_4 = d3.scaleLinear()
-   .domain([0, 2000])
-   .range([height_fg_4, 0 ]);
-
- var yAxis_fg_4 = svg_fg_4.append("g")
-   .attr("class", "myYaxis")
-
-function update_age(data) {
-
-  svg_fg_4
-   .selectAll("rect")
-   .remove();
-
-var stackedData = d3.stack()
-    .keys(cause_categories)
-      (data)
-
-var measure_name = d3.map(data, function(d){
-    return(d.Measure)})
-    .keys();
-
-var figure_4_y_max = [];
-switch(measure_name[0]) {
-case 'Deaths':
-  figure_4_y_max = 2000;
-  break;
-case 'YLLs (Years of Life Lost)':
- figure_4_y_max = 15500;
-  break;
-case 'YLDs (Years Lived with Disability)':
- figure_4_y_max = 11000;
- break;
-case 'DALYs (Disability-Adjusted Life Years)':
-  figure_4_y_max = 25000;
-}
-
-y_fg_4
-  .domain([0, figure_4_y_max]);
-
-// This adds a transition effect on the change between datasets (i.e. if the yaxis needs to be longer or shorter).
-yAxis_fg_4
-  .transition()
-  .duration(1000)
-  .call(d3.axisLeft(y_fg_4));
-
-svg_fg_4
-  .append("g")
-  .selectAll("g")
-  .data(stackedData) // Enter in the stack data = loop key per key = group per group
-  .enter()
-  .append("g")
-  .attr("fill", function(d) {
-    return color_cause_group(d.key); })
-  .attr("class", function(d){ return "myRect " + d.key }) // Add a class to each subgroup: their name
-  .selectAll("rect")
-  .data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
-  .enter()
-  .append("rect")
-  .attr("x", function(d) {
-    return x_fg_4(d.data.Age); })
-  .attr("y", function(d) {
-    return y_fg_4(d[1]); })
-  .attr("height", function(d) {
-    return y_fg_4(d[0]) - y_fg_4(d[1]); })
-  .attr("width", x_fg_4.bandwidth())
-  .on("mousemove", showTooltip_age)
-  .on('mouseout', mouseleave)
-}
-
-update_age(deaths_age)
-
 // age by conditions
 var request = new XMLHttpRequest();
     request.open("GET", "./Numbers_lifecourse_persons_by_condition_level_2_2017_west_sussex.json", false);
@@ -582,8 +412,8 @@ daly_condition = json.filter(function(d){
   return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
 
 // Now we can use the global width with
-var width_fg_5 = width_fg_4
-var height_fg_5 = height_fg_4
+var width_fg_5 = window.innerWidth / 2 - margin.left - margin.right;
+var height_fg_5 = 400 - margin.top - margin.bottom;
 
 var tooltip_condition_age = d3.select("#my_condition_lifecourse_dataviz")
  .append("div")
@@ -751,8 +581,8 @@ yld_condition_proportion = json.filter(function(d){
 daly_condition_proportion = json.filter(function(d){
   return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
 
-var width_fg_5_prop = width_fg_4
-var height_fg_5_prop = height_fg_4
+var width_fg_5_prop = window.innerWidth / 2 - margin.left - margin.right;
+var height_fg_5_prop = 400 - margin.top - margin.bottom;
 
 var tooltip_condition_age_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
  .append("div")
@@ -1394,6 +1224,12 @@ svg_fg_6
   .attr("transform", "translate(0," + height_fg_6 + ")")
   .call(d3.axisBottom(x).ticks(years_fg_6.length, '0f')); // the .length gives one tick for every item (every year in the dataset) and the '0f' removes the comma separator from the year
 
+// Rotate the xAxis labels
+svg_fg_6
+  .selectAll("text")
+  .attr("transform", "rotate(-45)")
+  .style("text-anchor", "end")
+
 // Add Y axis
 var y = d3.scaleLinear()
   .domain([0, d3.max(deaths_all_cause, function(d) { return +d.Estimate; })]) // Add the ceiling
@@ -1437,7 +1273,6 @@ svg_fg_6
   .attr("x", - margin.top - 60)
   .text('Deaths per 100,000');
 
-
 var line_CI = svg_fg_6
   .append("path")
   .datum(deaths_all_cause.filter(function(d){
@@ -1462,7 +1297,6 @@ var line = svg_fg_6
   .style("stroke-width", 2)
   .style("fill", "none")
 
-
 var line_CI_ref = svg_fg_6
  .append("path")
 .datum(deaths_se_eng.filter(function(d){
@@ -1475,7 +1309,6 @@ var line_CI_ref = svg_fg_6
       .y1(function(d) { return y(d.Upper_estimate) })
     )
 
-
 var line_ref = svg_fg_6
   .append('g')
   .append("path")
@@ -1487,7 +1320,6 @@ var line_ref = svg_fg_6
   .attr("stroke", '#000000')
   .style("stroke-width", 2)
   .style("fill", "none")
-
 
 // Add a circle following the pointer
 var focus_fg_6 = svg_fg_6

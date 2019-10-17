@@ -14,9 +14,9 @@ div {
   border-radius: 5px;
 }
 
-.select {
-  float: right;
-}
+/* select {
+  float: left;
+} */
 
 .left_column {
   float: left;
@@ -201,6 +201,17 @@ table {
 }
 
 .tooltip_bars {
+  max-width: 280px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: .8rem;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 5px;
+  border: 1px solid #000;
+}
+
+.tooltip_stacked_bars {
   max-width: 280px;
   padding-left: 5px;
   padding-right: 5px;
