@@ -79,9 +79,6 @@ d3.selectAll(".myRect" + subgroup_key)
       .style("opacity", 0.6)
   }
 
-
-
-
 // append the svg object to the body of the page
 var svg_fg_4 = d3.select("#my_lifecourse_condition_dataviz")
  .append("svg")
@@ -147,43 +144,49 @@ select_stack_data = stackedData.filter(function(d){
 
 svg_fg_4
 .selectAll("rect")
+.transition()
+.duration(1000)
+.style('opacity', 0)
 .remove();
 
-console.log(select_stack_data)
-
-// y_fg_4
-//   .domain([0, figure_4_y_max]);
-//
-//   .domain([0, d3.max(data, function(d) {
-//   return Math.ceil(d.Deaths_number / 500)  // This gets the maximum deaths number rounded up to nearest 500 (ceiling)
-//   })]); // update the yaxis based on 'data'
-
-   svg_fg_4
-     .append("g")
-     .selectAll("g")
-     .data(select_stack_data) // Enter in the stack data = loop key per key = group per group
-     .enter()
-     .append("g")
-     .attr("fill", function(d) { return color_cause_group(d.key); })
-     .attr("class", function(d, i){ return "myRect" + i }) // Add an id to each subgroup: their name
-     .selectAll("rect")
-     .data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
-     .enter()
-     .append("rect")
-     .attr("x", function(d) {
-       return x_fg_4(d.data.Age); })
-     .attr("y", function(d) {
-       return y_fg_4(d[1]); })
-     .attr("height", function(d) {
-       return y_fg_4(d[0]) - y_fg_4(d[1]); })
+svg_fg_4
+.append("g")
+.selectAll("g")
+.data(select_stack_data) // Enter in the stack data = loop key per key = group per group
+.enter()
+.append("g")
+.attr("fill", function(d) { return color_cause_group(d.key); })
+.attr("class", function(d, i){ return "myRect" + i }) // Add an id to each subgroup: their name
+.selectAll("rect")
+.data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
+.enter()
+.append("rect")
+.attr("x", function(d) {
+ return x_fg_4(d.data.Age); })
+.attr("y", function(d) {
+  return height_fg_4; })
+    // .attr("y", function(d) {
+   //   return y_fg_4(d[1]); })
+.attr("height", function(d) {
+return y_fg_4(d[0]) - y_fg_4(d[1]);})
      .attr("width", x_fg_4.bandwidth())
      .style("opacity", 0.75)
      .on("mousemove", showTooltip_age)
      .on('mouseout', mouseleave)
      .on('click', restore_stacks)
+
+     console.log(height_fg_4);
    }
 
 var restore_stacks = function(d){
+
+  svg_fg_4
+  .selectAll("rect")
+  .transition()
+  .duration(1000)
+  .style('opacity', 0)
+  .remove();
+
   svg_fg_4
     .append("g")
     .selectAll("g")
@@ -224,13 +227,13 @@ case 'Deaths':
   figure_4_y_max = 2000;
   break;
 case 'YLLs (Years of Life Lost)':
- figure_4_y_max = 15500;
+ figure_4_y_max = 16000;
   break;
 case 'YLDs (Years Lived with Disability)':
- figure_4_y_max = 11000;
+ figure_4_y_max = 12000;
  break;
 case 'DALYs (Disability-Adjusted Life Years)':
-  figure_4_y_max = 25000;
+  figure_4_y_max = 26000;
 }
 
 y_fg_4

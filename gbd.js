@@ -436,7 +436,7 @@ var subgroupName = d3.select(this.parentNode).datum().key;
 var subgroupValue = d.data[subgroupName];
 
 tooltip_condition_age
- .html("<h3>" + d.data.Cause + '</h3><p>The estimated number of ' + label_key(d.data.Measure) + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(subgroupValue) + '</b></font>.</p><p>This is <font color = "#1e4b7a"><b>' + d3.format(",.0%")(subgroupValue/d.data.Total_in_condition) + '</b></font> of the total ' + label_key(d.data.Measure) + ' in West Sussex from this cause (<font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.data.Total_in_condition) + '</b></font>)</p>')
+ .html("<h3>" + d.data.Cause + ' - ' + subgroupName + '</h3><p>The estimated number of ' + label_key(d.data.Measure) + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(subgroupValue) + '</b></font>.</p><p>This is <font color = "#1e4b7a"><b>' + d3.format(",.0%")(subgroupValue/d.data.Total_in_condition) + '</b></font> of the total ' + label_key(d.data.Measure) + ' in West Sussex from this cause (<font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.data.Total_in_condition) + '</b></font>)</p>')
  .style("opacity", 1)
  .style("top", (event.pageY - 10) + "px")
  .style("left", (event.pageX + 10) + "px")
