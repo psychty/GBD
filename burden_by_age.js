@@ -53,24 +53,34 @@ var tooltip_age = d3.select("#my_lifecourse_condition_dataviz")
   .style("padding", "10px")
 
 var showTooltip_age = function(d, i) {
-var sub_age_groupName = d3.select(this.parentNode).datum().key;
-var subgroupValue = d.data[sub_age_groupName];
-
-
-
+var sub_cause_groupName = d3.select(this.parentNode).datum().key;
+var subgroupValue = d.data[sub_cause_groupName];
+var subgroup_key = d3.select(this.parentNode).datum().index
 
 tooltip_age
-  .html("<h3>" + sub_age_groupName + '</h3><p>The estimated number of ' + label_key(d.data.Measure) + ' as a result of ' + sub_age_groupName.toLowerCase() + ' in West Sussex in 2017 among both males and females aged ' + d.data.Age + ' was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(subgroupValue) + '</b></font>.</p><p>This is <font color = "#1e4b7a"><b>' + d3.format(",.0%")(subgroupValue/d.data.Total_in_age) + '</b></font> of the total ' + label_key(d.data.Measure) + ' in West Sussex among this age group (<font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.data.Total_in_age) + '</b></font>)</p>')
+  .html("<h3>" + sub_cause_groupName + '</h3><p>The estimated number of ' + label_key(d.data.Measure) + ' as a result of ' + sub_cause_groupName.toLowerCase() + ' in West Sussex in 2017 among both males and females aged ' + d.data.Age + ' was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(subgroupValue) + '</b></font>.</p><p>This is <font color = "#1e4b7a"><b>' + d3.format(",.0%")(subgroupValue/d.data.Total_in_age) + '</b></font> of the total ' + label_key(d.data.Measure) + ' in West Sussex among this age group (<font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.data.Total_in_age) + '</b></font>)</p>')
   .style("opacity", 1)
   .style("top", (event.pageY - 10) + "px")
   .style("left", (event.pageX + 10) + "px")
   .style("visibility", "visible")
+
+d3.selectAll(".myRect" + subgroup_key)
+  .style("opacity", 1)
+  .attr("stroke","#000")
+  .attr("stroke-width",2)
   }
 
 var mouseleave = function(d) {
-  // d3.selectAll(".myRect").style("opacity",1)
-  tooltip_age.style("visibility", "hidden")
+var subgroup_key = d3.select(this.parentNode).datum().index
+tooltip_age.style("visibility", "hidden")
+d3.selectAll(".myRect" + subgroup_key)
+      .attr("stroke","none")
+      .attr("stroke-width",0)
+      .style("opacity", 0.6)
   }
+
+
+
 
 // append the svg object to the body of the page
 var svg_fg_4 = d3.select("#my_lifecourse_condition_dataviz")
@@ -128,6 +138,78 @@ function update_age(data) {
    .selectAll("rect")
    .remove();
 
+var selected_stack = function(d) {
+var sub_cause_groupName = d3.select(this.parentNode).datum().key;
+var subgroupValue = d.data[sub_cause_groupName];
+
+select_stack_data = stackedData.filter(function(d){
+   return d.key === sub_cause_groupName});
+
+svg_fg_4
+.selectAll("rect")
+.remove();
+
+console.log(select_stack_data)
+
+// y_fg_4
+//   .domain([0, figure_4_y_max]);
+//
+//   .domain([0, d3.max(data, function(d) {
+//   return Math.ceil(d.Deaths_number / 500)  // This gets the maximum deaths number rounded up to nearest 500 (ceiling)
+//   })]); // update the yaxis based on 'data'
+
+   svg_fg_4
+     .append("g")
+     .selectAll("g")
+     .data(select_stack_data) // Enter in the stack data = loop key per key = group per group
+     .enter()
+     .append("g")
+     .attr("fill", function(d) { return color_cause_group(d.key); })
+     .attr("class", function(d, i){ return "myRect" + i }) // Add an id to each subgroup: their name
+     .selectAll("rect")
+     .data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
+     .enter()
+     .append("rect")
+     .attr("x", function(d) {
+       return x_fg_4(d.data.Age); })
+     .attr("y", function(d) {
+       return y_fg_4(d[1]); })
+     .attr("height", function(d) {
+       return y_fg_4(d[0]) - y_fg_4(d[1]); })
+     .attr("width", x_fg_4.bandwidth())
+     .style("opacity", 0.75)
+     .on("mousemove", showTooltip_age)
+     .on('mouseout', mouseleave)
+     .on('click', restore_stacks)
+   }
+
+var restore_stacks = function(d){
+  svg_fg_4
+    .append("g")
+    .selectAll("g")
+    .data(stackedData) // Enter in the stack data = loop key per key = group per group
+    .enter()
+    .append("g")
+    .attr("fill", function(d) { return color_cause_group(d.key); })
+    .attr("class", function(d, i){ return "myRect" + i }) // Add an id to each subgroup: their name
+    .selectAll("rect")
+    .data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
+    .enter()
+    .append("rect")
+    .attr("x", function(d) {
+      return x_fg_4(d.data.Age); })
+    .attr("y", function(d) {
+      return y_fg_4(d[1]); })
+    .attr("height", function(d) {
+      return y_fg_4(d[0]) - y_fg_4(d[1]); })
+    .attr("width", x_fg_4.bandwidth())
+    .style("opacity", 0.75)
+    .on("mousemove", showTooltip_age)
+    .on('mouseout', mouseleave)
+    .on('click', selected_stack)
+
+}
+
 var stackedData = d3.stack()
     .keys(cause_categories)
       (data)
@@ -160,16 +242,14 @@ yAxis_fg_4
   .duration(1000)
   .call(d3.axisLeft(y_fg_4));
 
-
 svg_fg_4
   .append("g")
   .selectAll("g")
   .data(stackedData) // Enter in the stack data = loop key per key = group per group
   .enter()
   .append("g")
-  .attr("fill", function(d) {
-    return color_cause_group(d.key); })
-  .attr("class", function(d, i){ return "myRect" + i }) // Add a class to each subgroup: their name
+  .attr("fill", function(d) { return color_cause_group(d.key); })
+  .attr("class", function(d, i){ return "myRect" + i }) // Add an id to each subgroup: their name
   .selectAll("rect")
   .data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
   .enter()
@@ -181,25 +261,10 @@ svg_fg_4
   .attr("height", function(d) {
     return y_fg_4(d[0]) - y_fg_4(d[1]); })
   .attr("width", x_fg_4.bandwidth())
-  .style("opacity",0.7)
+  .style("opacity", 0.75)
   .on("mousemove", showTooltip_age)
   .on('mouseout', mouseleave)
-  .on('mouseover', function(d){
-    var subgroup_key = d3.select(this.parentNode).datum().index
-
-    d3.select(this).attr("stroke","white").attr("stroke-width",1);
-    d3.select(this).style("opacity",1);
-    d3.selectAll(".myRect").style("opacity", 0.2) // Reduce opacity of all rect to 0.2
-    d3.selectAll("myRect" + subgroup_key) // Highlight all rects of this subgroup with opacity 0.8.
-      .style("opacity", 1)
-        })
-  .on('mouseout', function(d){
-    d3.select(this).attr("stroke","none").attr("stroke-width",0);
-    d3.select(this).style("opacity",0.7);
-  })
-
-
-
+  .on('click', selected_stack)
 
 }
 
