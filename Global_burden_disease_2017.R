@@ -512,6 +512,19 @@ lifecourse_age <- lifecourse_numbers %>%
   mutate(`Substance use disorders` = replace_na(`Substance use disorders`, 0)) %>% 
   mutate(`Diabetes and kidney diseases` = replace_na(`Diabetes and kidney diseases`, 0)) 
 
+lifecourse_numbers %>% 
+  filter(Level == 2,
+         Sex == 'Both') %>% 
+  select(Age, Cause, Measure, Estimate) %>% 
+  mutate(Cause = factor(Cause, levels = c("HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"))) %>%
+  arrange(Cause) %>% 
+  group_by(Measure, Cause) %>% 
+  filter(Estimate == max(Estimate)) %>% 
+  mutate(Estimate_max = ifelse(Estimate < 100, 100, round_any(Estimate, 200, ceiling))) %>% 
+  select(Cause, Measure, Estimate_max) %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Numbers_lifecourse_persons_level_2_2017_', gsub(" ", "_", tolower(Area_x)), 'stack_value_max.json'))
+
 lc <-lifecourse_age %>% 
   mutate(Total_in_age = rowSums(.[3:ncol(.)]))# %>% 
   

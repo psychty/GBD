@@ -159,21 +159,21 @@ var hale = json_le.filter(function(d){
   .append("text")
   .attr("x", width / 100 * 40)
   .attr("y", 90)
-  .style('font-size', '10px')
+  .style('font-size', '11px')
   .text('The dashed bottom line shows healthy life expectancy')
 
   svg_le
   .append("text")
   .attr("x", width - 300)
   .attr("y", 175)
-  .style('font-size', '10px')
+  .style('font-size', '11px')
   .text('Click on a label below to')
 
   svg_le
   .append("text")
   .attr("x", width - 300)
   .attr("y", 185)
-  .style('font-size', '10px')
+  .style('font-size', '11px')
   .text('show/hide each line')
 
   svg_le

@@ -225,17 +225,38 @@ svg_bubbles
 .attr("y", function(d) {
   if (selectedMeasureBubblesOption === 'YLLs (Years of Life Lost)') {
     return 150 }
+    else if (selectedMeasureBubblesOption === 'YLDs (Years Lived with Disability)') {
+    return 220 }
     else {
     return 180 }
           })
 .attr("x", 60)
+.attr("x", function(d) {
+  if (selectedMeasureBubblesOption === 'YLDs (Years Lived with Disability)') {
+    return 120 }
+    else {
+    return 60 }
+          })
+.attr('opacity', 0)
+.transition()
+.duration(2000)
+.attr('opacity', 1)
 .text('Neoplasms');
 
 svg_bubbles
 .append("text")
 .attr("text-anchor", "start")
-.attr("y", 80)
+.attr("y", function(d) {
+  if (selectedMeasureBubblesOption === 'DALYs (Disability-Adjusted Life Years)') {
+    return 100 }
+    else {
+    return 150 }
+          })
 .attr("x", width / 3)
+.attr('opacity', 0)
+.transition()
+.duration(2000)
+.attr('opacity', 1)
 .text('Other conditions');
 
 // Key size
