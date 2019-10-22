@@ -3,7 +3,7 @@ var cause_categories = ["HIV/AIDS and sexually transmitted infections", "Respira
 var measure_categories = ['Deaths', 'YLLs (Years of Life Lost)', 'YLDs (Years Lived with Disability)', 'DALYs (Disability-Adjusted Life Years)']
 
 // We need to create a dropdown button for the user to choose which area to be displayed on the figure.
-d3.select("#selectCauseButton")
+d3.select("#selectExplore_CauseButton")
   .selectAll('myOptions')
  	.data(cause_categories)
   .enter()
@@ -14,7 +14,7 @@ d3.select("#selectCauseButton")
     return d; }) // corresponding value returned by the button
 
 // We need to create a dropdown button for the user to choose which area to be displayed on the figure.
-d3.select("#selectMeasureButton")
+d3.select("#selectExplore_MeasureButton")
   .selectAll('myOptions')
 	.data(measure_categories)
   .enter()
@@ -25,7 +25,7 @@ d3.select("#selectMeasureButton")
     return d; }) // corresponding value returned by the button
 
 // We need to create a dropdown button for the user to choose which area to be displayed on the figure.
-d3.select("#selectSexButton")
+d3.select("#selectExplore_SexButton")
   .selectAll('myOptions')
  	.data(['Both','Male','Female'])
   .enter()
@@ -50,6 +50,7 @@ data = json.filter(function(d){
          d['Cause group'] === cause_categories[0]
 })
 
+
 // Make the table
 var table = d3.select("#condition_group_table").append("table");
 var thead = table.append("thead");
@@ -68,9 +69,9 @@ thead.append("tr")
 function update_table(selectedCauseOption) {
 
 // grab the values from the select elements
-var selectedCauseOption = d3.select('#selectCauseButton').property("value")
-var selectedSexOption = d3.select('#selectSexButton').property("value")
-var selectedMeasureOption = d3.select('#selectMeasureButton').property("value")
+var selectedCauseOption = d3.select('#selectExplore_CauseButton').property("value")
+var selectedSexOption = d3.select('#selectExplore_SexButton').property("value")
+var selectedMeasureOption = d3.select('#selectExplore_MeasureButton').property("value")
 
 // filter the data
 var data = json.filter(function(d){
@@ -78,6 +79,10 @@ var data = json.filter(function(d){
          d.measure === selectedMeasureOption &
          d['Cause group'] === selectedCauseOption
 })
+
+table
+.selectAll("#exploring_conditions_rows")
+.remove();
 
 var rows = table.selectAll("tbody tr")
   .data(data, function (d) {
@@ -87,6 +92,7 @@ var rows = table.selectAll("tbody tr")
 rows
  .enter()
  .append('tr')
+ .attr('id', 'exploring_conditions_rows')
  .selectAll("td")
  .data(function (d) {return [d['Cause'], d['Number (all ages) 2012'], d['Number (all ages) 2017'], d['Age-standardised rate per 100,000 2017'], d['Proportion (based on number) 2017'],  d['Percentage change 2012 - 2017 (based on number)']];})
  .enter()
@@ -95,29 +101,26 @@ rows
 
 }
 
-// This says run the update_le_ts function when there is a change on the 'selectAreaButton' div based on whatever the new value selected is.
-d3.select("#selectCauseButton").on("change", function(d) {
-var selectedCauseOption = d3.select('#selectCauseButton').property("value")
-var selectedSexOption = d3.select('#selectSexButton').property("value")
-var selectedMeasureOption = d3.select('#selectMeasureButton').property("value")
+d3.select("#selectExplore_CauseButton").on("change", function(d) {
+var selectedCauseOption = d3.select('#selectExplore_CauseButton').property("value")
+var selectedSexOption = d3.select('#selectExplore_SexButton').property("value")
+var selectedMeasureOption = d3.select('#selectExplore_MeasureButton').property("value")
 // var selectedRefOption = d3.select("#selectReferenceAreaButton").property('value')
       update_table(selectedCauseOption)
 })
 
-// This says run the update_le_ts function when there is a change on the 'selectAreaButton' div based on whatever the new value selected is.
-d3.select("#selectSexButton").on("change", function(d) {
-var selectedCauseOption = d3.select('#selectCauseButton').property("value")
-var selectedSexOption = d3.select('#selectSexButton').property("value")
-var selectedMeasureOption = d3.select('#selectMeasureButton').property("value")
+d3.select("#selectExplore_SexButton").on("change", function(d) {
+var selectedCauseOption = d3.select('#selectExplore_CauseButton').property("value")
+var selectedSexOption = d3.select('#selectExplore_SexButton').property("value")
+var selectedMeasureOption = d3.select('#selectExplore_MeasureButton').property("value")
 // var selectedRefOption = d3.select("#selectReferenceAreaButton").property('value')
       update_table(selectedCauseOption)
 })
 
-// This says run the update_le_ts function when there is a change on the 'selectAreaButton' div based on whatever the new value selected is.
-d3.select("#selectMeasureButton").on("change", function(d) {
-var selectedCauseOption = d3.select('#selectCauseButton').property("value")
-var selectedSexOption = d3.select('#selectSexButton').property("value")
-var selectedMeasureOption = d3.select('#selectMeasureButton').property("value")
+d3.select("#selectExplore_MeasureButton").on("change", function(d) {
+var selectedCauseOption = d3.select('#selectExplore_CauseButton').property("value")
+var selectedSexOption = d3.select('#selectExplore_SexButton').property("value")
+var selectedMeasureOption = d3.select('#selectExplore_MeasureButton').property("value")
 // var selectedRefOption = d3.select("#selectReferenceAreaButton").property('value')
       update_table(selectedCauseOption)
 })

@@ -287,3 +287,18 @@ table {
 .sticky{
   position: sticky;
 }
+
+.venntooltip {
+  max-width: 150px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: .8rem;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 5px;
+  border: 1px solid #000;
+}
+
+.row_venn {
+  float: left;
+}

@@ -184,8 +184,6 @@
         <p class = 'side'>.</p>
       </div>
       <div class="main">
-
-
         <p>It is also useful to see the proportion of the burden for each age group to answer the question 'if the condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain age?'. Answering this question shows us that certain diseases impact people of particular ages disproportionately. The switch below effects both the number and proportion of disease burden
           attributed to a condition and age group.</p>
         <div class="switch-field">
@@ -268,6 +266,8 @@
       <div class="main">
         <h1>Attributing risk to the burden of disease</h1>
         <!-- <p>Globally, 59·9% (58·4–61·3) of deaths and 45·2% (43·2–47·3) of DALYs could be attributed to the risk factors assessed in GBD 2016. For deaths, non-communicable diseases (NCDs) show the largest proportion attributable to measured risk factors, at 64·4% (62·6–66·2), with communicable, maternal, neonatal, and nutritional (CMNN) causes at 57·9% (55·4–61·0), and injuries at 25·8% (23·7–27·8). The picture was different for DALYs, however, where we observed that 58·2% (56·4–60·3) of DALYs in CMNN causes are attributable to risk factors, compared with 43·5% (40·7–46·7) in NCDs and 21·0% (19·3–22·7) for injuries. Leading causes of DALYs in CMNN causes, such as diarrhoea and lower respiratory infections (LRI), also showed more than 80% of DALYs can be attributed to risk factors (appendix 2 p 1).</p> -->
+        <div id = 'risk_overlap_datavis' class = 'row_venn'></div>
+        <p>This visualisation is built from work by <a href="https://github.com/benfred/venn.js" ,target="_blank">Ben Frederickson</a></p>
       </div>
       <div class="right_column">
         <h3>Level 1 risks</h3>
@@ -289,9 +289,13 @@
         <h1>Condition Focus</h1>
         <p>In the next section we focus on the three disease groups which contributed the most disability adjusted life-years lost in West Sussex in 2017 (Cancers (neoplasms), Cardiovascular diseases and Musculoskeletal disorders).</p>
         <h2>Cancers (neoplasms)</h2>
+        <h4>infographic style svg??</h4>
         <h2>Cardiovascular diseases</h2>
         <h2>Musculoskeletal disorders</h2>
         <h2>Exploring conditions in more detail</h2>
+        <p>It is not possible to discuss all conditions in the GBD data set. However, you can explore combinations of measures and causes for West Sussex by sex in 2017.</p>
+        <p>Condition <select id = 'selectExplore_CauseButton'></select>Measure <select id='selectExplore_MeasureButton'></select>        Sex: <select id='selectExplore_SexButton'></select></p>
+        <div id = 'condition_group_table'></div>
       </div>
       <div class="right_column">
         <p class = 'side'>Condition</p>
@@ -313,6 +317,8 @@
   <script src= 'gbd.js'></script>
   <script src = 'burden_by_age.js'></script>
   <script src= 'bubbles_gbd.js'></script>
+  <script src = 'venn_gbd.js'></script>
+  <script src = 'exploring_conditions.js'></script>
 
 
   </html>

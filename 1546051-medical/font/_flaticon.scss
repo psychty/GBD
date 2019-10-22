@@ -1,0 +1,140 @@
+    /*
+    Flaticon icon font: Flaticon
+    Creation date: 20/03/2019 07:42
+    */
+
+    @font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.eot");
+  src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.woff2") format("woff2"),
+       url("./Flaticon.woff") format("woff"),
+       url("./Flaticon.ttf") format("truetype"),
+       url("./Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+    .fi:before{
+        display: inline-block;
+  font-family: "Flaticon";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+    }
+
+    .flaticon-001-allergies:before { content: "\f100"; }
+.flaticon-002-ambulance:before { content: "\f101"; }
+.flaticon-003-hospital-bed:before { content: "\f102"; }
+.flaticon-004-blood-pressure:before { content: "\f103"; }
+.flaticon-005-blood-transfusion:before { content: "\f104"; }
+.flaticon-006-bone:before { content: "\f105"; }
+.flaticon-007-brain:before { content: "\f106"; }
+.flaticon-008-capsules:before { content: "\f107"; }
+.flaticon-009-cardio:before { content: "\f108"; }
+.flaticon-010-cholesterol:before { content: "\f109"; }
+.flaticon-011-clipboard:before { content: "\f10a"; }
+.flaticon-012-constipation:before { content: "\f10b"; }
+.flaticon-013-crutches:before { content: "\f10c"; }
+.flaticon-014-diabetes-test:before { content: "\f10d"; }
+.flaticon-015-dna:before { content: "\f10e"; }
+.flaticon-016-doctor-bag:before { content: "\f10f"; }
+.flaticon-017-doctor:before { content: "\f110"; }
+.flaticon-018-ear:before { content: "\f111"; }
+.flaticon-019-ekg:before { content: "\f112"; }
+.flaticon-020-eye:before { content: "\f113"; }
+.flaticon-021-helicopter:before { content: "\f114"; }
+.flaticon-022-bandage:before { content: "\f115"; }
+.flaticon-023-hospital:before { content: "\f116"; }
+.flaticon-024-transfusion:before { content: "\f117"; }
+.flaticon-025-injection:before { content: "\f118"; }
+.flaticon-026-intestine:before { content: "\f119"; }
+.flaticon-027-kidney:before { content: "\f11a"; }
+.flaticon-028-knife:before { content: "\f11b"; }
+.flaticon-029-liver:before { content: "\f11c"; }
+.flaticon-030-lung:before { content: "\f11d"; }
+.flaticon-031-medicine:before { content: "\f11e"; }
+.flaticon-032-medicine-1:before { content: "\f11f"; }
+.flaticon-033-microscope:before { content: "\f120"; }
+.flaticon-034-migraine:before { content: "\f121"; }
+.flaticon-035-nose:before { content: "\f122"; }
+.flaticon-036-nurse:before { content: "\f123"; }
+.flaticon-037-pills:before { content: "\f124"; }
+.flaticon-038-scissors:before { content: "\f125"; }
+.flaticon-039-skin:before { content: "\f126"; }
+.flaticon-040-sperm:before { content: "\f127"; }
+.flaticon-041-stethoscope:before { content: "\f128"; }
+.flaticon-042-stomach:before { content: "\f129"; }
+.flaticon-043-thermometer:before { content: "\f12a"; }
+.flaticon-044-flask:before { content: "\f12b"; }
+.flaticon-045-test-tube:before { content: "\f12c"; }
+.flaticon-046-tiroid:before { content: "\f12d"; }
+.flaticon-047-tooth:before { content: "\f12e"; }
+.flaticon-048-weight-scale:before { content: "\f12f"; }
+.flaticon-049-wheelchair:before { content: "\f130"; }
+.flaticon-050-white-blood-cell:before { content: "\f131"; }
+    
+    $font-Flaticon-001-allergies: "\f100";
+    $font-Flaticon-002-ambulance: "\f101";
+    $font-Flaticon-003-hospital-bed: "\f102";
+    $font-Flaticon-004-blood-pressure: "\f103";
+    $font-Flaticon-005-blood-transfusion: "\f104";
+    $font-Flaticon-006-bone: "\f105";
+    $font-Flaticon-007-brain: "\f106";
+    $font-Flaticon-008-capsules: "\f107";
+    $font-Flaticon-009-cardio: "\f108";
+    $font-Flaticon-010-cholesterol: "\f109";
+    $font-Flaticon-011-clipboard: "\f10a";
+    $font-Flaticon-012-constipation: "\f10b";
+    $font-Flaticon-013-crutches: "\f10c";
+    $font-Flaticon-014-diabetes-test: "\f10d";
+    $font-Flaticon-015-dna: "\f10e";
+    $font-Flaticon-016-doctor-bag: "\f10f";
+    $font-Flaticon-017-doctor: "\f110";
+    $font-Flaticon-018-ear: "\f111";
+    $font-Flaticon-019-ekg: "\f112";
+    $font-Flaticon-020-eye: "\f113";
+    $font-Flaticon-021-helicopter: "\f114";
+    $font-Flaticon-022-bandage: "\f115";
+    $font-Flaticon-023-hospital: "\f116";
+    $font-Flaticon-024-transfusion: "\f117";
+    $font-Flaticon-025-injection: "\f118";
+    $font-Flaticon-026-intestine: "\f119";
+    $font-Flaticon-027-kidney: "\f11a";
+    $font-Flaticon-028-knife: "\f11b";
+    $font-Flaticon-029-liver: "\f11c";
+    $font-Flaticon-030-lung: "\f11d";
+    $font-Flaticon-031-medicine: "\f11e";
+    $font-Flaticon-032-medicine-1: "\f11f";
+    $font-Flaticon-033-microscope: "\f120";
+    $font-Flaticon-034-migraine: "\f121";
+    $font-Flaticon-035-nose: "\f122";
+    $font-Flaticon-036-nurse: "\f123";
+    $font-Flaticon-037-pills: "\f124";
+    $font-Flaticon-038-scissors: "\f125";
+    $font-Flaticon-039-skin: "\f126";
+    $font-Flaticon-040-sperm: "\f127";
+    $font-Flaticon-041-stethoscope: "\f128";
+    $font-Flaticon-042-stomach: "\f129";
+    $font-Flaticon-043-thermometer: "\f12a";
+    $font-Flaticon-044-flask: "\f12b";
+    $font-Flaticon-045-test-tube: "\f12c";
+    $font-Flaticon-046-tiroid: "\f12d";
+    $font-Flaticon-047-tooth: "\f12e";
+    $font-Flaticon-048-weight-scale: "\f12f";
+    $font-Flaticon-049-wheelchair: "\f130";
+    $font-Flaticon-050-white-blood-cell: "\f131";

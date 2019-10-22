@@ -230,7 +230,6 @@ svg_bubbles
     else {
     return 180 }
           })
-.attr("x", 60)
 .attr("x", function(d) {
   if (selectedMeasureBubblesOption === 'YLDs (Years Lived with Disability)') {
     return 120 }
@@ -241,6 +240,7 @@ svg_bubbles
 .transition()
 .duration(2000)
 .attr('opacity', 1)
+.style('font-weight', 'bold')
 .text('Neoplasms');
 
 svg_bubbles
@@ -257,6 +257,7 @@ svg_bubbles
 .transition()
 .duration(2000)
 .attr('opacity', 1)
+.style('font-weight', 'bold')
 .text('Other conditions');
 
 // Key size

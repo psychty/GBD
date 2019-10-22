@@ -47,8 +47,6 @@ Area_rank = data.frame(Area_Name = c('West Sussex','South East England',"England
   mutate(Neighbour_rank = row_number()) %>% 
   rename(Area = Area_Name)
 
-
-
 # http://ghdx.healthdata.org/gbd-results-tool
 # http://www.healthdata.org/united-kingdom
 # http://www.who.int/quantifying_ehimpacts/publications/en/9241546204chap3.pdf
@@ -59,8 +57,6 @@ Area_rank = data.frame(Area_Name = c('West Sussex','South East England',"England
 
 # Incidence data published for 2017 - included in download
 # Prevalence data published for 2017
-
-
 
 GBD_2017_cause_hierarchy <- read_excel("~/Documents/GBD_data_download/IHME_GBD_2017_CAUSE_HIERARCHY_Y2018M11D18.xlsx", col_types = c("text", "text", "text", "text", "text", "numeric", "text", "text")) %>% 
   rename(Cause_name = cause_name,
@@ -75,7 +71,6 @@ Causes_in_each_level <- GBD_2017_cause_hierarchy %>%
   summarise(n())
 
 # Life expectancy and HALE #### 
-
 LE <- read_csv("~/Documents/GBD_data_download/LE_GBD_timeseries.csv") %>% 
   left_join(Area_rank, by = 'Area') %>% 
   rename(Estimate = val,
@@ -448,7 +443,6 @@ Area_x_cause %>%
 rm(Area_deaths_2017, Area_x_cause, Area_x_cause_number, Area_x_cause_perc, Cause_number, Cause_perc, level_2_cause_df, WSx_top_10, All_ages_GBD_cause_data)
 
 # Over the lifecourse ####
-
 lifecourse_wsx_df <- unique(list.files("~/Documents/GBD_data_download")[grepl("b328ae1f", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
   map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(measure = col_character(),location = col_character(),sex = col_character(),age = col_character(),cause = col_character(),metric = col_character(),year = col_double(),val = col_double(),upper = col_double(),lower = col_double()))) %>% 
   left_join(GBD_2017_cause_hierarchy[c("Cause_name", "Cause_outline", "Cause_id", "Parent_id", "Level")], by = c("cause" = "Cause_name")) %>% 
@@ -471,7 +465,6 @@ lifecourse_wsx_df <- unique(list.files("~/Documents/GBD_data_download")[grepl("b
   filter(Year == max(Year))
 
 # http://www.healthdata.org/sites/default/files/files/infographics/Infographic_GBD2017-YLDs-Highlights_2018_Page_1.png
-
 lifecourse_numbers <- lifecourse_wsx_df %>% 
   filter(Metric == 'Number')
 
@@ -523,14 +516,23 @@ lifecourse_numbers %>%
   mutate(Estimate_max = ifelse(Estimate < 100, 100, round_any(Estimate, 200, ceiling))) %>% 
   select(Cause, Measure, Estimate_max) %>% 
   toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Numbers_lifecourse_persons_level_2_2017_', gsub(" ", "_", tolower(Area_x)), 'stack_value_max.json'))
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Numbers_lifecourse_persons_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '_stack_value_max.json'))
 
-lc <-lifecourse_age %>% 
-  mutate(Total_in_age = rowSums(.[3:ncol(.)]))# %>% 
+lifecourse_numbers %>% 
+  filter(Level == 2,
+         Sex == 'Both') %>% 
+  select(Age, Cause, Measure, Estimate) %>% 
+  arrange(Age) %>% 
+  group_by(Measure, Age) %>% 
+  filter(Estimate == max(Estimate)) %>% 
+  mutate(Estimate_max = ifelse(Estimate < 50, 50, ifelse(Estimate < 100, 100, round_any(Estimate, 200, ceiling)))) %>% 
+  select(Age, Measure, Estimate_max) %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Numbers_lifecourse_persons_conditions_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '_stack_value_max.json'))
   
 
-toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Numbers_lifecourse_persons_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
+#toJSON() %>% 
+ # write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Numbers_lifecourse_persons_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
 lifecourse_age %>% 
   mutate(Total_in_age = rowSums(.[3:ncol(.)])) %>% 
@@ -590,29 +592,29 @@ lifecourse_condition %>%
 
 lifecourse_condition_prop <- lifecourse_condition %>%
   mutate(Total_in_condition = rowSums(.[3:ncol(.)])) %>% 
-  mutate(`Early Neonatal` = `Early Neonatal` / Total_in_condition) %>% 
-  mutate(`Late Neonatal` = `Late Neonatal` / Total_in_condition) %>% 
-  mutate(`Post Neonatal` = `Post Neonatal` / Total_in_condition) %>% 
-  mutate(`1 to 4` = `1 to 4` / Total_in_condition) %>%  
-  mutate(`5 to 9` = `5 to 9` / Total_in_condition) %>%  
-  mutate(`10 to 14` = `10 to 14` / Total_in_condition) %>%  
-  mutate(`15 to 19` = `15 to 19` / Total_in_condition) %>%  
-  mutate(`20 to 24` = `20 to 24` / Total_in_condition) %>%  
-  mutate(`25 to 29` = `25 to 29` / Total_in_condition) %>%  
-  mutate(`30 to 34` = `30 to 34` / Total_in_condition) %>%  
-  mutate(`35 to 39` = `35 to 39` / Total_in_condition) %>%  
-  mutate(`40 to 44` = `40 to 44` / Total_in_condition) %>%  
-  mutate(`45 to 49` = `45 to 49` / Total_in_condition) %>%  
-  mutate(`50 to 54` = `50 to 54` / Total_in_condition) %>%  
-  mutate(`55 to 59` = `55 to 59` / Total_in_condition) %>%  
-  mutate(`60 to 64` = `60 to 64` / Total_in_condition) %>%  
-  mutate(`65 to 69` = `65 to 69` / Total_in_condition) %>%  
-  mutate(`70 to 74` = `70 to 74` / Total_in_condition) %>%  
-  mutate(`75 to 79` = `75 to 79` / Total_in_condition) %>%  
-  mutate(`80 to 84` = `80 to 84` / Total_in_condition) %>%  
-  mutate(`85 to 89` = `85 to 89` / Total_in_condition) %>%  
-  mutate(`90 to 94` = `90 to 94` / Total_in_condition) %>%  
-  mutate(`95 plus` = `95 plus` / Total_in_condition) %>% 
+  mutate(`Early Neonatal` = `Early Neonatal` / Total_in_condition * 100) %>% 
+  mutate(`Late Neonatal` = `Late Neonatal` / Total_in_condition * 100) %>% 
+  mutate(`Post Neonatal` = `Post Neonatal` / Total_in_condition * 100) %>% 
+  mutate(`1 to 4` = `1 to 4` / Total_in_condition * 100) %>%  
+  mutate(`5 to 9` = `5 to 9` / Total_in_condition * 100) %>%  
+  mutate(`10 to 14` = `10 to 14` / Total_in_condition * 100) %>%  
+  mutate(`15 to 19` = `15 to 19` / Total_in_condition * 100) %>%  
+  mutate(`20 to 24` = `20 to 24` / Total_in_condition * 100) %>%  
+  mutate(`25 to 29` = `25 to 29` / Total_in_condition * 100) %>%  
+  mutate(`30 to 34` = `30 to 34` / Total_in_condition * 100) %>%  
+  mutate(`35 to 39` = `35 to 39` / Total_in_condition * 100) %>%  
+  mutate(`40 to 44` = `40 to 44` / Total_in_condition * 100) %>%  
+  mutate(`45 to 49` = `45 to 49` / Total_in_condition * 100) %>%  
+  mutate(`50 to 54` = `50 to 54` / Total_in_condition * 100) %>%  
+  mutate(`55 to 59` = `55 to 59` / Total_in_condition * 100) %>%  
+  mutate(`60 to 64` = `60 to 64` / Total_in_condition * 100) %>%  
+  mutate(`65 to 69` = `65 to 69` / Total_in_condition * 100) %>%  
+  mutate(`70 to 74` = `70 to 74` / Total_in_condition * 100) %>%  
+  mutate(`75 to 79` = `75 to 79` / Total_in_condition * 100) %>%  
+  mutate(`80 to 84` = `80 to 84` / Total_in_condition * 100) %>%  
+  mutate(`85 to 89` = `85 to 89` / Total_in_condition * 100) %>%  
+  mutate(`90 to 94` = `90 to 94` / Total_in_condition * 100) %>%  
+  mutate(`95 plus` = `95 plus` / Total_in_condition * 100) %>% 
   select(-Total_in_condition) %>% 
   mutate(Cause = factor(Cause, levels = c("HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"))) %>%
   arrange(Cause)
