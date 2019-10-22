@@ -170,7 +170,7 @@ function update_fg_1(e) {
 
     src.classList.toggle('active');
     var filter = src.dataset.filter;
-    console.log(filter);
+
     var data = this[filter];
 
     x_fg_1
@@ -178,8 +178,8 @@ function update_fg_1(e) {
             return d.Cause;
         })) // update the xaxis based on 'data' - so if you run update on data1, this will look at data1, get any new/unique groups and add them to the list of groups.§
 
-// This adds a transition effect on the change between datasets (i.e. if the things change place on the axis).
-    xAxis_fg_1
+
+xAxis_fg_1
         .transition()
         .duration(1000)
         .call(d3.axisBottom(x_fg_1))
@@ -377,12 +377,6 @@ function tabulate_top10(data, columns) {
         .text(function (d) {
             return d.value
         })
-    // .text(function(d,i) {
-    // 	if(i == 2) return d3.format(",.0f")(d.value); // + " items"; // Hurrah d3.format() works!
-    // 		else if (i == 4) return d3.format(",.0f")(d.value); // comma separators and round values
-    // 			else if (i == 6) return d3.format(",.0f")(d.value);
-    // 				else if (i == 8) return d3.format(",.0f")(d.value);
-    // 	 return d.value; });
     return table;
 }
 
@@ -403,8 +397,6 @@ d3.select("#total_death_string")
     .text(function (d) {
         return "What caused the " + d3.format(",.0f")(d.Deaths) + " deaths in West Sussex in 2017?"
     }); // Concatenate a string
-
-// Level 3 bubbles from bubbles_gbd.js
 
 function age_key_summary() {
     ages.forEach(function (item, index) {
@@ -677,7 +669,6 @@ function update_top_10_change(data) {
 }
 
 update_top_10_change(deaths_rate_rank_change)
-
 
 height_rate_change = 500
 
@@ -1397,6 +1388,3 @@ function risk_group_2_summary() {
 }
 
 risk_group_2_summary();
-
-
-// Look at the three conditions, maybe introduce risk factors too...

@@ -17,9 +17,24 @@ var color_cause_group = d3.scaleOrdinal()
 
 var measure_categories = ['Deaths', 'YLLs (Years of Life Lost)', 'YLDs (Years Lived with Disability)', 'DALYs (Disability-Adjusted Life Years)']
 
+var label_key = d3.scaleOrdinal()
+    .domain(measure_categories)
+    .range(['deaths', 'YLLs', 'YLDs', ' DALYs'])
+
 var xLabel = 190
 var xCircle = 100
 var yCircle = 190
+
+// Level 3 bubbles (persons)
+var request = new XMLHttpRequest();
+  request.open("GET", "./Number_bubbles_df_level_3_2017_west_sussex.json", false);
+  request.send(null);
+var json_bubble_data = JSON.parse(request.responseText); // parse the fetched json data into a variable
+
+bubble_data = json_bubble_data.filter(function(d){
+  return d.Sex === 'Both' &
+  +d.Year === 2017 &
+  d.Measure === measure_categories[0]});
 
 // We need to create a dropdown button for the user to choose which area to be displayed on the figure.
 d3.select("#selectSexBubblesButton")
@@ -43,12 +58,6 @@ d3.select("#selectMeasureBubblesButton")
   .attr("value", function (d) {
     return d; }) // corresponding value returned by the button
 
-// Level 3 bubbles (persons)
-var request = new XMLHttpRequest();
-  request.open("GET", "./Number_bubbles_df_level_3_2017_west_sussex.json", false);
-  request.send(null);
-  var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
-
 // append the svg object to the body of the page
 var svg_bubbles = d3.select("#my_deaths_bubble_dataviz")
  .append("svg")
@@ -70,11 +79,6 @@ tooltip_fg_2
  .style("top", (event.pageY - 10) + "px")
  .style("left", (event.pageX + 10) + "px")
   }
-
-data = json.filter(function(d){
-  return d.Sex === 'Both' &
-  +d.Year === 2017 &
-  d.Measure === measure_categories[0]});
 
 var forceXSplit = d3.forceX(function(d) {
   if (d['Cause group'] === 'Neoplasms') {
@@ -120,10 +124,13 @@ svg_size_key
  .selectAll("*")
  .remove();
 
-data = json.filter(function(d){
+data = json_bubble_data.filter(function(d){
     return d.Sex === selectedSexBubblesOption &
           +d.Year === 2017 &
           d.Measure === selectedMeasureBubblesOption})
+
+console.log(data)
+
 
 data = data.sort(function(a, b) {
     return d3.descending(a['Cause group'], b['Cause group']);
@@ -199,9 +206,7 @@ simulation
 .force("y", forceYSplit)
 .force("collide", d3.forceCollide().strength(.2).radius(function(d) {
    return (size(d.Value) + 1)}))
-// .iterations(2)
 .alphaTarget(0);
-// .restart();
 
 function dragstarted(d) {
   if (!d3.event.active) simulation.alphaTarget(.03).restart(); d.fx = d.x;
@@ -312,21 +317,19 @@ svg_size_key
  })
  .attr("font-size", 11)
  .attr('alignment-baseline', 'top')
-
 }
 
 // Initialize the plot with the first dataset
-update_bubbles(data)
+update_bubbles(bubble_data)
 
-// This says run the update_fg_6 function when there is a change on the 'selectAreaButton' div based on whatever the new value selected is.
   d3.select("#selectSexBubblesButton").on("change", function(d) {
 var selectedSexBubblesOption = d3.select('#selectSexBubblesButton').property("value")
 var selectedMeasureBubblesOption = d3.select('#selectMeasureBubblesButton').property("value")
-  update_bubbles(data)
+  update_bubbles(bubble_data)
   })
 
 d3.select("#selectMeasureBubblesButton").on("change", function(d) {
 var selectedSexBubblesOption = d3.select('#selectSexBubblesButton').property("value")
 var selectedMeasureBubblesOption = d3.select('#selectMeasureBubblesButton').property("value")
-  update_bubbles(data)
+  update_bubbles(bubble_data)
   })
