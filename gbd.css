@@ -90,6 +90,7 @@ a {
   padding-right: 25px;
   padding-bottom: 20PX;
   text-align: right;
+    float: right;
 }
 
 /* Buttons */
