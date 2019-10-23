@@ -1,5 +1,7 @@
 // set global width and heights to use for our svgs - you can choose not to use these and specify custom values
-var width = window.innerWidth / 2;
+// var width = window.innerWidth / 2;
+var width = document.getElementById("content_size").offsetWidth;
+
 var height = 500;
 
 // margins
@@ -264,12 +266,16 @@ function cause_group_1_summary() {
         tt_h3_1.innerHTML = item.Cause;
         var tt_p1 = document.createElement('p');
         tt_p1.innerHTML = item.deaths_label;
+        tt_p1.className = 'side';
         var tt_p2 = document.createElement('p');
         tt_p2.innerHTML = item.yll_label;
+        tt_p2.className = 'side';
         var tt_p3 = document.createElement('p');
         tt_p3.innerHTML = item.yld_label;
+        tt_p3.className = 'side';
         var tt_p4 = document.createElement('p');
         tt_p4.innerHTML = item.daly_label;
+        tt_p4.className = 'side';
 
         tt.appendChild(tt_h3_1);
         tt.appendChild(tt_p1);
@@ -278,7 +284,6 @@ function cause_group_1_summary() {
         tt.appendChild(tt_p4);
         list.appendChild(tt);
         var div = document.getElementById("level_1_cause_summary");
-
         div.appendChild(list);
     })
 }
@@ -303,16 +308,22 @@ function cause_group_2_summary() {
         tt_lv2.style.borderColor = color_cause_group(index);
         var tt_lv2_h3_1 = document.createElement('h3');
         tt_lv2_h3_1.innerHTML = item.Cause;
+
         var tt_lv2_p1 = document.createElement('p');
         tt_lv2_p1.innerHTML = item.Description;
+        tt_lv2_p1.className = 'side';
         var tt_lv2_p2 = document.createElement('p');
         tt_lv2_p2.innerHTML = item.deaths_label;
+        tt_lv2_p2.className = 'side';
         var tt_lv2_p3 = document.createElement('p');
         tt_lv2_p3.innerHTML = item.yll_label;
+        tt_lv2_p3.className = 'side';
         var tt_lv2_p4 = document.createElement('p');
         tt_lv2_p4.innerHTML = item.yld_label;
+        tt_lv2_p4.className = 'side';
         var tt_lv2_p5 = document.createElement('p');
         tt_lv2_p5.innerHTML = item.daly_label;
+        tt_lv2_p5.className = 'side';
 
         tt_lv2.appendChild(tt_lv2_h3_1);
         tt_lv2.appendChild(tt_lv2_p1);

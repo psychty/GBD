@@ -18,7 +18,8 @@ var margin = {top: 30,
               left: 60};
 
 // Now we can use the global width with
-var width_fg_4 = window.innerWidth / 2 - margin.left - margin.right;
+// var width_fg_4 = window.innerWidth / 2 - margin.left - margin.right;
+var width_fg_4 = document.getElementById("content_size").offsetWidth;
 var height_fg_4 = 400 - margin.top - margin.bottom;
 
 // By age level 2 conditions figure 4
@@ -468,7 +469,9 @@ daly_condition = json.filter(function(d){
   return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
 
 // Now we can use the global width with
-var width_fg_5 = window.innerWidth / 2 - margin.left - margin.right;
+// var width_fg_5 = window.innerWidth / 2 - margin.left - margin.right;
+var width_fg_5 = document.getElementById("content_size").offsetWidth;
+
 var height_fg_5 = 400 - margin.top - margin.bottom;
 
 var tooltip_condition_age = d3.select("#my_condition_lifecourse_dataviz")
@@ -952,7 +955,8 @@ yld_condition_proportion = json.filter(function(d){
 daly_condition_proportion = json.filter(function(d){
   return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
 
-var width_fg_5_prop = window.innerWidth / 2 - margin.left - margin.right;
+// var width_fg_5_prop = window.innerWidth / 2 - margin.left - margin.right;
+var width_fg_5_prop = document.getElementById("content_size").offsetWidth;
 var height_fg_5_prop = 400 - margin.top - margin.bottom;
 
 var tooltip_condition_age_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")

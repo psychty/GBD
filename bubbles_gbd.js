@@ -1,5 +1,7 @@
 // set global width and heights to use for our svgs - you can choose not to use these and specify custom values
-var width = window.innerWidth / 100 * 55;
+// var width = window.innerWidth / 100 * 50;
+var width = document.getElementById("content_size").offsetWidth;
+
 var height = 500;
 
 // margins
@@ -128,9 +130,6 @@ data = json_bubble_data.filter(function(d){
     return d.Sex === selectedSexBubblesOption &
           +d.Year === 2017 &
           d.Measure === selectedMeasureBubblesOption})
-
-console.log(data)
-
 
 data = data.sort(function(a, b) {
     return d3.descending(a['Cause group'], b['Cause group']);

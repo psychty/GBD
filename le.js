@@ -1,5 +1,6 @@
 // set global width and heights to use for our svgs - you can choose not to use these and specify custom values
-var width = window.innerWidth / 2;
+// var width = window.innerWidth / 100 * 50;
+var width = document.getElementById("content_size").offsetWidth;
 
 // Line chart
 var height_le = 300;
@@ -8,7 +9,7 @@ var height_le_stack = 300
 // margins
 var margin = {top: 30,
               right: 30,
-              bottom: 150,
+              bottom: 100,
               left: 60};
 
 var sex = ['Male', 'Female', 'Both']
