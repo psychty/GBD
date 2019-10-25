@@ -1851,6 +1851,8 @@ sets = json.filter(function(d){
         d.Cause === 'All causes' &
         d.Risk != "Burden not attributable to GBD risk factors"});
 
+var width = 300
+
 // Set up the svg and link to the div with the same identifier on the html page
 var svg_overlap = d3.select("#risk_overlap_datavis")
   .append("svg")
@@ -1864,8 +1866,19 @@ svg_overlap
 .call(venn.VennDiagram());
 
 // add a tooltip
-var tooltip = d3.select("body").append("div")
-    .attr("class", "venntooltip");
+var tooltip = d3.select("#risk_overlap_datavis")
+.append("div")
+.attr("class", "venntooltip")
+.style("opacity", 0)
+.style("position", "absolute")
+.style("z-index", "10")
+.style("background-color", "white")
+.style("border", "solid")
+.style("border-width", "1px")
+.style("border-radius", "5px")
+.style("padding", "10px")
+
+
 
 // add listeners to all the groups to display tooltip on mouseover
 svg_overlap
@@ -1874,16 +1887,24 @@ svg_overlap
     venn
     .sortAreas(svg_overlap, d); // sort all the areas relative to the current item
 
-// Display a tooltip with the current size
-tooltip
- .transition()
- .duration(400)
- .style("opacity", 1)
- .text(d3.format(",.0f")(d.Number) + ' ' + label_key(d.Measure) + ' ' + risk_key(d.Risk));
+    // var mouseleave_venn = function(d) {
+    // tooltip
+    // .style("visibility", "hidden")
+    // .style('opacity', 0)
+    //   }
+
+
+
+// // Display a tooltip with the current size
+// tooltip
+//  .transition()
+//  .duration(400)
+//  .style("opacity", 1)
+//  .text(d3.format(",.0f")(d.Number) + ' ' + label_key(d.Measure) + ' ' + risk_key(d.Risk));
 
 // highlight the current path
 var selection = d3.select(this)
-.transition("tooltip")
+.transition("tooltip_venn")
 .duration(400);
 
 // Change the opacity of the circle when it is hovered over
@@ -1899,17 +1920,20 @@ selection
  .style("stroke", '#fff');
 })
 
-.on("mousemove", function() {
+.on("mousemove", function(d){
   tooltip
-  .style("left", (d3.event.pageX) + "px")
-  .style("top", (d3.event.pageY - 30) + "px");
+  .html('<p>' + d3.format(",.0f")(d.Number) + ' ' + label_key(d.Measure) + ' ' + risk_key(d.Risk)+ '</p>')
+  .style("top", (event.pageY - 10) + "px")
+  .style("left", (event.pageX + 10) + "px")
+  .style('opacity', 1)
+  .style('visibility', 'visible')
   })
-
 .on("mouseout", function(d, i) {
   tooltip
   .transition()
   .duration(400)
-  .style("opacity", 0);
+  .style("opacity", 0)
+  .style('visibility','hidden');
 
 var selection = d3.select(this).transition("tooltip").duration(400);
 

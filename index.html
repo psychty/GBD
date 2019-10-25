@@ -234,7 +234,14 @@
                               deaths). The same conditions make up the top five causes of deaths for males although for females,
                               Alzheimer's and other dementias are the biggest cause of death (770 deaths) followed by heart disease
                               (557 deaths).</p>
-                            <p>Measure <select id='selectMeasureBubblesButton'></select> Sex: <select id='selectSexBubblesButton'></select></p>
+
+                              <p>
+                                  <span class="mr-1">Measure</span>
+                                  <select id='selectMeasureBubblesButton'></select>
+                                  <span class="ml-3 mr-1">Sex:</span>
+                                  <select id='selectSexBubblesButton'></select>
+                              </p>
+
                             <div id="my_deaths_bubble_dataviz"></div>
                             <p>Ischemic heart disease is also the largest contributor to premature mortality estimated to cause 15,731
                                   years of life lost, which is almost double the next biggest cause of premature mortality (Alzheimer's
@@ -357,8 +364,14 @@
           (in terms of demographics) neighbouring areas.</p>
       <p>You can also choose whether to compare the estimate with the South East region or England overall.</p>
       <div class='row'>
-          <p>Area: <select id='selectAreaButton'></select> Comparator: <select
-                  id='selectReferenceAreaButton'></select></p>
+
+        <p>
+            <span class="mr-1">Area</span>
+            <select id='selectAreaButton'></select>
+            <span class="ml-3 mr-1">Comparator:</span>
+            <select id='selectReferenceAreaButton'></select>
+        </p>
+
       </div>
       <div id="deaths_over_time_nn_rate_datavis"></div>
 
@@ -464,8 +477,16 @@
                   <h2>Exploring conditions in more detail</h2>
                   <p>It is not possible to discuss all conditions in the GBD data set. However, you can explore combinations
                       of measures and causes for West Sussex by sex in 2017.</p>
-                  <p>Condition <select id='selectExplore_CauseButton'></select>Measure <select
-                          id='selectExplore_MeasureButton'></select> Sex: <select id='selectExplore_SexButton'></select></p>
+
+                      <p>
+                          <span class="mr-1">Condition:</span>
+                          <select id='selectExplore_CauseButton'></select>
+                          <span class="mr-1">Measure:</span>
+                          <select id='selectExplore_MeasureButton'></select>
+                          <span class="ml-3 mr-1">Sex:</span>
+                          <select id='selectExplore_SexButton'></select>
+                      </p>
+
                   <div id='condition_group_table'></div>
 
                   <div class="infographic-placeholder">
@@ -502,7 +523,7 @@
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
-        <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> --> -->
+        <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
 
       <script src='gbd.js'></script>
       <script src='le.js'></script>

@@ -5,6 +5,8 @@ library(easypackages)
 
 libraries(c("readxl", "readr", "plyr", "dplyr", "ggplot2", "png", "tidyverse", "reshape2", "scales", "viridis", "rgdal", "officer", "flextable", "tmaptools", "lemon", "fingertipsR", "PHEindicatormethods", "jsonlite"))
 
+Area_x = 'West Sussex'
+
 # Incidence data published for 2017 - included in download
 # Prevalence data published for 2017
 
@@ -75,7 +77,22 @@ Condition_a <- Condition_number %>%
 # how much of the burden is not attributed to a risk factor
 
 # cancer
+cancer <- Condition_number %>% 
+  filter(`Cause group` == 'Neoplasms')
+
+unique(cancer$Cause)
 
 # cvd
+cvd <- Condition_number %>% 
+  filter(`Cause group` == 'Cardiovascular diseases')
+
+unique(cvd$Cause)
 
 # msk
+msk <- Condition_number %>% 
+  filter(`Cause group` == 'Musculoskeletal disorders')
+
+unique(msk$Cause)
+
+
+
