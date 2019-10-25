@@ -14,6 +14,10 @@ div {
   border-radius: 5px;
 }
 
+/* .list-group-item {
+  max-height: 15px;
+} */
+
 .header {
  margin: auto;
  width: 100%;
@@ -57,8 +61,6 @@ div {
   top: 0;
 }
 
-
-
 /* Fonts */
 
 h1 {
@@ -75,6 +77,13 @@ h2 {
     font-weight: bold;
     color: #256cb2;
   }
+
+h3 {
+  font-size: 1.2rem;
+  /* font-family: "Garamond", serif; */
+  font-weight: bold;
+  color: #000;
+    }
 
 p.side {
   font-size: .8rem;
@@ -94,11 +103,12 @@ a {
 }
 
 
-.left-col {
-  margin-left: 100px;
+.left-foot {
+  margin-left: 50px;
+  width: 60%;
 }
 
-.right-col {
+.right-foot {
   font-family: "Garamond", serif;
   font-weight: bold;
   background-color: #ffffff;
@@ -203,7 +213,7 @@ table {
 
 /* Tooltips */
 
-.tooltip {
+.tooltip_bubbles {
   max-width: 280px;
   padding-left: 5px;
   padding-right: 5px;
@@ -238,6 +248,28 @@ table {
 
 .tooltip_r_change {
   max-width: 280px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: .8rem;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 5px;
+  border: 1px solid #000;
+}
+
+.tooltip_rate_change {
+  max-width: 280px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: .8rem;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 5px;
+  border: 1px solid #000;
+}
+
+.venntooltip {
+  max-width: 150px;
   padding-left: 5px;
   padding-right: 5px;
   font-size: .8rem;
@@ -302,26 +334,6 @@ p.cause_list .side_tt {
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
 }
-
-.sticky{
-  position: sticky;
-}
-
-.venntooltip {
-  max-width: 150px;
-  padding-left: 5px;
-  padding-right: 5px;
-  font-size: .8rem;
-  background: #ffffff;
-  color: #000000;
-  border-radius: 5px;
-  border: 1px solid #000;
-}
-
-.row_venn {
-  float: left;
-}
-
 
 .ml-1{
     margin-left: 10px;

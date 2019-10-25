@@ -23,7 +23,7 @@
         <div class="left-sidebar">
         <h3>The Global Burden of Disease Study (GBD)</h3>
         <p>Jump to a section...</p>
-            <ul>
+            <!-- <ul>
                 <li><a href="#section-summary">Summary</a></li>
                 <li><a href="#section-life-expectancy">Life expectancy</a></li>
                 <li><a href="#section-deaths">Mortality</a></li>
@@ -31,8 +31,27 @@
                 <li><a href="#section-lifecourse">Burden over the lifecourse</a></li>
                 <li><a href="#section-standardised">Burden over time</a></li>
                 <li><a href='#section-risk'>Attributing risk to burden</a></li>
-                <li><a href='#section-exploring'>Exploring conditions</a></li>
-            </ul>
+                <li><a href='#section-cardiovascular'>Exploring cardiovascular diseases</a></li>
+                <li><a href='#section-neoplasm'>Exploring neoplasms</a></li>
+                <li><a href='#section-msk'>Exploring musculoskeletal conditions</a></li>
+                <li><a href='#section-exploring'>Exploring other conditions</a></li>
+            </ul> -->
+
+
+    <div id="list-example" class="list-group">
+      <a class="list-group-item list-group-item-action" href="#section-summary">Summary</a>
+                <a class="list-group-item list-group-item-action"  href="#section-life-expectancy">Life expectancy</a>
+                <a class="list-group-item list-group-item-action"  href="#section-deaths">Mortality</a>
+                <a class="list-group-item list-group-item-action"  href="#section-burden">Other measures of burden</a>
+                <a class="list-group-item list-group-item-action"  href="#section-lifecourse">Burden over the lifecourse</a>
+                <a class="list-group-item list-group-item-action"  href="#section-standardised">Burden over time</a>
+                <a class="list-group-item list-group-item-action"  href='#section-risk'>Attributing risk to burden</a>
+                <a class="list-group-item list-group-item-action"  href='#section-cardiovascular'>Exploring cardiovascular diseases</a>
+                <a class="list-group-item list-group-item-action"  href='#section-neoplasm'>Exploring neoplasms</a>
+                <a class="list-group-item list-group-item-action"  href='#section-msk'>Exploring musculoskeletal conditions</a>
+                <a class="list-group-item list-group-item-action"  href='#section-exploring'>Exploring other conditions</a>
+    </div>
+    <!-- <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">  </div> -->
 
         </div>
         <div class="main">
@@ -163,14 +182,12 @@
                   <h1>Other ways to measure the burden of disease</h1>
                   <p>The leading burdens of disease in West Sussex in 2017 are given in the table below. You'll notice there
                       are actually four top 10s and these reflect the various ways conditions affect our health. Descriptions
-                      of each measure of burden are given to the left.</p>
-                  <p>Whilst cardiovascular diseases and neoplasms are the biggest contributors to mortality, some conditions
-                      which have fairly low mortality rates can cause significant levels of disability.</p>
-                  <p>For example, musculoskeletal conditions account for 0.7% of deaths in West Sussex in 2017 (70 deaths) but
-                      were estimated to be responsible for almost one in four years of life lived with disability (28,852,
-                      23.1%) in West Sussex.</p>
-                  <h3>Top ten causes of ill health and mortality; persons; all ages; West Sussex; 2017</h3>
-                  <div id="top_10_table"></div>
+                      of each measure of burden are given to the right.</p>
+                <h3>Top ten causes of ill health and mortality; persons; all ages; West Sussex; 2017</h3>
+                <div id = 'top_10_table'></div>
+                <p>Whilst cardiovascular diseases and neoplasms are the biggest contributors to mortality, some conditions which have fairly low mortality rates can cause significant levels of disability.</p>
+                  <p>For example, musculoskeletal conditions account for 0.7% of deaths in West Sussex in 2017 (70 deaths) but were estimated to be responsible for almost one in four years of life lived with disability (28,852, 23.1%) in West Sussex.</p>
+
                   <p>The Disability Adjusted Life Years lost (DALY) measure is the best measure of the combined burden of a
                       disease as it includes the impact of premature mortality as well as years of life lived with the burden
                       of a disease. Whilst the number of deaths in West Sussex was 9,478, if you break down this mortality to
@@ -382,9 +399,10 @@
                 <div class="content">
                   <h1>Attributing risk to the burden of disease</h1>
                   <!-- <p>Globally, 59·9% (58·4–61·3) of deaths and 45·2% (43·2–47·3) of DALYs could be attributed to the risk factors assessed in GBD 2016. For deaths, non-communicable diseases (NCDs) show the largest proportion attributable to measured risk factors, at 64·4% (62·6–66·2), with communicable, maternal, neonatal, and nutritional (CMNN) causes at 57·9% (55·4–61·0), and injuries at 25·8% (23·7–27·8). The picture was different for DALYs, however, where we observed that 58·2% (56·4–60·3) of DALYs in CMNN causes are attributable to risk factors, compared with 43·5% (40·7–46·7) in NCDs and 21·0% (19·3–22·7) for injuries. Leading causes of DALYs in CMNN causes, such as diarrhoea and lower respiratory infections (LRI), also showed more than 80% of DALYs can be attributed to risk factors (appendix 2 p 1).</p> -->
-                  <div id='risk_overlap_datavis' class='row_venn'></div>
+                  <div id='risk_overlap_datavis'></div>
                   <p>This visualisation is built from work by <a href="https://github.com/benfred/venn.js" ,target="_blank">Ben
                       Frederickson</a></p>
+                      <p>If venn wont handle a fourth circle independent of the others perhaps we need to find out the scale of numbers to area and create a corresponding circle for burden unattributed in a nearby (or the same svg).</p>
                 </div>
                 <div class="right-sidebar">
                   <h3>Risk factor</h3>
@@ -418,6 +436,29 @@
                 </div>
             </div>
 
+            <div class="row" id = 'section-cardiovascular'>
+                <div class="content">
+                  <h3>Cardiovascular diseases</h3>
+                </div>
+                <div class="right-sidebar"></div>
+            </div>
+
+            <div class="row" id = 'section-neoplasm'>
+                <div class="content">
+                  <h3>Neoplasms</h3>
+                </div>
+                <div class="right-sidebar"></div>
+            </div>
+
+            <div class="row" id = 'section-msk'>
+                <div class="content">
+                  <h3>Musculoskeletal conditions</h3>
+                </div>
+                <div class="right-sidebar"></div>
+            </div>
+
+
+
             <div class="row" id = 'section-exploring'>
                 <div class="content">
                   <h2>Exploring conditions in more detail</h2>
@@ -447,36 +488,28 @@
         </div>
     </div>
     <footer>
-        <div class="left-col">
+        <div class="left-foot">
           <p>Data downloaded from the <a href="http://ghdx.healthdata.org/gbd-results-tool" target="_blank">GBD online results tool;</a href> Institute for Health Metrics and Evaluation (IHME). Findings from the Global Burden of Disease Study 2017. Seattle, WA: IHME, 2018</p>
           <p>A note on spellings: As the GBD is produced in Seattle, USA, some conditions and cause names use English (U.S.) spellings.</p>
         </div>
-        <div class="right-col">M4de by Dr Rich Tyler<br><a href="https://github.com/psychty" target="_blank">github/psychty</a><br>July
-            2019 </div>
-        </footer>
+        <div class="right-foot">M4de by Dr Rich Tyler<br><a href="https://github.com/psychty" target="_blank">github/psychty</a><br>November 2019 </div>
+    </footer>
 
         <script src="https://d3plus.org/js/d3plus.v2.0.0-alpha.22.full.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
         <script src="https://d3js.org/d3-format.v1.min.js"></script>
         <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-                crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-                crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-                crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
+        <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> --> -->
 
-
-        <script src='le.js'></script>
-        <script src='gbd.js'></script>
-        <script src='burden_by_age.js'></script>
-        <script src='bubbles_gbd.js'></script>
-        <script src='venn_gbd.js'></script>
-        <script src='exploring_conditions.js'></script></div>
-
+      <script src='gbd.js'></script>
+      <script src='le.js'></script>
+      <script src='bubbles_gbd.js'></script>
+      <script src='burden_by_age.js'></script>
+      <script src='standardised_gbd.js'></script>
+      <script src='venn_gbd.js'></script>
+      <script src='exploring_conditions.js'></script></div>
 </body>
 </html>

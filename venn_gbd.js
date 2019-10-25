@@ -1848,8 +1848,8 @@ var json = JSON.parse(request.responseText);
 
 sets = json.filter(function(d){
  return d.Measure === 'Deaths' &
-        d.Cause === 'All causes'});// &
-        // d.Risk != "Burden not attributable to GBD risk factors"});
+        d.Cause === 'All causes' &
+        d.Risk != "Burden not attributable to GBD risk factors"});
 
 // Set up the svg and link to the div with the same identifier on the html page
 var svg_overlap = d3.select("#risk_overlap_datavis")
@@ -1923,84 +1923,3 @@ selection
     return .0}})
 .style("stroke-opacity", 0);
 });
-
-// sets = json.filter(function(d){
-//  return d.Measure === 'Deaths' &
-//         d.Cause === 'All causes' &
-//         d.Risk === "Burden not attributable to GBD risk factors"});
-//
-// // Set up the svg and link to the div with the same identifier on the html page
-// var svg_no_overlap = d3.select("#risk_no_overlap_datavis")
-// .append("svg")
-// .attr("width", width)
-//           .attr("height", height_overlap)
-//           .append("g");
-//
-// // draw venn diagram
-// svg_no_overlap
-//   .datum(sets)
-//   .call(venn.VennDiagram());
-//
-// // add a tooltip
-// var tooltip = d3.select("body")
-//  .append("div")
-//  .attr("class", "venntooltip");
-//
-// // add listeners to all the groups to display tooltip on mouseover
-// svg_no_overlap
-//  .selectAll("g")
-//  .on("mouseover", function(d, i) {
-//     venn
-//  .sortAreas(svg_no_overlap, d); // sort all the areas relative to the current item
-//
-// // Display a tooltip with the current size
-// tooltip
-//  .transition()
-//  .duration(400)
-//  .style("opacity", 1)
-//  .text(d3.format(",.0f")(d.Number) + ' ' + label_key(d.Measure) + ' ' + risk_key(d.Risk));
-//
-// // highlight the current path
-// var selection = d3.select(this)
-// .transition("tooltip")
-// .duration(400);
-//
-// // Change the opacity of the circle when it is hovered over
-// selection
-//  .select("path")
-//  .style("stroke-width", 3)
-//  .style("fill-opacity", function(d){
-//    if (d.sets.length == 1){
-//      return .7}
-//      else {
-//      return .5}})
-//  .style("stroke-opacity", 1)
-//  .style("stroke", '#fff');
-//   })
-//
-// .on("mousemove", function() {
-// tooltip
-// .style("left", (d3.event.pageX) + "px")
-// .style("top", (d3.event.pageY - 30) + "px");
-// })
-//
-// .on("mouseout", function(d, i) {
-// tooltip
-// .transition()
-// .duration(400)
-// .style("opacity", 0);
-//
-// var selection = d3.select(this)
-// .transition("tooltip")
-// .duration(400);
-//
-// selection
-// .select("path")
-// .style("stroke-width", 0)
-// .style("fill-opacity", function(d){
-//   if (d.sets.length == 1){
-//   return .25}
-//   else {
-//   return .0}})
-// .style("stroke-opacity", 0);
-//   });

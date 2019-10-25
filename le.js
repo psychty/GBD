@@ -368,7 +368,6 @@ var hale = json_le.filter(function(d){
   //  .text(function(d){ return closest_year});
   }
 
-
 var le_colour  = d3.scaleOrdinal()
   .domain(le_subgroups)
   .range(["#eb9dff","#9b1e54"])

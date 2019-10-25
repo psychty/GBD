@@ -1,6 +1,6 @@
 // set global width and heights to use for our svgs - you can choose not to use these and specify custom values
 // var width = window.innerWidth / 100 * 50;
-var width = document.getElementById("content_size").offsetWidth;
+var width_bubble = document.getElementById("content_size").offsetWidth;
 
 var height = 500;
 
@@ -27,10 +27,13 @@ var xLabel = 190
 var xCircle = 100
 var yCircle = 190
 
-// Level 3 bubbles (persons)
+/////////////////////
+// Level 3 bubbles //
+/////////////////////
+
 var request = new XMLHttpRequest();
-  request.open("GET", "./Number_bubbles_df_level_3_2017_west_sussex.json", false);
-  request.send(null);
+request.open("GET", "./Number_bubbles_df_level_3_2017_west_sussex.json", false);
+request.send(null);
 var json_bubble_data = JSON.parse(request.responseText); // parse the fetched json data into a variable
 
 bubble_data = json_bubble_data.filter(function(d){
@@ -40,14 +43,14 @@ bubble_data = json_bubble_data.filter(function(d){
 
 // We need to create a dropdown button for the user to choose which area to be displayed on the figure.
 d3.select("#selectSexBubblesButton")
-  .selectAll('myOptions')
- 	.data(['Both','Male','Female'])
- .enter()
-	.append('option')
-  .text(function (d) {
-    return d; }) // text to appear in the menu - this does not have to be as it is in the data (you can concatenate other values).
-  .attr("value", function (d) {
-    return d; }) // corresponding value returned by the button
+.selectAll('myOptions')
+.data(['Both','Male','Female'])
+.enter()
+.append('option')
+.text(function (d) {
+  return d; }) // text to appear in the menu - this does not have to be as it is in the data (you can concatenate other values).
+.attr("value", function (d) {
+  return d; }) // corresponding value returned by the button
 
 // We need to create a dropdown button for the user to choose which area to be displayed on the figure.
 d3.select("#selectMeasureBubblesButton")
@@ -62,17 +65,22 @@ d3.select("#selectMeasureBubblesButton")
 
 // append the svg object to the body of the page
 var svg_bubbles = d3.select("#my_deaths_bubble_dataviz")
- .append("svg")
- .attr("width", width)
- .attr("height", height)
+.append("svg")
+.attr("width", width_bubble)
+.attr("height", height)
 
 // Create functions to show, move, and hide the tooltip
 var tooltip_fg_2 = d3.select("#my_deaths_bubble_dataviz")
- .append("div")
- .attr("class", "tooltip")
- .style("position", "absolute")
- .style("z-index", "10")
- .style("visibility", "hidden");
+.append("div")
+.style("opacity", 0)
+.attr("class", "tooltip_bubbles")
+.style("position", "absolute")
+.style("z-index", "10")
+.style("background-color", "white")
+.style("border", "solid")
+.style("border-width", "1px")
+.style("border-radius", "5px")
+.style("padding", "10px")
 
 // This creates the function for what to do when someone moves the mouse over a circle (e.g. move the tooltip in relation to the mouse cursor).
 var showTooltip_fg_2 = function(d) {
@@ -80,13 +88,15 @@ tooltip_fg_2
  .html("<h3>" + d.Cause + "</h3><p>In " + d.Year + ", there were <strong>" + d3.format(",.0f")(d.Value) + "</strong> " + label_key(d.Measure) + " among " + d.Sex.toLowerCase().replace('both', 'both males and female') + "s caused by " + d.Cause + ".</p><p>This is part of the " + d['Cause group'] + " disease group.</p>")
  .style("top", (event.pageY - 10) + "px")
  .style("left", (event.pageX + 10) + "px")
+.style('opacity', 1)
+
   }
 
 var forceXSplit = d3.forceX(function(d) {
   if (d['Cause group'] === 'Neoplasms') {
-    return width / 10 }
+    return (width_bubble / 100) * 15 }
     else {
-    return width / 2 }
+    return (width_bubble / 100) * 50 }
           })
 .strength(0.05)
 
@@ -185,7 +195,7 @@ var node = svg_bubbles.append("g")
 
 // Features of the forces applied to the nodes:
 var simulation = d3.forceSimulation()
- .force("center", d3.forceCenter().x(width/2).y(height/2))
+ .force("center", d3.forceCenter().x(width_bubble/2).y(height/2))
  .force("charge", d3.forceManyBody().strength(.1))
  .force("collide", d3.forceCollide().strength(.2).radius(function(d) {
     return (size(d.Value) + 3)})
@@ -256,7 +266,7 @@ svg_bubbles
     else {
     return 150 }
           })
-.attr("x", width / 3)
+.attr("x", (width_bubble / 100) * 40 )
 .attr('opacity', 0)
 .transition()
 .duration(2000)

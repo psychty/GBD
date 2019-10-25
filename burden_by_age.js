@@ -7,6 +7,14 @@ var color_cause_group = d3.scaleOrdinal()
 
 var measure_categories = ['Deaths', 'YLLs (Years of Life Lost)', 'YLDs (Years Lived with Disability)', 'DALYs (Disability-Adjusted Life Years)']
 
+var ages = ["Early Neonatal", "Late Neonatal", "Post Neonatal", "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29", "30 to 34", "35 to 39", "40 to 44", "45 to 49", "50 to 54", "55 to 59", "60 to 64", "65 to 69", "70 to 74", "75 to 79", "80 to 84", "85 to 89", "90 to 94", "95 plus"]
+
+
+var color_age_group = d3.scaleOrdinal()
+    .domain(ages)
+    .range(["#ff82a1", "#d0005a", "#903331", "#ffa479", "#ae7300", "#eba100", "#e9c254", "#b99700", "#6dba1c", "#3b5b2c", "#a2d39b", "#00bb53", "#008f69", "#5adbb5", "#00b1b8", "#02b8fe", "#0184e1", "#7d7bff", "#daa3ff", "#713d85", "#c85ae0", "#e0afdd", "#7c3e5f"]);
+
+
 var label_key = d3.scaleOrdinal()
     .domain(measure_categories)
     .range(['deaths', 'YLLs', 'YLDs',' DALYs'])
@@ -89,7 +97,7 @@ d3.selectAll(".myRect" + subgroup_key)
 // append the svg object to the body of the page
 var svg_fg_age_stack_1 = d3.select("#my_lifecourse_condition_dataviz")
 .append("svg")
-.attr("width", width)
+.attr("width", width_fg_4)
 .attr("height", height_fg_4 + 100)
 .append("g")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -97,7 +105,8 @@ var svg_fg_age_stack_1 = d3.select("#my_lifecourse_condition_dataviz")
 // Add X axis
 var x_fg_4 = d3.scaleBand()
 .domain(age_groups)
-.range([0, width_fg_4])
+// .range([0, width_fg_4])
+.range([0, width_fg_4 - margin.left - 50])
 .padding([0.2])
 
 svg_fg_age_stack_1
@@ -114,7 +123,7 @@ svg_fg_age_stack_1
 svg_fg_age_stack_1
 .append("text")
 .attr("text-anchor", "end")
-.attr("x", width/2)
+.attr("x", width_fg_4/2)
 .attr("y", height_fg_4 + margin.top + 35)
 .text("Age group");
 
@@ -140,7 +149,7 @@ svg_fg_age_stack_1
 .append("text")
 .attr("text-anchor", "start")
 .attr("y", 5)
-.attr("x", (width / 100) * 1)
+.attr("x", (width_fg_4 / 100) * 1)
 .style('font-size', '10px')
 .attr('opacity', 0)
 .transition()
@@ -152,7 +161,7 @@ svg_fg_age_stack_1
 .append("text")
 .attr("text-anchor", "start")
 .attr("y", 15)
-.attr("x", (width / 100) * 1)
+.attr("x", (width_fg_4 / 100) * 1)
 .style('font-size', '10px')
 .attr('opacity', 0)
 .transition()
@@ -179,7 +188,7 @@ svg_fg_age_stack_1
 .attr("text-anchor", "start")
 .attr('id', 'age_stack_label_1')
 .attr("y", 70)
-.attr("x", (width / 100) * 10)
+.attr("x", (width_fg_4 / 100) * 10)
 .style('font-size', '12px')
 .attr('opacity', 0)
 .transition()
@@ -192,7 +201,7 @@ svg_fg_age_stack_1
 .attr('id', 'age_stack_label_2')
 .attr("text-anchor", "start")
 .attr("y", 85)
-.attr("x", (width / 100) * 10)
+.attr("x", (width_fg_4 / 100) * 10)
 .style('font-size', '12px')
 .attr('opacity', 0)
 .transition()
@@ -244,7 +253,7 @@ svg_fg_age_stack_1
 .attr("text-anchor", "start")
 .attr('id', 'age_stack_label_1')
 .attr("y", 70)
-.attr("x", (width / 100) * 10)
+.attr("x", (width_fg_4 / 100) * 10)
 .style('font-size', '12px')
 .attr('opacity', 0)
 .transition()
@@ -257,7 +266,7 @@ svg_fg_age_stack_1
 .attr('id', 'age_stack_label_2')
 .attr("text-anchor", "start")
 .attr("y", 85)
-.attr("x", (width / 100) * 10)
+.attr("x", (width_fg_4 / 100) * 10)
 .style('font-size', '12px')
 .attr('opacity', 0)
 .transition()
@@ -270,7 +279,7 @@ svg_fg_age_stack_1
 .attr("text-anchor", "start")
 .attr('id', 'age_stack_label_1')
 .attr("y", 50)
-.attr("x", (width / 100) * 10)
+.attr("x", (width_fg_4 / 100) * 10)
 .style('font-weight', 'bold')
 .attr('opacity', 0)
 .transition()
@@ -326,7 +335,7 @@ svg_fg_age_stack_1
 .attr("text-anchor", "start")
 .attr('id', 'age_stack_label_1')
 .attr("y", 70)
-.attr("x", (width / 100) * 10)
+.attr("x", (width_fg_4 / 100) * 10)
 .style('font-size', '12px')
 .attr('opacity', 0)
 .transition()
@@ -339,7 +348,7 @@ svg_fg_age_stack_1
 .attr('id', 'age_stack_label_2')
 .attr("text-anchor", "start")
 .attr("y", 85)
-.attr("x", (width / 100) * 10)
+.attr("x", (width_fg_4 / 100) * 10)
 .style('font-size', '12px')
 .attr('opacity', 0)
 .transition()
@@ -443,7 +452,10 @@ svg_fg_age_stack_1
 
 update_age(deaths_age)
 
-// age by conditions
+/////////////////////////////////
+// x = age stacks = conditions //
+/////////////////////////////////
+
 var request = new XMLHttpRequest();
     request.open("GET", "./Numbers_lifecourse_persons_by_condition_level_2_2017_west_sussex.json", false);
     request.send(null);
@@ -520,7 +532,7 @@ d3.selectAll(".myRect_age_" + subgroup_age_key)
 // append the svg object to the body of the page
 var svg_fg_age_stack_2 = d3.select("#my_condition_lifecourse_dataviz")
  .append("svg")
- .attr("width", width)
+ .attr("width", width_fg_5)
  .attr("height", height_fg_5 + 250)
  .append("g")
  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -528,7 +540,7 @@ var svg_fg_age_stack_2 = d3.select("#my_condition_lifecourse_dataviz")
 // Add X axis
 var x_fg_5 = d3.scaleBand()
  .domain(conditions)
- .range([0, width_fg_5])
+ .range([0, width_fg_5 - margin.left - 50])
  .padding([0.2])
 
 svg_fg_age_stack_2
@@ -545,7 +557,7 @@ svg_fg_age_stack_2
 svg_fg_age_stack_2
  .append("text")
  .attr("text-anchor", "end")
- .attr("x", width/2)
+ .attr("x", width_fg_5/2)
  .attr("y", height_fg_5 + margin.top + 150)
  .text("Condition");
 
@@ -572,7 +584,7 @@ svg_fg_age_stack_2
 .append("text")
 .attr("text-anchor", "start")
 .attr("y", 5)
-.attr("x", (width / 100) * 1)
+.attr("x", (width_fg_5 / 100) * 1)
 .style('font-size', '10px')
 .attr('opacity', 0)
 .transition()
@@ -584,7 +596,7 @@ svg_fg_age_stack_2
 .append("text")
 .attr("text-anchor", "start")
 .attr("y", 15)
-.attr("x", (width / 100) * 1)
+.attr("x", (width_fg_5 / 100) * 1)
 .style('font-size', '10px')
 .attr('opacity', 0)
 .transition()
@@ -626,9 +638,9 @@ svg_fg_age_stack_2
              })
    .attr("x", function(d) {
      if (measure_name_fg_5[0] === 'YLDs (Years Lived with Disability)') {
-       return (width / 100) * 10 }
+       return (width_fg_5 / 100) * 10 }
        else {
-       return (width / 100) * 50 }
+       return (width_fg_5 / 100) * 50 }
              })
    .style('font-size', '12px')
    .attr('opacity', 0)
@@ -649,9 +661,9 @@ svg_fg_age_stack_2
              })
    .attr("x", function(d) {
      if (measure_name_fg_5[0] === 'YLDs (Years Lived with Disability)') {
-       return (width / 100) * 10 }
+       return (width_fg_5 / 100) * 10 }
        else {
-       return (width / 100) * 50 }
+       return (width_fg_5 / 100) * 50 }
              })
    .style('font-size', '12px')
    .attr('opacity', 0)
@@ -714,9 +726,9 @@ svg_fg_age_stack_2
    .attr('y', 70)
    .attr("x", function(d) {
      if (measure_name_fg_5[0] === 'YLDs (Years Lived with Disability)') {
-       return (width / 100) * 10 }
+       return (width_fg_5 / 100) * 10 }
        else {
-       return (width / 100) * 50 }
+       return (width_fg_5 / 100) * 50 }
              })
    .style('font-size', '12px')
    .attr('opacity', 0)
@@ -732,9 +744,9 @@ svg_fg_age_stack_2
    .attr("y", 85)
    .attr("x", function(d) {
      if (measure_name_fg_5[0] === 'YLDs (Years Lived with Disability)') {
-       return (width / 100) * 10 }
+       return (width_fg_5 / 100) * 10 }
        else {
-       return (width / 100) * 50 }
+       return (width_fg_5 / 100) * 50 }
              })
    .style('font-size', '12px')
    .attr('opacity', 0)
@@ -748,7 +760,7 @@ svg_fg_age_stack_2
    .attr("text-anchor", "start")
    .attr('id', 'age_stack_label_1')
    .attr("y", 50)
-   .attr("x", (width / 100) * 10)
+   .attr("x", (width_fg_5 / 100) * 10)
    .style('font-weight', 'bold')
    .attr('opacity', 0)
    .transition()
@@ -811,9 +823,9 @@ svg_fg_age_stack_2
      })
 .attr("x", function(d) {
  if (measure_name_fg_5[0] === 'YLDs (Years Lived with Disability)') {
-     return (width / 100) * 10 }
+     return (width_fg_5 / 100) * 10 }
      else {
-     return (width / 100) * 50 }
+     return (width_fg_5 / 100) * 50 }
      })
 .style('font-size', '12px')
 .attr('opacity', 0)
@@ -834,9 +846,9 @@ svg_fg_age_stack_2
    })
 .attr("x", function(d) {
  if (measure_name_fg_5[0] === 'YLDs (Years Lived with Disability)') {
-   return (width / 100) * 10 }
+   return (width_fg_5 / 100) * 10 }
    else {
-   return (width / 100) * 50 }
+   return (width_fg_5 / 100) * 50 }
    })
 .style('font-size', '12px')
 .attr('opacity', 0)
@@ -955,26 +967,25 @@ yld_condition_proportion = json.filter(function(d){
 daly_condition_proportion = json.filter(function(d){
   return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
 
-// var width_fg_5_prop = window.innerWidth / 2 - margin.left - margin.right;
 var width_fg_5_prop = document.getElementById("content_size").offsetWidth;
 var height_fg_5_prop = 400 - margin.top - margin.bottom;
 
 var tooltip_condition_age_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
- .append("div")
- .style("opacity", 0)
- .attr("class", "tooltip_bars")
- .style("position", "absolute")
- .style("z-index", "10")
- .style("background-color", "white")
- .style("border", "solid")
- .style("border-width", "1px")
- .style("border-radius", "5px")
- .style("padding", "10px")
+.append("div")
+.style("opacity", 0)
+.attr("class", "tooltip_bars")
+.style("position", "absolute")
+.style("z-index", "10")
+.style("background-color", "white")
+.style("border", "solid")
+.style("border-width", "1px")
+.style("border-radius", "5px")
+.style("padding", "10px")
 
 var showTooltip_condition_age_prop = function(d) {
-    tooltip_condition_age_prop
- .transition()
- .duration(200);
+tooltip_condition_age_prop
+.transition()
+.duration(200);
 
 var subgroupName_prop = d3.select(this.parentNode).datum().key;
 var subgroupValue_prop = d.data[subgroupName_prop];
@@ -1004,7 +1015,7 @@ d3.selectAll(".myRect_age_" + subgroup_age_key)
 // append the svg object to the body of the page
 var svg_fg_5_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
  .append("svg")
- .attr("width", width)
+ .attr("width", width_fg_5_prop)
  .attr("height", height_fg_5_prop + 250)
  .append("g")
  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -1012,7 +1023,8 @@ var svg_fg_5_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
 // Add X axis
 var x_fg_5_prop = d3.scaleBand()
  .domain(conditions)
- .range([0, width_fg_5_prop])
+ // .range([0, width_fg_5_prop])
+ .range([0, width_fg_5_prop - margin.left - 50])
  .padding([0.2])
 
 svg_fg_5_prop
@@ -1029,7 +1041,7 @@ svg_fg_5_prop
 svg_fg_5_prop
  .append("text")
  .attr("text-anchor", "end")
- .attr("x", width/2)
+ .attr("x", width_fg_5_prop/2)
  .attr("y", height_fg_5_prop + margin.top + 150)
  .text("Condition");
 
