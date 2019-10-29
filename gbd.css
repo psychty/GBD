@@ -6,6 +6,11 @@ div {
     display: inline-block;
 }
 
+.liquidFillGaugeText {
+  font-family: Helvetica;
+  font-weight: bold; }
+
+
 .summary {
   padding-top: 15px;
   padding-bottom: 15px;
@@ -14,6 +19,9 @@ div {
   border-radius: 5px;
 }
 
+svg {
+  background-color: #E3EDF9;
+}
 /* .list-group-item {
   max-height: 15px;
 } */

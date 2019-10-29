@@ -1,5 +1,5 @@
 // set global width and heights to use for our svgs - you can choose not to use these and specify custom values
-var width = 600
+var width = document.getElementById("content_size").offsetWidth
 
 var height_overlap = 400;
 var padding = 30;
@@ -21,11 +21,119 @@ var risk_key = d3.scaleOrdinal()
  .domain(['Environment/Occupational risks','Behavioral risks','Metabolic risks','Burden not attributable to GBD risk factors','Behavioral & Environmental','Environmental & Metabolic','Behavioral & Environmental & Metabolic','Behavioral & Metabolic'])
  .range(['were attributable to environmental/occupational risks','were attributable to behavioral risks','were attributable to metabolic risks','were not attributable to GBD risk factors','were attributable to behavioral and environmental risks','were attributable to environmental and metabolic risks','were attributable to behavioral, environmental and metabolic risk','were attributable to behavioral and metabolic risks'])
 
-// line 1259 venn.js for colour
-
 var color_lv_1_risk_group = d3.scaleOrdinal()
  .domain(['Environmental/occupational risks', 'Behavioral risks', 'Metabolic risks', 'Burden not attributable to GBD risk factors'])
- .range(["#ff4da8","#01c1da","#624194","#DBDBDB"])
+ .range(["#ff4da8","#01c1da","#624194","#625b62"])
+
+
+ //////////
+ // Risk //
+ //////////
+
+ // Bring data in
+ var request = new XMLHttpRequest();
+ request.open("GET", 'level_2_risk_explained_burden_2017_west_sussex.json', false);
+ request.send(null);
+
+ var explained_burden = JSON.parse(request.responseText);
+
+ console.log(explained_burden)
+
+
+
+ // Bring data in
+ var request = new XMLHttpRequest();
+ request.open("GET", "./level_1_risk_2017_west_sussex_summary.json", false);
+ request.send(null);
+
+ var lv_1_summary_risk = JSON.parse(request.responseText);
+
+ function risk_group_1_summary() {
+     lv_1_summary_risk.forEach(function (item, index) {
+         var list = document.createElement("li");
+         list.innerHTML = item.Risk;
+         list.className = 'cause_list';
+         list.style.borderColor = color_lv_1_risk_group(index);
+         var tt = document.createElement('div');
+         tt.className = 'side_tt';
+         tt.style.borderColor = color_lv_1_risk_group(index);
+         var tt_h3_1 = document.createElement('h3');
+         tt_h3_1.innerHTML = item.Risk;
+         var tt_p1 = document.createElement('p');
+         tt_p1.innerHTML = item['Description'];
+         var tt_p2 = document.createElement('p');
+         tt_p2.innerHTML = item['Deaths'];
+         var tt_p3 = document.createElement('p');
+         tt_p3.innerHTML = item['YLLs (Years of Life Lost)'];
+         var tt_p4 = document.createElement('p');
+         tt_p4.innerHTML = item['YLDs (Years Lived with Disability)'];
+         var tt_p5 = document.createElement('p');
+         tt_p5.innerHTML = item['DALYs (Disability-Adjusted Life Years)'];
+
+
+         tt.appendChild(tt_h3_1);
+         tt.appendChild(tt_p1);
+         tt.appendChild(tt_p2);
+         tt.appendChild(tt_p3);
+         tt.appendChild(tt_p4);
+         tt.appendChild(tt_p5);
+         list.appendChild(tt);
+         var div = document.getElementById("level_1_risk_summary");
+
+         div.appendChild(list);
+     })
+ }
+
+ risk_group_1_summary();
+
+ var request = new XMLHttpRequest();
+ request.open("GET", "./level_2_risk_2017_west_sussex_summary.json", false);
+ request.send(null);
+
+ var level_2_risk_summary = JSON.parse(request.responseText);
+
+
+
+ function risk_group_2_summary() {
+     level_2_risk_summary.forEach(function (item, index) {
+         var list = document.createElement("li");
+         list.innerHTML = item.Risk;
+         list.className = 'cause_list';
+         list.style.borderColor = color_risk_group(index);
+
+         var tt_lv2 = document.createElement('div');
+         tt_lv2.className = 'side_tt';
+         tt_lv2.style.borderColor = color_risk_group(index);
+         var tt_lv2_h3_1 = document.createElement('h3');
+         tt_lv2_h3_1.innerHTML = item.Risk;
+         var tt_lv2_p1 = document.createElement('p');
+         tt_lv2_p1.innerHTML = item.Description;
+         var tt_lv2_p2 = document.createElement('p');
+         tt_lv2_p2.innerHTML = item['Deaths'];
+         var tt_lv2_p3 = document.createElement('p');
+         tt_lv2_p3.innerHTML = item['YLLs (Years of Life Lost)'];
+         var tt_lv2_p4 = document.createElement('p');
+         tt_lv2_p4.innerHTML = item['YLDs (Years Lived with Disability)'];
+         var tt_lv2_p5 = document.createElement('p');
+         tt_lv2_p5.innerHTML = item['DALYs (Disability-Adjusted Life Years)'];
+
+         tt_lv2.appendChild(tt_lv2_h3_1);
+         tt_lv2.appendChild(tt_lv2_p1);
+         tt_lv2.appendChild(tt_lv2_p2);
+         tt_lv2.appendChild(tt_lv2_p3);
+         tt_lv2.appendChild(tt_lv2_p4);
+         tt_lv2.appendChild(tt_lv2_p5);
+         list.appendChild(tt_lv2);
+         var div = document.getElementById("level_2_risk_summary");
+         div.appendChild(list);
+     })
+ }
+
+ risk_group_2_summary();
+
+//////////
+// Venn //
+//////////
 
 (function (global, factory) {
      typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-selection'), require('d3-transition')) :
@@ -1211,6 +1319,13 @@ var current = {x: initial.slice(), fx: 0, fxprime: initial.slice()},
              xRange = bounds.xRange,
              yRange = bounds.yRange;
 
+             // console.log('bounds')
+             // console.log(bounds)
+             // console.log('xRange')
+             // console.log(xRange)
+             // console.log('yRange')
+             // console.log(yRange)
+
          if ((xRange.max == xRange.min) ||
              (yRange.max == yRange.min)) {
              console.log("not scaling solution: zero size detected");
@@ -1219,24 +1334,44 @@ var current = {x: initial.slice(), fx: 0, fxprime: initial.slice()},
 
          var xScaling = width  / (xRange.max - xRange.min),
              yScaling = height_overlap / (yRange.max - yRange.min),
-             scaling = Math.min(yScaling, xScaling),
+             scaling = Math.min(yScaling, xScaling);
 
-             // while we're at it, center the diagram too
-             xOffset = (width -  (xRange.max - xRange.min) * scaling) / 2,
-             yOffset = (height_overlap - (yRange.max - yRange.min) * scaling) / 2;
+             window.scale_value = scaling;
 
-         var scaled = {};
-         for (var i = 0; i < circles.length; ++i) {
-             var circle = circles[i];
-             scaled[setids[i]] = {
-                 radius: scaling * circle.radius,
-                 x: padding + xOffset + (circle.x - xRange.min) * scaling,
-                 y: padding + yOffset + (circle.y - yRange.min) * scaling,
-             };
-         }
+// console.log('range')
+// console.log(xRange.max - xRange.min)
+//
+// console.log('xRange')
+// console.log(xRange)
+// console.log('yRange')
+// console.log(yRange)
+//
+// console.log('xScaling')
+// console.log(xScaling)
+// console.log('yScaling')
+// console.log(yScaling)
+// console.log('scaling')
+// console.log(scaling)
 
-         return scaled;
+// while we're at it, center the diagram too
+var xOffset = (width -  (xRange.max - xRange.min) * scaling) / 2,
+    yOffset = (height_overlap - (yRange.max - yRange.min) * scaling) / 2;
+
+var scaled = {};
+
+for (var i = 0; i < circles.length; ++i) {
+ var circle = circles[i];
+   scaled[setids[i]] = {
+   radius: scaling * circle.radius,
+   x: padding + xOffset + (circle.x - xRange.min) * scaling,
+   y: padding + yOffset + (circle.y - yRange.min) * scaling,
+   };
+   }
+
+   return scaled;
+
      }
+
 
 /*global console:true*/
 
@@ -1251,7 +1386,7 @@ var duration = 1000,
     orientationOrder = null,
 
 colourMap = {},
-colourScheme = ["#ff4da8","#01c1da","#624194",'#dbdbdb'],
+colourScheme = ["#ff4da8","#01c1da","#624194",'#625b62'],
 colourIndex = 0,
 colours = function(key) {
      if (key in colourMap) {
@@ -1316,22 +1451,82 @@ var labels = {};
 // create svg if not already existing
  selection.selectAll("svg").data([circles]).enter().append("svg");
 
- var svg_overlap = selection.select("svg")
+var svg_overlap = selection.select("svg")
    .attr("width", width)
    .attr("height", height_overlap);
 
-// to properly transition intersection areas, we need the previous circles locations. load from elements
-             var previous = {}, hasPrevious = false;
-             svg_overlap.selectAll(".venn-area path").each(function (d) {
-                 var path = d3Selection.select(this).attr("d");
-                 if ((d.sets.length == 1) && path) {
-                     hasPrevious = true;
-                     previous[d.sets[0]] = circleFromPath(path);
-                 }
-             });
+// console.log(Math.sqrt(no_attrib[0].Number / Math.PI) * window.scale_value)
 
-             // interpolate intersection area paths between previous and
-             // current paths
+// Set up the svg and link to the div with the same identifier on the html page
+var svg_no_attrib = d3.select("#risk_no_attrib_datavis")
+.append("svg")
+.attr("width", width)
+.attr("height", height_overlap)
+.append("g");
+
+var no_attrib_circle = svg_no_attrib
+.append('circle')
+.attr('cx', width / 2)
+.attr('cy', height_overlap/2)
+.attr('r', Math.sqrt(no_attrib[0].Number / Math.PI) * window.scale_value)
+.style('opacity', .5)
+.style('fill', '#625b62')
+
+svg_no_attrib
+.append("text")
+.attr("text-anchor", "middle")
+.attr("x", width / 2)
+.attr("y", height_overlap / 2 - 10)
+.text("Burden not attributable");
+
+svg_no_attrib
+.append("text")
+.attr("text-anchor", "middle")
+.attr("x", width / 2)
+.attr("y", height_overlap / 2 + 10)
+.text('to GBD risk factors');
+
+svg_no_attrib
+.on("mousemove", function(d){
+tooltip_no_attrib
+.html('<p>' + d3.format(',.0f')(no_attrib[0].Number) + ' deaths not attributable to any risk factor studied in GBD 2017.' + '</p>')
+.style("top", (event.pageY - 10) + "px")
+.style("left", (event.pageX + 10) + "px")
+.style('opacity', 1)
+.style('visibility', 'visible')
+no_attrib_circle
+.transition()
+.duration(400)
+.style('opacity', 1)
+  })
+.on("mouseout", function(d, i) {
+tooltip_no_attrib
+.transition()
+.duration(400)
+.style("opacity", 0)
+.style('visibility','hidden')
+no_attrib_circle
+.transition()
+.duration(400)
+.style('opacity', .5)
+  })
+
+// PLACEHOLDER
+
+// console.log(circles)
+
+// to properly transition intersection areas, we need the previous circles locations. load from elements
+var previous = {}, hasPrevious = false;
+svg_overlap.selectAll(".venn-area path").each(function (d) {
+var path = d3Selection.select(this).attr("d");
+     if ((d.sets.length == 1) && path) {
+       hasPrevious = true;
+       previous[d.sets[0]] = circleFromPath(path);
+       }
+       });
+
+// interpolate intersection area paths between previous and
+// current paths
              var pathTween = function(d) {
                  return function(t) {
                      var c = d.sets.map(function(set) {
@@ -1388,144 +1583,153 @@ var enterPath = enter.append("path"),
      }
 
 // update existing, using pathTween if necessary
-             var update = selection;
-             if (hasPrevious) {
-                 update = selection.transition("venn").duration(duration);
-                 update.selectAll("path")
-                     .attrTween("d", pathTween);
-             } else {
-                 update.selectAll("path")
-                     .attr("d", function(d) {
-                         return intersectionAreaPath(d.sets.map(function (set) { return circles[set]; }));
-                     });
-             }
+var update = selection;
+   if (hasPrevious) {
 
-             var updateText = update.selectAll("text")
-                 .filter(function (d) { return d.sets in textCentres; })
-                 .text(function (d) { return label(d); } )
-                 .attr("x", function(d) { return Math.floor(textCentres[d.sets].x);})
-                 .attr("y", function(d) { return Math.floor(textCentres[d.sets].y);});
+   update = selection.transition("venn").duration(duration);
 
-             if (wrap) {
-                 if (hasPrevious) {
-                     // d3 4.0 uses 'on' for events on transitions,
-                     // but d3 3.0 used 'each' instead. switch appropiately
-                     if ('on' in updateText) {
-                         updateText.on("end", wrapText(circles, label));
-                     } else {
-                         updateText.each("end", wrapText(circles, label));
-                     }
-                 } else {
-                     updateText.each(wrapText(circles, label));
-                 }
-             }
+   update
+   .selectAll("path")
+   .attrTween("d", pathTween);
+   } else {
 
-             // remove old
-             var exit = nodes.exit().transition('venn').duration(duration).remove();
-             exit.selectAll("path")
-                 .attrTween("d", pathTween);
+   update
+   .selectAll("path")
+   .attr("d", function(d) {
+       return intersectionAreaPath(d.sets.map(function (set) { return circles[set]; }));
+   });
+   }
 
-             var exitText = exit.selectAll("text")
-                 .attr("x", width/2)
-                 .attr("y", height_overlap/2);
+var updateText = update.selectAll("text")
+   .filter(function (d) { return d.sets in textCentres; })
+   .text(function (d) { return label(d); } )
+   .attr("x", function(d) { return Math.floor(textCentres[d.sets].x);})
+   .attr("y", function(d) { return Math.floor(textCentres[d.sets].y);});
 
-             // if we've been passed a fontSize explicitly, use it to
-             // transition
-             if (fontSize !== null) {
-                 enterText.style("font-size", "0px");
-                 updateText.style("font-size", fontSize);
-                 exitText.style("font-size", "0px");
-             }
+if (wrap) {
+if (hasPrevious) {
+   // d3 4.0 uses 'on' for events on transitions,
+   // but d3 3.0 used 'each' instead. switch appropiately
+if ('on' in updateText) {
+ updateText.on("end", wrapText(circles, label));
+ } else {
+ updateText.each("end", wrapText(circles, label));
+ }
+ } else {
+ updateText.each(wrapText(circles, label));
+ }
+ }
 
+// remove old
+ var exit = nodes.exit().transition('venn').duration(duration).remove();
 
-             return {'circles': circles,
-                     'textCentres': textCentres,
-                     'nodes': nodes,
-                     'enter': enter,
-                     'update': update,
-                     'exit': exit};
-         }
+exit
+.selectAll("path")
+.attrTween("d", pathTween);
 
-         chart.wrap = function(_) {
-             if (!arguments.length) return wrap;
-             wrap = _;
-             return chart;
-         };
+var exitText = exit.selectAll("text")
+.attr("x", width/2)
+.attr("y", height_overlap/2);
 
-         chart.width = function(_) {
-             if (!arguments.length) return width;
-             width = _;
-             return chart;
-         };
+// if we've been passed a fontSize explicitly, use it to transition
+if (fontSize !== null) {
+   enterText.style("font-size", "0px");
+   updateText.style("font-size", fontSize);
+   exitText.style("font-size", "0px");
+   }
 
-         chart.height = function(_) {
-             if (!arguments.length) return height_overlap;
-             height_overlap = _;
-             return chart;
-         };
-
-         chart.padding = function(_) {
-             if (!arguments.length) return padding;
-             padding = _;
-             return chart;
-         };
-
-         chart.colours = function(_) {
-             if (!arguments.length) return colours;
-             colours = _;
-             return chart;
-         };
-
-         chart.fontSize = function(_) {
-             if (!arguments.length) return fontSize;
-             fontSize = _;
-             return chart;
-         };
-
-         chart.duration = function(_) {
-             if (!arguments.length) return duration;
-             duration = _;
-             return chart;
-         };
-
-         chart.layoutFunction = function(_) {
-             if (!arguments.length) return layoutFunction;
-             layoutFunction = _;
-             return chart;
-         };
-
-         chart.normalize = function(_) {
-             if (!arguments.length) return normalize;
-             normalize = _;
-             return chart;
-         };
-
-         chart.styled = function(_) {
-             if (!arguments.length) return styled;
-             styled = _;
-             return chart;
-         };
-
-         chart.orientation = function(_) {
-             if (!arguments.length) return orientation;
-             orientation = _;
-             return chart;
-         };
-
-         chart.orientationOrder = function(_) {
-             if (!arguments.length) return orientationOrder;
-             orientationOrder = _;
-             return chart;
-         };
-
-         chart.lossFunction = function(_) {
-           if (!arguments.length) return loss;
-           loss = _;
-           return chart;
-         };
-
-         return chart;
+return {'circles': circles,
+       'textCentres': textCentres,
+       'nodes': nodes,
+       'enter': enter,
+       'update': update,
+       'exit': exit};
      }
+
+chart.wrap = function(_) {
+   if (!arguments.length) return wrap;
+   wrap = _;
+   return chart;
+   };
+
+chart.width = function(_) {
+   if (!arguments.length) return width;
+   width = _;
+   return chart;
+   };
+
+chart.height = function(_) {
+   if (!arguments.length) return height_overlap;
+   height_overlap = _;
+   return chart;
+   };
+
+chart.padding = function(_) {
+   if (!arguments.length) return padding;
+   padding = _;
+   return chart;
+    };
+
+chart.colours = function(_) {
+   if (!arguments.length) return colours;
+   colours = _;
+   return chart;
+   };
+
+chart.fontSize = function(_) {
+   if (!arguments.length) return fontSize;
+   fontSize = _;
+   return chart;
+   };
+
+chart.duration = function(_) {
+   if (!arguments.length) return duration;
+   duration = _;
+   return chart;
+   };
+
+chart.layoutFunction = function(_) {
+if (!arguments.length) return layoutFunction;
+layoutFunction = _;
+return chart;
+};
+
+chart.normalize = function(_) {
+ if (!arguments.length) return normalize;
+ normalize = _;
+ return chart;
+ };
+
+chart.styled = function(_) {
+ if (!arguments.length) return styled;
+ styled = _;
+ return chart;
+ };
+
+chart.orientation = function(_) {
+ if (!arguments.length) return orientation;
+ orientation = _;
+ return chart;
+ };
+
+chart.orientationOrder = function(_) {
+ if (!arguments.length) return orientationOrder;
+ orientationOrder = _;
+ return chart;
+ };
+
+chart.lossFunction = function(_) {
+ if (!arguments.length) return loss;
+ loss = _;
+ return chart;
+ };
+
+return chart;
+}
+
+/////////////////////
+// VennDiagram end //
+/////////////////////
 
 function wrapText(circles, labeller) {
  return function() {
@@ -1851,7 +2055,29 @@ sets = json.filter(function(d){
         d.Cause === 'All causes' &
         d.Risk != "Burden not attributable to GBD risk factors"});
 
-var width = 300
+var request = new XMLHttpRequest();
+    request.open("GET", "./all_cause_risk_2017_west_sussex_overlap.json", false);
+    request.send(null);
+
+var json_no_attrib = JSON.parse(request.responseText);
+
+no_attrib = json_no_attrib.filter(function(d){
+    return d.Measure === 'Deaths' &
+           d.Cause === 'All causes' &
+           d.Risk === "Burden not attributable to GBD risk factors"});
+
+var width = document.getElementById("content_size").offsetWidth / 2 - 40;
+
+// a function to override large widths
+n_width = function(){
+  if(width > 400){
+    return 400}
+    else{
+      return width
+    }
+  };
+
+width = n_width(width)
 
 // Set up the svg and link to the div with the same identifier on the html page
 var svg_overlap = d3.select("#risk_overlap_datavis")
@@ -1878,6 +2104,19 @@ var tooltip = d3.select("#risk_overlap_datavis")
 .style("border-radius", "5px")
 .style("padding", "10px")
 
+// add a tooltip
+var tooltip_no_attrib = d3.select("#risk_no_attrib_datavis")
+.append("div")
+.attr("class", "venntooltip")
+.style("opacity", 0)
+.style("position", "absolute")
+.style("z-index", "10")
+.style("background-color", "white")
+.style("border", "solid")
+.style("border-width", "1px")
+.style("border-radius", "5px")
+.style("padding", "10px")
+
 
 
 // add listeners to all the groups to display tooltip on mouseover
@@ -1886,21 +2125,6 @@ svg_overlap
  .on("mouseover", function(d, i) {
     venn
     .sortAreas(svg_overlap, d); // sort all the areas relative to the current item
-
-    // var mouseleave_venn = function(d) {
-    // tooltip
-    // .style("visibility", "hidden")
-    // .style('opacity', 0)
-    //   }
-
-
-
-// // Display a tooltip with the current size
-// tooltip
-//  .transition()
-//  .duration(400)
-//  .style("opacity", 1)
-//  .text(d3.format(",.0f")(d.Number) + ' ' + label_key(d.Measure) + ' ' + risk_key(d.Risk));
 
 // highlight the current path
 var selection = d3.select(this)
@@ -1947,3 +2171,67 @@ selection
     return .0}})
 .style("stroke-opacity", 0);
 });
+
+svg_overlap
+.append("text")
+.attr("text-anchor", "start")
+.attr("x", (width / 100) * 10)
+.attr("y", 360)
+.text('Known risks representing ' + + ' deaths' );
+
+// // Set up the svg and link to the div with the same identifier on the html page
+// var svg_no_attrib = d3.select("#risk_no_attrib_datavis")
+//   .append("svg")
+//   .attr("width", width)
+//   .attr("height", height_overlap)
+//   .append("g");
+//
+// var no_attrib_circle = svg_no_attrib
+//   .append('circle')
+//   .attr('cx', width / 2)
+//   .attr('cy', height_overlap/2)
+//   .attr('r', circles[3].radius);
+//
+
+
+
+
+// add listeners to all the groups to display tooltip on mouseover
+// svg_no_attrib
+//  .selectAll("g")
+//  .on("mouseover", tooltip_na); // sort all the areas relative to the current item
+
+// highlight the current path
+// var selection = d3.select(this)
+// .transition("tooltip_venn")
+// .duration(400);
+
+// // Change the opacity of the circle when it is hovered over
+// selection
+//  .select("path")
+//  .style("stroke-width", 3)
+//  .style("fill-opacity", function(d){
+//    if (d.sets.length == 1){
+//      return .7}
+//    else {
+//      return .5}})
+//  .style("stroke-opacity", 1)
+//  .style("stroke", '#fff');
+// })
+//
+// .on("mousemove", function(d){
+//   tooltip
+//   .html('<p>' + d3.format(",.0f")(d.Number) + ' ' + label_key(d.Measure) + ' ' + risk_key(d.Risk)+ '</p>')
+//   .style("top", (event.pageY - 10) + "px")
+//   .style("left", (event.pageX + 10) + "px")
+//   .style('opacity', 1)
+//   .style('visibility', 'visible')
+//   })
+// .on("mouseout", function(d, i) {
+//   tooltip
+//   .transition()
+//   .duration(400)
+//   .style("opacity", 0)
+//   .style('visibility','hidden');
+//
+// var selection = d3.select(this).transition("tooltip").duration(400);

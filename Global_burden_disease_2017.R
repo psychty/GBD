@@ -154,7 +154,6 @@ Cause_number <- All_ages_GBD_cause_data %>%
   spread(measure, Estimate) %>% 
   ungroup() 
 
-
 level_3_top_cause <- Cause_number %>% 
   filter(Level == 3,
          Area == Area_x,

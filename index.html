@@ -411,8 +411,14 @@
             <div class="row" id = 'section-risk'>
                 <div class="content">
                   <h1>Attributing risk to the burden of disease</h1>
+<div id = 'fillgauge1'></div>
+                
+
                   <!-- <p>Globally, 59·9% (58·4–61·3) of deaths and 45·2% (43·2–47·3) of DALYs could be attributed to the risk factors assessed in GBD 2016. For deaths, non-communicable diseases (NCDs) show the largest proportion attributable to measured risk factors, at 64·4% (62·6–66·2), with communicable, maternal, neonatal, and nutritional (CMNN) causes at 57·9% (55·4–61·0), and injuries at 25·8% (23·7–27·8). The picture was different for DALYs, however, where we observed that 58·2% (56·4–60·3) of DALYs in CMNN causes are attributable to risk factors, compared with 43·5% (40·7–46·7) in NCDs and 21·0% (19·3–22·7) for injuries. Leading causes of DALYs in CMNN causes, such as diarrhoea and lower respiratory infections (LRI), also showed more than 80% of DALYs can be attributed to risk factors (appendix 2 p 1).</p> -->
-                  <div id='risk_overlap_datavis'></div>
+                <div>
+                  <div id = 'risk_overlap_datavis'></div>
+                  <div id  = 'risk_no_attrib_datavis'></div>
+                </div>
                   <p>This visualisation is built from work by <a href="https://github.com/benfred/venn.js" ,target="_blank">Ben
                       Frederickson</a></p>
                       <p>If venn wont handle a fourth circle independent of the others perhaps we need to find out the scale of numbers to area and create a corresponding circle for burden unattributed in a nearby (or the same svg).</p>
@@ -530,7 +536,9 @@
       <script src='bubbles_gbd.js'></script>
       <script src='burden_by_age.js'></script>
       <script src='standardised_gbd.js'></script>
-      <script src='venn_gbd.js'></script>
+      <script src='risk_gbd.js'></script>
+      <script src="liquidFillGauge.js"></script>
+      <script src = 'percentage_guage.js'></script>
       <script src='exploring_conditions.js'></script></div>
 </body>
 </html>
