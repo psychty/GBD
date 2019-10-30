@@ -417,3 +417,22 @@ p.cause_list .side_tt {
     top: 150px;
     right: 50px;
 }
+
+.percentage_guage .background {
+fill: #E6E7E8;
+}
+
+.percentage_guage .foreground {
+fill: #191947;
+}
+
+.percent-attributed {
+font-size: 35px;
+fill: #5B8BE3;
+letter-spacing: -.03em;
+}
+
+.description {
+font-size: 11px;
+fill: #9B9B9B;
+}

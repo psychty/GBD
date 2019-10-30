@@ -411,30 +411,50 @@
             <div class="row" id = 'section-risk'>
                 <div class="content">
                   <h1>Attributing risk to the burden of disease</h1>
+                  <p>For the GBD study, a risk factor is defined as an attribute, behavior, or exposure, which is causally associated with an increased (or decreased) probability of a disease or injury. Risk factors can be protective if the probability of ill health decreases. Some risk factors are modifiable at the level of the individual (e.g. smoking, dietary intake) and others are modifiable at wider environmental levels (e.g. air polution). For more information, see the panel on the right hand side and hover over the various risk factor icons to explore.</p>
+                  <p>Some conditions are better understood than others (e.g. have had more research conducted) and some conditions are more susceptable to modifiable risk factors than others (as opposed to genetic causes).</p>
+                  <p>The GBD study also tells us how much of the estimated burden of a condition can be attributed to these known risk factors (and how much is unknown). For example, the estimates suggest that around <b>half of all the deaths and premature years of life lost in the county in 2017 could be attributed to the risk factors assessed in the 2017 analysis</b>. Burden associated with disability is less well attributed to risks, with just 26% of the estimated years of life lived with disability attributed to known risk factors. Overall, just over a third of the burden of disease (measured as DALYs) is thought to be explained by known (potentially modifiable) risk factors.</p>
+                  <p>The figures below show the proportion of burden associated with known risk factors for the 22 level 2 cause groups (by default it shows all causes). You can explore each condition group to see how much burden (deaths, YLLs, YLDs and DALYs) is associated with known modifiable risk factors in West Sussex in 2017.</p>
+                  <h3 id = 'selected_condition_attrib_title'></h3>
+                  <h3>WHAT TO DO WITH NAN</h3>
+                  <p>
+                      <span class="mr-1">Condition group: </span>
+                      <select id='selectCondition_attribButton'></select>
+                  </p>
+<div>
 <div id = 'fillgauge1'></div>
-                
-
-                  <!-- <p>Globally, 59·9% (58·4–61·3) of deaths and 45·2% (43·2–47·3) of DALYs could be attributed to the risk factors assessed in GBD 2016. For deaths, non-communicable diseases (NCDs) show the largest proportion attributable to measured risk factors, at 64·4% (62·6–66·2), with communicable, maternal, neonatal, and nutritional (CMNN) causes at 57·9% (55·4–61·0), and injuries at 25·8% (23·7–27·8). The picture was different for DALYs, however, where we observed that 58·2% (56·4–60·3) of DALYs in CMNN causes are attributable to risk factors, compared with 43·5% (40·7–46·7) in NCDs and 21·0% (19·3–22·7) for injuries. Leading causes of DALYs in CMNN causes, such as diarrhoea and lower respiratory infections (LRI), also showed more than 80% of DALYs can be attributed to risk factors (appendix 2 p 1).</p> -->
+<div id = 'fillgauge2'></div>
+<div id = 'fillgauge3'></div>
+<div id = 'fillgauge4'></div>
+</div>
+                <p>As noted, risk factors are not mutually exclusive, and there is some overlap. Information on the overlapping contribution of risk factors is only available for level 1 risk factors (environmental, behavioural and metabolic risks). Again, there are differences across conditions, and across measures of burden which can be seen in the figure below.</p>
+                <p>
+                    <span class="mr-1">Measure</span>
+                    <select id='selectVenn_measureButton'></select>
+                    <span class="mr-3">Condition</span>
+                    <select id='selectVenn_conditionButton'></select>
+                </p>
                 <div>
                   <div id = 'risk_overlap_datavis'></div>
                   <div id  = 'risk_no_attrib_datavis'></div>
                 </div>
                   <p>This visualisation is built from work by <a href="https://github.com/benfred/venn.js" ,target="_blank">Ben
                       Frederickson</a></p>
-                      <p>If venn wont handle a fourth circle independent of the others perhaps we need to find out the scale of numbers to area and create a corresponding circle for burden unattributed in a nearby (or the same svg).</p>
-                </div>
+                <p>With the scope of how much we know (and do not know) about risk factors, and their overlapping nature in mind, we now turn to focus on which specific risk factors are most important for each measure and condition.</p>
+
+                <div id = 'top_ten_risks'></div>
+                <h2>vertical bar chart</h2>
+
+</div>
+
+
                 <div class="right-sidebar">
-                  <h3>Risk factor</h3>
-                  <p class='side'>A risk factor is defined as an attribute, behavior, or exposure, which is causally
-                      associated with an increased (or decreased) probability of a disease or injury. Risk factors can be
-                      protective if the probability of ill health decreases. It should be noted that each risk factor may be
-                      directly or indirectly associated with an outcome and <b>risk factor contribution to ill health is not
-                          mutually exclusive</b>.</p>
-                  <p class='side'>Furthermore, a combination of risk factors may jointly influence outcomes and there is often
+                  <h3>Risk factors are not mutually exclusive</h3>
+                <p class='side'>A combination of risk factors may jointly influence outcomes and there is often
                       overlap of multiple risk factors/exposures. As such, it is not possible to sum the contribution of two
                       or more risk factors (i.e smoking and drinking alcohol) to say these two risk factors cause a certain
                       proportion of the total burden of a condition.</p>
-                  <p class='side'>For example, there were estimated to be 2,752 deaths caused by neoplasms in West Sussex in
+                <p class='side'>For example, there were estimated to be 2,752 deaths caused by neoplasms in West Sussex in
                       2017. Of those deaths, 43% (1,190 deaths) are attributed to atleast one risk factor in the GBD study. We
                       are able to say that Tobacco use for example, is attributable to 567 deaths as a result of neoplasms,
                       occupational risks were attributable to neoplasm 258 deaths and that alcohol use was attributable to
@@ -483,9 +503,9 @@
                   <h2>Exploring conditions in more detail</h2>
                   <p>It is not possible to discuss all conditions in the GBD data set. However, you can explore combinations
                       of measures and causes for West Sussex by sex in 2017.</p>
-
+                  <p>As you change the selections below, the table will be redrawn with updated information.</p>
                       <p>
-                          <span class="mr-1">Condition:</span>
+                          <span class="mr-1">Condition group:</span>
                           <select id='selectExplore_CauseButton'></select>
                           <span class="mr-1">Measure:</span>
                           <select id='selectExplore_MeasureButton'></select>
@@ -495,7 +515,7 @@
 
                   <div id='condition_group_table'></div>
 
-                  <div class="infographic-placeholder">
+                  <!-- <div class="infographic-placeholder">
                   <div class="men-area">
                   <span class="figure"><div>503</div>
                   <img src="./1546051-medical/svg/002-ambulance.svg" alt=""></span>
@@ -506,8 +526,7 @@
                   <img src="./1546051-medical/svg/002-ambulance.svg" alt=""></span>
                   <span>WOMEN</span>
                   </div>
-
-                  </div>
+                  </div> -->
                 </div>
                 <div class="right-sidebar"></div>
             </div>
@@ -522,23 +541,25 @@
         <div class="right-foot">M4de by Dr Rich Tyler<br><a href="https://github.com/psychty" target="_blank">github/psychty</a><br>November 2019 </div>
     </footer>
 
-        <script src="https://d3plus.org/js/d3plus.v2.0.0-alpha.22.full.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
-        <script src="https://d3js.org/d3-format.v1.min.js"></script>
-        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="https://d3plus.org/js/d3plus.v2.0.0-alpha.22.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
+  <script src="https://d3js.org/d3-format.v1.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
-        <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 
-      <script src='gbd.js'></script>
-      <script src='le.js'></script>
-      <script src='bubbles_gbd.js'></script>
-      <script src='burden_by_age.js'></script>
-      <script src='standardised_gbd.js'></script>
-      <script src='risk_gbd.js'></script>
-      <script src="liquidFillGauge.js"></script>
-      <script src = 'percentage_guage.js'></script>
-      <script src='exploring_conditions.js'></script></div>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
+  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
+
+  <script src = 'gbd.js'></script>
+  <script src = 'le.js'></script>
+  <script src = 'bubbles_gbd.js'></script>
+  <script src = 'burden_by_age.js'></script>
+  <script src = 'standardised_gbd.js'></script>
+  <script src = 'risk_gbd.js'></script>
+  <!-- <script src = "https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script> -->
+  <script src = 'percentage_guage.js'></script>
+  <script src = 'exploring_conditions.js'></script></div>
+
 </body>
 </html>

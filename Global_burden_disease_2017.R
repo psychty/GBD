@@ -960,6 +960,13 @@ Overlap_df %>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_2_risk_explained_burden_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
+explained <- Overlap_df %>% 
+  filter(Risk %in% c('Burden attributable to GBD risk factors', 'Burden not attributable to GBD risk factors')) %>% 
+  mutate(Type = ifelse(substr(Measure, 0, 7) == 'Percent', 'Proportion', 'Number')) %>%
+  mutate(Measure = gsub('Percent of total ', '', Measure)) %>% 
+  spread(Type, Value) %>% 
+  filter(Number != 0)
+
 Overlap_df%>%
   filter(Risk  != 'Burden attributable to GBD risk factors') %>% 
   filter(!grepl('attributable to GBD risk factors', Measure)) %>%

@@ -37,10 +37,6 @@ var color_lv_1_risk_group = d3.scaleOrdinal()
 
  var explained_burden = JSON.parse(request.responseText);
 
- console.log(explained_burden)
-
-
-
  // Bring data in
  var request = new XMLHttpRequest();
  request.open("GET", "./level_1_risk_2017_west_sussex_summary.json", false);
