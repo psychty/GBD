@@ -9,11 +9,9 @@ var measure_categories = ['Deaths', 'YLLs (Years of Life Lost)', 'YLDs (Years Li
 
 var ages = ["Early Neonatal", "Late Neonatal", "Post Neonatal", "1 to 4", "5 to 9", "10 to 14", "15 to 19", "20 to 24", "25 to 29", "30 to 34", "35 to 39", "40 to 44", "45 to 49", "50 to 54", "55 to 59", "60 to 64", "65 to 69", "70 to 74", "75 to 79", "80 to 84", "85 to 89", "90 to 94", "95 plus"]
 
-
 var color_age_group = d3.scaleOrdinal()
     .domain(ages)
     .range(["#ff82a1", "#d0005a", "#903331", "#ffa479", "#ae7300", "#eba100", "#e9c254", "#b99700", "#6dba1c", "#3b5b2c", "#a2d39b", "#00bb53", "#008f69", "#5adbb5", "#00b1b8", "#02b8fe", "#0184e1", "#7d7bff", "#daa3ff", "#713d85", "#c85ae0", "#e0afdd", "#7c3e5f"]);
-
 
 var label_key = d3.scaleOrdinal()
     .domain(measure_categories)

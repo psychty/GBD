@@ -369,7 +369,6 @@ level_1_summary %>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_1_2017_', gsub(" ", "_", tolower(Area_x)), '_summary.json'))
 
-
 level_2_cause_df_a <- Area_x_cause %>% 
   filter(Level == 2,
          Year == 2017) %>%
@@ -957,6 +956,8 @@ Overlap_df %>%
   mutate(Type = ifelse(substr(Measure, 0, 7) == 'Percent', 'Proportion', 'Number')) %>%
   mutate(Measure = gsub('Percent of total ', '', Measure)) %>% 
   spread(Type, Value) %>% 
+  group_by(Measure, Sex, Year, Cause) %>% 
+  mutate(Total_burden = sum(Number, na.rm = TRUE)) %>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_2_risk_explained_burden_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
