@@ -3,47 +3,47 @@
   "Cause": "All causes",
   "Measure": "Deaths",
   "Number": 698.9835,
-  "sets": [1]
+  "sets": [0]
 }, {
   "Risk": "Behavioral risks",
   "Cause": "All causes",
   "Measure": "Deaths",
   "Number": 2853.1794,
-  "sets": [2]
+  "sets": [1]
 }, {
   "Risk": "Metabolic risks",
   "Cause": "All causes",
   "Measure": "Deaths",
   "Number": 2674.2396,
-  "sets": [3]
+  "sets": [2]
 }, {
   "Risk": "Burden not attributable to GBD risk factors",
   "Cause": "All causes",
   "Measure": "Deaths",
   "Number": 4902.6328,
-  "sets": [0]
+  "sets": [3]
 }, {
   "Risk": "Behavioral & Environmental",
   "Cause": "All causes",
   "Measure": "Deaths",
   "Number": 224.6225,
-  "sets": [1,2]
+  "sets": [0,1]
 }, {
   "Risk": "Environmental & Metabolic",
   "Cause": "All causes",
   "Measure": "Deaths",
   "Number": 69.7562,
-  "sets": [1,3]
+  "sets": [0,2]
 }, {
   "Risk": "Behavioral & Environmental & Metabolic",
   "Cause": "All causes",
   "Measure": "Deaths",
   "Number": 113.5433,
-  "sets": [1,2,3]
+  "sets": [0,1,2]
 }, {
   "Risk": "Behavioral & Metabolic",
   "Cause": "All causes",
   "Measure": "Deaths",
   "Number": 1129.652,
-  "sets": [2,3]
+  "sets": [1,2]
 }]

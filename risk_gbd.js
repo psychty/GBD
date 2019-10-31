@@ -2041,6 +2041,10 @@ while (true) {
 
  })));
 
+///////////
+// Input //
+///////////
+
 var request = new XMLHttpRequest();
     request.open("GET", "./all_cause_risk_2017_west_sussex_overlap.json", false);
     request.send(null);
@@ -2073,7 +2077,26 @@ n_width = function(){
     }
   };
 
+// Number explained
+var request = new XMLHttpRequest();
+request.open("GET", 'level_2_risk_explained_burden_2017_west_sussex.json', false);
+request.send(null);
+
+var n_explained_burden = JSON.parse(request.responseText)
+        .filter(function (d) { // gets a subset of the json data
+            return d.Sex === "Both" &
+            +d.Year === 2017 &
+            d.Risk === 'Burden attributable to GBD risk factors' &
+            d.Measure === 'Deaths' &
+            d.Cause === 'All causes'
+  })
+
 width = n_width(width)
+
+// Select the div id total_death_string (this is where you want the result of this to be displayed in the html page)
+d3.select("#venn_title")
+  .data(no_attrib)
+  .text(function(d){ return "Overlapping burden attributed to risk factor groups associated attributed to " + label_key(d.Measure)  + '; ' + d.Cause.replace('All causes', 'all causes') + '; both males and females; all ages; West Sussex; 2017' });
 
 // Set up the svg and link to the div with the same identifier on the html page
 var svg_overlap = d3.select("#risk_overlap_datavis")
@@ -2112,7 +2135,6 @@ var tooltip_no_attrib = d3.select("#risk_no_attrib_datavis")
 .style("border-width", "1px")
 .style("border-radius", "5px")
 .style("padding", "10px")
-
 
 
 // add listeners to all the groups to display tooltip on mouseover
@@ -2173,61 +2195,4 @@ svg_overlap
 .attr("text-anchor", "start")
 .attr("x", (width / 100) * 10)
 .attr("y", 360)
-.text('Known risks representing ' + + ' deaths' );
-
-// // Set up the svg and link to the div with the same identifier on the html page
-// var svg_no_attrib = d3.select("#risk_no_attrib_datavis")
-//   .append("svg")
-//   .attr("width", width)
-//   .attr("height", height_overlap)
-//   .append("g");
-//
-// var no_attrib_circle = svg_no_attrib
-//   .append('circle')
-//   .attr('cx', width / 2)
-//   .attr('cy', height_overlap/2)
-//   .attr('r', circles[3].radius);
-//
-
-
-
-
-// add listeners to all the groups to display tooltip on mouseover
-// svg_no_attrib
-//  .selectAll("g")
-//  .on("mouseover", tooltip_na); // sort all the areas relative to the current item
-
-// highlight the current path
-// var selection = d3.select(this)
-// .transition("tooltip_venn")
-// .duration(400);
-
-// // Change the opacity of the circle when it is hovered over
-// selection
-//  .select("path")
-//  .style("stroke-width", 3)
-//  .style("fill-opacity", function(d){
-//    if (d.sets.length == 1){
-//      return .7}
-//    else {
-//      return .5}})
-//  .style("stroke-opacity", 1)
-//  .style("stroke", '#fff');
-// })
-//
-// .on("mousemove", function(d){
-//   tooltip
-//   .html('<p>' + d3.format(",.0f")(d.Number) + ' ' + label_key(d.Measure) + ' ' + risk_key(d.Risk)+ '</p>')
-//   .style("top", (event.pageY - 10) + "px")
-//   .style("left", (event.pageX + 10) + "px")
-//   .style('opacity', 1)
-//   .style('visibility', 'visible')
-//   })
-// .on("mouseout", function(d, i) {
-//   tooltip
-//   .transition()
-//   .duration(400)
-//   .style("opacity", 0)
-//   .style('visibility','hidden');
-//
-// var selection = d3.select(this).transition("tooltip").duration(400);
+.text('Known risks representing ' + d3.format(',.0f')(n_explained_burden[0].Number) + ' deaths' );

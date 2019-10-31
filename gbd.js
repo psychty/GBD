@@ -14,7 +14,6 @@ var margin = {
 
 var sex = ['Male', 'Female', 'Both']
 
-
 // Now we can use the global width with
 var width_fg_1 = width - margin.left - margin.right;
 var height_fg_1 = 400 - margin.top - margin.bottom;

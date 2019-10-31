@@ -427,13 +427,14 @@
 <div id = 'fillgauge4'></div>
 </div>
                 <p>As noted, risk factors are not mutually exclusive, and there is some overlap. Information on the overlapping contribution of risk factors is only available for level 1 risk factors (environmental, behavioural and metabolic risks). Again, there are differences across conditions, and across measures of burden which can be seen in the figure below.</p>
-                <p>
+                <!-- <p>
                     <span class="mr-1">Measure</span>
                     <select id='selectVenn_measureButton'></select>
                     <span class="mr-3">Condition</span>
                     <select id='selectVenn_conditionButton'></select>
-                </p>
-                <div>
+                </p> -->
+                <h3 id= 'venn_title'></h3>
+                <div class = 'venn_class'>
                   <div id = 'risk_overlap_datavis'></div>
                   <div id  = 'risk_no_attrib_datavis'></div>
                 </div>
@@ -441,9 +442,19 @@
                       Frederickson</a></p>
                 <p>With the scope of how much we know (and do not know) about risk factors, and their overlapping nature in mind, we now turn to focus on which specific risk factors are most important for each measure and condition.</p>
 
-                <div id = 'top_ten_risks'></div>
                 <h2>vertical bar chart</h2>
+                <p>
+                    <span class="mr-1">Condition group: </span>
+                    <select id='selecttopten_attrib_cause_Button'></select>
+                    <span class="mr-1">Measure: </span>
+                    <select id='selecttopten_attrib_measure_Button'></select>
+                    <spcan class='mr-1'>Sex: </span>
+                    <select id = 'selecttopten_attrib_sex_Button'></select>
+                    <span class="mr-3">Risk level</span>
+                    <select id='selecttopten_attrib_risk_level_Button'></select>
+                </p>
 
+<div id = 'top_ten_risks'></div>
 </div>
 
 
@@ -544,20 +555,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
   <script src="https://d3js.org/d3-format.v1.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
   <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
-
   <script src = 'gbd.js'></script>
   <script src = 'le.js'></script>
   <script src = 'bubbles_gbd.js'></script>
   <script src = 'burden_by_age.js'></script>
   <script src = 'standardised_gbd.js'></script>
   <script src = 'risk_gbd.js'></script>
-  <!-- <script src = "https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script> -->
   <script src = 'percentage_guage.js'></script>
+  <script src = 'top_risk.js'></script>
   <script src = 'exploring_conditions.js'></script></div>
 
 </body>

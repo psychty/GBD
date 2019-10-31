@@ -19,9 +19,10 @@ div {
   border-radius: 5px;
 }
 
-/* svg {
+svg {
   background-color: #E3EDF9;
-} */
+}
+
 /* .list-group-item {
   max-height: 15px;
 } */
@@ -423,7 +424,7 @@ fill: #E6E7E8;
 }
 
 .percentage_guage .foreground {
-fill: #191947;
+/* fill: #191947; */
 }
 
 .percent-attributed {
@@ -441,4 +442,10 @@ fill: #9B9B9B;
 font-size: 12px;
 /* font-weight: bold; */
 fill: #d80727;
+}
+
+.venn_class {
+display: block;
+margin: auto;
+padding: 0px;
 }

@@ -8,6 +8,12 @@ var twoPi = 2 * Math.PI
 var attributed = 0
 var total = 1
 
+var causes_for_risk = ["All causes","HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"]
+
+var color_cause_for_risk = d3.scaleOrdinal()
+  .domain(causes_for_risk)
+  .range(["#191947","#F8DDEB", "#F2B9BF", "#EE9187", "#EA695C", "#D84D42", "#AD3730", "#7A1C1C", '#BCD6F7','#97C4F0','#67A8E7','#528CDB','#376ACB',"#1845A5", '#CFD6F6','#ADB9ED','#8B96DD','#6978D0', "#4E4FB8", "#3E3294", "#B5DCD0", "#76B786", '#477A49']);
+
 // Bring data in
 var request = new XMLHttpRequest();
 request.open("GET", 'level_2_risk_explained_burden_2017_west_sussex.json', false);
@@ -24,7 +30,7 @@ explained_burden = explained_burden.filter(function (d) { // gets a subset of th
 // We need to create a dropdown button for the user to choose which area to be displayed on the figure.
 d3.select("#selectCondition_attribButton")
 .selectAll('myOptions')
-.data(["All causes","HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"])
+.data(causes_for_risk)
 .enter()
 .append('option')
 .text(function (d) {
@@ -126,7 +132,9 @@ meter_deaths
 .tween("attributed", function() {
   return function(t) {
     attributed = i_deaths(t);
-    foreground_deaths.attr("d", arc_deaths.endAngle(twoPi * attributed));
+    foreground_deaths
+    .attr("d", arc_deaths.endAngle(twoPi * attributed))
+    .attr("fill", function(d) { return color_cause_for_risk(selectedCondition_attribOption); });
     percentAttributed_deaths.text(d3.format(".0%")(attributed));
   };
 });
@@ -198,7 +206,9 @@ meter_yll
 .tween("attributed", function() {
   return function(t) {
     attributed = i_yll(t);
-    foreground_yll.attr("d", arc_yll.endAngle(twoPi * attributed));
+    foreground_yll
+    .attr("d", arc_yll.endAngle(twoPi * attributed))
+    .attr("fill", function(d) { return color_cause_for_risk(selectedCondition_attribOption); });
     percentAttributed_yll.text(d3.format(".0%")(attributed));
   };
 });
@@ -270,7 +280,9 @@ meter_yld
 .tween("attributed", function() {
   return function(t) {
     attributed = i_yld(t);
-    foreground_yld.attr("d", arc_yld.endAngle(twoPi * attributed));
+    foreground_yld
+    .attr("d", arc_yld.endAngle(twoPi * attributed))
+    .attr("fill", function(d) { return color_cause_for_risk(selectedCondition_attribOption); });
     percentAttributed_yld.text(d3.format(".0%")(attributed));
   };
 });
@@ -342,7 +354,9 @@ meter_daly
 .tween("attributed", function() {
   return function(t) {
     attributed = i_daly(t);
-    foreground_daly.attr("d", arc_daly.endAngle(twoPi * attributed));
+    foreground_daly
+    .attr("d", arc_daly.endAngle(twoPi * attributed))
+    .attr("fill", function(d) { return color_cause_for_risk(selectedCondition_attribOption); });
     percentAttributed_daly.text(d3.format(".0%")(attributed));
   };
 });
@@ -437,13 +451,19 @@ meter_deaths
 .style('opacity', 1);
 }
 
+foreground_deaths
+.transition()
+.duration(1500)
+.attr("fill", function(d) { return color_cause_for_risk(selectedCondition_attribOption); });
+
 meter_deaths
 .transition()
 .duration(3000)
 .tween("attributed", function() {
   return function(t) {
     attributed = i_deaths(t);
-    foreground_deaths.attr("d", arc_deaths.endAngle(twoPi * attributed));
+    foreground_deaths
+    .attr("d", arc_deaths.endAngle(twoPi * attributed));
     percentAttributed_deaths.text(d3.format(".0%")(attributed));
   };
 });
@@ -537,6 +557,11 @@ meter_yll
 .duration(750)
 .style('opacity', 1);
 }
+
+foreground_yll
+.transition()
+.duration(1500)
+.attr("fill", function(d) { return color_cause_for_risk(selectedCondition_attribOption); });
 
 meter_yll
 .transition()
@@ -638,6 +663,11 @@ meter_yld
 .style('opacity', 1);
 }
 
+foreground_yld
+.transition()
+.duration(1500)
+.attr("fill", function(d) { return color_cause_for_risk(selectedCondition_attribOption); });
+
 meter_yld
 .transition()
 .duration(3000)
@@ -738,6 +768,11 @@ meter_daly
 .duration(750)
 .style('opacity', 1);
 }
+
+foreground_daly
+.transition()
+.duration(1500)
+.attr("fill", function(d) { return color_cause_for_risk(selectedCondition_attribOption); });
 
 meter_daly
 .transition()
