@@ -977,7 +977,6 @@ Overlap_df%>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_1_2_risk_2017_', gsub(" ", "_", tolower(Area_x)), '_overlap.json'))
 
-
 Working_df <- Overlap_df%>%
   filter(Risk  != 'Burden attributable to GBD risk factors') %>% 
   filter(!grepl('attributable to GBD risk factors', Measure)) %>%
@@ -1072,7 +1071,6 @@ top_ten <- GBD_risk_data_all_cause_NN %>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_2_risk_all_cause_NN_2017.json'))
 
-  
 GBD_risk_data_wsx %>% 
     filter(Year == 2017) %>% 
   filter(Area == Area_x) %>% 
@@ -1090,5 +1088,6 @@ GBD_risk_data_wsx %>%
     filter(metric == 'Age-standardised rate per 100,000') %>% 
     select(-c(Lower_estimate, Upper_estimate, Age, Cause_level, metric, Year)) %>% 
     mutate(Estimate = as.numeric(gsub(',', '', Estimate))) %>% 
+    mutate(Risk_colour = ifelse(Risk_level == 2, Risk, ifelse(Risk_level == 3, `Risk group`, NA)))  %>% 
     toJSON() %>% 
     write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Risks_causes_NN_2017.json'))

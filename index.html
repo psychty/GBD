@@ -46,9 +46,9 @@
                 <a class="list-group-item list-group-item-action"  href="#section-lifecourse">Burden over the lifecourse</a>
                 <a class="list-group-item list-group-item-action"  href="#section-standardised">Burden over time</a>
                 <a class="list-group-item list-group-item-action"  href='#section-risk'>Attributing risk to burden</a>
-                <a class="list-group-item list-group-item-action"  href='#section-cardiovascular'>Exploring cardiovascular diseases</a>
+                <!-- <a class="list-group-item list-group-item-action"  href='#section-cardiovascular'>Exploring cardiovascular diseases</a>
                 <a class="list-group-item list-group-item-action"  href='#section-neoplasm'>Exploring neoplasms</a>
-                <a class="list-group-item list-group-item-action"  href='#section-msk'>Exploring musculoskeletal conditions</a>
+                <a class="list-group-item list-group-item-action"  href='#section-msk'>Exploring musculoskeletal conditions</a> -->
                 <a class="list-group-item list-group-item-action"  href='#section-exploring'>Exploring other conditions</a>
     </div>
     <!-- <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">  </div> -->
@@ -411,8 +411,6 @@
             <div class="row" id = 'section-risk'>
                 <div class="content">
                   <h1>Attributing risk to the burden of disease</h1>
-                  <p>For the GBD study, a risk factor is defined as an attribute, behavior, or exposure, which is causally associated with an increased (or decreased) probability of a disease or injury. Risk factors can be protective if the probability of ill health decreases. Some risk factors are modifiable at the level of the individual (e.g. smoking, dietary intake) and others are modifiable at wider environmental levels (e.g. air polution). For more information, see the panel on the right hand side and hover over the various risk factor icons to explore.</p>
-                  <p>Some conditions are better understood than others (e.g. have had more research conducted) and some conditions are more susceptable to modifiable risk factors than others (as opposed to genetic causes).</p>
                   <p>The GBD study also tells us how much of the estimated burden of a condition can be attributed to these known risk factors (and how much is unknown). For example, the estimates suggest that around <b>half of all the deaths and premature years of life lost in the county in 2017 could be attributed to the risk factors assessed in the 2017 analysis</b>. Burden associated with disability is less well attributed to risks, with just 26% of the estimated years of life lived with disability attributed to known risk factors. Overall, just over a third of the burden of disease (measured as DALYs) is thought to be explained by known (potentially modifiable) risk factors.</p>
                   <p>The figures below show the proportion of burden associated with known risk factors for the 22 level 2 cause groups (by default it shows all causes). You can explore each condition group to see how much burden (deaths, YLLs, YLDs and DALYs) is associated with known modifiable risk factors in West Sussex in 2017.</p>
                   <h3 id = 'selected_condition_attrib_title'></h3>
@@ -426,66 +424,89 @@
 <div id = 'fillgauge3'></div>
 <div id = 'fillgauge4'></div>
 </div>
-                <p>As noted, risk factors are not mutually exclusive, and there is some overlap. Information on the overlapping contribution of risk factors is only available for level 1 risk factors (environmental, behavioural and metabolic risks). Again, there are differences across conditions, and across measures of burden which can be seen in the figure below.</p>
-                <!-- <p>
-                    <span class="mr-1">Measure</span>
-                    <select id='selectVenn_measureButton'></select>
-                    <span class="mr-3">Condition</span>
-                    <select id='selectVenn_conditionButton'></select>
-                </p> -->
-                <h3 id= 'venn_title'></h3>
-                <div class = 'venn_class'>
-                  <div id = 'risk_overlap_datavis'></div>
-                  <div id  = 'risk_no_attrib_datavis'></div>
-                </div>
-                  <p>This visualisation is built from work by <a href="https://github.com/benfred/venn.js" ,target="_blank">Ben
-                      Frederickson</a></p>
-                <p>With the scope of how much we know (and do not know) about risk factors, and their overlapping nature in mind, we now turn to focus on which specific risk factors are most important for each measure and condition.</p>
 
-                <h2>vertical bar chart</h2>
-                <p>
-                    <span class="mr-1">Condition group: </span>
-                    <select id='selecttopten_attrib_cause_Button'></select>
-                    <span class="mr-1">Measure: </span>
-                    <select id='selecttopten_attrib_measure_Button'></select>
-                    <spcan class='mr-1'>Sex: </span>
-                    <select id = 'selecttopten_attrib_sex_Button'></select>
-                    <span class="mr-3">Risk level</span>
-                    <select id='selecttopten_attrib_risk_level_Button'></select>
-                </p>
-
-<div id = 'top_ten_risks'></div>
 </div>
 
+<div class = 'right-sidebar'>
+  <h3>What is a risk factor?</h3>
+  <p class='side'>For the GBD study, a risk factor is defined as an attribute, behavior, or exposure, which is causally associated with an increased (or decreased) probability of a disease or injury. Risk factors can be protective if the probability of ill health decreases. Some risk factors are modifiable at the level of the individual (e.g. smoking, dietary intake) and others are modifiable at wider environmental levels (e.g. air polution). For more information, see the panel on the right hand side and hover over the various risk factor icons to explore.</p>
+  <p class = 'side'>Some conditions are better understood than others (e.g. have had more research conducted) and some conditions are more susceptable to modifiable risk factors than others (as opposed to genetic causes).</p>
+</div>
+    </div>
 
-                <div class="right-sidebar">
-                  <h3>Risk factors are not mutually exclusive</h3>
-                <p class='side'>A combination of risk factors may jointly influence outcomes and there is often
-                      overlap of multiple risk factors/exposures. As such, it is not possible to sum the contribution of two
-                      or more risk factors (i.e smoking and drinking alcohol) to say these two risk factors cause a certain
-                      proportion of the total burden of a condition.</p>
-                <p class='side'>For example, there were estimated to be 2,752 deaths caused by neoplasms in West Sussex in
-                      2017. Of those deaths, 43% (1,190 deaths) are attributed to atleast one risk factor in the GBD study. We
-                      are able to say that Tobacco use for example, is attributable to 567 deaths as a result of neoplasms,
-                      occupational risks were attributable to neoplasm 258 deaths and that alcohol use was attributable to
-                      188. We are not able, however, to say that the three risk factors combined account for 1,013 deaths
-                      because we do not know the overlapping risk contribution at this level of detail.</p>
-                  <p class='side'>Overlap in risk contribution is available for level 1 risks (environmental, behavioural and
-                      metabolic risks).</p>
-                      <h3>Level 1 risks</h3>
-                      <p class='side'>Level 1 risk groups include:</p>
-                      <div id='level_1_risk_summary'></div>
-                      <p class='side'><b>Note: the contribution of each risk factor to disease is not mutually exclusive</b></p>
-                      <h3>Level 2 risks</h3>
-                      <p class='side'>There are 19 risks at Level 2:</p>
-                      <div id='level_2_risk_summary'></div>
-                      <h3>Groups 3 and 4</h3>
-                      <p class='side'>In addition, there are 39 level 3 risk factors and some of these are further expanded to an
-                          additional 22 level 4 risks. For this analysis we explore levels 1, and 2 only.</p>
-                </div>
+    <div class="row">
+      <div class="content">
+
+        <h3>Risk factors are not mutually exclusive</h3>
+            <p>A combination of risk factors may jointly influence outcomes and there is often
+                  overlap of multiple risk factors/exposures. As such, it is not possible to sum the contribution of two
+                  or more risk factors (i.e smoking and drinking alcohol) to say these two risk factors cause a certain
+                  proportion of the total burden of a condition.</p>
+            <p>For example, there were estimated to be 2,752 deaths caused by neoplasms in West Sussex in
+                  2017. Of those deaths, 43% (1,190 deaths) are attributed to atleast one risk factor in the GBD study. We
+                  are able to say that Tobacco use for example, is attributable to 567 deaths as a result of neoplasms,
+                  occupational risks were attributable to neoplasm 258 deaths and that alcohol use was attributable to
+                  188. We are not able, however, to say that the three risk factors combined account for 1,013 deaths
+                  because we do not know the overlapping risk contribution at this level of detail.</p>
+            <p>Information on the overlapping contribution of risk factors is only available for level 1 risk factors (environmental, behavioural and metabolic risks). Again, there are differences across conditions, and across measures of burden which can be seen in the figure below.</p>
+
+
+            <!-- <p>
+                <span class="mr-1">Measure</span>
+                <select id='selectVenn_measureButton'></select>
+                <span class="mr-3">Condition</span>
+                <select id='selectVenn_conditionButton'></select>
+            </p> -->
+            <h3 id= 'venn_title'></h3>
+            <div class = 'venn_class'>
+              <div id = 'risk_overlap_datavis'></div>
+              <div id  = 'risk_no_attrib_datavis'></div>
             </div>
 
-            <div class="row" id = 'section-cardiovascular'>
+          <p>This visualisation is based on work by <a href="https://github.com/benfred/venn.js" ,target="_blank">Ben Frederickson</a></p>
+        </div>
+
+        <div class = 'right-sidebar'>
+              <p class='side'>Overlap in risk contribution is available for level 1 risks (environmental, behavioural and
+                  metabolic risks).</p>
+                  <h3>Level 1 risks</h3>
+                  <p class='side'>Level 1 risk groups include:</p>
+                  <div id='level_1_risk_summary'></div>
+                  <p class='side'><b>Note: the contribution of each risk factor to disease is not mutually exclusive</b></p>
+                </div>
+              </div>
+
+  <div class="row">
+    <div class="content">
+    <h2>Top ten risk factors by condition</h2>
+    <p>With the scope of how much we know (and do not know) about risk factors, and their overlapping nature in mind, we now turn to focus on which specific risk factors are most important for each measure and condition.</p>
+    <p>The figure below shows the top ten risk factors (level 2 by default) for all deaths in West Sussex in 2017. You can change the condition group (from all causes to a specific condition group), as well as measure (deaths, YLLs, YLDs, or DALYs), and sex (both, males, or females). In addition, you can switch between level 2 risks and level 3 risk. Bars are coloured by their level risk group.</p>
+    <h3>Dynamic figure title</h3>
+    <p>How much of the overall deaths/ylls do the top ten risks account for</p>
+    <p>
+            <span class="mr-1">Condition group: </span>
+            <select id='selecttopten_attrib_cause_Button'></select>
+            <span class="mr-1">Measure: </span>
+            <select id='selecttopten_attrib_measure_Button'></select>
+            <spcan class='mr-1'>Sex: </span>
+            <select id = 'selecttopten_attrib_sex_Button'></select>
+            <span class="mr-3">Risk level</span>
+            <select id='selecttopten_attrib_risk_level_Button'></select>
+        </p>
+
+      <div id = 'top_ten_risks'></div>
+      </div>
+          <div class = 'right-sidebar'>
+                  <h3>Level 2 risks</h3>
+                  <p class='side'>There are 19 risks at Level 2:</p>
+                  <div id='level_2_risk_summary'></div>
+                  <h3>Groups 3 and 4</h3>
+                  <p class='side'>In addition, there are 39 level 3 risk factors and some of these are further expanded to an
+                      additional 22 level 4 risks. For this analysis we explore levels 1, and 2 only.</p>
+            </div>
+          </div>
+
+            <!-- <div class="row" id = 'section-cardiovascular'>
                 <div class="content">
                   <h3>Cardiovascular diseases</h3>
                 </div>
@@ -504,7 +525,7 @@
                   <h3>Musculoskeletal conditions</h3>
                 </div>
                 <div class="right-sidebar"></div>
-            </div>
+            </div> -->
 
 
 

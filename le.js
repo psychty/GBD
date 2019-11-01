@@ -69,8 +69,7 @@ var hale = json_le.filter(function(d){
   .attr("width", width)
   .attr("height", height_le + margin.top + 75)
   .append("g")
-  .attr("transform",
-  "translate(" + margin.left + "," + margin.top + ")");
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   svg_le
   .append("g")
@@ -379,7 +378,7 @@ var le_key = d3.scaleOrdinal()
 // append the svg object to the body of the page
 var svg_le_stacked = d3.select("#le_stacked_timeseries_datavis")
 .append("svg")
-.attr("width", width + margin.left + margin.right)
+.attr("width", width)
 .attr("height", height_le_stack + margin.top + 75)
 .append("g")
 .attr("transform",

@@ -162,9 +162,7 @@ svg_fg_1
     .text('Deaths');
 
 x_fg_1
-.domain(data.map(function (d) {
-return d.Cause;
-  })) // update the xaxis based on 'data' - so if you run update on data1, this will look at data1, get any new/unique groups and add them to the list of groups.§
+.domain(data.map(function (d) { return d.Cause; })) // update the xaxis based on 'data' - so if you run update on data1, this will look at data1, get any new/unique groups and add them to the list of groups.§
 
 xAxis_fg_1
 .transition()

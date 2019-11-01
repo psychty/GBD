@@ -492,11 +492,10 @@ tooltip_rate_change
 
 tooltip_rate_change
 .style("visibility", "visible")
-.html("<h3>"  + d.Cause + '</h3>' + '<p>The rate of ' + label_key(d.Measure) + ' (per 100,000 population) ' + d.Cause + ' have changed by ' + d.Change_since_2012 + '% since 2012.</p>')
+.html("<h3>"  + d.Cause + '</h3>' + '<p>The rate of ' + label_key(d.Measure) + ' (per 100,000 population) ' + d.Cause + ' have changed by ' + d3.format('0.1f')(d.Change_since_2012) + '% since 2012.</p>')
 .style("top", (event.pageY - 10) + "px")
 .style("left", (event.pageX + 10) + "px")
 .style('opacity', 1)
-
 }
 
 var mouseout_rc = function(d) {
@@ -506,7 +505,7 @@ tooltip_rate_change
 
 var rate_change_svg = d3.select("#my_level_2_rate_change_dataviz")
 .append("svg")
-.attr("width", width + margin.left + margin.right)
+.attr("width", width)
 .attr("height", height_rate_change + margin.top + margin.bottom)
 .append("g")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
