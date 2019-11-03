@@ -59,11 +59,13 @@
                 <div class="content" id = 'content_size'>
                   <h1>Key findings</h1>
                   <ul class='summary'>
-                      <li>Life expectancy improvements have stalled, whilst healthy life expectancy has decreased meaning that on average we are spending <b>one in every eight years in less than ideal health</b></li>
+
                       <li>In 2017, life expectancy at birth was estimated to be 81.7 years, with females having a higher life expectancy (83.5 years) compared to males (79.9 years).</li>
-                      <li><b>Cardiovascular diseases</b> such as stroke, heart attack, and coronary atery disease are the largest causes of death in West Sussex, although <b>cancers (neoplasms)</b> cause the most premature mortality (years of life lost).</li>
+  <li>Life expectancy improvements over time have stalled, whilst healthy life expectancy has decreased meaning that on average we are spending <b>one in every eight years in less than ideal health</b></li>
+                      <li><b>Cardiovascular diseases</b> such as stroke, heart attack, and coronary atery disease are the largest causes of death in West Sussex, although <b>cancers (neoplasms)</b> cause the most premature mortality (as measured by years of life lost).</li>
                       <li>Non-fatal conditions are accounting for an increasingly large amount of overall burden of ill health.</li>
                       <li><b>Musculoskeletal conditions</b> such as low back and neck pain are the third largest cause of overall disease burden as measured by Disability Adjusted Life Years lost in West Sussex.</li>
+                      <li><b>Risk Factors</b></li>
                       <li>The findings from the GBD at a local, regional and national level helps policy makers to allocate resources based on the level of burden and target key risk factors.</li>
                   </ul>
                   </div>
@@ -284,12 +286,10 @@
             <div class="row" id = 'section-lifecourse'>
             <div class="content" >
             <h1>How does ill health affect people of different ages?</h1>
-            <p>Some conditions affect people at particular stages in their lives. Thankfully, a large proportion of
-                deaths happen after the age of 75 in West Sussex (73%, 6,907 deaths in 2017). However, the non-fatal
-                burden of disease can happen much earlier in the life course; with disability concentrated among those
-                of working age.</p>
+            <p>Some conditions affect people at particular stages in their lives. Thankfully, a large proportion of deaths happen after the age of 75 in West Sussex (73%, 6,907 deaths in 2017). However, the non-fatal burden of disease can happen much earlier in the life course; with disability concentrated among those of working age.</p>
             <p>In this section we explore the age at which death and disability occur, to consider which health
-                conditions may be of particular concern for certain age groups.</p>
+            conditions may be of particular concern for certain age groups.</p>
+            <p>You can hover over a single rectangle in a stack (e.g. hover over the dark blue rectangle towards the top of the stack for 85-89 year olds) to highlight all bars for that condition (neurological disorders). If you click on a rectangle, all other condition groups will disapear and the figure will be redrawn with only burden for that particular condition group across the ages shown. This makes it easier to see how each condition affects different age groups. Note that the y axis scale changes as new selections are made to give you the best chance to see changes over age groups. Note also that if you click again on a rectangle, the figure will revert back to showing all condition groups.</p>
             <h3>Burden of disease by age group; persons; West Sussex; 2017</h3>
             <div class="switch-field">
                 <input onclick="update_age(deaths_age)" type="radio" id="radio-eight" name="switch-three" checked/>
@@ -302,10 +302,15 @@
                 <label for="radio-eleven">DALY</label>
             </div>
             <div id="my_lifecourse_condition_dataviz"></div>
-            <p>It is also useful to see the proportion of the burden for each age group to answer the question 'if the
-                condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain
-                age?'. Answering this question shows us that certain diseases impact people of particular ages
-                disproportionately. The switch below effects both the number and proportion of disease burden
+          </div>
+        <div class="right-sidebar"></div>
+      </div>
+      <div class="row" id = 'section-lifecourse'>
+      <div class="content" >
+        <p>You can see that the number of deaths is highest from ages 85 to 89. However, when you take into account disability and premature mortality, the overall burden of disease (DALYs) are highes among 70 to 74 year olds.</p>
+        <p>The figure below shows the same data but this time condition group is along the bottom so the burden for a particular disease is all in one stack which allows you to see the distrubution of ages experiencing the burden of a disease.</p>
+        <p>The first figure shows the number of deaths (or YLLs, YLDs, and DALYs) although distribution of burden experienced by different age groups is best explored in the second figure which shows burden as a percentage rather than a number (notice that cardiovascular diseases and neoplasms have the highest number of deaths by far and this makes seeing patterns for less common diseases difficult.</p>
+            <p>The switch below effects both the number and proportion of disease burden
                 attributed to a condition and age group.</p>
             <div class="switch-field">
                 <input onclick="update_condition(deaths_condition); update_condition_prop(deaths_condition_proportion);"
@@ -323,6 +328,7 @@
             </div>
             <div id='my_condition_lifecourse_dataviz'></div>
             <div id='my_condition_lifecourse_proportion_dataviz'></div>
+            <p>Stacks where the rectangles are similar sizes indicates that each age group in 2017 experienced about the same amount of burden from a condition group. Stacks where some rectangles are larger indicate an unequal distribution. Take for example cardiovascular disease deaths, you can see that people in three age groups (85 to 89, 90 to 94 and 95+) experienced more than half (52%) of the deaths for cardiovascular diseases in West Sussex in this year.</p>
           </div>
           <div class="right-sidebar">
             <h3>Age groups</h3>
@@ -467,8 +473,6 @@
         </div>
 
         <div class = 'right-sidebar'>
-              <p class='side'>Overlap in risk contribution is available for level 1 risks (environmental, behavioural and
-                  metabolic risks).</p>
                   <h3>Level 1 risks</h3>
                   <p class='side'>Level 1 risk groups include:</p>
                   <div id='level_1_risk_summary'></div>
@@ -501,8 +505,7 @@
                   <p class='side'>There are 19 risks at Level 2:</p>
                   <div id='level_2_risk_summary'></div>
                   <h3>Groups 3 and 4</h3>
-                  <p class='side'>In addition, there are 39 level 3 risk factors and some of these are further expanded to an
-                      additional 22 level 4 risks. For this analysis we explore levels 1, and 2 only.</p>
+                  <p class='side'>In addition, there are 39 level 3 risk factors and some of these are further expanded to an additional 22 level 4 risks. For this analysis we explore levels 1, and 2 only.</p>
             </div>
           </div>
 
@@ -532,10 +535,9 @@
             <div class="row" id = 'section-exploring'>
                 <div class="content">
                   <h2>Exploring conditions in more detail</h2>
-                  <p>It is not possible to discuss all conditions in the GBD data set. However, you can explore combinations
-                      of measures and causes for West Sussex by sex in 2017.</p>
+                  <p>It is not possible to discuss all conditions in the GBD data set. However, you can explore combinations of measures and causes for West Sussex by sex in 2017.</p>
                   <p>As you change the selections below, the table will be redrawn with updated information.</p>
-                      <p>
+                    <p>
                           <span class="mr-1">Condition group:</span>
                           <select id='selectExplore_CauseButton'></select>
                           <span class="mr-1">Measure:</span>

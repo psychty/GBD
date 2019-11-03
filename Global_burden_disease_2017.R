@@ -510,7 +510,7 @@ lifecourse_numbers %>%
   arrange(Cause) %>% 
   group_by(Measure, Cause) %>% 
   filter(Estimate == max(Estimate)) %>% 
-  mutate(Estimate_max = ifelse(Estimate < 100, 100, round_any(Estimate, 200, ceiling))) %>% 
+  mutate(Estimate_max = ifelse(Estimate < 50, 50, ifelse(Estimate < 100, 100, round_any(Estimate, 200, ceiling)))) %>% 
   select(Cause, Measure, Estimate_max) %>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Numbers_lifecourse_persons_level_2_2017_', gsub(" ", "_", tolower(Area_x)), '_stack_value_max.json'))
@@ -1088,6 +1088,7 @@ GBD_risk_data_wsx %>%
     filter(metric == 'Age-standardised rate per 100,000') %>% 
     select(-c(Lower_estimate, Upper_estimate, Age, Cause_level, metric, Year)) %>% 
     mutate(Estimate = as.numeric(gsub(',', '', Estimate))) %>% 
+  mutate(Rank_label = ifelse(Rank == 1, ' largest ', paste0(ordinal_format()(Rank), ' largest '))) %>%
     mutate(Risk_colour = ifelse(Risk_level == 2, Risk, ifelse(Risk_level == 3, `Risk group`, NA)))  %>% 
     toJSON() %>% 
     write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Risks_causes_NN_2017.json'))

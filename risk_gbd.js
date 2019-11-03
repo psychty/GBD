@@ -2195,4 +2195,4 @@ svg_overlap
 .attr("text-anchor", "start")
 .attr("x", (width / 100) * 10)
 .attr("y", 360)
-.text('Known risks representing ' + d3.format(',.0f')(n_explained_burden[0].Number) + ' deaths' );
+.text('Known risks represent ' + d3.format(',.0f')(n_explained_burden[0].Number) + ' deaths' );

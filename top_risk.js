@@ -117,7 +117,6 @@ var max_risk_value = d3.max(top_risk_selected, function(d) {
   return +d.Estimate;
   })
 
-
 var tooltip_risk_factors = d3.select("#top_ten_risks")
 .append("div")
 .style("opacity", 0)
@@ -133,16 +132,25 @@ var tooltip_risk_factors = d3.select("#top_ten_risks")
 // The tooltip function
 var showTooltip_risk_factors = function (d) {
 
-tooltip_risk_factors
-.transition()
-.duration(200)
+// tooltip_risk_factors
+// .transition()
+// .duration(200)
 
 tooltip_risk_factors
-.html("<h3>" + d.Risk + '</h3><p>The estimated number of ' + label_key(topten_attrib_measureOption) + ' among ' + d.Sex.toLowerCase().replace('both', 'both males and female') + 's as a result of ' + d.Risk + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.Estimate) + '</b></font>.</p><p>This is the ' + d.Rank+ ' biggest known risk factor at this level (level ' + topten_attrib_risk_levelOption + ') for this condition.</p>') // The nested .replace within .toLowerCase() replaces the string 'both' (not 'Both') with 'both males and female' and then we add the s and a line break.
+.style('visibility', 'visible')
+
+tooltip_risk_factors
+.html("<h3>" + d.Risk + '</h3><p>The estimated number of ' + label_key(topten_attrib_measureOption) + ' among ' + d.Sex.toLowerCase().replace('both', 'both males and female') + 's as a result of ' + d.Risk + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.Estimate) + '</b></font>.</p><p>This is the ' + d.Rank_label + ' known risk factor at this level for this condition.</p>') // The nested .replace within .toLowerCase() replaces the string 'both' (not 'Both') with 'both males and female' and then we add the s and a line break.
 .style("opacity", 1)
 .style("top", (event.pageY - 10) + "px")
 .style("left", (event.pageX + 10) + "px")
   }
+
+var mouseleave_top_risk_factors = function(d) {
+tooltip_risk_factors
+.style("visibility", "hidden")
+}
+
 
 // Add X axis scale - this is the max value plus 10%
 var x_top_ten = d3.scaleLinear()
@@ -197,7 +205,8 @@ bars_fig_top_ten
 .attr("width", function(d) { return x_top_ten(d.Estimate); })
 .attr("height", y_top_ten.bandwidth())
 .attr("fill", function(d) { return color_risk_group(d.Risk_colour); })
-.on("mousemove", showTooltip_risk_factors);
+.on("mousemove", showTooltip_risk_factors)
+.on('mouseout', mouseleave_top_risk_factors);
 
 update_top_risk = function(){
 
@@ -273,7 +282,10 @@ bars_fig_top_ten
 .attr("width", function(d) {return x_top_ten(d.Estimate); })
 .attr("height", y_top_ten.bandwidth() )
 .attr("fill", function(d) {return color_risk_group(d.Risk_colour); })
-.on("mousemove", showTooltip_risk_factors);
+
+bars_fig_top_ten
+.on("mousemove", showTooltip_risk_factors)
+.on('mouseout', mouseleave_top_risk_factors);
 
 bars_fig_top_ten
 .exit()
