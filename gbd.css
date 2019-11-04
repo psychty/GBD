@@ -10,6 +10,10 @@ div {
   font-family: Helvetica;
   font-weight: bold; }
 
+.flex-container {
+  display: flex;
+  justify-content: center;
+}
 
 .summary {
   padding-top: 15px;

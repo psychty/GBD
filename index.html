@@ -469,7 +469,7 @@
               <div id  = 'risk_no_attrib_datavis'></div>
             </div>
 
-          <p>This visualisation is based on work by <a href="https://github.com/benfred/venn.js" ,target="_blank">Ben Frederickson</a></p>
+          <p class = 'side' style = 'float:right'>This visualisation is based on work by <a href="https://github.com/benfred/venn.js" ,target="_blank">Ben Frederickson</a></p>
         </div>
 
         <div class = 'right-sidebar'>
@@ -485,8 +485,9 @@
     <h2>Top ten risk factors by condition</h2>
     <p>With the scope of how much we know (and do not know) about risk factors, and their overlapping nature in mind, we now turn to focus on which specific risk factors are most important for each measure and condition.</p>
     <p>The figure below shows the top ten risk factors (level 2 by default) for all deaths in West Sussex in 2017. You can change the condition group (from all causes to a specific condition group), as well as measure (deaths, YLLs, YLDs, or DALYs), and sex (both, males, or females). In addition, you can switch between level 2 risks and level 3 risk. Bars are coloured by their level risk group.</p>
-    <h3>Dynamic figure title</h3>
-    <p>How much of the overall deaths/ylls do the top ten risks account for</p>
+    <p>The figure shows only those risk factors which are associated with an increase in burden as a result of a particular cause. Those risk factors which are considered to be protective are excluded here. The figure also shows only the top 10 risk factors for each condition group. For some condition groups there are fewer than 10 GBD risk factors associated with an increase in burden and as such the figure will be redrawn accordingly. The number of risk factors associated with an increase in burden for each condition group are shown in the bottom right hand side of the figure.</p>
+
+    <h3 id = 'top_risks_title'></h3>
     <p>
             <span class="mr-1">Condition group: </span>
             <select id='selecttopten_attrib_cause_Button'></select>
@@ -529,8 +530,6 @@
                 </div>
                 <div class="right-sidebar"></div>
             </div> -->
-
-
 
             <div class="row" id = 'section-exploring'>
                 <div class="content">

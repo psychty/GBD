@@ -2096,7 +2096,7 @@ width = n_width(width)
 // Select the div id total_death_string (this is where you want the result of this to be displayed in the html page)
 d3.select("#venn_title")
   .data(no_attrib)
-  .text(function(d){ return "Overlapping burden attributed to risk factor groups associated attributed to " + label_key(d.Measure)  + '; ' + d.Cause.replace('All causes', 'all causes') + '; both males and females; all ages; West Sussex; 2017' });
+  .text(function(d){ return "Overlapping burden attributed to risk factor groups attributed to " + label_key(d.Measure)  + '; ' + d.Cause.replace('All causes', 'all causes') + '; both males and females; all ages; West Sussex; 2017' });
 
 // Set up the svg and link to the div with the same identifier on the html page
 var svg_overlap = d3.select("#risk_overlap_datavis")

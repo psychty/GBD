@@ -1072,23 +1072,26 @@ top_ten <- GBD_risk_data_all_cause_NN %>%
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/level_2_risk_all_cause_NN_2017.json'))
 
 GBD_risk_data_wsx %>% 
-    filter(Year == 2017) %>% 
+  filter(Year == 2017) %>% 
   filter(Area == Area_x) %>% 
-    # filter(Risk_level == 2) %>% 
   filter(Cause_level %in% c(0,2)) %>% 
-    filter((Age == 'Age-standardized') | (Age == 'All Ages' & metric == 'Number')) %>% 
-    mutate(metric = ifelse(metric == 'Rate per 100,000 population', 'Age-standardised rate per 100,000', ifelse(metric == 'Number', 'Number (all ages)', NA))) %>% 
-    group_by(Area, Sex, Risk_level, Year, Cause, measure, metric) %>% 
-    mutate(Rank = rank(-Estimate)) %>% 
-    mutate(Estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Estimate,1),big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
-    mutate(Lower_estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Lower_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Lower_estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
-    mutate(Upper_estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Upper_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Upper_estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
-    mutate(Estimate_label = paste0(Estimate, ' (', Lower_estimate, '-', Upper_estimate, ')')) %>% 
-    ungroup() %>%
-    filter(metric == 'Age-standardised rate per 100,000') %>% 
-    select(-c(Lower_estimate, Upper_estimate, Age, Cause_level, metric, Year)) %>% 
-    mutate(Estimate = as.numeric(gsub(',', '', Estimate))) %>% 
-  mutate(Rank_label = ifelse(Rank == 1, ' largest ', paste0(ordinal_format()(Rank), ' largest '))) %>%
-    mutate(Risk_colour = ifelse(Risk_level == 2, Risk, ifelse(Risk_level == 3, `Risk group`, NA)))  %>% 
-    toJSON() %>% 
-    write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Risks_causes_NN_2017.json'))
+  filter((Age == 'Age-standardized') | (Age == 'All Ages' & metric == 'Number')) %>% 
+  mutate(metric = ifelse(metric == 'Rate per 100,000 population', 'Age-standardised rate per 100,000', ifelse(metric == 'Number', 'Number (all ages)', NA))) %>% 
+  group_by(Area, Sex, Risk_level, Year, Cause, measure, metric) %>% 
+  filter(Estimate > 0) %>% 
+  mutate(Rank = rank(-Estimate)) %>% 
+  mutate(Estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Estimate,1),big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
+  mutate(Lower_estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Lower_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Lower_estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
+  mutate(Upper_estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Upper_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Upper_estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
+  mutate(Estimate_label = paste0(Estimate, ' (', Lower_estimate, '-', Upper_estimate, ')')) %>% 
+  ungroup() %>%
+  filter(metric == 'Age-standardised rate per 100,000') %>% 
+  filter(Risk_level %in% c(2,3)) %>% 
+  select(-c(Lower_estimate, Upper_estimate, Age, Cause_level, metric, Year)) %>% 
+  mutate(Estimate = as.numeric(gsub(',', '', Estimate))) %>% 
+  mutate(Rank_label = ifelse(Rank == 1, 'largest ', paste0(ordinal_format()(Rank), ' largest '))) %>%
+  mutate(Risk_colour = ifelse(Risk_level == 2, Risk, ifelse(Risk_level == 3, `Risk group`, NA)))  %>% 
+  group_by(Area, Sex, Cause, Risk_level, measure) %>% 
+  mutate(Number_of_negative_risks = n())  %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Risks_causes_NN_2017.json'))

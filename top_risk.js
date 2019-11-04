@@ -1,6 +1,7 @@
 // set global width and heights to use for our svgs - you can choose not to use these and specify custom values
 var width_risks = document.getElementById("content_size").offsetWidth - 20
 
+
 // Specify a colour palette and order
 var cause_categories = ["HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"]
 
@@ -104,6 +105,24 @@ top_risk_selected = top_risks.filter(function (d) { // gets a subset of the json
   })
   .slice(0, 10); // just keeps the first 10 rows
 
+
+
+if(top_risk_selected[0].Number_of_negative_risks > 10) {
+
+d3.select("#top_risks_title")
+.data(top_risk_selected)
+.text(function(d){ return 'Top 10 risk factors (level ' + d.Risk_level + ') attributed to ' + label_key(d.measure)  + '; ' + d.Cause.replace('All causes', 'all causes') + '; ' + d.Sex.toLowerCase().replace('both', 'both males and female') + ' ; all ages; West Sussex; 2017' });
+
+}
+
+if(top_risk_selected[0].Number_of_negative_risks < 10) {
+
+d3.select("#top_risks_title")
+.data(top_risk_selected)
+.text(function(d){ return 'Top ' + top_risk_selected[0].Number_of_negative_risks +' risk factors (level ' + d.Risk_level + ') attributed to ' + label_key(d.measure)  + '; ' + d.Cause.replace('All causes', 'all causes') + '; ' + d.Sex.toLowerCase().replace('both', 'both males and female') + ' ; all ages; West Sussex; 2017' });
+
+}
+
 // append the svg object to the body of the page
 var top_ten_risks_svg = d3.select("#top_ten_risks")
 .append("svg")
@@ -140,7 +159,7 @@ tooltip_risk_factors
 .style('visibility', 'visible')
 
 tooltip_risk_factors
-.html("<h3>" + d.Risk + '</h3><p>The estimated number of ' + label_key(topten_attrib_measureOption) + ' among ' + d.Sex.toLowerCase().replace('both', 'both males and female') + 's as a result of ' + d.Risk + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.Estimate) + '</b></font>.</p><p>This is the ' + d.Rank_label + ' known risk factor at this level for this condition.</p>') // The nested .replace within .toLowerCase() replaces the string 'both' (not 'Both') with 'both males and female' and then we add the s and a line break.
+.html("<h3>" + d.Risk + '</h3><p>The estimated number of ' + label_key(d.measure) + ' among ' + d.Sex.toLowerCase().replace('both', 'both males and female') + 's as a result of ' + d.Risk + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d.Estimate_label + ' ' + label_key(d.measure) + ' </b></font>per 100,000.</p><p>This is the ' + d.Rank_label + ' known risk factor at this level for this condition.</p>') // The nested .replace within .toLowerCase() replaces the string 'both' (not 'Both') with 'both males and female' and then we add the s and a line break.
 .style("opacity", 1)
 .style("top", (event.pageY - 10) + "px")
 .style("left", (event.pageX + 10) + "px")
@@ -175,12 +194,13 @@ var yAxis_top_risks = top_ten_risks_svg
 
 // Add X axis label:
 top_ten_risks_svg
+.data(top_risk_selected)
 .append("text")
-.attr("text-anchor", "end")
+.attr("text-anchor", "middle")
 .attr('id', 'axis_x_title_tt')
-.attr("x", (width/2) + 130)
+.attr("x", document.getElementById("content_size").offsetWidth /2 - 130)
 .attr("y", height_top_ten + 30)
-.text(topten_attrib_measureOption);
+.text(function(d) { return d.measure});
 
 // Y axis label:
 top_ten_risks_svg
@@ -191,6 +211,35 @@ top_ten_risks_svg
 .attr("y", - 130)
 .attr("x", - (height_top_ten / 2) + 20)
 .text('Risk factor');
+
+top_ten_risks_svg
+.data(top_risk_selected)
+.append("text")
+.attr("text-anchor", "left")
+.attr('id', 'number_negative_risks_1')
+.attr("x", (width / 100) * 80 + 130)
+.attr("y", height_top_ten - 105)
+.text(function(d) { return 'There are ' + d.Number_of_negative_risks + ' risks associated with an'});
+
+top_ten_risks_svg
+.append("text")
+.attr("text-anchor", "left")
+.attr('id', 'number_negative_risks_2')
+.attr("x", (width / 100) * 80 + 130)
+.attr("y", height_top_ten - 92)
+.text('increase in burden for this cause.');
+
+top_ten_risks_svg
+.append("text")
+.attr("text-anchor", "right")
+.attr('id', 'number_negative_risks_3')
+// .style('font-weight', 'bold')
+.style('fill', 'red')
+.style('font-size', 6)
+.attr("x", width - 20)
+.attr("y", height_top_ten - 10)
+.text('Remember: these risk factors may overlap in increasing burden.');
+
 
 // Create the bars element
 var bars_fig_top_ten = top_ten_risks_svg
@@ -215,6 +264,13 @@ var topten_attrib_measureOption = d3.select('#selecttopten_attrib_measure_Button
 var topten_attrib_sexOption = d3.select('#selecttopten_attrib_sex_Button').property("value")
 var topten_attrib_risk_levelOption = d3.select('#selecttopten_attrib_risk_level_Button').property("value")
 
+top_ten_risks_svg
+.selectAll("#no_data_warning")
+.transition()
+.duration(750)
+.attr('opacity', 0)
+.remove();
+
 top_risk_selected = top_risks.filter(function (d) { // gets a subset of the json data
         return d.Area === 'West Sussex' &
         d.Sex === topten_attrib_sexOption &
@@ -226,6 +282,27 @@ top_risk_selected = top_risks.filter(function (d) { // gets a subset of the json
         return d3.ascending(a.Rank, b.Rank);
   })
   .slice(0, 10); // just keeps the first 10 rows
+
+if(top_risk_selected.length === 0)
+  {
+top_risk_selected = [{Area: "West Sussex", Sex: topten_attrib_sexOption, Cause: topten_attrib_causeOption, Estimate: 0, Estimate_label: 0, Number_of_negative_risks: 0, Rank: 0, Rank_label: 'None', Risk: 'No risk factors', Risk_level: topten_attrib_risk_levelOption, measure: topten_attrib_measureOption}]
+  }
+
+if(top_risk_selected[0].Number_of_negative_risks > 10) {
+
+d3.select("#top_risks_title")
+.data(top_risk_selected)
+.text(function(d){ return 'Top 10 risk factors (level ' + d.Risk_level + ') attributed to ' + label_key(d.measure)  + '; ' + d.Cause.replace('All causes', 'all causes') + '; ' + d.Sex.toLowerCase().replace('both', 'both males and female') + ' ; all ages; West Sussex; 2017' });
+
+}
+
+if(top_risk_selected[0].Number_of_negative_risks < 10) {
+
+d3.select("#top_risks_title")
+.data(top_risk_selected)
+.text(function(d){ return 'Top ' + top_risk_selected[0].Number_of_negative_risks +' risk factors (level ' + d.Risk_level + ') attributed to ' + label_key(d.measure)  + '; ' + d.Cause.replace('All causes', 'all causes') + '; ' + d.Sex.toLowerCase().replace('both', 'both males and female') + ' ; all ages; West Sussex; 2017' });
+
+}
 
 top_ten_risks_svg
 .selectAll("#axis_x_title_tt")
@@ -246,6 +323,27 @@ top_ten_risks_svg
 .transition()
 .duration(750)
 .attr('opacity', 1);
+
+top_ten_risks_svg
+.selectAll("#number_negative_risks_1")
+.transition()
+.duration(750)
+.attr('opacity', 0)
+.remove();
+
+
+if(top_risk_selected[0].Number_of_negative_risks != 1) {
+
+top_ten_risks_svg
+.data(top_risk_selected)
+.append("text")
+.attr("text-anchor", "left")
+.attr('id', 'number_negative_risks_1')
+.attr("x", (width / 100) * 80 + 130)
+.attr("y", height_top_ten - 105)
+.text(function(d) { return 'There are ' + d.Number_of_negative_risks + ' risks associated with an'});
+
+}
 
 // Grab the highest number of value
 var max_risk_value = d3.max(top_risk_selected, function(d) { return +d.Estimate; })
@@ -290,8 +388,25 @@ bars_fig_top_ten
 bars_fig_top_ten
 .exit()
 .remove()
+
+if(top_risk_selected[0].Number_of_negative_risks === 0) {
+
+top_ten_risks_svg
+.data(top_risk_selected)
+.append("text")
+.attr("text-anchor", "left")
+.attr('id', 'no_data_warning')
+.style('fontsize', 30)
+.style('fill', 'red')
+.attr("x", 160)
+.attr("y", height_top_ten / 2)
+.text(function(d) { return 'There are no risks associated with this condition group and measure.'});
+
 }
 
+
+
+}
 
 d3.select("#selecttopten_attrib_cause_Button").on("change", function(d) {
 update_top_risk(topten_attrib_causeOption)
