@@ -455,6 +455,23 @@ update_age(deaths_age)
 // x = age stacks = conditions //
 /////////////////////////////////
 
+// append the svg object to the body of the page
+var svg_fg_age_stack_2 = d3.select("#my_condition_lifecourse_dataviz")
+ .append("svg")
+ .attr("width", width_fg_5)
+ .attr("height", height_fg_5 + 250)
+ .append("g")
+ .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// append the svg object to the body of the page
+var svg_fg_5_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
+ .append("svg")
+ .attr("width", width_fg_5_prop)
+ .attr("height", height_fg_5_prop + 250)
+ .append("g")
+ .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
 var request = new XMLHttpRequest();
     request.open("GET", "./Numbers_lifecourse_persons_by_condition_level_2_2017_west_sussex.json", false);
     request.send(null);
@@ -528,13 +545,6 @@ d3.selectAll(".myRect_age_" + subgroup_age_key)
   .style("opacity", 1)
 }
 
-// append the svg object to the body of the page
-var svg_fg_age_stack_2 = d3.select("#my_condition_lifecourse_dataviz")
- .append("svg")
- .attr("width", width_fg_5)
- .attr("height", height_fg_5 + 250)
- .append("g")
- .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // Add X axis
 var x_fg_5 = d3.scaleBand()
@@ -951,13 +961,6 @@ update_condition(deaths_condition)
 
 // age by conditions proportion
 
-// append the svg object to the body of the page
-var svg_fg_5_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
- .append("svg")
- .attr("width", width_fg_5_prop)
- .attr("height", height_fg_5_prop + 250)
- .append("g")
- .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
 // This is the proportion of a conditions burden by the age of people. If the condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain age. It shows us that certain diseases impact people of particular ages disproportionately.
