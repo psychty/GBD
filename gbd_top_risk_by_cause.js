@@ -220,25 +220,29 @@ top_ten_risks_svg
 .data(top_risk_selected)
 .append("text")
 .attr("text-anchor", "left")
+.attr('class', 'remember_overlap_text')
 .attr('id', 'number_negative_risks_1')
-.attr("x", (width / 100) * 80 + 130)
+.attr("x", (width / 100) * 80 + 100)
 .attr("y", height_top_ten - 105)
 .text(function(d) { return 'There are ' + d.Number_of_negative_risks + ' risks associated with an'});
 
 top_ten_risks_svg
 .append("text")
 .attr("text-anchor", "left")
+.attr('class', 'remember_overlap_text')
 .attr('id', 'number_negative_risks_2')
-.attr("x", (width / 100) * 80 + 130)
+.attr("x", (width / 100) * 80 + 100)
 .attr("y", height_top_ten - 92)
 .text('increase in burden for this cause.');
 
 top_ten_risks_svg
 .append("text")
 .attr("text-anchor", "right")
+.attr('class', 'remember_overlap_text')
 .attr('id', 'number_negative_risks_3')
 // .style('font-weight', 'bold')
 .style('fill', 'red')
+.style('font-size', 10)
 .attr("x", width - 20)
 .attr("y", height_top_ten - 10)
 .text('Remember: these risk factors may overlap in increasing burden.');

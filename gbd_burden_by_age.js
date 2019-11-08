@@ -24,15 +24,15 @@ var margin = {top: 30,
               left: 60};
 
 // Now we can use the global width with
-// var width_fg_4 = window.innerWidth / 2 - margin.left - margin.right;
-var width_fg_4 = document.getElementById("content_size").offsetWidth;
-var height_fg_4 = 400 - margin.top - margin.bottom;
+var width_ages = document.getElementById("content_size").offsetWidth;
+var height_ages = 400 - margin.top - margin.bottom;
+
 
 // append the svg object to the body of the page before data is loaded
 var svg_fg_age_stack_1 = d3.select("#my_lifecourse_condition_dataviz")
 .append("svg")
-.attr("width", width_fg_4)
-.attr("height", height_fg_4 + 100)
+.attr("width", width_ages)
+.attr("height", height_ages + 100)
 .append("g")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -104,13 +104,13 @@ d3.selectAll(".myRect" + subgroup_key)
 // Add X axis
 var x_fg_4 = d3.scaleBand()
 .domain(age_groups)
-// .range([0, width_fg_4])
-.range([0, width_fg_4 - margin.left - 50])
+// .range([0, width_ages])
+.range([0, width_ages - margin.left - 50])
 .padding([0.2])
 
 svg_fg_age_stack_1
 .append("g")
-.attr("transform", "translate(0," + height_fg_4 + ")")
+.attr("transform", "translate(0," + height_ages + ")")
 .call(d3.axisBottom(x_fg_4).tickSizeOuter(0));
 
 svg_fg_age_stack_1
@@ -122,8 +122,8 @@ svg_fg_age_stack_1
 svg_fg_age_stack_1
 .append("text")
 .attr("text-anchor", "end")
-.attr("x", width_fg_4/2)
-.attr("y", height_fg_4 + margin.top + 35)
+.attr("x", width_ages/2)
+.attr("y", height_ages + margin.top + 35)
 .text("Age group");
 
 // Y axis label:
@@ -139,7 +139,7 @@ svg_fg_age_stack_1
  // // Add Y axis
 var y_fg_4 = d3.scaleLinear()
 .domain([0, 2000])
-.range([height_fg_4, 0 ]);
+.range([height_ages, 0 ]);
 
 var yAxis_fg_4 = svg_fg_age_stack_1.append("g")
 .attr("class", "myYaxis")
@@ -148,7 +148,7 @@ svg_fg_age_stack_1
 .append("text")
 .attr("text-anchor", "start")
 .attr("y", 5)
-.attr("x", (width_fg_4 / 100) * 1)
+.attr("x", (width_ages / 100) * 1)
 .style('font-size', '10px')
 .attr('opacity', 0)
 .transition()
@@ -160,7 +160,7 @@ svg_fg_age_stack_1
 .append("text")
 .attr("text-anchor", "start")
 .attr("y", 15)
-.attr("x", (width_fg_4 / 100) * 1)
+.attr("x", (width_ages / 100) * 1)
 .style('font-size', '10px')
 .attr('opacity', 0)
 .transition()
@@ -187,7 +187,7 @@ svg_fg_age_stack_1
 .attr("text-anchor", "start")
 .attr('id', 'age_stack_label_1')
 .attr("y", 70)
-.attr("x", (width_fg_4 / 100) * 10)
+.attr("x", (width_ages / 100) * 10)
 .style('font-size', '12px')
 .attr('opacity', 0)
 .transition()
@@ -200,7 +200,7 @@ svg_fg_age_stack_1
 .attr('id', 'age_stack_label_2')
 .attr("text-anchor", "start")
 .attr("y", 85)
-.attr("x", (width_fg_4 / 100) * 10)
+.attr("x", (width_ages / 100) * 10)
 .style('font-size', '12px')
 .attr('opacity', 0)
 .transition()
@@ -252,7 +252,7 @@ svg_fg_age_stack_1
 .attr("text-anchor", "start")
 .attr('id', 'age_stack_label_1')
 .attr("y", 70)
-.attr("x", (width_fg_4 / 100) * 10)
+.attr("x", (width_ages / 100) * 10)
 .style('font-size', '12px')
 .attr('opacity', 0)
 .transition()
@@ -265,7 +265,7 @@ svg_fg_age_stack_1
 .attr('id', 'age_stack_label_2')
 .attr("text-anchor", "start")
 .attr("y", 85)
-.attr("x", (width_fg_4 / 100) * 10)
+.attr("x", (width_ages / 100) * 10)
 .style('font-size', '12px')
 .attr('opacity', 0)
 .transition()
@@ -278,7 +278,7 @@ svg_fg_age_stack_1
 .attr("text-anchor", "start")
 .attr('id', 'age_stack_label_1')
 .attr("y", 50)
-.attr("x", (width_fg_4 / 100) * 10)
+.attr("x", (width_ages / 100) * 10)
 .style('font-weight', 'bold')
 .attr('opacity', 0)
 .transition()
@@ -302,7 +302,7 @@ svg_fg_age_stack_1
 .attr("x", function(d) {
   return x_fg_4(d.data.Age); })
 .attr("y", function(d) {
-  return height_fg_4 - (y_fg_4(d[0]) - y_fg_4(d[1])); })
+  return height_ages - (y_fg_4(d[0]) - y_fg_4(d[1])); })
 .attr("height", function(d) {
   return y_fg_4(d[0]) - y_fg_4(d[1]); })
 .attr("width", x_fg_4.bandwidth())
@@ -334,7 +334,7 @@ svg_fg_age_stack_1
 .attr("text-anchor", "start")
 .attr('id', 'age_stack_label_1')
 .attr("y", 70)
-.attr("x", (width_fg_4 / 100) * 10)
+.attr("x", (width_ages / 100) * 10)
 .style('font-size', '12px')
 .attr('opacity', 0)
 .transition()
@@ -347,7 +347,7 @@ svg_fg_age_stack_1
 .attr('id', 'age_stack_label_2')
 .attr("text-anchor", "start")
 .attr("y", 85)
-.attr("x", (width_fg_4 / 100) * 10)
+.attr("x", (width_ages / 100) * 10)
 .style('font-size', '12px')
 .attr('opacity', 0)
 .transition()
@@ -458,19 +458,10 @@ update_age(deaths_age)
 // append the svg object to the body of the page
 var svg_fg_age_stack_2 = d3.select("#my_condition_lifecourse_dataviz")
  .append("svg")
- .attr("width", width_fg_5)
- .attr("height", height_fg_5 + 250)
+ .attr("width", width_ages)
+ .attr("height", height_ages + 250)
  .append("g")
  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-// append the svg object to the body of the page
-var svg_fg_5_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
- .append("svg")
- .attr("width", width_fg_5_prop)
- .attr("height", height_fg_5_prop + 250)
- .append("g")
- .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 
 var request = new XMLHttpRequest();
     request.open("GET", "./Numbers_lifecourse_persons_by_condition_level_2_2017_west_sussex.json", false);
@@ -495,12 +486,6 @@ yld_condition = json.filter(function(d){
   return d.Measure === 'YLDs (Years Lived with Disability)'});
 daly_condition = json.filter(function(d){
   return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
-
-// Now we can use the global width with
-// var width_fg_5 = window.innerWidth / 2 - margin.left - margin.right;
-var width_fg_5 = document.getElementById("content_size").offsetWidth;
-
-var height_fg_5 = 400 - margin.top - margin.bottom;
 
 var tooltip_condition_age = d3.select("#my_condition_lifecourse_dataviz")
  .append("div")
@@ -549,12 +534,12 @@ d3.selectAll(".myRect_age_" + subgroup_age_key)
 // Add X axis
 var x_fg_5 = d3.scaleBand()
  .domain(conditions)
- .range([0, width_fg_5 - margin.left - 50])
+ .range([0, width_ages - margin.left - 50])
  .padding([0.2])
 
 svg_fg_age_stack_2
  .append("g")
- .attr("transform", "translate(0," + height_fg_5 + ")")
+ .attr("transform", "translate(0," + height_ages + ")")
  .call(d3.axisBottom(x_fg_5).tickSizeOuter(0));
 
 svg_fg_age_stack_2
@@ -566,8 +551,8 @@ svg_fg_age_stack_2
 svg_fg_age_stack_2
  .append("text")
  .attr("text-anchor", "end")
- .attr("x", width_fg_5/2)
- .attr("y", height_fg_5 + margin.top + 150)
+ .attr("x", width_ages/2)
+ .attr("y", height_ages + margin.top + 150)
  .text("Condition");
 
 // Y axis label:
@@ -583,7 +568,7 @@ svg_fg_age_stack_2
 // // Add Y axis
 var y_fg_5 = d3.scaleLinear()
     .domain([0, 3000])
-    .range([height_fg_5, 0 ]);
+    .range([height_ages, 0 ]);
 
 var yAxis_fg_5 = svg_fg_age_stack_2
   .append("g")
@@ -593,7 +578,7 @@ svg_fg_age_stack_2
 .append("text")
 .attr("text-anchor", "start")
 .attr("y", 5)
-.attr("x", (width_fg_5 / 100) * 1)
+.attr("x", (width_ages / 100) * 1)
 .style('font-size', '10px')
 .attr('opacity', 0)
 .transition()
@@ -605,7 +590,7 @@ svg_fg_age_stack_2
 .append("text")
 .attr("text-anchor", "start")
 .attr("y", 15)
-.attr("x", (width_fg_5 / 100) * 1)
+.attr("x", (width_ages / 100) * 1)
 .style('font-size', '10px')
 .attr('opacity', 0)
 .transition()
@@ -647,9 +632,9 @@ svg_fg_age_stack_2
              })
    .attr("x", function(d) {
      if (measure_name_fg_5[0] === 'YLDs (Years Lived with Disability)') {
-       return (width_fg_5 / 100) * 10 }
+       return (width_ages / 100) * 10 }
        else {
-       return (width_fg_5 / 100) * 50 }
+       return (width_ages / 100) * 50 }
              })
    .style('font-size', '12px')
    .attr('opacity', 0)
@@ -670,9 +655,9 @@ svg_fg_age_stack_2
              })
    .attr("x", function(d) {
      if (measure_name_fg_5[0] === 'YLDs (Years Lived with Disability)') {
-       return (width_fg_5 / 100) * 10 }
+       return (width_ages / 100) * 10 }
        else {
-       return (width_fg_5 / 100) * 50 }
+       return (width_ages / 100) * 50 }
              })
    .style('font-size', '12px')
    .attr('opacity', 0)
@@ -716,93 +701,93 @@ svg_fg_age_stack_2
 .style('opacity', 0)
 .remove();
 
-   svg_fg_age_stack_2
-   .selectAll("#age_stack_label_1")
-   .remove();
+svg_fg_age_stack_2
+.selectAll("#age_stack_label_1")
+.remove();
 
-   svg_fg_age_stack_2
-   .selectAll("#age_stack_label_2")
-   .remove();
+svg_fg_age_stack_2
+.selectAll("#age_stack_label_2")
+.remove();
 
-   svg_fg_age_stack_2
-   .selectAll("#age_stack_label_3")
-   .remove();
+svg_fg_age_stack_2
+.selectAll("#age_stack_label_3")
+.remove();
 
-   svg_fg_age_stack_2
-   .append("text")
-   .attr("text-anchor", "start")
-   .attr('id', 'age_stack_label_1')
-   .attr('y', 70)
-   .attr("x", function(d) {
-     if (measure_name_fg_5[0] === 'YLDs (Years Lived with Disability)') {
-       return (width_fg_5 / 100) * 10 }
-       else {
-       return (width_fg_5 / 100) * 50 }
-             })
-   .style('font-size', '12px')
-   .attr('opacity', 0)
-   .transition()
-   .duration(2000)
-   .attr('opacity', 1)
-   .text('Click again on one of the bars');
+svg_fg_age_stack_2
+.append("text")
+.attr("text-anchor", "start")
+.attr('id', 'age_stack_label_1')
+.attr('y', 70)
+.attr("x", function(d) {
+ if (measure_name_fg_5[0] === 'YLDs (Years Lived with Disability)') {
+   return (width_ages / 100) * 10 }
+   else {
+   return (width_ages / 100) * 50 }
+   })
+.style('font-size', '12px')
+.attr('opacity', 0)
+.transition()
+.duration(2000)
+.attr('opacity', 1)
+.text('Click again on one of the bars');
 
-   svg_fg_age_stack_2
-   .append("text")
-   .attr('id', 'age_stack_label_2')
-   .attr("text-anchor", "start")
-   .attr("y", 85)
-   .attr("x", function(d) {
-     if (measure_name_fg_5[0] === 'YLDs (Years Lived with Disability)') {
-       return (width_fg_5 / 100) * 10 }
-       else {
-       return (width_fg_5 / 100) * 50 }
-             })
-   .style('font-size', '12px')
-   .attr('opacity', 0)
-   .transition()
-   .duration(2000)
-   .attr('opacity', 1)
-   .text('to return to all age groups.');
+svg_fg_age_stack_2
+.append("text")
+.attr('id', 'age_stack_label_2')
+.attr("text-anchor", "start")
+.attr("y", 85)
+.attr("x", function(d) {
+ if (measure_name_fg_5[0] === 'YLDs (Years Lived with Disability)') {
+ return (width_ages / 100) * 10 }
+ else {
+ return (width_ages / 100) * 50 }
+ })
+.style('font-size', '12px')
+.attr('opacity', 0)
+.transition()
+.duration(2000)
+.attr('opacity', 1)
+.text('to return to all age groups.');
 
-   svg_fg_age_stack_2
-   .append("text")
-   .attr("text-anchor", "start")
-   .attr('id', 'age_stack_label_1')
-   .attr("y", 50)
-   .attr("x", (width_fg_5 / 100) * 10)
-   .style('font-weight', 'bold')
-   .attr('opacity', 0)
-   .transition()
-   .duration(2000)
-   .attr('opacity', 1)
-   .text(sub_age_groupName);
+svg_fg_age_stack_2
+.append("text")
+.attr("text-anchor", "start")
+.attr('id', 'age_stack_label_1')
+.attr("y", 50)
+.attr("x", (width_ages / 100) * 10)
+.style('font-weight', 'bold')
+.attr('opacity', 0)
+.transition()
+.duration(2000)
+.attr('opacity', 1)
+.text(sub_age_groupName);
 
-   setTimeout(function(){
-   svg_fg_age_stack_2
-   .append("g")
-   .selectAll("g")
-   .data(select_age_stack_data) // Enter in the stack data = loop key per key = group per group
-   .enter()
-   .append("g")
-   .attr("fill", function(d) { return color_age_group(d.key); })
-   .attr("class", function(d, i){ return "myRect_age_" + i }) // Add an id to each subgroup: their name
-   .selectAll("rect")
-   .data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
-   .enter()
-   .append("rect")
-   .attr("x", function(d) {
-    return x_fg_5(d.data.Cause); })
-   .attr("y", function(d) {
-     return height_fg_5 - (y_fg_5(d[0]) - y_fg_5(d[1])); })
-   .attr("height", function(d) {
-     return y_fg_5(d[0]) - y_fg_5(d[1]); })
-   .attr("width", x_fg_5.bandwidth())
-   .style("opacity", 1)
-   .on("mousemove", showTooltip_condition_age)
-   .on('mouseout', mouseleave_stack_2)
-   .on('click', restore_age_stacks)
-   }, 500);
-   }
+ setTimeout(function(){
+ svg_fg_age_stack_2
+ .append("g")
+ .selectAll("g")
+ .data(select_age_stack_data) // Enter in the stack data = loop key per key = group per group
+ .enter()
+ .append("g")
+ .attr("fill", function(d) { return color_age_group(d.key); })
+ .attr("class", function(d, i){ return "myRect_age_" + i }) // Add an id to each subgroup: their name
+ .selectAll("rect")
+ .data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
+ .enter()
+ .append("rect")
+ .attr("x", function(d) {
+return x_fg_5(d.data.Cause); })
+ .attr("y", function(d) {
+     return height_ages - (y_fg_5(d[0]) - y_fg_5(d[1])); })
+ .attr("height", function(d) {
+ return y_fg_5(d[0]) - y_fg_5(d[1]); })
+.attr("width", x_fg_5.bandwidth())
+.style("opacity", 1)
+.on("mousemove", showTooltip_condition_age)
+.on('mouseout', mouseleave_stack_2)
+.on('click', restore_age_stacks)
+ }, 500);
+ }
 
 var restore_age_stacks = function(d){
 svg_fg_age_stack_2
@@ -832,9 +817,9 @@ svg_fg_age_stack_2
      })
 .attr("x", function(d) {
  if (measure_name_fg_5[0] === 'YLDs (Years Lived with Disability)') {
-     return (width_fg_5 / 100) * 10 }
+     return (width_ages / 100) * 10 }
      else {
-     return (width_fg_5 / 100) * 50 }
+     return (width_ages / 100) * 50 }
      })
 .style('font-size', '12px')
 .attr('opacity', 0)
@@ -855,9 +840,9 @@ svg_fg_age_stack_2
    })
 .attr("x", function(d) {
  if (measure_name_fg_5[0] === 'YLDs (Years Lived with Disability)') {
-   return (width_fg_5 / 100) * 10 }
+   return (width_ages / 100) * 10 }
    else {
-   return (width_fg_5 / 100) * 50 }
+   return (width_ages / 100) * 50 }
    })
 .style('font-size', '12px')
 .attr('opacity', 0)
@@ -961,6 +946,13 @@ update_condition(deaths_condition)
 
 // age by conditions proportion
 
+// append the svg object to the body of the page
+var svg_fg_5_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
+ .append("svg")
+ .attr("width", width_ages)
+ .attr("height", height_ages + 250)
+ .append("g")
+ .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
 // This is the proportion of a conditions burden by the age of people. If the condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain age. It shows us that certain diseases impact people of particular ages disproportionately.
@@ -978,8 +970,6 @@ yld_condition_proportion = json.filter(function(d){
 daly_condition_proportion = json.filter(function(d){
   return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
 
-var width_fg_5_prop = document.getElementById("content_size").offsetWidth;
-var height_fg_5_prop = 400 - margin.top - margin.bottom;
 
 var tooltip_condition_age_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
 .append("div")
@@ -1027,13 +1017,13 @@ d3.selectAll(".myRect_age_" + subgroup_age_key)
 // Add X axis
 var x_fg_5_prop = d3.scaleBand()
  .domain(conditions)
- // .range([0, width_fg_5_prop])
- .range([0, width_fg_5_prop - margin.left - 50])
+ // .range([0, width_ages])
+ .range([0, width_ages - margin.left - 50])
  .padding([0.2])
 
 svg_fg_5_prop
  .append("g")
- .attr("transform", "translate(0," + height_fg_5_prop + ")")
+ .attr("transform", "translate(0," + height_ages + ")")
  .call(d3.axisBottom(x_fg_5_prop).tickSizeOuter(0));
 
 svg_fg_5_prop
@@ -1045,8 +1035,8 @@ svg_fg_5_prop
 svg_fg_5_prop
  .append("text")
  .attr("text-anchor", "end")
- .attr("x", width_fg_5_prop/2)
- .attr("y", height_fg_5_prop + margin.top + 150)
+ .attr("x", width_ages/2)
+ .attr("y", height_ages + margin.top + 150)
  .text("Condition");
 
 // Y axis label:
@@ -1062,7 +1052,7 @@ svg_fg_5_prop
 // Add Y axis
 var y_fg_5_prop = d3.scaleLinear()
   .domain([0, 100])
-  .range([height_fg_5_prop, 0 ]);
+  .range([height_ages, 0 ]);
 
 svg_fg_5_prop
   .append("g")
