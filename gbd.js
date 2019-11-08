@@ -51,6 +51,16 @@ var color_lv_1_cause_group = d3.scaleOrdinal()
     .domain(['Communicable, maternal, neonatal, and nutritional diseases', 'Non-communicable diseases', 'Injuries'])
     .range(["#C45158", "#75B0C2", "#A8D2A3"]);
 
+// Set up the svg and link to the div with the same identifier on the html page
+var svg_fg_1 = d3.select("#top_10_bars_by_sex_dataviz")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height - 100)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// console.log(Date())
+
 // Bring data in
 var request = new XMLHttpRequest();
 request.open("GET", "./Number_cause_level_2_2017_west_sussex.json", false);
@@ -90,13 +100,8 @@ deaths_males_lv2 = json.filter(function (d) {
     })
     .slice(0, 10);
 
-// Set up the svg and link to the div with the same identifier on the html page
-var svg_fg_1 = d3.select("#top_10_bars_by_sex_dataviz")
-    .append("svg")
-    .attr("width", width)
-    .attr("height", height - 100)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+// console.log(Date())
+
 
 var x_fg_1 = d3.scaleBand()
     .range([0, width_fg_1])
