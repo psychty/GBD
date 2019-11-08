@@ -15,8 +15,8 @@ var margin = {
 var sex = ['Male', 'Female', 'Both']
 
 // Now we can use the global width with
-var width_fg_1 = width - margin.left - margin.right;
-var height_fg_1 = 400 - margin.top - margin.bottom;
+var width_fg_deaths = width - margin.left - margin.right;
+var height_fg_deaths = 400 - margin.top - margin.bottom;
 
 // Specify a colour palette and order
 var cause_categories = ["HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"]
@@ -52,7 +52,7 @@ var color_lv_1_cause_group = d3.scaleOrdinal()
     .range(["#C45158", "#75B0C2", "#A8D2A3"]);
 
 // Set up the svg and link to the div with the same identifier on the html page
-var svg_fg_1 = d3.select("#top_10_bars_by_sex_dataviz")
+var svg_fg_deaths = d3.select("#top_10_bars_by_sex_dataviz")
   .append("svg")
   .attr("width", width)
   .attr("height", height - 100)
@@ -103,23 +103,23 @@ deaths_males_lv2 = json.filter(function (d) {
 // console.log(Date())
 
 
-var x_fg_1 = d3.scaleBand()
-    .range([0, width_fg_1])
+var x_fg_deaths = d3.scaleBand()
+    .range([0, width_fg_deaths])
     .padding(0.2);
 
-var xAxis_fg_1 = svg_fg_1
+var xAxis_fg_deaths = svg_fg_deaths
     .append("g")
-    .attr("transform", "translate(0," + height_fg_1 + ")")
+    .attr("transform", "translate(0," + height_fg_deaths + ")")
 
 // set the Y axis
-var y_fg_1 = d3.scaleLinear() // our y axis is continuous (linear)
-    .range([height_fg_1, 0]);
+var y_fg_deaths = d3.scaleLinear() // our y axis is continuous (linear)
+    .range([height_fg_deaths, 0]);
 
-var yAxis_fg_1 = svg_fg_1
+var yAxis_fg_deaths = svg_fg_deaths
     .append("g")
     .attr("class", "myYaxis")
 
-var tooltip_fg_1 = d3.select("#top_10_bars_by_sex_dataviz")
+var tooltip_fg_deaths = d3.select("#top_10_bars_by_sex_dataviz")
     .append("div")
     .style("opacity", 0)
     .attr("class", "tooltip_bars")
@@ -132,13 +132,13 @@ var tooltip_fg_1 = d3.select("#top_10_bars_by_sex_dataviz")
     .style("padding", "10px")
 
 // The tooltip function
-var showTooltip_fg_1 = function (d) {
+var showTooltip_fg_deaths = function (d) {
 
-    tooltip_fg_1
+    tooltip_fg_deaths
         .transition()
         .duration(200)
 
-    tooltip_fg_1
+    tooltip_fg_deaths
         .html("<h3>" + d.Cause + '</h3><p>The estimated number of deaths as a result of ' + d.Cause + ' in West Sussex in 2017 among ' + d.Sex.toLowerCase().replace('both', 'both males and female') + 's was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.Deaths_number) + '</b></font>.</p><p>This is the ' + d.Death_rank + ' cause of death, accounting for ' + d3.format('.0%')(d.Deaths_proportion) + ' of the total number of deaths in 2017 for this population.</p>') // The nested .replace within .toLowerCase() replaces the string 'both' (not 'Both') with 'both males and female' and then we add the s and a line break.
         .style("opacity", 1)
         .style("top", (event.pageY - 10) + "px")
@@ -149,15 +149,15 @@ var showTooltip_fg_1 = function (d) {
 data = deaths_persons_lv2;
 
 // Add X axis label:
-svg_fg_1
+svg_fg_deaths
     .append("text")
     .attr("text-anchor", "end")
-    .attr("x", width_fg_1 / 2)
-    .attr("y", height_fg_1 + margin.top + 70)
+    .attr("x", width_fg_deaths / 2)
+    .attr("y", height_fg_deaths + margin.top + 70)
     .text("Cause");
 
 // Y axis label:
-svg_fg_1
+svg_fg_deaths
     .append("text")
     .attr('id', 'axis_y_title')
     .attr("text-anchor", "end")
@@ -166,72 +166,72 @@ svg_fg_1
     .attr("x", -margin.top - 60)
     .text('Deaths');
 
-x_fg_1
+x_fg_deaths
 .domain(data.map(function (d) { return d.Cause; })) // update the xaxis based on 'data' - so if you run update on data1, this will look at data1, get any new/unique groups and add them to the list of groups.§
 
-xAxis_fg_1
+xAxis_fg_deaths
 .transition()
 .duration(1000)
-.call(d3.axisBottom(x_fg_1))
+.call(d3.axisBottom(x_fg_deaths))
 
 // Rotate the xAxis labels
-xAxis_fg_1
+xAxis_fg_deaths
 .selectAll("text")
 .attr("transform", "translate(-10,10)rotate(-45)")
 .style("text-anchor", "end")
 
-y_fg_1
+y_fg_deaths
 .domain([0, d3.max(data, function (d) {
 return Math.ceil(d.Deaths_number / 500) * 500 // This gets the maximum deaths number rounded up to nearest 500 (ceiling)
   })]); // update the yaxis based on 'data'
 
 // This adds a transition effect on the change between datasets (i.e. if the yaxis needs to be longer or shorter).
-yAxis_fg_1
+yAxis_fg_deaths
 .transition()
 .duration(1000)
-.call(d3.axisLeft(y_fg_1));
+.call(d3.axisLeft(y_fg_deaths));
 
 // Create the bars_df variable
-var bars_fig_1 = svg_fg_1.selectAll("rect")
+var bars_fg_deaths = svg_fg_deaths.selectAll("rect")
 .data(data)
 
-bars_fig_1
+bars_fg_deaths
 .enter()
 .append("rect") // Add a new rect for each new element
-.merge(bars_fig_1) // get the already existing elements as well
+.merge(bars_fg_deaths) // get the already existing elements as well
 .transition() // and apply changes to all of them
 .duration(1000)
 .attr("x", function (d) {
-  return x_fg_1(d.Cause);
+  return x_fg_deaths(d.Cause);
   })
 .attr("y", function (d) {
-  return y_fg_1(d.Deaths_number);
+  return y_fg_deaths(d.Deaths_number);
   })
-.attr("width", x_fg_1.bandwidth())
+.attr("width", x_fg_deaths.bandwidth())
 .attr("height", function (d) {
-  return height_fg_1 - y_fg_1(d.Deaths_number);
+  return height_fg_deaths - y_fg_deaths(d.Deaths_number);
   })
 .style("fill", function (d) {
   return color_cause_group(d.Cause)
   });
 
 // You could add these .on events to the selection above, but because we have a .transition() function, it turns the selection into a transition and it is not possible to add a tooltip to a transition and so we need to use the .notation to add tooltip functions separately.
-bars_fig_1
+bars_fg_deaths
 .on("mouseover", function () {
-  return tooltip_fg_1.style("visibility", "visible");
+  return tooltip_fg_deaths.style("visibility", "visible");
    })
-.on("mousemove", showTooltip_fg_1)
+.on("mousemove", showTooltip_fg_deaths)
 .on("mouseout", function () {
-  return tooltip_fg_1.style("visibility", "hidden");
+  return tooltip_fg_deaths.style("visibility", "hidden");
   });
 
 // Finally, if any original bars need to go now these are removed.
-bars_fig_1
+bars_fg_deaths
 .exit()
 .remove()
 
 // A function to create / update the plot for a given variable. This will be run whenever a button is clicked above this figure on the html page.
-function update_fg_1(e) {
+function update_fg_deaths(e) {
 
 e = e || window.event;
 var src = e.target;
@@ -244,69 +244,69 @@ src.classList.toggle('active');
 var filter = src.dataset.filter;
 var data = this[filter];
 
-x_fg_1
+x_fg_deaths
   .domain(data.map(function (d) {
   return d.Cause;
   })) // update the xaxis based on 'data' - so if you run update on data1, this will look at data1, get any new/unique groups and add them to the list of groups.§
 
-xAxis_fg_1
+xAxis_fg_deaths
   .transition()
   .duration(1000)
-  .call(d3.axisBottom(x_fg_1))
+  .call(d3.axisBottom(x_fg_deaths))
 
 // Rotate the xAxis labels
-xAxis_fg_1
+xAxis_fg_deaths
   .selectAll("text")
   .attr("transform", "translate(-10,10)rotate(-45)")
   .style("text-anchor", "end")
 
-y_fg_1
+y_fg_deaths
 .domain([0, d3.max(data, function (d) {
 return Math.ceil(d.Deaths_number / 500) * 500 // This gets the maximum deaths number rounded up to nearest 500 (ceiling)
 })]); // update the yaxis based on 'data'
 
 // This adds a transition effect on the change between datasets (i.e. if the yaxis needs to be longer or shorter).
-yAxis_fg_1
+yAxis_fg_deaths
 .transition()
 .duration(1000)
-.call(d3.axisLeft(y_fg_1));
+.call(d3.axisLeft(y_fg_deaths));
 
 // Create the bars_df variable
-var bars_fig_1 = svg_fg_1.selectAll("rect")
+var bars_fg_deaths = svg_fg_deaths.selectAll("rect")
 .data(data)
 
-bars_fig_1
+bars_fg_deaths
 .enter()
 .append("rect") // Add a new rect for each new element
-.merge(bars_fig_1) // get the already existing elements as well
+.merge(bars_fg_deaths) // get the already existing elements as well
 .transition() // and apply changes to all of them
 .duration(1000)
 .attr("x", function (d) {
-    return x_fg_1(d.Cause);
+    return x_fg_deaths(d.Cause);
     })
 .attr("y", function (d) {
-    return y_fg_1(d.Deaths_number);
+    return y_fg_deaths(d.Deaths_number);
     })
-.attr("width", x_fg_1.bandwidth())
+.attr("width", x_fg_deaths.bandwidth())
 .attr("height", function (d) {
-    return height_fg_1 - y_fg_1(d.Deaths_number);
+    return height_fg_deaths - y_fg_deaths(d.Deaths_number);
     })
 .style("fill", function (d) {
     return color_cause_group(d.Cause)
     });
 
 // You could add these .on events to the selection above, but because we have a .transition() function, it turns the selection into a transition and it is not possible to add a tooltip to a transition and so we need to use the .notation to add tooltip functions separately.
-bars_fig_1
+bars_fg_deaths
 .on("mouseover", function () {
-  return tooltip_fg_1.style("visibility", "visible");
+  return tooltip_fg_deaths.style("visibility", "visible");
    })
-.on("mousemove", showTooltip_fg_1)
+.on("mousemove", showTooltip_fg_deaths)
 .on("mouseout", function () {
-  return tooltip_fg_1.style("visibility", "hidden");
+  return tooltip_fg_deaths.style("visibility", "hidden");
   });
 
 // Finally, if any original bars need to go now these are removed.
-bars_fig_1
+bars_fg_deaths
 .exit()
 .remove()
 }
@@ -503,252 +503,3 @@ function age_key_summary() {
 }
 
 age_key_summary();
-
-//////////////////////////////////
-// Slope chart top ten measures //
-//////////////////////////////////
-
-height_rank_change = 450
-
-// append the svg object to the body of the page
-var rank_change_svg = d3.select("#top_10_change_datavis")
-    .append("svg")
-    .attr("width", width)
-    .attr("height", height_rank_change + margin.top)
-    .append("g");
-
-var request = new XMLHttpRequest();
-request.open("GET", "./Rate_change_over_time_levels_0_1_2_for_slope.json", false);
-request.send(null);
-var json = JSON.parse(request.responseText);
-
-deaths_rate_rank_change = json.filter(function (d) {
-    return d.measure === 'Deaths' &
-        d.Sex === 'Both' &
-        d.Area === 'West Sussex' &
-        +d.Level === 2
-});
-
-yll_rate_rank_change = json.filter(function (d) {
-    return d.measure === 'YLLs (Years of Life Lost)' &
-        d.Sex === 'Both' &
-        d.Area === 'West Sussex' &
-        +d.Level === 2
-});
-
-yld_rate_rank_change = json.filter(function (d) {
-    return d.measure === 'YLDs (Years Lived with Disability)' &
-        d.Sex === 'Both' &
-        d.Area === 'West Sussex' &
-        +d.Level === 2
-});
-
-daly_rate_rank_change = json.filter(function (d) {
-    return d.measure === 'DALYs (Disability-Adjusted Life Years)' &
-        d.Sex === 'Both' &
-        d.Area === 'West Sussex' &
-        +d.Level === 2
-});
-
-years_to_show = ["Rank_in_2007", "Rank_in_2012", "Rank_in_2017"]
-
-// Decide the place for each line
-x_rank_change = d3.scalePoint()
-.domain(years_to_show)
-  // .range([0,width])
-.range([width * .3, width * .65])
-
-function update_top_10_change(data) {
-
-rank_change_svg
-.selectAll("*")
-.remove();
-
-// Parse the Data
-var max_17 = d3.max(data, function (d) {
-  return +d['Rank_in_2017'];
-  });
-var max_12 = d3.max(data, function (d) {
-  return +d['Rank_in_2012'];
-  });
-var max_07 = d3.max(data, function (d) {
-  return +d['Rank_in_2007'];
-  });
-var max_02 = d3.max(data, function (d) {
-  return +d['Rank_in_2002'];
-  });
-var max_97 = d3.max(data, function (d) {
-  return +d['Rank_in_1997'];
-  });
-
-// Use the highest value of rank across 1997, 2007 and 2017 to determine the y axis scale for consistency.
-var y_rank_change = {}
-for (i in years_to_show) {
-      name = years_to_show[i]
-      y_rank_change[name] = d3.scaleLinear()
-          .domain([1, d3.max([max_07, max_12, max_17])])
-          .range([50, height_rank_change])
-    }
-
-y_place_label = d3.scaleLinear()
-  .domain([1, d3.max([max_07, max_12, max_17])])
-  .range([50, height_rank_change])
-
-// The path function returns x and y coordinates to draw the lines
-    function path(d) {
-        return d3.line()(years_to_show.map(function (p) {
-            return [x_rank_change(p), y_rank_change[p](d[p])];
-        }));
-    }
-
-// Draw the lines
-rank_change_svg
-.selectAll("myPath")
-.data(data)
-.enter()
-.append("path")
-.attr("d", path)
-.attr('fill', 'none')
-.style("stroke", function (d) {
-  return color_cause_group(d.Cause)
-  })
-.style("opacity", 1)
-.style('stroke-width', 2)
-
-// Create cause label
-rank_change_svg
-.selectAll('text.labels')
-.attr('id', 'cause_label_1')
-.data(data)
-.enter()
-.append('text')
-.text(function (d) {
-    return d.Cause
-    })
-.style('stroke', function (d) {
-    return color_cause_group(d.Cause)
-    })
-.attr('text-anchor', 'end')
-.attr('x', x_rank_change(years_to_show[0]) - 30)
-.attr('y', function (d) {
-    return y_place_label(d.Rank_in_2007)
-    })
-.attr('dy', '0em')
-.style('font-size', '.7rem')
-.style('fontWeight', 'normal');
-
-// Create cause 07 label
-    rank_change_svg.selectAll('text.labels')
-        .data(data)
-        .enter()
-        .append('text')
-        .text(function (d) {
-            return d.Label_2007 + ' per 100,000'
-        })
-        .style("stroke", function (d) {
-            return color_cause_group(d.Cause)
-        })
-        .attr('text-anchor', 'end')
-        .attr('x', x_rank_change(years_to_show[0]) - 30)
-        .attr('y', function (d) {
-            return y_place_label(d.Rank_in_2007)
-        })
-        .attr('dy', '1em')
-        .style('font-size', '.7rem')
-        .style('fontWeight', 'normal');
-
-// Create cause 17 label
-rank_change_svg.selectAll('text.labels')
-.data(data)
-.enter()
-.append('text')
-.text(function (d) {
-  return d.Cause
-  })
-.style("stroke", function (d) {
-  return color_cause_group(d.Cause)
-  })
-.attr('text-anchor', 'start')
-.attr('x', x_rank_change(years_to_show[2]) + 10)
-.attr('y', function (d) {
-  return y_place_label(d.Rank_in_2017)
-  })
-.attr('dy', '0em')
-.style('font-size', '.7rem')
-.style('fontWeight', 'normal');
-
-// Create cause 17 label
-rank_change_svg.selectAll('text.labels')
-.data(data)
-.enter()
-.append('text')
-.text(function (d) {
-  return d.Label_2017 + ' per 100,000'
-  })
-.style("stroke", function (d) {
-  return color_cause_group(d.Cause)
-  })
-.attr('text-anchor', 'start')
-.attr('x', x_rank_change(years_to_show[2]) + 10)
-.attr('y', function (d) {
-  return y_place_label(d.Rank_in_2017)
-  })
-.attr('dy', '1em')
-.style('font-size', '.7rem')
-.style('fontWeight', 'normal');
-
-rank_change_svg
-.append('text')
-.text('2007')
-.attr('text-anchor', 'middle')
-.attr('x', x_rank_change(years_to_show[0]))
-.attr('y', 20)
-.attr('dy', '1em')
-.style('font-size', '1.2rem')
-.style('fontWeight', 'bold');
-
-rank_change_svg
-.append('text')
-.text('2012')
-.attr('text-anchor', 'middle')
-.attr('x', x_rank_change(years_to_show[1]))
-.attr('y', 20)
-.attr('dy', '1em')
-.style('font-size', '1.2rem')
-.style('fontWeight', 'bold');
-
-rank_change_svg
-.append('text')
-.text('2017')
-.attr('text-anchor', 'middle')
-.attr('x', x_rank_change(years_to_show[2]))
-.attr('y', 20)
-.attr('dy', '1em')
-.style('font-size', '1.2rem')
-.style('fontWeight', 'bold');
-
-// Draw the axis for each year and add label at the top
-rank_change_svg
-.selectAll("myAxis")
-.data(years_to_show)
-.enter()
-.append("g")
-        .attr("transform", function (d) {
-            return "translate(" + x_rank_change(d) + ")";
-        })
-        .each(function (d) {
-            d3.select(this).call(d3.axisLeft().scale(y_rank_change[d]));
-        })
-        .append("text")
-        .style("text-anchor", "middle")
-        .attr("y", -11)
-        .text(function (d) {
-            return d;
-        })
-        .style("fill", "black")
-        // .style()
-        .style("font-weight", 'bold')
-
-}
-
-update_top_10_change(deaths_rate_rank_change)

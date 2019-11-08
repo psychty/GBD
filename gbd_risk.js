@@ -88,8 +88,6 @@ var color_lv_1_risk_group = d3.scaleOrdinal()
 
  var level_2_risk_summary = JSON.parse(request.responseText);
 
-
-
  function risk_group_2_summary() {
      level_2_risk_summary.forEach(function (item, index) {
          var list = document.createElement("li");
@@ -1445,7 +1443,7 @@ var labels = {};
         }
 
 // create svg if not already existing
- selection.selectAll("svg").data([circles]).enter().append("svg");
+selection.selectAll("svg").data([circles]).enter().append("svg");
 
 var svg_overlap = selection.select("svg")
    .attr("width", width)

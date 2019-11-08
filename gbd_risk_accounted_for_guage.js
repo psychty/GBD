@@ -8,11 +8,39 @@ var twoPi = 2 * Math.PI
 var attributed = 0
 var total = 1
 
-var causes_for_risk = ["All causes","HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"]
-
 var color_cause_for_risk = d3.scaleOrdinal()
-  .domain(causes_for_risk)
+  .domain(["All causes","HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"])
   .range(["#191947","#F8DDEB", "#F2B9BF", "#EE9187", "#EA695C", "#D84D42", "#AD3730", "#7A1C1C", '#BCD6F7','#97C4F0','#67A8E7','#528CDB','#376ACB',"#1845A5", '#CFD6F6','#ADB9ED','#8B96DD','#6978D0', "#4E4FB8", "#3E3294", "#B5DCD0", "#76B786", '#477A49']);
+
+// Load the svgs before reading data
+
+  var svg_attributed_deaths = d3.select("#fillgauge1")
+  .append("svg")
+  .attr("width", width_guage)
+  .attr("height", height_guage)
+  .append("g")
+  .attr("transform", "translate(" + width_guage / 2 + "," + height_guage / 2 + ")");
+
+  var svg_attributed_yll = d3.select("#fillgauge2")
+  .append("svg")
+  .attr("width", width_guage)
+  .attr("height", height_guage)
+  .append("g")
+  .attr("transform", "translate(" + width_guage / 2 + "," + height_guage / 2 + ")");
+
+  var svg_attributed_yld = d3.select("#fillgauge3")
+  .append("svg")
+  .attr("width", width_guage)
+  .attr("height", height_guage)
+  .append("g")
+  .attr("transform", "translate(" + width_guage / 2 + "," + height_guage / 2 + ")");
+
+  var svg_attributed_daly = d3.select("#fillgauge4")
+  .append("svg")
+  .attr("width", width_guage)
+  .attr("height", height_guage)
+  .append("g")
+  .attr("transform", "translate(" + width_guage / 2 + "," + height_guage / 2 + ")");
 
 // Bring data in
 var request = new XMLHttpRequest();
@@ -30,7 +58,7 @@ explained_burden = explained_burden.filter(function (d) { // gets a subset of th
 // We need to create a dropdown button for the user to choose which area to be displayed on the figure.
 d3.select("#selectCondition_attribButton")
 .selectAll('myOptions')
-.data(causes_for_risk)
+.data(["All causes","HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"])
 .enter()
 .append('option')
 .text(function (d) {
@@ -42,7 +70,6 @@ var selectedCondition_attribOption = d3.select('#selectCondition_attribButton').
 
 // Select the div id total_death_string (this is where you want the result of this to be displayed in the html page)
 d3.select("#selected_condition_attrib_title")
-  .data(data)
   .text(function(d){ return "Burden attributed to risk factors associated with " + d3.select('#selectCondition_attribButton').property("value").replace('All causes', 'all causes of ill health') + '; both males and females; all ages; West Sussex; 2017' });
 
 deaths_attributed = explained_burden.filter(function(d) {
@@ -69,12 +96,6 @@ number_deaths = deaths_attributed[0].Number
 attributed_deaths = deaths_attributed[0].Proportion;
 total_deaths = deaths_attributed[0].Total_burden;
 
-var svg_attributed_deaths = d3.select("#fillgauge1")
-.append("svg")
-.attr("width", width_guage)
-.attr("height", height_guage)
-.append("g")
-.attr("transform", "translate(" + width_guage / 2 + "," + height_guage / 2 + ")");
 
 var meter_deaths = svg_attributed_deaths.append("g")
 .attr("class", "percentage_guage");
@@ -143,12 +164,6 @@ var attributed_yll = yll_attributed[0].Proportion
 var number_yll = yll_attributed[0].Number
 var total_yll = yll_attributed[0].Total_burden;
 
-var svg_attributed_yll = d3.select("#fillgauge2")
-.append("svg")
-.attr("width", width_guage)
-.attr("height", height_guage)
-.append("g")
-.attr("transform", "translate(" + width_guage / 2 + "," + height_guage / 2 + ")");
 
 var meter_yll = svg_attributed_yll.append("g")
 .attr("class", "percentage_guage");
@@ -217,12 +232,7 @@ var number_yld = yld_attributed[0].Number
 var attributed_yld = yld_attributed[0].Proportion
 var total_yld = yld_attributed[0].Total_burden
 
-var svg_attributed_yld = d3.select("#fillgauge3")
-.append("svg")
-.attr("width", width_guage)
-.attr("height", height_guage)
-.append("g")
-.attr("transform", "translate(" + width_guage / 2 + "," + height_guage / 2 + ")");
+
 
 var meter_yld = svg_attributed_yld.append("g")
 .attr("class", "percentage_guage");
@@ -291,12 +301,6 @@ var number_daly = daly_attributed[0].Number
 var attributed_daly = daly_attributed[0].Proportion
 var total_daly = daly_attributed[0].Total_burden
 
-var svg_attributed_daly = d3.select("#fillgauge4")
-.append("svg")
-.attr("width", width_guage)
-.attr("height", height_guage)
-.append("g")
-.attr("transform", "translate(" + width_guage / 2 + "," + height_guage / 2 + ")");
 
 var meter_daly = svg_attributed_daly.append("g")
 .attr("class", "percentage_guage");
@@ -409,7 +413,6 @@ var selectedCondition_attribOption = d3.select('#selectCondition_attribButton').
 
 // Select the div id total_death_string (this is where you want the result of this to be displayed in the html page)
 d3.select("#selected_condition_attrib_title")
-  .data(data)
   .text(function(d){ return "Burden attributed to risk factors associated with " + d3.select('#selectCondition_attribButton').property("value").replace('All causes', 'all causes of ill health') + '; both males and females; all ages; West Sussex; 2017' });
 
 deaths_attributed = explained_burden.filter(function(d) {

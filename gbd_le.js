@@ -15,6 +15,14 @@ var margin = {top: 30,
 var sex = ['Male', 'Female', 'Both']
 var le_subgroups = ['HALE', 'Difference']
 
+// append the svg object to the body of the page
+var svg_le = d3.select("#le_timeseries_datavis")
+.append("svg")
+.attr("width", width)
+.attr("height", height_le + margin.top + 75)
+.append("g")
+.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 // Bring data in for figure 6
 var request = new XMLHttpRequest();
     request.open("GET", "./LE_HALE_1990_2017_NN.json", false);
@@ -63,13 +71,6 @@ var hale = json_le.filter(function(d){
     return d.Year; }))
   .range([0, width - margin.left - 50]);
 
-  // append the svg object to the body of the page
-  var svg_le = d3.select("#le_timeseries_datavis")
-  .append("svg")
-  .attr("width", width)
-  .attr("height", height_le + margin.top + 75)
-  .append("g")
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   svg_le
   .append("g")

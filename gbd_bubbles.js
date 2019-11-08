@@ -31,6 +31,12 @@ var yCircle = 190
 // Level 3 bubbles //
 /////////////////////
 
+// append the svg object to the body of the page - this is created before the data is loaded.
+var svg_bubbles = d3.select("#my_deaths_bubble_dataviz")
+.append("svg")
+.attr("width", width_bubble)
+.attr("height", height)
+
 var request = new XMLHttpRequest();
 request.open("GET", "./Number_bubbles_df_level_3_2017_west_sussex.json", false);
 request.send(null);
@@ -63,12 +69,6 @@ d3.select("#selectMeasureBubblesButton")
   .attr("value", function (d) {
     return d; }) // corresponding value returned by the button
 
-// append the svg object to the body of the page
-var svg_bubbles = d3.select("#my_deaths_bubble_dataviz")
-.append("svg")
-.attr("width", width_bubble)
-.attr("height", height)
-
 // Create functions to show, move, and hide the tooltip
 var tooltip_fg_2 = d3.select("#my_deaths_bubble_dataviz")
 .append("div")
@@ -89,8 +89,7 @@ tooltip_fg_2
  .style("top", (event.pageY - 10) + "px")
  .style("left", (event.pageX + 10) + "px")
 .style('opacity', 1)
-
-  }
+}
 
 var forceXSplit = d3.forceX(function(d) {
   if (d['Cause group'] === 'Neoplasms') {
@@ -262,9 +261,9 @@ svg_bubbles
 .attr("text-anchor", "start")
 .attr("y", function(d) {
   if (selectedMeasureBubblesOption === 'DALYs (Disability-Adjusted Life Years)') {
-    return 100 }
+    return 60 }
     else {
-    return 150 }
+    return 100 }
           })
 .attr("x", (width_bubble / 100) * 40 )
 .attr('opacity', 0)

@@ -10,6 +10,255 @@ var margin = {
     left: 60
 };
 
+
+//////////////////////////////////
+// Slope chart top ten measures //
+//////////////////////////////////
+
+height_rank_change = 450
+
+// append the svg object to the body of the page
+var rank_change_svg = d3.select("#top_10_change_datavis")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height_rank_change + margin.top)
+    .append("g");
+
+var request = new XMLHttpRequest();
+request.open("GET", "./Rate_change_over_time_levels_0_1_2_for_slope.json", false);
+request.send(null);
+var json = JSON.parse(request.responseText);
+
+deaths_rate_rank_change = json.filter(function (d) {
+    return d.measure === 'Deaths' &
+        d.Sex === 'Both' &
+        d.Area === 'West Sussex' &
+        +d.Level === 2
+});
+
+yll_rate_rank_change = json.filter(function (d) {
+    return d.measure === 'YLLs (Years of Life Lost)' &
+        d.Sex === 'Both' &
+        d.Area === 'West Sussex' &
+        +d.Level === 2
+});
+
+yld_rate_rank_change = json.filter(function (d) {
+    return d.measure === 'YLDs (Years Lived with Disability)' &
+        d.Sex === 'Both' &
+        d.Area === 'West Sussex' &
+        +d.Level === 2
+});
+
+daly_rate_rank_change = json.filter(function (d) {
+    return d.measure === 'DALYs (Disability-Adjusted Life Years)' &
+        d.Sex === 'Both' &
+        d.Area === 'West Sussex' &
+        +d.Level === 2
+});
+
+years_to_show = ["Rank_in_2007", "Rank_in_2012", "Rank_in_2017"]
+
+// Decide the place for each line
+x_rank_change = d3.scalePoint()
+.domain(years_to_show)
+  // .range([0,width])
+.range([width * .3, width * .65])
+
+function update_top_10_change(data) {
+
+rank_change_svg
+.selectAll("*")
+.remove();
+
+// Parse the Data
+var max_17 = d3.max(data, function (d) {
+  return +d['Rank_in_2017'];
+  });
+var max_12 = d3.max(data, function (d) {
+  return +d['Rank_in_2012'];
+  });
+var max_07 = d3.max(data, function (d) {
+  return +d['Rank_in_2007'];
+  });
+var max_02 = d3.max(data, function (d) {
+  return +d['Rank_in_2002'];
+  });
+var max_97 = d3.max(data, function (d) {
+  return +d['Rank_in_1997'];
+  });
+
+// Use the highest value of rank across 1997, 2007 and 2017 to determine the y axis scale for consistency.
+var y_rank_change = {}
+for (i in years_to_show) {
+      name = years_to_show[i]
+      y_rank_change[name] = d3.scaleLinear()
+          .domain([1, d3.max([max_07, max_12, max_17])])
+          .range([50, height_rank_change])
+    }
+
+y_place_label = d3.scaleLinear()
+  .domain([1, d3.max([max_07, max_12, max_17])])
+  .range([50, height_rank_change])
+
+// The path function returns x and y coordinates to draw the lines
+    function path(d) {
+        return d3.line()(years_to_show.map(function (p) {
+            return [x_rank_change(p), y_rank_change[p](d[p])];
+        }));
+    }
+
+// Draw the lines
+rank_change_svg
+.selectAll("myPath")
+.data(data)
+.enter()
+.append("path")
+.attr("d", path)
+.attr('fill', 'none')
+.style("stroke", function (d) {
+  return color_cause_group(d.Cause)
+  })
+.style("opacity", 1)
+.style('stroke-width', 2)
+
+// Create cause label
+rank_change_svg
+.selectAll('text.labels')
+.attr('id', 'cause_label_1')
+.data(data)
+.enter()
+.append('text')
+.text(function (d) {
+    return d.Cause
+    })
+.style('stroke', function (d) {
+    return color_cause_group(d.Cause)
+    })
+.attr('text-anchor', 'end')
+.attr('x', x_rank_change(years_to_show[0]) - 30)
+.attr('y', function (d) {
+    return y_place_label(d.Rank_in_2007)
+    })
+.attr('dy', '0em')
+.style('font-size', '.7rem')
+.style('fontWeight', 'normal');
+
+// Create cause 07 label
+    rank_change_svg.selectAll('text.labels')
+        .data(data)
+        .enter()
+        .append('text')
+        .text(function (d) {
+            return d.Label_2007 + ' per 100,000'
+        })
+        .style("stroke", function (d) {
+            return color_cause_group(d.Cause)
+        })
+        .attr('text-anchor', 'end')
+        .attr('x', x_rank_change(years_to_show[0]) - 30)
+        .attr('y', function (d) {
+            return y_place_label(d.Rank_in_2007)
+        })
+        .attr('dy', '1em')
+        .style('font-size', '.7rem')
+        .style('fontWeight', 'normal');
+
+// Create cause 17 label
+rank_change_svg.selectAll('text.labels')
+.data(data)
+.enter()
+.append('text')
+.text(function (d) {
+  return d.Cause
+  })
+.style("stroke", function (d) {
+  return color_cause_group(d.Cause)
+  })
+.attr('text-anchor', 'start')
+.attr('x', x_rank_change(years_to_show[2]) + 10)
+.attr('y', function (d) {
+  return y_place_label(d.Rank_in_2017)
+  })
+.attr('dy', '0em')
+.style('font-size', '.7rem')
+.style('fontWeight', 'normal');
+
+// Create cause 17 label
+rank_change_svg.selectAll('text.labels')
+.data(data)
+.enter()
+.append('text')
+.text(function (d) {
+  return d.Label_2017 + ' per 100,000'
+  })
+.style("stroke", function (d) {
+  return color_cause_group(d.Cause)
+  })
+.attr('text-anchor', 'start')
+.attr('x', x_rank_change(years_to_show[2]) + 10)
+.attr('y', function (d) {
+  return y_place_label(d.Rank_in_2017)
+  })
+.attr('dy', '1em')
+.style('font-size', '.7rem')
+.style('fontWeight', 'normal');
+
+rank_change_svg
+.append('text')
+.text('2007')
+.attr('text-anchor', 'middle')
+.attr('x', x_rank_change(years_to_show[0]))
+.attr('y', 20)
+.attr('dy', '1em')
+.style('font-size', '1.2rem')
+.style('fontWeight', 'bold');
+
+rank_change_svg
+.append('text')
+.text('2012')
+.attr('text-anchor', 'middle')
+.attr('x', x_rank_change(years_to_show[1]))
+.attr('y', 20)
+.attr('dy', '1em')
+.style('font-size', '1.2rem')
+.style('fontWeight', 'bold');
+
+rank_change_svg
+.append('text')
+.text('2017')
+.attr('text-anchor', 'middle')
+.attr('x', x_rank_change(years_to_show[2]))
+.attr('y', 20)
+.attr('dy', '1em')
+.style('font-size', '1.2rem')
+.style('fontWeight', 'bold');
+
+// Draw the axis for each year and add label at the top
+rank_change_svg
+.selectAll("myAxis")
+.data(years_to_show)
+.enter()
+.append("g")
+.attr("transform", function (d) {
+      return "translate(" + x_rank_change(d) + ")";
+})
+.each(function (d) {
+    d3.select(this).call(d3.axisLeft().scale(y_rank_change[d]));
+    })
+.append("text")
+.style("text-anchor", "middle")
+.attr("y", -11)
+.text(function (d) {
+    return d;
+  })
+.style("fill", "black")
+.style("font-weight", 'bold')
+}
+
+update_top_10_change(deaths_rate_rank_change)
+
+
 ///////////////////////////
 // Line chart timeseries //
 ///////////////////////////
@@ -438,6 +687,13 @@ update_fg_standardised_ts(areas[0])
 
 height_rate_change = 500
 
+var rate_change_svg = d3.select("#my_level_2_rate_change_dataviz")
+.append("svg")
+.attr("width", width)
+.attr("height", height_rate_change + margin.top + margin.bottom)
+.append("g")
+.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 var request = new XMLHttpRequest();
 request.open("GET", "./Rate_change_over_time_level_2_west_sussex.json", false);
 request.send(null);
@@ -503,12 +759,6 @@ tooltip_rate_change
 .style("visibility", "hidden")
 }
 
-var rate_change_svg = d3.select("#my_level_2_rate_change_dataviz")
-.append("svg")
-.attr("width", width)
-.attr("height", height_rate_change + margin.top + margin.bottom)
-.append("g")
-.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var x_rate_change = d3.scaleLinear()
 .domain([-40, 50])

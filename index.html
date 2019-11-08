@@ -23,20 +23,6 @@
         <div class="left-sidebar">
         <h3>The Global Burden of Disease Study (GBD)</h3>
         <p>Jump to a section...</p>
-            <!-- <ul>
-                <li><a href="#section-summary">Summary</a></li>
-                <li><a href="#section-life-expectancy">Life expectancy</a></li>
-                <li><a href="#section-deaths">Mortality</a></li>
-                <li><a href="#section-burden">Other measures of burden</a></li>
-                <li><a href="#section-lifecourse">Burden over the lifecourse</a></li>
-                <li><a href="#section-standardised">Burden over time</a></li>
-                <li><a href='#section-risk'>Attributing risk to burden</a></li>
-                <li><a href='#section-cardiovascular'>Exploring cardiovascular diseases</a></li>
-                <li><a href='#section-neoplasm'>Exploring neoplasms</a></li>
-                <li><a href='#section-msk'>Exploring musculoskeletal conditions</a></li>
-                <li><a href='#section-exploring'>Exploring other conditions</a></li>
-            </ul> -->
-
 
     <div id="list-example" class="list-group">
       <a class="list-group-item list-group-item-action" href="#section-summary">Summary</a>
@@ -133,13 +119,13 @@
                       (2,839 deaths). The second largest cause of death was neoplasms (2,752 deaths).</p>
                   <h3>Top ten causes of death (level 2 groups); all ages; West Sussex; 2017</h3>
                   <div class="switch-field switch-field-fg-1">
-                      <button onclick="update_fg_1()" data-filter="deaths_persons_lv2" id="radio-one" name="switch-one">
+                      <button onclick="update_fg_deaths()" data-filter="deaths_persons_lv2" id="radio-one" name="switch-one">
                           Persons
                       </button>
-                      <button onclick="update_fg_1()" data-filter="deaths_females_lv2" id="radio-two" name="switch-one">
+                      <button onclick="update_fg_deaths()" data-filter="deaths_females_lv2" id="radio-two" name="switch-one">
                           Females
                       </button>
-                      <button onclick='update_fg_1()' data-filter="deaths_males_lv2" id="radio-three" name="switch-one">
+                      <button onclick='update_fg_deaths()' data-filter="deaths_males_lv2" id="radio-three" name="switch-one">
                           Males
                       </button>
                   </div>
@@ -580,16 +566,16 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
   <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
-  <script>console.log(Date())</script>
-  <script src = 'gbd.js'></script>
-  <script src = 'le.js'></script>
-  <script src = 'bubbles_gbd.js'></script>
-  <script src = 'burden_by_age.js'></script>
-  <script src = 'standardised_gbd.js'></script>
-  <script src = 'risk_gbd.js'></script>
-  <script src = 'percentage_guage.js'></script>
-  <script src = 'top_risk.js'></script>
-  <script src = 'exploring_conditions.js'></script></div>
-<script>console.log(Date())</script>
+
+  <script src = 'gbd_le.js'></script>
+  <script src = 'gbd_mortality.js'></script>
+  <script src = 'gbd_bubbles.js'></script>
+  <script src = 'gbd_burden_by_age.js'></script>
+  <script src = 'gbd_over_time.js'></script>
+  <script src = 'gbd_risk_accounted_for_guage.js'></script>
+  <script src = 'gbd_risk.js'></script>
+  <script src = 'gbd_top_risk_by_cause.js'></script>
+  <script src = 'gbd_exploring_conditions.js'></script></div>
+
 </body>
 </html>

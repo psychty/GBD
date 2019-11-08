@@ -2,6 +2,9 @@
 var width_risks = document.getElementById("content_size").offsetWidth - 20
 
 
+var causes_for_risk = ["All causes","HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"]
+
+
 // Specify a colour palette and order
 var cause_categories = ["HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"]
 
@@ -87,6 +90,14 @@ var topten_attrib_risk_levelOption = d3.select('#selecttopten_attrib_risk_level_
 var height_top_ten = 450;
 var padding = 30;
 
+// append the svg object to the body of the page
+var top_ten_risks_svg = d3.select("#top_ten_risks")
+.append("svg")
+.attr("width", width_risks + 20)
+.attr("height", height_top_ten + 60)
+.append("g")
+.attr("transform", "translate(" + 150 + "," + 20 + ")");
+
 var request = new XMLHttpRequest();
 request.open("GET", 'Risks_causes_NN_2017.json', false);
 request.send(null);
@@ -123,13 +134,6 @@ d3.select("#top_risks_title")
 
 }
 
-// append the svg object to the body of the page
-var top_ten_risks_svg = d3.select("#top_ten_risks")
-.append("svg")
-.attr("width", width_risks + 20)
-.attr("height", height_top_ten + 60)
-.append("g")
-.attr("transform", "translate(" + 150 + "," + 20 + ")");
 
 // Grab the highest number of value
 var max_risk_value = d3.max(top_risk_selected, function(d) {
@@ -235,7 +239,6 @@ top_ten_risks_svg
 .attr('id', 'number_negative_risks_3')
 // .style('font-weight', 'bold')
 .style('fill', 'red')
-.style('font-size', 6)
 .attr("x", width - 20)
 .attr("y", height_top_ten - 10)
 .text('Remember: these risk factors may overlap in increasing burden.');
