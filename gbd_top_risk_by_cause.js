@@ -155,10 +155,6 @@ var tooltip_risk_factors = d3.select("#top_ten_risks")
 // The tooltip function
 var showTooltip_risk_factors = function (d) {
 
-// tooltip_risk_factors
-// .transition()
-// .duration(200)
-
 tooltip_risk_factors
 .style('visibility', 'visible')
 
@@ -345,8 +341,9 @@ top_ten_risks_svg
 .data(top_risk_selected)
 .append("text")
 .attr("text-anchor", "left")
+.attr('class', 'remember_overlap_text')
 .attr('id', 'number_negative_risks_1')
-.attr("x", (width / 100) * 80 + 130)
+.attr("x", (width / 100) * 80 + 100)
 .attr("y", height_top_ten - 105)
 .text(function(d) { return 'There are ' + d.Number_of_negative_risks + ' risks associated with an'});
 
@@ -402,6 +399,7 @@ top_ten_risks_svg
 .data(top_risk_selected)
 .append("text")
 .attr("text-anchor", "left")
+.attr('class', 'remember_overlap_text')
 .attr('id', 'no_data_warning')
 .style('fontsize', 30)
 .style('fill', 'red')
@@ -411,9 +409,9 @@ top_ten_risks_svg
 
 }
 
-
-
 }
+
+
 
 d3.select("#selecttopten_attrib_cause_Button").on("change", function(d) {
 update_top_risk(topten_attrib_causeOption)

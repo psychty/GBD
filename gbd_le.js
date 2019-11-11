@@ -358,14 +358,6 @@ var hale = json_le.filter(function(d){
    .select("#closest_year_class")
    .selectAll('text')
    .remove();
-
-  // svg_le
-  //  .attr('class', 'closest_year_class')
-  //  .append("text")
-  //  .attr("x", width / 100 * 3)
-  //  .attr("y", 125)
-  //  .style('font-size', '16px')
-  //  .text(function(d){ return closest_year});
   }
 
 var le_colour  = d3.scaleOrdinal()
@@ -375,6 +367,10 @@ var le_colour  = d3.scaleOrdinal()
 var le_key = d3.scaleOrdinal()
   .domain(le_subgroups)
   .range(['Healthy Life expectancy', 'Years estimated to be in sub-optimal health'])
+
+/////////////////////////////////
+// Stacked bar chart LE + HALE //
+/////////////////////////////////
 
 // append the svg object to the body of the page
 var svg_le_stacked = d3.select("#le_stacked_timeseries_datavis")
@@ -487,11 +483,24 @@ data_m = json_le_stack.filter(function(d){
 data_f = json_le_stack.filter(function(d){
   return d.Sex === 'Female'});
 
-function update_le_1(data) {
+
+function update_le_1(e) {
 
 svg_le_stacked
  .selectAll("rect")
  .remove();
+
+ e = e || window.event;
+
+ var src = e.target;
+ var items = document.querySelectorAll('.switch-field-fg-hale button');
+     items.forEach(function(item) {
+     item.classList.remove('active');
+     })
+
+ src.classList.toggle('active');
+ var filter = src.dataset.filter;
+ var data = this[filter];
 
 var groups = d3.map(data, function(d){
  return(d.Year)})
@@ -530,4 +539,5 @@ svg_le_stacked
 
 }
 
-update_le_1(data_f)
+var button = document.querySelector('.switch-field-fg-hale button');
+button.click();

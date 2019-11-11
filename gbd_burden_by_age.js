@@ -28,6 +28,24 @@ var width_ages = document.getElementById("content_size").offsetWidth;
 var height_ages = 400 - margin.top - margin.bottom;
 
 
+/////////////////
+// Age summary //
+/////////////////
+
+function age_key_summary() {
+    ages.forEach(function (item, index) {
+        var list = document.createElement("li");
+        list.innerHTML = item;
+        list.className = 'cause_list';
+        list.style.width = '220px';
+        list.style.borderColor = color_age_group(index);
+        var div = document.getElementById("age_summary");
+        div.appendChild(list);
+    })
+}
+
+age_key_summary();
+
 // append the svg object to the body of the page before data is loaded
 var svg_fg_age_stack_1 = d3.select("#my_lifecourse_condition_dataviz")
 .append("svg")
@@ -168,7 +186,19 @@ svg_fg_age_stack_1
 .attr('opacity', 1)
 .text('the y axis scale is updated');
 
-function update_age(data) {
+function update_age(e) {
+
+e = e || window.event;
+
+var src = e.target;
+var items = document.querySelectorAll('.switch-field-fg-age button');
+   items.forEach(function(item) {
+   item.classList.remove('active');
+ })
+
+src.classList.toggle('active');
+var filter = src.dataset.filter;
+var data = this[filter];
 
 svg_fg_age_stack_1
 .selectAll("#age_stack_label_1")
@@ -449,7 +479,9 @@ svg_fg_age_stack_1
 
 }
 
-update_age(deaths_age)
+var button = document.querySelector('.switch-field-fg-age button');
+button.click();
+
 
 /////////////////////////////////
 // x = age stacks = conditions //
@@ -509,7 +541,7 @@ var subgroupValue = d.data[subgroupName];
 var subgroup_age_key = d3.select(this.parentNode).datum().index
 
 tooltip_condition_age
-.html("<h3>" + d.data.Cause + ' - ' + subgroupName + '</h3><p>The estimated number of ' + label_key(d.data.Measure) + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(subgroupValue) + '</b></font>.</p><p>This is <font color = "#1e4b7a"><b>' + d3.format(",.0%")(subgroupValue/d.data.Total_in_condition) + '</b></font> of the total ' + label_key(d.data.Measure) + ' in West Sussex from this cause (<font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.data.Total_in_condition) + '</b></font>)</p>')
+.html("<h3>" + subgroupName + '</h3><h5>' + d.data.Cause + '</h5><p>The estimated number of ' + label_key(d.data.Measure) + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.0f")(subgroupValue) + '</b></font>.</p><p>This is <font color = "#1e4b7a"><b>' + d3.format(",.0%")(subgroupValue/d.data.Total_in_condition) + '</b></font> of the total ' + label_key(d.data.Measure) + ' in West Sussex from this cause (<font color = "#1e4b7a"><b>' + d3.format(",.0f")(d.data.Total_in_condition) + '</b></font>)</p>')
 .style("opacity", 1)
 .style("top", (event.pageY - 10) + "px")
 .style("left", (event.pageX + 10) + "px")
@@ -598,27 +630,39 @@ svg_fg_age_stack_2
 .attr('opacity', 1)
 .text('the y axis scale is updated');
 
-function update_condition(data) {
+function update_condition(e) {
 
 svg_fg_age_stack_2
 .selectAll("rect")
 .remove();
 
- svg_fg_age_stack_2
- .selectAll("#age_stack_label_1")
-   .remove();
+svg_fg_age_stack_2
+.selectAll("#age_stack_label_1")
+.remove();
 
-   svg_fg_age_stack_2
-   .selectAll("#age_stack_label_2")
-   .remove();
+svg_fg_age_stack_2
+.selectAll("#age_stack_label_2")
+.remove();
 
-   svg_fg_age_stack_2
-   .selectAll("rect")
-   .remove();
+svg_fg_age_stack_2
+.selectAll("rect")
+.remove();
 
-   var measure_name_fg_5 = d3.map(data, function(d){
-      return(d.Measure)})
-      .keys();
+e = e || window.event;
+
+var src = e.target;
+var items = document.querySelectorAll('.switch-field-fg-age_2 button');
+  items.forEach(function(item) {
+  item.classList.remove('active');
+    })
+
+src.classList.toggle('active');
+var filter = src.dataset.filter;
+var data = this[filter];
+
+var measure_name_fg_5 = d3.map(data, function(d){
+  return(d.Measure)})
+  .keys();
 
    svg_fg_age_stack_2
    .append("text")
@@ -941,170 +985,183 @@ condition_bars_df
  .remove()
 }
 
-update_condition(deaths_condition)
+
+// update_condition(deaths_condition)
 
 
 // age by conditions proportion
+//
+// // append the svg object to the body of the page
+// var svg_fg_5_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
+//  .append("svg")
+//  .attr("width", width_ages)
+//  .attr("height", height_ages + 250)
+//  .append("g")
+//  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+//
+//
+// // This is the proportion of a conditions burden by the age of people. If the condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain age. It shows us that certain diseases impact people of particular ages disproportionately.
+// var request = new XMLHttpRequest();
+//     request.open("GET", "./Proportion_lifecourse_persons_by_condition_level_2_2017_west_sussex.json", false);
+//     request.send(null);
+// var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
+//
+// deaths_condition_proportion = json.filter(function(d){
+//   return d.Measure === 'Deaths'});
+// yll_condition_proportion = json.filter(function(d){
+//   return d.Measure === 'YLLs (Years of Life Lost)'});
+// yld_condition_proportion = json.filter(function(d){
+//   return d.Measure === 'YLDs (Years Lived with Disability)'});
+// daly_condition_proportion = json.filter(function(d){
+//   return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
+//
+//
+// var tooltip_condition_age_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
+// .append("div")
+// .style("opacity", 0)
+// .attr("class", "tooltip_bars")
+// .style("position", "absolute")
+// .style("z-index", "10")
+// .style("background-color", "white")
+// .style("border", "solid")
+// .style("border-width", "1px")
+// .style("border-radius", "5px")
+// .style("padding", "10px")
+//
+// var showTooltip_condition_age_prop = function(d) {
+// tooltip_condition_age_prop
+// .transition()
+// .duration(200);
+//
+// var subgroupName_prop = d3.select(this.parentNode).datum().key;
+// var subgroupValue_prop = d.data[subgroupName_prop];
+// var subgroup_age_key = d3.select(this.parentNode).datum().index
+//
+// tooltip_condition_age_prop
+//  .html("<h3>" + d.data.Cause + '</h3><p>The estimated proportion of ' + label_key(d.data.Measure) + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName_prop + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.1%")(subgroupValue_prop) + '</b></font>.</p>')
+//  .style("opacity", 1)
+//  .style("top", (event.pageY - 10) + "px")
+//  .style("left", (event.pageX + 10) + "px")
+//
+//  d3.selectAll(".myRect_age_" + subgroup_age_key)
+//    .style("opacity", 1)
+//    .attr("stroke","#000")
+//    .attr("stroke-width",2)
+// }
+//
+// var mouseleave_stack_3 = function(d) {
+// var subgroup_age_key = d3.select(this.parentNode).datum().index
+// tooltip_condition_age_prop.style("visibility", "hidden")
+// d3.selectAll(".myRect_age_" + subgroup_age_key)
+//   .attr("stroke","none")
+//   .attr("stroke-width",0)
+//   .style("opacity", 1)
+// }
+//
+// // Add X axis
+// var x_fg_5_prop = d3.scaleBand()
+//  .domain(conditions)
+//  // .range([0, width_ages])
+//  .range([0, width_ages - margin.left - 50])
+//  .padding([0.2])
+//
+// svg_fg_5_prop
+//  .append("g")
+//  .attr("transform", "translate(0," + height_ages + ")")
+//  .call(d3.axisBottom(x_fg_5_prop).tickSizeOuter(0));
+//
+// svg_fg_5_prop
+//  .selectAll("text")
+//  .attr("transform", "translate(-10,10)rotate(-90)")
+//  .style("text-anchor", "end")
+//
+// // Add X axis label:
+// svg_fg_5_prop
+//  .append("text")
+//  .attr("text-anchor", "end")
+//  .attr("x", width_ages/2)
+//  .attr("y", height_ages + margin.top + 150)
+//  .text("Condition");
+//
+// // Y axis label:
+// svg_fg_5_prop
+//  .append("text")
+//  .attr('id', 'axis_y_title')
+//  .attr("text-anchor", "end")
+//  .attr("transform", "rotate(-90)")
+//  .attr("y", - margin.left + 10)
+//  .attr("x", - margin.top - 60)
+//  .text('Proportion');
+//
+// // Add Y axis
+// var y_fg_5_prop = d3.scaleLinear()
+//   .domain([0, 100])
+//   .range([height_ages, 0 ]);
+//
+// svg_fg_5_prop
+//   .append("g")
+//   .call(d3.axisLeft(y_fg_5_prop));
+//
+// var yAxis_fg_5_prop = svg_fg_5_prop
+//   .append("g")
+//   .attr("class", "myYaxis")
+//
+// function update_condition_prop(e) {
+//
+// svg_fg_5_prop
+//  .selectAll("rect")
+//  .remove();
+//
+//  e = e || window.event;
+//
+//  var src = e.target;
+//  var items = document.querySelectorAll('.switch-field-fg-age_2 button');
+//    items.forEach(function(item) {
+//    item.classList.remove('active');
+//      })
+//
+//  src.classList.toggle('active');
+//  var filter = src.dataset.filter;
+//  var data = this[filter];
+//
+// var stackedData = d3.stack()
+//   .keys(ages)(data)
+//
+// var measure_name = d3.map(data, function(d){
+//   return(d.Measure)})
+//   .keys();
+//
+// // This adds a transition effect on the change between datasets (i.e. if the yaxis needs to be longer or shorter).
+// yAxis_fg_5_prop
+//   .transition()
+//   .duration(1000)
+//   .call(d3.axisLeft(y_fg_5_prop));
+//
+// var condition_bars_df_prop = svg_fg_5_prop.append("g")
+//   .selectAll("g")
+//   .data(stackedData) // Enter in the stack data = loop key per key = group per group
+//   .enter()
+//   .append("g")
+//   .attr("fill", function(d) { return color_age_group(d.key); })
+//   .attr("class", function(d, i){ return "myRect_age_" + i })
+//   .selectAll("rect")
+//   .data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
+//   .enter()
+//   .append("rect")
+//   .attr("x", function(d) {
+//     return x_fg_5_prop(d.data.Cause); })
+//   .attr("y", function(d) {
+//     return y_fg_5_prop(d[1]); })
+//   .attr("height", function(d) {
+//     return y_fg_5_prop(d[0]) - y_fg_5_prop(d[1]); })
+//   .attr("width", x_fg_5.bandwidth())
+//   .on("mousemove", showTooltip_condition_age_prop)
+//   .on("mouseout", mouseleave_stack_3)
+//
+// condition_bars_df_prop
+//   .exit()
+//   .remove()
+// }
 
-// append the svg object to the body of the page
-var svg_fg_5_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
- .append("svg")
- .attr("width", width_ages)
- .attr("height", height_ages + 250)
- .append("g")
- .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
-// This is the proportion of a conditions burden by the age of people. If the condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain age. It shows us that certain diseases impact people of particular ages disproportionately.
-var request = new XMLHttpRequest();
-    request.open("GET", "./Proportion_lifecourse_persons_by_condition_level_2_2017_west_sussex.json", false);
-    request.send(null);
-var json = JSON.parse(request.responseText); // parse the fetched json data into a variable
-
-deaths_condition_proportion = json.filter(function(d){
-  return d.Measure === 'Deaths'});
-yll_condition_proportion = json.filter(function(d){
-  return d.Measure === 'YLLs (Years of Life Lost)'});
-yld_condition_proportion = json.filter(function(d){
-  return d.Measure === 'YLDs (Years Lived with Disability)'});
-daly_condition_proportion = json.filter(function(d){
-  return d.Measure === 'DALYs (Disability-Adjusted Life Years)'});
-
-
-var tooltip_condition_age_prop = d3.select("#my_condition_lifecourse_proportion_dataviz")
-.append("div")
-.style("opacity", 0)
-.attr("class", "tooltip_bars")
-.style("position", "absolute")
-.style("z-index", "10")
-.style("background-color", "white")
-.style("border", "solid")
-.style("border-width", "1px")
-.style("border-radius", "5px")
-.style("padding", "10px")
-
-var showTooltip_condition_age_prop = function(d) {
-tooltip_condition_age_prop
-.transition()
-.duration(200);
-
-var subgroupName_prop = d3.select(this.parentNode).datum().key;
-var subgroupValue_prop = d.data[subgroupName_prop];
-var subgroup_age_key = d3.select(this.parentNode).datum().index
-
-tooltip_condition_age_prop
- .html("<h3>" + d.data.Cause + '</h3><p>The estimated proportion of ' + label_key(d.data.Measure) + ' as a result of ' + d.data.Cause  + ' among those aged ' + subgroupName_prop + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d3.format(",.1%")(subgroupValue_prop) + '</b></font>.</p>')
- .style("opacity", 1)
- .style("top", (event.pageY - 10) + "px")
- .style("left", (event.pageX + 10) + "px")
-
- d3.selectAll(".myRect_age_" + subgroup_age_key)
-   .style("opacity", 1)
-   .attr("stroke","#000")
-   .attr("stroke-width",2)
-}
-
-var mouseleave_stack_3 = function(d) {
-var subgroup_age_key = d3.select(this.parentNode).datum().index
-tooltip_condition_age_prop.style("visibility", "hidden")
-d3.selectAll(".myRect_age_" + subgroup_age_key)
-  .attr("stroke","none")
-  .attr("stroke-width",0)
-  .style("opacity", 1)
-}
-
-
-// Add X axis
-var x_fg_5_prop = d3.scaleBand()
- .domain(conditions)
- // .range([0, width_ages])
- .range([0, width_ages - margin.left - 50])
- .padding([0.2])
-
-svg_fg_5_prop
- .append("g")
- .attr("transform", "translate(0," + height_ages + ")")
- .call(d3.axisBottom(x_fg_5_prop).tickSizeOuter(0));
-
-svg_fg_5_prop
- .selectAll("text")
- .attr("transform", "translate(-10,10)rotate(-90)")
- .style("text-anchor", "end")
-
-// Add X axis label:
-svg_fg_5_prop
- .append("text")
- .attr("text-anchor", "end")
- .attr("x", width_ages/2)
- .attr("y", height_ages + margin.top + 150)
- .text("Condition");
-
-// Y axis label:
-svg_fg_5_prop
- .append("text")
- .attr('id', 'axis_y_title')
- .attr("text-anchor", "end")
- .attr("transform", "rotate(-90)")
- .attr("y", - margin.left + 10)
- .attr("x", - margin.top - 60)
- .text('Proportion');
-
-// Add Y axis
-var y_fg_5_prop = d3.scaleLinear()
-  .domain([0, 100])
-  .range([height_ages, 0 ]);
-
-svg_fg_5_prop
-  .append("g")
-  .call(d3.axisLeft(y_fg_5_prop));
-
-var yAxis_fg_5_prop = svg_fg_5_prop
-  .append("g")
-  .attr("class", "myYaxis")
-
-function update_condition_prop(data) {
-
-svg_fg_5_prop
- .selectAll("rect")
- .remove();
-
-var stackedData = d3.stack()
-  .keys(ages)(data)
-
-var measure_name = d3.map(data, function(d){
-  return(d.Measure)})
-  .keys();
-
-// This adds a transition effect on the change between datasets (i.e. if the yaxis needs to be longer or shorter).
-yAxis_fg_5_prop
-  .transition()
-  .duration(1000)
-  .call(d3.axisLeft(y_fg_5_prop));
-
-var condition_bars_df_prop = svg_fg_5_prop.append("g")
-  .selectAll("g")
-  .data(stackedData) // Enter in the stack data = loop key per key = group per group
-  .enter()
-  .append("g")
-  .attr("fill", function(d) { return color_age_group(d.key); })
-  .attr("class", function(d, i){ return "myRect_age_" + i })
-  .selectAll("rect")
-  .data(function(d) { return d; })// enter a second time = loop subgroup per subgroup to add all rectangles
-  .enter()
-  .append("rect")
-  .attr("x", function(d) {
-    return x_fg_5_prop(d.data.Cause); })
-  .attr("y", function(d) {
-    return y_fg_5_prop(d[1]); })
-  .attr("height", function(d) {
-    return y_fg_5_prop(d[0]) - y_fg_5_prop(d[1]); })
-  .attr("width", x_fg_5.bandwidth())
-  .on("mousemove", showTooltip_condition_age_prop)
-  .on("mouseout", mouseleave_stack_3)
-
-condition_bars_df_prop
-  .exit()
-  .remove()
-}
-
-update_condition_prop(deaths_condition_proportion)
+var button = document.querySelector('.switch-field-fg-age_2 button');
+button.click();

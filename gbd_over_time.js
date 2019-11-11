@@ -65,11 +65,23 @@ x_rank_change = d3.scalePoint()
   // .range([0,width])
 .range([width * .3, width * .65])
 
-function update_top_10_change(data) {
+function update_top_10_change(e) {
 
 rank_change_svg
 .selectAll("*")
 .remove();
+
+e = e || window.event;
+
+var src = e.target;
+var items = document.querySelectorAll('.switch-field-fg-slope button');
+  items.forEach(function(item) {
+  item.classList.remove('active');
+    })
+
+src.classList.toggle('active');
+var filter = src.dataset.filter;
+var data = this[filter];
 
 // Parse the Data
 var max_17 = d3.max(data, function (d) {
@@ -102,10 +114,10 @@ y_place_label = d3.scaleLinear()
   .range([50, height_rank_change])
 
 // The path function returns x and y coordinates to draw the lines
-    function path(d) {
-        return d3.line()(years_to_show.map(function (p) {
-            return [x_rank_change(p), y_rank_change[p](d[p])];
-        }));
+function path(d) {
+    return d3.line()(years_to_show.map(function (p) {
+    return [x_rank_change(p), y_rank_change[p](d[p])];
+    }));
     }
 
 // Draw the lines
@@ -145,24 +157,24 @@ rank_change_svg
 .style('fontWeight', 'normal');
 
 // Create cause 07 label
-    rank_change_svg.selectAll('text.labels')
-        .data(data)
-        .enter()
-        .append('text')
-        .text(function (d) {
-            return d.Label_2007 + ' per 100,000'
-        })
-        .style("stroke", function (d) {
-            return color_cause_group(d.Cause)
-        })
-        .attr('text-anchor', 'end')
-        .attr('x', x_rank_change(years_to_show[0]) - 30)
-        .attr('y', function (d) {
-            return y_place_label(d.Rank_in_2007)
-        })
-        .attr('dy', '1em')
-        .style('font-size', '.7rem')
-        .style('fontWeight', 'normal');
+rank_change_svg.selectAll('text.labels')
+.data(data)
+.enter()
+.append('text')
+.text(function (d) {
+      return d.Label_2007 + ' per 100,000'
+    })
+.style("stroke", function (d) {
+      return color_cause_group(d.Cause)
+    })
+.attr('text-anchor', 'end')
+.attr('x', x_rank_change(years_to_show[0]) - 30)
+.attr('y', function (d) {
+      return y_place_label(d.Rank_in_2007)
+    })
+.attr('dy', '1em')
+.style('font-size', '.7rem')
+.style('fontWeight', 'normal');
 
 // Create cause 17 label
 rank_change_svg.selectAll('text.labels')
@@ -256,7 +268,10 @@ rank_change_svg
 .style("font-weight", 'bold')
 }
 
-update_top_10_change(deaths_rate_rank_change)
+var button = document.querySelector('.switch-field-fg-slope button');
+button.click();
+
+// update_top_10_change(deaths_rate_rank_change)
 
 
 ///////////////////////////
@@ -769,10 +784,22 @@ var y_rate_change = d3.scaleBand()
 .rangeRound([0, height_rate_change])
 .padding(0.15);
 
-function update_level_2_rate_change(data) {
+function update_level_2_rate_change(e) {
 rate_change_svg
 .selectAll("*")
 .remove();
+
+e = e || window.event;
+
+var src = e.target;
+var items = document.querySelectorAll('.switch-field-fg-change button');
+  items.forEach(function(item) {
+  item.classList.remove('active');
+    })
+
+src.classList.toggle('active');
+var filter = src.dataset.filter;
+var data = this[filter];
 
 // Create the bars
 var rate_change_bars = rate_change_svg
@@ -879,4 +906,8 @@ rate_change_svg
         .attr("stroke-width", "1px");
 }
 
-update_level_2_rate_change(deaths_level_2_rank_change);
+
+var button = document.querySelector('.switch-field-fg-change button');
+button.click();
+
+// update_level_2_rate_change(deaths_level_2_rank_change);

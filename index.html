@@ -16,7 +16,7 @@
 
     <div class="wrapper">
       <div class = 'header'>
-      <h1>Exploring the [global] burden of disease in West Sussex in 2017</h1>
+      <h1>Exploring the burden of disease in West Sussex in 2017</h1>
       <p>The Global Burden of Disease (GBD) is one of the most comprehensive, worldwide, epidemiological collaborations describing life expectancy, as well as mortality and morbidity from major diseases and injuries and risk factors to health at global, national, regional, and local levels. The GBD provides a standardised approach to estimating incidence (new cases) and prevalence (total number of cases) of ill health and death as well as a measure of the number of potential years lost due to disability, ill health and death.</p>
       <p>Data are currently available for years between 1990 and 2017 and each year new data and methodological innovations are fed into models, revising annual estimates for 360 diseases and injuries and 85 risk factors.</p>
       <p>There is a vast wealth of data available in the GBD, and it is impossible to try to cover all of it in this analysis, which serves to present an overall picture of burden of disease in West Sussex. The data is all publically available from the <a href="http://ghdx.healthdata.org/gbd-results-tool" target="_blank">GBD online results tool;</a href> but please contact me if you want some help accessing or exploring particular questions that arise from this preliminary analysis.</p>
@@ -77,11 +77,19 @@
                   <p>The gap is consistently narrower between males and females for healthy life expectancy; around 3 years in 1990, dropping to 1.5 years in 2007 and fluctuating around this figure since.</p>
                   <p>It is possible to combine these two estimates (overall life expectancy and healthy life expectancy) to explore how much time, on average, a person could expect to live in good and poor health and how this changes over time and between males and females. The figure below shows the healthy life expectancy and years lived in poorer health. You can hover over the bars to find out more, and switch between persons, females and males using the button at the top of the figure.</p>
                   <h3>Healthy life expectancy and living with disability and poor health; West Sussex; 1990-2017</h3>
-                  <div class="switch-field">
-                      <button onclick="update_le_1(data_b)" id="radio-le_stack-one" name="switch-le_stack">Persons</button>
-                      <button onclick="update_le_1(data_f)" id="radio-le_stack-two" name="switch-le_stack">Females</button>
-                      <button onclick='update_le_1(data_m)' id="radio-le_stack-three" name="switch-le_stack">Males</button>
+
+                  <div class="switch-field switch-field-fg-hale">
+                      <button onclick="update_le_1()" data-filter="data_b" id="radio-one" name="switch-hale">
+                          Persons
+                      </button>
+                      <button onclick="update_le_1()" data-filter="data_f" id="radio-two" name="switch-hale">
+                          Females
+                      </button>
+                      <button onclick='update_le_1()' data-filter="data_m" id="radio-three" name="switch-hale">
+                          Males
+                      </button>
                   </div>
+
                   <div id='le_stacked_timeseries_datavis'></div>
                   <p>A person born in 2017, can expect to live (on average) 69.9 years in good health and 11.9 years living with some level of disability or illness. This equates to 14.5% which is <b>one in seven years spent in less than ideal health</b>. This proportion of time spent with some burden of disease is the highest
                       since 1990 when, a person could expect to live 13.3% of their life (10.3 years) with some disability or
@@ -226,9 +234,9 @@
 
                               <p>
                                   <span class="mr-1">Measure</span>
-                                  <select id='selectMeasureBubblesButton'></select>
+                                  <select class = 'select-css' id='selectMeasureBubblesButton'></select>
                                   <span class="ml-3 mr-1">Sex:</span>
-                                  <select id='selectSexBubblesButton'></select>
+                                  <select class = 'select-css' id='selectSexBubblesButton'></select>
                               </p>
 
                             <div id="my_deaths_bubble_dataviz"></div>
@@ -278,44 +286,51 @@
             conditions may be of particular concern for certain age groups.</p>
             <p>You can hover over a single rectangle in a stack (e.g. hover over the dark blue rectangle towards the top of the stack for 85-89 year olds) to highlight all bars for that condition (neurological disorders). If you click on a rectangle, all other condition groups will disapear and the figure will be redrawn with only burden for that particular condition group across the ages shown. This makes it easier to see how each condition affects different age groups. Note that the y axis scale changes as new selections are made to give you the best chance to see changes over age groups. Note also that if you click again on a rectangle, the figure will revert back to showing all condition groups.</p>
             <h3>Burden of disease by age group; persons; West Sussex; 2017</h3>
-            <div class="switch-field">
-                <input onclick="update_age(deaths_age)" type="radio" id="radio-eight" name="switch-three" checked/>
-                <label for="radio-eight">Deaths</label>
-                <input onclick="update_age(yll_age)" type="radio" id="radio-nine" name="switch-three"/>
-                <label for="radio-nine">YLL</label>
-                <input onclick='update_age(yld_age)' type="radio" id="radio-ten" name="switch-three"/>
-                <label for="radio-ten">YLD</label>
-                <input onclick='update_age(daly_age)' type="radio" id="radio-eleven" name="switch-three"/>
-                <label for="radio-eleven">DALY</label>
-            </div>
+
+                <div class="switch-field switch-field-fg-age">
+                    <button onclick="update_age()" data-filter="deaths_age" id="radio-eight" name="switch-age">
+                        Deaths
+                    </button>
+                    <button onclick="update_age()" data-filter="yll_age" id="radio-nine" name="switch-age">
+                        YLL
+                    </button>
+                    <button onclick='update_age()' data-filter="yld_age" id="radio-ten" name="switch-age">
+                        YLD
+                    </button>
+                    <button onclick='update_age()' data-filter="daly_age" id="radio-eleven" name="switch-age">
+                        DALY
+                    </button>
+                </div>
             <div id="my_lifecourse_condition_dataviz"></div>
           </div>
-        <div class="right-sidebar"></div>
+      <div class="right-sidebar">
+        <!-- <p class ='side'>Click on a tile below to update the figure.</p> -->
+        <!-- <div id='level_2_conditions_filters'></div> -->
+      </div>
       </div>
       <div class="row" id = 'section-lifecourse'>
       <div class="content" >
-        <p>You can see that the number of deaths is highest from ages 85 to 89. However, when you take into account disability and premature mortality, the overall burden of disease (DALYs) are highes among 70 to 74 year olds.</p>
+        <p>You can see that the number of deaths is highest from ages 85 to 89. However, when you take into account disability and premature mortality, the overall burden of disease (DALYs) is highest among 70 to 74 year olds.</p>
         <p>The figure below shows the same data but this time condition group is along the bottom so the burden for a particular disease is all in one stack which allows you to see the distrubution of ages experiencing the burden of a disease.</p>
-        <p>The first figure shows the number of deaths (or YLLs, YLDs, and DALYs) although distribution of burden experienced by different age groups is best explored in the second figure which shows burden as a percentage rather than a number (notice that cardiovascular diseases and neoplasms have the highest number of deaths by far and this makes seeing patterns for less common diseases difficult.</p>
-            <p>The switch below effects both the number and proportion of disease burden
-                attributed to a condition and age group.</p>
-            <div class="switch-field">
-                <input onclick="update_condition(deaths_condition); update_condition_prop(deaths_condition_proportion);"
-                       type="radio" id="radio-twelve" name="switch-four" checked/>
-                <label for="radio-twelve">Deaths</label>
-                <input onclick="update_condition(yll_condition); update_condition_prop(yll_condition_proportion);"
-                       type="radio" id="radio-thirteen" name="switch-four"/>
-                <label for="radio-thirteen">YLL</label>
-                <input onclick='update_condition(yld_condition); update_condition_prop(yld_condition_proportion)'
-                       type="radio" id="radio-fourteen" name="switch-four"/>
-                <label for="radio-fourteen">YLD</label>
-                <input onclick='update_condition(daly_condition); update_condition_prop(daly_condition_proportion)'
-                       type="radio" id="radio-fifteen" name="switch-four"/>
-                <label for="radio-fifteen">DALY</label>
-            </div>
+        <!-- <p>The first figure shows the number of deaths (or YLLs, YLDs, and DALYs) although distribution of burden experienced by different age groups is best explored in the second figure which shows burden as a percentage rather than a number (notice that cardiovascular diseases and neoplasms have the highest number of deaths by far and this makes seeing patterns for less common diseases difficult.</p> -->
+        <div class="switch-field switch-field-fg-age_2">
+        <button onclick="update_condition()" data-filter="deaths_condition" id="radio-twelve" name="switch-age_2">
+          Deaths
+        </button>
+        <button onclick="update_condition()" data-filter="yll_condition" id="radio-thirteen" name="switch-age_2">
+          YLL
+        </button>
+        <button onclick='update_condition()' data-filter="yld_condition" id="radio-fourteen" name="switch-age_2">
+          YLD
+        </button>
+        <button onclick='update_condition()' data-filter="daly_condition" id="radio-fifteen" name="switch-age_2">
+          DALY
+        </button>
+        </div>
+
             <div id='my_condition_lifecourse_dataviz'></div>
-            <div id='my_condition_lifecourse_proportion_dataviz'></div>
-            <p>Stacks where the rectangles are similar sizes indicates that each age group in 2017 experienced about the same amount of burden from a condition group. Stacks where some rectangles are larger indicate an unequal distribution. Take for example cardiovascular disease deaths, you can see that people in three age groups (85 to 89, 90 to 94 and 95+) experienced more than half (52%) of the deaths for cardiovascular diseases in West Sussex in this year.</p>
+            <!-- <div id='my_condition_lifecourse_proportion_dataviz'></div>
+            <p>Stacks where the rectangles are similar sizes indicates that each age group in 2017 experienced about the same amount of burden from a condition group. Stacks where some rectangles are larger indicate an unequal distribution. Take for example cardiovascular disease deaths, you can see that people in three age groups (85 to 89, 90 to 94 and 95+) experienced more than half (52%) of the deaths for cardiovascular diseases in West Sussex in this year.</p> -->
           </div>
           <div class="right-sidebar">
             <h3>Age groups</h3>
@@ -335,20 +350,22 @@
           100,000 population.</p>
       <p>We revisit the top tens now, but this time showing the change in rank for those top ten causes of
           mortality and morbidity for West Sussex.</p>
-      <div class="switch-field">
-          <input onclick="update_top_10_change(deaths_rate_rank_change)" type="radio" id="radio-top_10_1"
-                 name="switch-five" checked/>
-          <label for="radio-top_10_1">Deaths</label>
-          <input onclick="update_top_10_change(yll_rate_rank_change)" type="radio" id="radio-top_10_2"
-                 name="switch-five"/>
-          <label for="radio-top_10_2">YLLs</label>
-          <input onclick="update_top_10_change(yld_rate_rank_change)" type="radio" id="radio-top_10_3"
-                 name="switch-five"/>
-          <label for="radio-top_10_3">YLDs</label>
-          <input onclick='update_top_10_change(daly_rate_rank_change)' type="radio" id="radio-top_10_4"
-                 name="switch-five"/>
-          <label for="radio-top_10_4">DALY</label>
+
+      <div class="switch-field switch-field-fg-slope">
+      <button onclick="update_top_10_change()" data-filter="deaths_rate_rank_change" id="radio-sixteen" name="switch-slope">
+        Deaths
+      </button>
+      <button onclick="update_top_10_change()" data-filter="yll_rate_rank_change" id="radio-seventeen" name="switch-slope">
+        YLL
+      </button>
+      <button onclick='update_top_10_change()' data-filter="yld_rate_rank_change" id="radio-eighteen" name="switch-slope">
+        YLD
+      </button>
+      <button onclick='update_top_10_change()' data-filter="daly_rate_rank_change" id="radio-nineteen" name="switch-slope">
+        DALY
+      </button>
       </div>
+
       <div id="top_10_change_datavis"></div>
 
       <h3>All cause mortality (deaths); age standardised rate per 100,000 population; 1990 - 2017;<br>West Sussex
@@ -369,20 +386,22 @@
       <div id="deaths_over_time_nn_rate_datavis"></div>
 
       <h3>Change in age standardised rate per 100,000 population; 2012 - 2017;<br>West Sussex; persons</h3>
-      <div class="switch-field">
-          <input onclick="update_level_2_rate_change(deaths_level_2_rank_change)" type="radio" id="radio-change_1"
-                 name="switch-six" checked/>
-          <label for="radio-change_1">Deaths</label>
-          <input onclick="update_level_2_rate_change(yll_level_2_rank_change)" type="radio" id="radio-change_2"
-                 name="switch-six"/>
-          <label for="radio-change_2">YLLs</label>
-          <input onclick="update_level_2_rate_change(yld_level_2_rank_change)" type="radio" id="radio-change_3"
-                 name="switch-six"/>
-          <label for="radio-change_3">YLDs</label>
-          <input onclick='update_level_2_rate_change(daly_level_2_rank_change)' type="radio" id="radio-change_4"
-                 name="switch-six"/>
-          <label for="radio-change_4">DALY</label>
+
+      <div class="switch-field switch-field-fg-change">
+      <button onclick="update_level_2_rate_change()" data-filter="deaths_level_2_rank_change" id="radio-twenty" name="switch-change">
+        Deaths
+      </button>
+      <button onclick="update_level_2_rate_change()" data-filter="yll_level_2_rank_change" id="radio-twentyone" name="switch-change">
+        YLL
+      </button>
+      <button onclick='update_level_2_rate_change()' data-filter="yld_level_2_rank_change" id="radio-twentytwo" name="switch-change">
+        YLD
+      </button>
+      <button onclick='update_level_2_rate_change()' data-filter="daly_level_2_rank_change" id="radio-twentythree" name="switch-change">
+        DALY
+      </button>
       </div>
+
       <div id="my_level_2_rate_change_dataviz"></div>
     </div>
     <div class="right-sidebar">
@@ -443,17 +462,17 @@
                   because we do not know the overlapping risk contribution at this level of detail.</p>
             <p>Information on the overlapping contribution of risk factors is only available for level 1 risk factors (environmental, behavioural and metabolic risks). Again, there are differences across conditions, and across measures of burden which can be seen in the figure below.</p>
 
-
             <!-- <p>
                 <span class="mr-1">Measure</span>
                 <select id='selectVenn_measureButton'></select>
                 <span class="mr-3">Condition</span>
                 <select id='selectVenn_conditionButton'></select>
             </p> -->
+
             <h3 id= 'venn_title'></h3>
             <div class = 'venn_class'>
-              <div id = 'risk_overlap_datavis'></div>
-              <div id  = 'risk_no_attrib_datavis'></div>
+              <div class = 'venn_class' id = 'risk_overlap_datavis'></div>
+              <div class = 'venn_class' id  = 'risk_no_attrib_datavis'></div>
             </div>
 
           <p class = 'side' style = 'float:right'>This visualisation is based on work by <a href="https://github.com/benfred/venn.js" ,target="_blank">Ben Frederickson</a></p>

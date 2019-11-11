@@ -100,9 +100,6 @@ deaths_males_lv2 = json.filter(function (d) {
     })
     .slice(0, 10);
 
-// console.log(Date())
-
-
 var x_fg_deaths = d3.scaleBand()
     .range([0, width_fg_deaths])
     .padding(0.2);
@@ -485,21 +482,3 @@ d3.select("#total_death_string")
     .text(function (d) {
         return "What caused the " + d3.format(",.0f")(d.Deaths) + " deaths in West Sussex in 2017?"
     }); // Concatenate a string
-
-/////////////////
-// Age summary //
-/////////////////
-
-function age_key_summary() {
-    ages.forEach(function (item, index) {
-        var list = document.createElement("li");
-        list.innerHTML = item;
-        list.className = 'cause_list';
-        list.style.width = '220px';
-        list.style.borderColor = color_age_group(index);
-        var div = document.getElementById("age_summary");
-        div.appendChild(list);
-    })
-}
-
-age_key_summary();
