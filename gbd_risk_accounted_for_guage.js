@@ -156,7 +156,7 @@ meter_deaths
     foreground_deaths
     .attr("d", arc_deaths.endAngle(twoPi * attributed))
     .attr("fill", function(d) { return color_cause_for_risk(selectedCondition_attribOption); });
-    percentAttributed_deaths.text(d3.format(".0%")(attributed));
+    percentAttributed_deaths.text(d3.format(".1%")(attributed));
   };
 });
 
@@ -224,7 +224,7 @@ meter_yll
     foreground_yll
     .attr("d", arc_yll.endAngle(twoPi * attributed))
     .attr("fill", function(d) { return color_cause_for_risk(selectedCondition_attribOption); });
-    percentAttributed_yll.text(d3.format(".0%")(attributed));
+    percentAttributed_yll.text(d3.format(".1%")(attributed));
   };
 });
 
@@ -293,7 +293,7 @@ meter_yld
     foreground_yld
     .attr("d", arc_yld.endAngle(twoPi * attributed))
     .attr("fill", function(d) { return color_cause_for_risk(selectedCondition_attribOption); });
-    percentAttributed_yld.text(d3.format(".0%")(attributed));
+    percentAttributed_yld.text(d3.format(".1%")(attributed));
   };
 });
 
@@ -361,7 +361,7 @@ meter_daly
     foreground_daly
     .attr("d", arc_daly.endAngle(twoPi * attributed))
     .attr("fill", function(d) { return color_cause_for_risk(selectedCondition_attribOption); });
-    percentAttributed_daly.text(d3.format(".0%")(attributed));
+    percentAttributed_daly.text(d3.format(".1%")(attributed));
   };
 });
 
@@ -467,7 +467,7 @@ meter_deaths
     attributed = i_deaths(t);
     foreground_deaths
     .attr("d", arc_deaths.endAngle(twoPi * attributed));
-    percentAttributed_deaths.text(d3.format(".0%")(attributed));
+    percentAttributed_deaths.text(d3.format(".1%")(attributed));
   };
 });
 
@@ -573,7 +573,7 @@ meter_yll
   return function(t) {
     attributed = i_yll(t);
     foreground_yll.attr("d", arc_yll.endAngle(twoPi * attributed));
-    percentAttributed_yll.text(d3.format(".0%")(attributed));
+    percentAttributed_yll.text(d3.format(".1%")(attributed));
   };
 });
 
@@ -678,7 +678,7 @@ meter_yld
   return function(t) {
     attributed = i_yld(t);
     foreground_yld.attr("d", arc_yld.endAngle(twoPi * attributed));
-    percentAttributed_yld.text(d3.format(".0%")(attributed));
+    percentAttributed_yld.text(d3.format(".1%")(attributed));
   };
 });
 
@@ -784,7 +784,7 @@ meter_daly
   return function(t) {
     attributed = i_daly(t);
     foreground_daly.attr("d", arc_daly.endAngle(twoPi * attributed));
-    percentAttributed_daly.text(d3.format(".0%")(attributed));
+    percentAttributed_daly.text(d3.format(".1%")(attributed));
   };
 });
 

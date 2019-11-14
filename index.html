@@ -63,6 +63,7 @@
                   <p class='side'>A change in rank does not necessarily mean that a metric for a cause has got better/worse.</p>
                   <p class='side'>Whilst risk factors are presented in three groups, these should not be viewed as mutually exclusive. It is clear that behavioural risks (such as diet) are associated with metabolic risks (such as obesity)</p>
                   <p class='side'>The GBD 2017 diseases/conditions and risks are split and aggregated into hierarchical levels. The cause list is mutually exclusive and collectively exhaustive at every level of aggregation; causes not individually specified are captured in residual categories, such as 'other intestinal infectious diseases'.</p>
+                  <p class = 'side_important'>Note that figures are rounded to the nearest whole number, and percentages are rounded to the nearest single decimal point. This is to make interpretation of the findings easier to follow but it can mean that some values show as zero have a value between 0 and 0.5.</p>
                 </div>
             </div>
             <div class="row" id="section-life-expectancy">
@@ -443,6 +444,7 @@
   <h3>What is a risk factor?</h3>
   <p class='side'>For the GBD study, a risk factor is defined as an attribute, behavior, or exposure, which is causally associated with an increased (or decreased) probability of a disease or injury. Risk factors can be protective if the probability of ill health decreases. Some risk factors are modifiable at the level of the individual (e.g. smoking, dietary intake) and others are modifiable at wider environmental levels (e.g. air polution). For more information, see the panel on the right hand side and hover over the various risk factor icons to explore.</p>
   <p class = 'side'>Some conditions are better understood than others (e.g. have had more research conducted) and some conditions are more susceptable to modifiable risk factors than others (as opposed to genetic causes).</p>
+  <p class = 'side_important'>Note that figures are rounded to the nearest whole number, and percentages are rounded to the nearest single decimal point. As such, in some cases zero deaths can mean a small fraction of a single death is attributed to a cause or risk. For example, the number of deaths attributed to risk factors for the cause group 'other infectious diseases' was 0.09 deaths (0.6% of the 16.24 deaths estimated in West Sussex in 2017).</p>
 </div>
     </div>
 
@@ -455,11 +457,7 @@
                   or more risk factors (i.e smoking and drinking alcohol) to say these two risk factors cause a certain
                   proportion of the total burden of a condition.</p>
             <p>For example, there were estimated to be 2,752 deaths caused by neoplasms in West Sussex in
-                  2017. Of those deaths, 43% (1,190 deaths) are attributed to atleast one risk factor in the GBD study. We
-                  are able to say that Tobacco use for example, is attributable to 567 deaths as a result of neoplasms,
-                  occupational risks were attributable to neoplasm 258 deaths and that alcohol use was attributable to
-                  188. We are not able, however, to say that the three risk factors combined account for 1,013 deaths
-                  because we do not know the overlapping risk contribution at this level of detail.</p>
+                  2017. Of those deaths, 43% (1,190 deaths) are attributed to atleast one risk factor in the GBD study. We are able to say that Tobacco use for example, is attributable to 567 deaths as a result of neoplasms, occupational risks were attributable to neoplasm 258 deaths and that alcohol use was attributable to 188. We are not able, however, to say that the three risk factors combined account for 1,013 deaths because we do not know the overlapping risk contribution at this level of detail.</p>
             <p>Information on the overlapping contribution of risk factors is only available for level 1 risk factors (environmental, behavioural and metabolic risks). Again, there are differences across conditions, and across measures of burden which can be seen in the figure below.</p>
 
             <!-- <p>
@@ -470,11 +468,10 @@
             </p> -->
 
             <h3 id= 'venn_title'></h3>
-            <div class = 'venn_class'>
-              <div class = 'venn_class' id = 'risk_overlap_datavis'></div>
-              <div class = 'venn_class' id  = 'risk_no_attrib_datavis'></div>
+            <div class = 'venn_wrapper'>
+              <div id = 'risk_overlap_datavis' style = 'padding-left:20px'></div>
+              <div id  = 'risk_no_attrib_datavis'  style = 'float:right' style = 'padding-right:20px'></div>
             </div>
-
           <p class = 'side' style = 'float:right'>This visualisation is based on work by <a href="https://github.com/benfred/venn.js" ,target="_blank">Ben Frederickson</a></p>
         </div>
 

@@ -8,7 +8,7 @@ var height = 500;
 var margin = {
     top: 30,
     right: 30,
-    bottom: 150,
+    bottom: 180,
     left: 60
 };
 
@@ -16,7 +16,7 @@ var sex = ['Male', 'Female', 'Both']
 
 // Now we can use the global width with
 var width_fg_deaths = width - margin.left - margin.right;
-var height_fg_deaths = 400 - margin.top - margin.bottom;
+var height_fg_deaths = 390 - margin.top - margin.bottom;
 
 // Specify a colour palette and order
 var cause_categories = ["HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"]
@@ -146,25 +146,28 @@ var showTooltip_fg_deaths = function (d) {
 data = deaths_persons_lv2;
 
 // Add X axis label:
-svg_fg_deaths
-    .append("text")
-    .attr("text-anchor", "end")
-    .attr("x", width_fg_deaths / 2)
-    .attr("y", height_fg_deaths + margin.top + 70)
-    .text("Cause");
+// svg_fg_deaths
+//     .append("text")
+//     .attr("text-anchor", "end")
+//     .attr("x", width_fg_deaths / 2)
+//     .attr("y", height_fg_deaths + margin.top + 70)
+//     .text("Cause");
 
 // Y axis label:
 svg_fg_deaths
     .append("text")
     .attr('id', 'axis_y_title')
     .attr("text-anchor", "end")
+    .style('font-size', '12px')
+    .style('font-weight', 'bold')
     .attr("transform", "rotate(-90)")
-    .attr("y", -margin.left + 20)
+    .attr("y", -margin.left + 10)
     .attr("x", -margin.top - 60)
     .text('Deaths');
 
 x_fg_deaths
-.domain(data.map(function (d) { return d.Cause; })) // update the xaxis based on 'data' - so if you run update on data1, this will look at data1, get any new/unique groups and add them to the list of groups.§
+.domain(data.map(function (d) {
+  return d.Cause; })) // update the xaxis based on 'data' - so if you run update on data1, this will look at data1, get any new/unique groups and add them to the list of groups.§
 
 xAxis_fg_deaths
 .transition()

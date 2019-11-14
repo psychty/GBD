@@ -4,7 +4,7 @@ var width = document.getElementById("content_size").offsetWidth;
 
 // Line chart
 var height_le = 300;
-var height_le_stack = 300
+var height_le_stack = 200
 
 // margins
 var margin = {top: 30,

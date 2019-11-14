@@ -130,6 +130,12 @@ p.side {
   text-justify: inter-word;
 }
 
+p.side_important {
+  text-align: justify;
+  font-weight: bold;
+  color: red;
+  text-justify: inter-word;
+}
 
 p {
   font-size: 1rem;
@@ -330,7 +336,7 @@ table {
   text-align: left;
   font-size: .8rem;
   font-family: inherit;
-  margin: 0 0 3px;
+  margin: 0 0 1px;
   border-left: 8px solid #ccc;
   position: relative;
 }
@@ -358,7 +364,7 @@ table {
 }
 
 p.cause_list .side_tt {
-    font-size: .8rem;
+    font-size: .8rem !important;
 }
 
 
@@ -478,4 +484,11 @@ fill: #d80727;
 display: inline-block;
 margin: auto;
 padding: 0px;
+}
+
+.venn_wrapper {
+
+margin-left: auto;
+margin-right: auto;
+display: block;
 }
