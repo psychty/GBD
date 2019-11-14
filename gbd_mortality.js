@@ -145,14 +145,6 @@ var showTooltip_fg_deaths = function (d) {
 // To get the tooltips working on the first load, we need to create it outside of the button click function.
 data = deaths_persons_lv2;
 
-// Add X axis label:
-// svg_fg_deaths
-//     .append("text")
-//     .attr("text-anchor", "end")
-//     .attr("x", width_fg_deaths / 2)
-//     .attr("y", height_fg_deaths + margin.top + 70)
-//     .text("Cause");
-
 // Y axis label:
 svg_fg_deaths
     .append("text")

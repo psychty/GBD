@@ -1,9 +1,7 @@
 // set global width and heights to use for our svgs - you can choose not to use these and specify custom values
 var width_risks = document.getElementById("content_size").offsetWidth - 20
 
-
 var causes_for_risk = ["All causes","HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"]
-
 
 // Specify a colour palette and order
 var cause_categories = ["HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"]
@@ -25,7 +23,6 @@ var risk_key = d3.scaleOrdinal()
 var color_lv_1_risk_group = d3.scaleOrdinal()
 .domain(['Environmental/occupational risks', 'Behavioral risks', 'Metabolic risks', 'Burden not attributable to GBD risk factors'])
 .range(["#ff4da8","#01c1da","#624194","#625b62"])
-
 
 var risk_categories = ["Air pollution", "Occupational risks", "Other environmental risks", "Unsafe water, sanitation, and handwashing", "Alcohol use", "Childhood maltreatment", "Dietary risks", "Drug use", "Intimate partner violence", "Low physical activity", "Child and maternal malnutrition", "Tobacco", "Unsafe sex", "High systolic blood pressure", "High body-mass index", "High fasting plasma glucose", "High LDL cholesterol", "Impaired kidney function", "Low bone mineral density"]
 
@@ -87,16 +84,16 @@ d3.select("#selecttopten_attrib_risk_level_Button")
 
 var topten_attrib_risk_levelOption = d3.select('#selecttopten_attrib_risk_level_Button').property("value")
 
-var height_top_ten = 450;
-var padding = 30;
+var height_top_ten = 350;
+var padding = 50;
 
 // append the svg object to the body of the page
 var top_ten_risks_svg = d3.select("#top_ten_risks")
 .append("svg")
-.attr("width", width_risks + 20)
+.attr("width", width_risks)
 .attr("height", height_top_ten + 60)
 .append("g")
-.attr("transform", "translate(" + 150 + "," + 20 + ")");
+.attr("transform", "translate(" + 190 + "," + 0 + ")");
 
 var request = new XMLHttpRequest();
 request.open("GET", 'Risks_causes_NN_2017.json', false);
@@ -116,8 +113,6 @@ top_risk_selected = top_risks.filter(function (d) { // gets a subset of the json
   })
   .slice(0, 10); // just keeps the first 10 rows
 
-
-
 if(top_risk_selected[0].Number_of_negative_risks > 10) {
 
 d3.select("#top_risks_title")
@@ -133,7 +128,6 @@ d3.select("#top_risks_title")
 .text(function(d){ return 'Top ' + top_risk_selected[0].Number_of_negative_risks +' risk factors (level ' + d.Risk_level + ') attributed to ' + label_key(d.measure)  + '; ' + d.Cause.replace('All causes', 'all causes') + '; ' + d.Sex.toLowerCase().replace('both', 'both males and female') + ' ; all ages; West Sussex; 2017' });
 
 }
-
 
 // Grab the highest number of value
 var max_risk_value = d3.max(top_risk_selected, function(d) {
@@ -170,11 +164,10 @@ tooltip_risk_factors
 .style("visibility", "hidden")
 }
 
-
 // Add X axis scale - this is the max value plus 10%
 var x_top_ten = d3.scaleLinear()
 .domain([0, max_risk_value + (max_risk_value * .1)])
-.range([0, width_risks - 150]);
+.range([0, width_risks - 240]);
 
 var xAxis_top_risks = top_ten_risks_svg
 .append("g")
@@ -203,14 +196,16 @@ top_ten_risks_svg
 .text(function(d) { return d.measure});
 
 // Y axis label:
-top_ten_risks_svg
-.append("text")
-.attr('id', 'axis_y_title_tt')
-.attr("text-anchor", "end")
-.attr("transform", "rotate(-90)")
-.attr("y", - 130)
-.attr("x", - (height_top_ten / 2) + 20)
-.text('Risk factor');
+// top_ten_risks_svg
+// .append("text")
+// .attr('id', 'axis_y_title_tt')
+// .style('font-size', '12px')
+// .style('font-weight', 'bold')
+// .attr("text-anchor", "end")
+// .attr("transform", "rotate(-90)")
+// .attr("y", - 170)
+// .attr("x", - (height_top_ten / 2) + 20)
+// .text('Risk factor');
 
 top_ten_risks_svg
 .data(top_risk_selected)
@@ -239,10 +234,9 @@ top_ten_risks_svg
 // .style('font-weight', 'bold')
 .style('fill', 'red')
 .style('font-size', 10)
-.attr("x", width - 20)
+.attr("x", width - 75)
 .attr("y", height_top_ten - 10)
 .text('Remember: these risk factors may overlap in increasing burden.');
-
 
 // Create the bars element
 var bars_fig_top_ten = top_ten_risks_svg

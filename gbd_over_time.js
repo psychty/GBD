@@ -273,12 +273,11 @@ button.click();
 
 // update_top_10_change(deaths_rate_rank_change)
 
-
 ///////////////////////////
 // Line chart timeseries //
 ///////////////////////////
 
-var height_fg_standardised_ts = 350;
+var height_fg_standardised_ts = 300;
 
 // append the svg object to the body of the page
 var svg_standardised_ts = d3.select("#deaths_over_time_nn_rate_datavis")
@@ -341,11 +340,9 @@ d3.select("#selectAreaButton")
     .enter()
     .append('option')
     .text(function (d) {
-        return d;
-    }) // text to appear in the menu - this does not have to be as it is in the data (you can concatenate other values).
+        return d; }) // text to appear in the menu - this does not have to be as it is in the data (you can concatenate other values).
     .attr("value", function (d) {
-        return d;
-    }) // corresponding value returned by the button
+        return d; }) // corresponding value returned by the button
 
 // We need to create a dropdown button for the user to choose which area to be displayed on the figure.
 d3.select("#selectReferenceAreaButton")
@@ -354,11 +351,9 @@ d3.select("#selectReferenceAreaButton")
     .enter()
     .append('option')
     .text(function (d) {
-        return d;
-    }) // text to appear in the menu - this does not have to be as it is in the data (you can concatenate other values).
+        return d; }) // text to appear in the menu - this does not have to be as it is in the data (you can concatenate other values).
     .attr("value", function (d) {
-        return d;
-    }) // corresponding value returned by the button
+        return d; }) // corresponding value returned by the button
 
 // A color scale, this is useful because it will respond to the number of elements in the array rather than needing to be hardcoded (although we will mostly know how many elements will be involved and may want to specify particular colours.)
 var colour_areas = d3.scaleOrdinal()
@@ -368,8 +363,7 @@ var colour_areas = d3.scaleOrdinal()
 // Add X axis
 var x = d3.scaleLinear()
     .domain(d3.extent(ts_deaths_all_cause, function (d) {
-        return d.Year;
-    }))
+        return d.Year;  }))
     .range([0, width - margin.left - 50]);
 
 svg_standardised_ts
@@ -514,8 +508,7 @@ var focus_fg_standardised_ts = svg_standardised_ts
 
 // This function grabs the Year closest to the left hand side of the mouse pointer
 var bisectYear = d3.bisector(function (d) {
-    return d.Year;
-}).left;
+    return d.Year; }).left;
 
 // append the circle at the intersection
 focus_fg_standardised_ts

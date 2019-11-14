@@ -20,7 +20,7 @@ var label_key = d3.scaleOrdinal()
 // margins
 var margin = {top: 30,
               right: 30,
-              bottom: 150,
+              bottom: 180,
               left: 60};
 
 // Now we can use the global width with
@@ -118,12 +118,11 @@ d3.selectAll(".myRect" + subgroup_key)
   .style("opacity", 1)
 }
 
-
 // Add X axis
 var x_fg_4 = d3.scaleBand()
 .domain(age_groups)
 // .range([0, width_ages])
-.range([0, width_ages - margin.left - 50])
+.range([0, width_ages - margin.left - 25])
 .padding([0.2])
 
 svg_fg_age_stack_1
@@ -137,21 +136,23 @@ svg_fg_age_stack_1
 .style("text-anchor", "end")
 
 // Add X axis label:
-svg_fg_age_stack_1
-.append("text")
-.attr("text-anchor", "end")
-.attr("x", width_ages/2)
-.attr("y", height_ages + margin.top + 35)
-.text("Age group");
+// svg_fg_age_stack_1
+// .append("text")
+// .attr("text-anchor", "end")
+// .attr("x", width_ages/2)
+// .attr("y", height_ages + margin.top + 35)
+// .text("Age group");
 
 // Y axis label:
 svg_fg_age_stack_1
 .append("text")
 .attr('id', 'axis_y_title')
 .attr("text-anchor", "end")
+.style('font-size', '12px')
+.style('font-weight', 'bold')
 .attr("transform", "rotate(-90)")
 .attr("y", - margin.left + 10)
-.attr("x", - margin.top - 60)
+.attr("x", - margin.top - 40)
 .text('Number');
 
  // // Add Y axis
@@ -566,7 +567,7 @@ d3.selectAll(".myRect_age_" + subgroup_age_key)
 // Add X axis
 var x_fg_5 = d3.scaleBand()
  .domain(conditions)
- .range([0, width_ages - margin.left - 50])
+ .range([0, width_ages - margin.left - 25])
  .padding([0.2])
 
 svg_fg_age_stack_2
