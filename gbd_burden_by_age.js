@@ -563,7 +563,6 @@ d3.selectAll(".myRect_age_" + subgroup_age_key)
   .style("opacity", 1)
 }
 
-
 // Add X axis
 var x_fg_5 = d3.scaleBand()
  .domain(conditions)
@@ -986,9 +985,7 @@ condition_bars_df
  .remove()
 }
 
-
 // update_condition(deaths_condition)
-
 
 // age by conditions proportion
 //
@@ -999,8 +996,6 @@ condition_bars_df
 //  .attr("height", height_ages + 250)
 //  .append("g")
 //  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-//
-//
 // // This is the proportion of a conditions burden by the age of people. If the condition is estimated to cause 100 deaths, how many of those deaths are among people of a certain age. It shows us that certain diseases impact people of particular ages disproportionately.
 // var request = new XMLHttpRequest();
 //     request.open("GET", "./Proportion_lifecourse_persons_by_condition_level_2_2017_west_sussex.json", false);

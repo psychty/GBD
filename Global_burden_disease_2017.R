@@ -104,27 +104,22 @@ read_csv("~/Documents/GBD_data_download/LE_GBD_timeseries.csv") %>%
   rename(Estimate = val,
          Lower_estimate = lower,
          Upper_estimate = upper) %>% 
+  filter(Area == 'West Sussex') %>% 
   toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/LE_HALE_1990_2017_NN.json'))
-
-HALE_LE_change <- read_csv("~/Documents/GBD_data_download/LE_GBD_change.csv") %>% 
-  left_join(Area_rank, by = 'Area') #%>% 
-  toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/LE_HALE_change_1990_2017_.json'))
-
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/LE_HALE_1990_2017.json'))
 
 read_csv("~/Documents/GBD_data_download/LE_GBD_timeseries_stacked.csv") %>% 
   left_join(Area_rank, by = 'Area') %>% 
   rename(HALE = `HALE (Healthy life expectancy)`) %>% 
+  filter(Area == 'West Sussex') %>% 
   mutate(label = paste0('<p>The overall life expectancy in ', Area, ' at birth in ', Year, ' ', ifelse(Sex == 'Both', '(for males and females combined)', paste0(' among ', tolower(Sex), 's')), ' was <font color = "#1e4b7a"><b>', round(`Life expectancy`,1), ' years</b></font>.</p><p>On average, a person born in this year could expect to live <font color = "#1e4b7a"><b>', round(HALE, 1), ' years in good health</b></font> but spend ', round(Difference, 1), ' years living with at least some level of disability or ill health.</p><p>This means living around <font color = "#1e4b7a"><b>', round(Difference/`Life expectancy` * 100, 1), '% of life with an illness or disability.</b></font></p>')) %>% 
   toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/LE_HALE_stacked_ts_1990_2017_NN.json'))
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/LE_HALE_stacked_ts_1990_2017.json'))
 
-read_csv("~/Documents/GBD_data_download/LE_GBD_change_difference.csv") %>% 
-  left_join(Area_rank, by = 'Area') %>% 
-  toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/LE_HALE_time_in_poor_health_1990_2017_.json'))
-
+# read_csv("~/Documents/GBD_data_download/LE_GBD_change_difference.csv") %>% 
+#   left_join(Area_rank, by = 'Area') %>% 
+#   toJSON() %>% 
+#   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/LE_HALE_time_in_poor_health_1990_2017_.json'))
 
 # Cause of mortality and morbidity ####
 # This is 3.5 million records
@@ -654,17 +649,18 @@ Age_standardised_NN_ts_data <- unique(list.files("~/Documents/GBD_data_download/
 Age_standardised_NN_ts_data %>% 
   filter(Level == 0) %>% 
   filter(Sex == 'Both') %>% 
+  filter(measure == 'Deaths') %>% 
   left_join(Area_rank, by = 'Area') %>% 
   toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_totals_1990_2017_all_areas.json'))
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_deaths_1990_2017_NN.json'))
 
-Age_standardised_NN_ts_data %>% 
-  filter(Level == 2) %>% 
-  filter(Sex == 'Both') %>%
-  filter(Area %in% c(Area_x, 'England', 'South East England')) %>%
-  select(Area, Sex, Year, Cause,Estimate, Lower_estimate, Upper_estimate, measure) %>%
-  toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_level_2_1990_2017_', gsub(" ", "_", tolower(Area_x)), '_region_england.json'))
+# Age_standardised_NN_ts_data %>% 
+#   filter(Level == 2) %>% 
+#   filter(Sex == 'Both') %>%
+#   filter(Area %in% c(Area_x, 'England', 'South East England')) %>%
+#   select(Area, Sex, Year, Cause,Estimate, Lower_estimate, Upper_estimate, measure) %>%
+#   toJSON() %>% 
+#   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_level_2_1990_2017_', gsub(" ", "_", tolower(Area_x)), '_region_england.json'))
 
 # My thoughts are to do the analysis here, include columns for % change compared to 5 years (2012), 10 years (2007), and compared to 20 years (1997).
 

@@ -59,8 +59,6 @@ var svg_fg_deaths = d3.select("#top_10_bars_by_sex_dataviz")
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-// console.log(Date())
-
 // Bring data in
 var request = new XMLHttpRequest();
 request.open("GET", "./Number_cause_level_2_2017_west_sussex.json", false);

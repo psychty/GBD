@@ -1,0 +1,1681 @@
+[{
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2001,
+  "Estimate": 67.8055,
+  "Upper_estimate": 70.2642,
+  "Lower_estimate": 64.8913,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2001,
+  "Estimate": 69.6368,
+  "Upper_estimate": 72.603,
+  "Lower_estimate": 66.302,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2001,
+  "Estimate": 68.7949,
+  "Upper_estimate": 71.5185,
+  "Lower_estimate": 65.6521,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2017,
+  "Estimate": 69.1307,
+  "Upper_estimate": 71.8126,
+  "Lower_estimate": 65.9839,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2017,
+  "Estimate": 70.6021,
+  "Upper_estimate": 73.8009,
+  "Lower_estimate": 66.8944,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2017,
+  "Estimate": 69.8917,
+  "Upper_estimate": 72.8206,
+  "Lower_estimate": 66.4803,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1998,
+  "Estimate": 67.2341,
+  "Upper_estimate": 69.6375,
+  "Lower_estimate": 64.3797,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1998,
+  "Estimate": 69.612,
+  "Upper_estimate": 72.5121,
+  "Lower_estimate": 66.2775,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1998,
+  "Estimate": 68.5061,
+  "Upper_estimate": 71.1865,
+  "Lower_estimate": 65.3703,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2005,
+  "Estimate": 68.6999,
+  "Upper_estimate": 71.2108,
+  "Lower_estimate": 65.727,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2005,
+  "Estimate": 70.1218,
+  "Upper_estimate": 73.1677,
+  "Lower_estimate": 66.66,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2005,
+  "Estimate": 69.4758,
+  "Upper_estimate": 72.2313,
+  "Lower_estimate": 66.2886,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2014,
+  "Estimate": 69.532,
+  "Upper_estimate": 72.1855,
+  "Lower_estimate": 66.4633,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2014,
+  "Estimate": 71.0462,
+  "Upper_estimate": 74.1453,
+  "Lower_estimate": 67.4082,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2014,
+  "Estimate": 70.3264,
+  "Upper_estimate": 73.1874,
+  "Lower_estimate": 66.9574,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2002,
+  "Estimate": 68.0175,
+  "Upper_estimate": 70.4542,
+  "Lower_estimate": 65.1059,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2002,
+  "Estimate": 69.6232,
+  "Upper_estimate": 72.5924,
+  "Lower_estimate": 66.2491,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2002,
+  "Estimate": 68.8935,
+  "Upper_estimate": 71.5941,
+  "Lower_estimate": 65.7402,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1999,
+  "Estimate": 67.3944,
+  "Upper_estimate": 69.8043,
+  "Lower_estimate": 64.525,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1999,
+  "Estimate": 69.6383,
+  "Upper_estimate": 72.5314,
+  "Lower_estimate": 66.2921,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1999,
+  "Estimate": 68.5952,
+  "Upper_estimate": 71.2767,
+  "Lower_estimate": 65.4622,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1990,
+  "Estimate": 65.802,
+  "Upper_estimate": 68.0737,
+  "Lower_estimate": 63.147,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1990,
+  "Estimate": 68.6059,
+  "Upper_estimate": 71.4034,
+  "Lower_estimate": 65.3078,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1990,
+  "Estimate": 67.3081,
+  "Upper_estimate": 69.8548,
+  "Lower_estimate": 64.317,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1993,
+  "Estimate": 66.2599,
+  "Upper_estimate": 68.5743,
+  "Lower_estimate": 63.5145,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1993,
+  "Estimate": 69.074,
+  "Upper_estimate": 71.875,
+  "Lower_estimate": 65.7523,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1993,
+  "Estimate": 67.7667,
+  "Upper_estimate": 70.3408,
+  "Lower_estimate": 64.728,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2006,
+  "Estimate": 68.6844,
+  "Upper_estimate": 71.1837,
+  "Lower_estimate": 65.6898,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2006,
+  "Estimate": 70.355,
+  "Upper_estimate": 73.4519,
+  "Lower_estimate": 66.8882,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2006,
+  "Estimate": 69.5794,
+  "Upper_estimate": 72.361,
+  "Lower_estimate": 66.3804,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1991,
+  "Estimate": 65.8891,
+  "Upper_estimate": 68.1597,
+  "Lower_estimate": 63.1813,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1991,
+  "Estimate": 68.8577,
+  "Upper_estimate": 71.6783,
+  "Lower_estimate": 65.5855,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1991,
+  "Estimate": 67.4741,
+  "Upper_estimate": 70.0122,
+  "Lower_estimate": 64.4668,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2007,
+  "Estimate": 68.9416,
+  "Upper_estimate": 71.4639,
+  "Lower_estimate": 65.8702,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2007,
+  "Estimate": 70.466,
+  "Upper_estimate": 73.5153,
+  "Lower_estimate": 66.9152,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2007,
+  "Estimate": 69.7608,
+  "Upper_estimate": 72.5562,
+  "Lower_estimate": 66.4785,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2015,
+  "Estimate": 69.4514,
+  "Upper_estimate": 72.1724,
+  "Lower_estimate": 66.2973,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2015,
+  "Estimate": 70.9286,
+  "Upper_estimate": 74.0724,
+  "Lower_estimate": 67.2312,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2015,
+  "Estimate": 70.223,
+  "Upper_estimate": 73.1257,
+  "Lower_estimate": 66.8382,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2011,
+  "Estimate": 69.593,
+  "Upper_estimate": 72.183,
+  "Lower_estimate": 66.4835,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2011,
+  "Estimate": 70.9766,
+  "Upper_estimate": 74.1046,
+  "Lower_estimate": 67.3669,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2011,
+  "Estimate": 70.3342,
+  "Upper_estimate": 73.2025,
+  "Lower_estimate": 66.9839,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2003,
+  "Estimate": 68.1263,
+  "Upper_estimate": 70.5748,
+  "Lower_estimate": 65.1688,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2003,
+  "Estimate": 69.6483,
+  "Upper_estimate": 72.6267,
+  "Lower_estimate": 66.2307,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2003,
+  "Estimate": 68.9565,
+  "Upper_estimate": 71.6834,
+  "Lower_estimate": 65.8231,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1995,
+  "Estimate": 66.589,
+  "Upper_estimate": 68.8993,
+  "Lower_estimate": 63.8305,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1995,
+  "Estimate": 69.293,
+  "Upper_estimate": 72.1717,
+  "Lower_estimate": 65.9083,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1995,
+  "Estimate": 68.035,
+  "Upper_estimate": 70.6195,
+  "Lower_estimate": 64.9558,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1994,
+  "Estimate": 66.5775,
+  "Upper_estimate": 68.9184,
+  "Lower_estimate": 63.8622,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1994,
+  "Estimate": 69.2499,
+  "Upper_estimate": 72.0821,
+  "Lower_estimate": 65.8623,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1994,
+  "Estimate": 68.015,
+  "Upper_estimate": 70.5842,
+  "Lower_estimate": 64.9556,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2010,
+  "Estimate": 69.3874,
+  "Upper_estimate": 71.9595,
+  "Lower_estimate": 66.2869,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2010,
+  "Estimate": 70.7496,
+  "Upper_estimate": 73.8507,
+  "Lower_estimate": 67.179,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2010,
+  "Estimate": 70.1186,
+  "Upper_estimate": 72.9586,
+  "Lower_estimate": 66.7651,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2009,
+  "Estimate": 69.1997,
+  "Upper_estimate": 71.7904,
+  "Lower_estimate": 66.0655,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2009,
+  "Estimate": 70.7548,
+  "Upper_estimate": 73.8538,
+  "Lower_estimate": 67.2054,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2009,
+  "Estimate": 70.0286,
+  "Upper_estimate": 72.8878,
+  "Lower_estimate": 66.6861,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1997,
+  "Estimate": 67.0108,
+  "Upper_estimate": 69.4009,
+  "Lower_estimate": 64.1393,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1997,
+  "Estimate": 69.5302,
+  "Upper_estimate": 72.4281,
+  "Lower_estimate": 66.1811,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1997,
+  "Estimate": 68.3566,
+  "Upper_estimate": 70.9879,
+  "Lower_estimate": 65.2159,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2016,
+  "Estimate": 69.3044,
+  "Upper_estimate": 72.0416,
+  "Lower_estimate": 66.1262,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2016,
+  "Estimate": 70.7478,
+  "Upper_estimate": 73.9352,
+  "Lower_estimate": 67.0095,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2016,
+  "Estimate": 70.0561,
+  "Upper_estimate": 72.933,
+  "Lower_estimate": 66.6733,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2000,
+  "Estimate": 67.6205,
+  "Upper_estimate": 70.0104,
+  "Lower_estimate": 64.7193,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2000,
+  "Estimate": 69.6423,
+  "Upper_estimate": 72.6212,
+  "Lower_estimate": 66.3845,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2000,
+  "Estimate": 68.7065,
+  "Upper_estimate": 71.3825,
+  "Lower_estimate": 65.5945,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2013,
+  "Estimate": 69.4907,
+  "Upper_estimate": 72.0983,
+  "Lower_estimate": 66.4174,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2013,
+  "Estimate": 71.0256,
+  "Upper_estimate": 74.1172,
+  "Lower_estimate": 67.37,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2013,
+  "Estimate": 70.2992,
+  "Upper_estimate": 73.1466,
+  "Lower_estimate": 66.9309,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2008,
+  "Estimate": 69.0573,
+  "Upper_estimate": 71.6162,
+  "Lower_estimate": 65.9435,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2008,
+  "Estimate": 70.485,
+  "Upper_estimate": 73.5479,
+  "Lower_estimate": 66.9575,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2008,
+  "Estimate": 69.8237,
+  "Upper_estimate": 72.6283,
+  "Lower_estimate": 66.5105,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2004,
+  "Estimate": 68.4843,
+  "Upper_estimate": 70.9757,
+  "Lower_estimate": 65.5262,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2004,
+  "Estimate": 69.9672,
+  "Upper_estimate": 72.9888,
+  "Lower_estimate": 66.5607,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2004,
+  "Estimate": 69.294,
+  "Upper_estimate": 72.0428,
+  "Lower_estimate": 66.1131,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1992,
+  "Estimate": 66.1523,
+  "Upper_estimate": 68.4307,
+  "Lower_estimate": 63.3946,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1992,
+  "Estimate": 69.1144,
+  "Upper_estimate": 71.8723,
+  "Lower_estimate": 65.8036,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1992,
+  "Estimate": 67.7351,
+  "Upper_estimate": 70.2855,
+  "Lower_estimate": 64.6917,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2012,
+  "Estimate": 69.685,
+  "Upper_estimate": 72.3082,
+  "Lower_estimate": 66.5852,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2012,
+  "Estimate": 71.0513,
+  "Upper_estimate": 74.1929,
+  "Lower_estimate": 67.4432,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2012,
+  "Estimate": 70.4144,
+  "Upper_estimate": 73.2738,
+  "Lower_estimate": 67.0351,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1996,
+  "Estimate": 66.7652,
+  "Upper_estimate": 69.0703,
+  "Lower_estimate": 63.9371,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1996,
+  "Estimate": 69.4139,
+  "Upper_estimate": 72.3177,
+  "Lower_estimate": 66.0188,
+  "Neighbour_rank": 1
+}, {
+  "measure": "HALE (Healthy life expectancy)",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1996,
+  "Estimate": 68.1788,
+  "Upper_estimate": 70.768,
+  "Lower_estimate": 65.0401,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2015,
+  "Estimate": 80.2387,
+  "Upper_estimate": 80.4758,
+  "Lower_estimate": 79.9911,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2015,
+  "Estimate": 83.8476,
+  "Upper_estimate": 84.1001,
+  "Lower_estimate": 83.5652,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2015,
+  "Estimate": 82.0988,
+  "Upper_estimate": 82.2705,
+  "Lower_estimate": 81.9109,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2006,
+  "Estimate": 78.9333,
+  "Upper_estimate": 79.1497,
+  "Lower_estimate": 78.7174,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2006,
+  "Estimate": 82.8304,
+  "Upper_estimate": 83.0573,
+  "Lower_estimate": 82.5894,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2006,
+  "Estimate": 80.9807,
+  "Upper_estimate": 81.1491,
+  "Lower_estimate": 80.8193,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1998,
+  "Estimate": 76.8522,
+  "Upper_estimate": 77.0565,
+  "Lower_estimate": 76.638,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1998,
+  "Estimate": 81.5058,
+  "Upper_estimate": 81.7431,
+  "Lower_estimate": 81.2786,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1998,
+  "Estimate": 79.3074,
+  "Upper_estimate": 79.4623,
+  "Lower_estimate": 79.1483,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2007,
+  "Estimate": 79.2971,
+  "Upper_estimate": 79.5139,
+  "Lower_estimate": 79.0808,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2007,
+  "Estimate": 82.9891,
+  "Upper_estimate": 83.2088,
+  "Lower_estimate": 82.7614,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2007,
+  "Estimate": 81.2387,
+  "Upper_estimate": 81.3981,
+  "Lower_estimate": 81.0821,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2016,
+  "Estimate": 80.091,
+  "Upper_estimate": 80.403,
+  "Lower_estimate": 79.7676,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2016,
+  "Estimate": 83.6585,
+  "Upper_estimate": 83.9907,
+  "Lower_estimate": 83.311,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2016,
+  "Estimate": 81.9247,
+  "Upper_estimate": 82.1487,
+  "Lower_estimate": 81.6822,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2000,
+  "Estimate": 77.3947,
+  "Upper_estimate": 77.7095,
+  "Lower_estimate": 77.073,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2000,
+  "Estimate": 81.6535,
+  "Upper_estimate": 81.9942,
+  "Lower_estimate": 81.3086,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2000,
+  "Estimate": 79.6444,
+  "Upper_estimate": 79.8961,
+  "Lower_estimate": 79.4074,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1999,
+  "Estimate": 77.0825,
+  "Upper_estimate": 77.292,
+  "Lower_estimate": 76.8697,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1999,
+  "Estimate": 81.6024,
+  "Upper_estimate": 81.8367,
+  "Lower_estimate": 81.3828,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1999,
+  "Estimate": 79.4667,
+  "Upper_estimate": 79.6231,
+  "Lower_estimate": 79.3092,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2008,
+  "Estimate": 79.4756,
+  "Upper_estimate": 79.6891,
+  "Lower_estimate": 79.2388,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2008,
+  "Estimate": 83.0234,
+  "Upper_estimate": 83.2561,
+  "Lower_estimate": 82.7932,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2008,
+  "Estimate": 81.3385,
+  "Upper_estimate": 81.4998,
+  "Lower_estimate": 81.1733,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1997,
+  "Estimate": 76.5323,
+  "Upper_estimate": 76.7652,
+  "Lower_estimate": 76.2979,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1997,
+  "Estimate": 81.3371,
+  "Upper_estimate": 81.5913,
+  "Lower_estimate": 81.1073,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1997,
+  "Estimate": 79.0652,
+  "Upper_estimate": 79.2244,
+  "Lower_estimate": 78.8996,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1990,
+  "Estimate": 74.8638,
+  "Upper_estimate": 75.0757,
+  "Lower_estimate": 74.6586,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1990,
+  "Estimate": 80.0738,
+  "Upper_estimate": 80.3101,
+  "Lower_estimate": 79.8509,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1990,
+  "Estimate": 77.6167,
+  "Upper_estimate": 77.7832,
+  "Lower_estimate": 77.4555,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1991,
+  "Estimate": 74.984,
+  "Upper_estimate": 75.1898,
+  "Lower_estimate": 74.7708,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1991,
+  "Estimate": 80.3961,
+  "Upper_estimate": 80.6386,
+  "Lower_estimate": 80.1572,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1991,
+  "Estimate": 77.8332,
+  "Upper_estimate": 77.9909,
+  "Lower_estimate": 77.6715,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1992,
+  "Estimate": 75.3299,
+  "Upper_estimate": 75.5501,
+  "Lower_estimate": 75.1076,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1992,
+  "Estimate": 80.7261,
+  "Upper_estimate": 80.962,
+  "Lower_estimate": 80.464,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1992,
+  "Estimate": 78.1735,
+  "Upper_estimate": 78.3481,
+  "Lower_estimate": 77.9974,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2003,
+  "Estimate": 78.1226,
+  "Upper_estimate": 78.3298,
+  "Lower_estimate": 77.9161,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2003,
+  "Estimate": 81.7882,
+  "Upper_estimate": 82.0189,
+  "Lower_estimate": 81.5434,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2003,
+  "Estimate": 80.0681,
+  "Upper_estimate": 80.2331,
+  "Lower_estimate": 79.9011,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2009,
+  "Estimate": 79.6927,
+  "Upper_estimate": 79.9134,
+  "Lower_estimate": 79.4703,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2009,
+  "Estimate": 83.4114,
+  "Upper_estimate": 83.6405,
+  "Lower_estimate": 83.1802,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2009,
+  "Estimate": 81.6392,
+  "Upper_estimate": 81.8058,
+  "Lower_estimate": 81.4777,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2010,
+  "Estimate": 79.9592,
+  "Upper_estimate": 80.1664,
+  "Lower_estimate": 79.7441,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2010,
+  "Estimate": 83.4257,
+  "Upper_estimate": 83.657,
+  "Lower_estimate": 83.1955,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2010,
+  "Estimate": 81.7776,
+  "Upper_estimate": 81.9345,
+  "Lower_estimate": 81.6114,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1995,
+  "Estimate": 75.9459,
+  "Upper_estimate": 76.1671,
+  "Lower_estimate": 75.7286,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1995,
+  "Estimate": 80.9551,
+  "Upper_estimate": 81.2053,
+  "Lower_estimate": 80.715,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1995,
+  "Estimate": 78.5884,
+  "Upper_estimate": 78.7612,
+  "Lower_estimate": 78.4159,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2011,
+  "Estimate": 80.2558,
+  "Upper_estimate": 80.4666,
+  "Lower_estimate": 80.0512,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2011,
+  "Estimate": 83.7582,
+  "Upper_estimate": 83.9827,
+  "Lower_estimate": 83.534,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2011,
+  "Estimate": 82.0907,
+  "Upper_estimate": 82.2492,
+  "Lower_estimate": 81.9272,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1994,
+  "Estimate": 75.9108,
+  "Upper_estimate": 76.1164,
+  "Lower_estimate": 75.6936,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1994,
+  "Estimate": 80.9,
+  "Upper_estimate": 81.1525,
+  "Lower_estimate": 80.6506,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1994,
+  "Estimate": 78.5529,
+  "Upper_estimate": 78.7312,
+  "Lower_estimate": 78.3851,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2014,
+  "Estimate": 80.2962,
+  "Upper_estimate": 80.506,
+  "Lower_estimate": 80.0838,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2014,
+  "Estimate": 83.9636,
+  "Upper_estimate": 84.2147,
+  "Lower_estimate": 83.7125,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2014,
+  "Estimate": 82.1928,
+  "Upper_estimate": 82.3591,
+  "Lower_estimate": 82.0308,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1996,
+  "Estimate": 76.1918,
+  "Upper_estimate": 76.4029,
+  "Lower_estimate": 75.9436,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1996,
+  "Estimate": 81.1364,
+  "Upper_estimate": 81.3981,
+  "Lower_estimate": 80.8762,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1996,
+  "Estimate": 78.7969,
+  "Upper_estimate": 78.9578,
+  "Lower_estimate": 78.6132,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2012,
+  "Estimate": 80.407,
+  "Upper_estimate": 80.615,
+  "Lower_estimate": 80.1787,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2012,
+  "Estimate": 83.8865,
+  "Upper_estimate": 84.1089,
+  "Lower_estimate": 83.6604,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2012,
+  "Estimate": 82.2251,
+  "Upper_estimate": 82.3833,
+  "Lower_estimate": 82.0668,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2017,
+  "Estimate": 79.9016,
+  "Upper_estimate": 80.7302,
+  "Lower_estimate": 79.0284,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2017,
+  "Estimate": 83.5228,
+  "Upper_estimate": 84.2907,
+  "Lower_estimate": 82.7432,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2017,
+  "Estimate": 81.7542,
+  "Upper_estimate": 82.3363,
+  "Lower_estimate": 81.1777,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2001,
+  "Estimate": 77.6528,
+  "Upper_estimate": 77.8732,
+  "Lower_estimate": 77.4316,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2001,
+  "Estimate": 81.684,
+  "Upper_estimate": 81.9337,
+  "Lower_estimate": 81.4358,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2001,
+  "Estimate": 79.787,
+  "Upper_estimate": 79.9448,
+  "Lower_estimate": 79.6291,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2013,
+  "Estimate": 80.1983,
+  "Upper_estimate": 80.4127,
+  "Lower_estimate": 79.9819,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2013,
+  "Estimate": 83.8914,
+  "Upper_estimate": 84.1179,
+  "Lower_estimate": 83.6536,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2013,
+  "Estimate": 82.114,
+  "Upper_estimate": 82.2768,
+  "Lower_estimate": 81.9525,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2002,
+  "Estimate": 77.9503,
+  "Upper_estimate": 78.1625,
+  "Lower_estimate": 77.7411,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2002,
+  "Estimate": 81.7087,
+  "Upper_estimate": 81.9393,
+  "Lower_estimate": 81.4835,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2002,
+  "Estimate": 79.9477,
+  "Upper_estimate": 80.1114,
+  "Lower_estimate": 79.7931,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2004,
+  "Estimate": 78.6125,
+  "Upper_estimate": 78.8268,
+  "Lower_estimate": 78.3963,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2004,
+  "Estimate": 82.2561,
+  "Upper_estimate": 82.4921,
+  "Lower_estimate": 82.0156,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2004,
+  "Estimate": 80.5464,
+  "Upper_estimate": 80.7258,
+  "Lower_estimate": 80.3791,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 1993,
+  "Estimate": 75.4845,
+  "Upper_estimate": 75.6859,
+  "Lower_estimate": 75.2643,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 1993,
+  "Estimate": 80.6661,
+  "Upper_estimate": 80.9198,
+  "Lower_estimate": 80.4116,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 1993,
+  "Estimate": 78.2191,
+  "Upper_estimate": 78.3884,
+  "Lower_estimate": 78.0554,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Male",
+  "age": "<1 year",
+  "Year": 2005,
+  "Estimate": 78.9179,
+  "Upper_estimate": 79.1367,
+  "Lower_estimate": 78.6908,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Female",
+  "age": "<1 year",
+  "Year": 2005,
+  "Estimate": 82.4937,
+  "Upper_estimate": 82.7168,
+  "Lower_estimate": 82.247,
+  "Neighbour_rank": 1
+}, {
+  "measure": "Life expectancy",
+  "Area": "West Sussex",
+  "Sex": "Both",
+  "age": "<1 year",
+  "Year": 2005,
+  "Estimate": 80.8133,
+  "Upper_estimate": 80.9799,
+  "Lower_estimate": 80.6455,
+  "Neighbour_rank": 1
+}]

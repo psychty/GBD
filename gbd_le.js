@@ -25,7 +25,7 @@ var svg_le = d3.select("#le_timeseries_datavis")
 
 // Bring data in for figure 6
 var request = new XMLHttpRequest();
-    request.open("GET", "./LE_HALE_1990_2017_NN.json", false);
+    request.open("GET", "./LE_HALE_1990_2017.json", false);
     request.send(null);
 
 var json_le = JSON.parse(request.responseText); // parse the fetched json data into a variable
@@ -166,16 +166,16 @@ var hale = json_le.filter(function(d){
   svg_le
   .append("text")
   .attr("x", width - 300)
-  .attr("y", 175)
+  .attr("y", 170)
   .style('font-size', '11px')
-  .text('Click on a label below to')
+  .text("Click on 'males', 'females',")
 
   svg_le
   .append("text")
   .attr("x", width - 300)
   .attr("y", 185)
   .style('font-size', '11px')
-  .text('show/hide each line')
+  .text("or 'both' to hide/show each line")
 
   svg_le
   .append("text")
@@ -382,7 +382,7 @@ var svg_le_stacked = d3.select("#le_stacked_timeseries_datavis")
       "translate(" + margin.left + "," + margin.top + ")");
 
 var request = new XMLHttpRequest();
-    request.open("GET", "./LE_HALE_stacked_ts_1990_2017_NN.json", false);
+    request.open("GET", "./LE_HALE_stacked_ts_1990_2017.json", false);
     request.send(null);
 
 var json_le_stack = JSON.parse(request.responseText); // parse the fetched json data into a variable
@@ -482,7 +482,6 @@ data_m = json_le_stack.filter(function(d){
 
 data_f = json_le_stack.filter(function(d){
   return d.Sex === 'Female'});
-
 
 function update_le_1(e) {
 

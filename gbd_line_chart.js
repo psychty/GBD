@@ -10,7 +10,6 @@ var margin = {
     left: 60
 };
 
-
 ///////////////////////////
 // Line chart timeseries //
 ///////////////////////////
@@ -25,9 +24,9 @@ var svg_standardised_ts = d3.select("#deaths_over_time_nn_rate_datavis")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-// Bring data in for figure 6
+// Bring data in
 var request = new XMLHttpRequest();
-request.open("GET", "./Rate_totals_1990_2017_all_areas.json", false);
+request.open("GET", "./Rate_deaths_1990_2017_NN.json", false);
 request.send(null);
 var json_ts = JSON.parse(request.responseText); // parse the fetched json data into a variable
 
