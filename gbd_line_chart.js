@@ -359,9 +359,7 @@ focus_fg_standardised_ts
     } else {
     return 'start'
     }})
-.text(d.Area);
-
-
+.text(d.Area + ' ' + d.Year);
 
   }
 

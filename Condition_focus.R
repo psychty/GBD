@@ -150,3 +150,69 @@ unique(msk$Cause)
 
 
 
+# Rate is per 100,000 population
+Age_standardised_NN_ts_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("85cc91d0", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
+  map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>%
+  filter(age == 'Age-standardized') %>%
+  rename(Area = location,
+         Lower_estimate = lower,
+         Upper_estimate = upper,
+         Estimate = val,
+         Year = year,
+         Sex = sex,
+         Age = age,
+         Cause = cause) %>%
+  mutate(metric = ifelse(metric == "Rate", "Rate per 100,000 population", ifelse(metric == "Percent", "Proportion of total burden caused by this condition", metric))) %>% 
+  left_join(GBD_2017_cause_hierarchy[c("Cause_name", "Cause_outline", "Cause_id", "Parent_id", "Level")], by = c("Cause" = "Cause_name")) %>% 
+  left_join(GBD_2017_cause_hierarchy[c("Cause_name", "Cause_id")], by = c("Parent_id" = "Cause_id")) %>% 
+  rename(`Cause group` = Cause_name) %>% 
+  mutate(Cause = factor(Cause, levels =  unique(Cause))) %>% 
+  select(Area, Sex, Year, Cause, Cause_outline, Cause_id, Level, Estimate, Lower_estimate, Upper_estimate, `Cause group`, Parent_id, measure, metric)
+
+
+# Top ten causes (deaths, ylls, ylds, dalys) time series west sussex (NN - SE and England)
+
+top_ten_wsx_level_2 <- Age_standardised_NN_ts_data %>% 
+  filter(Level == 2) %>%
+  filter(Area == 'West Sussex') %>% 
+  filter(Year == 2017) %>% 
+  filter(!(measure %in% c('Incidence', 'Prevalence'))) %>% 
+  group_by(Sex, measure) %>% 
+  mutate(Rank = rank(-Estimate)) %>% 
+  filter(Rank <= 10) %>% 
+  mutate(string_code = gsub(' ', '_', paste(Sex, Cause, measure, sep = '_')))
+
+top_ten_ts <- Age_standardised_NN_ts_data %>% 
+  filter(Level == 2) %>% 
+  mutate(Cause = factor(Cause, levels = c("HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"))) %>% 
+  mutate(string_code = gsub(' ', '_', paste(Sex, Cause, measure, sep = '_'))) %>% 
+  filter(string_code %in% c(top_ten_wsx_level_2$string_code)) %>% 
+  select(Area, Sex, Year, Cause, Estimate, Lower_estimate, Upper_estimate, measure) %>% 
+  mutate(string_code = gsub(' ', '_', paste(Sex, Cause, measure, Year, sep = '_'))) %>% 
+  mutate(label_estimate = paste0(format(round(Estimate,0), big.mark = ',', trim = TRUE), ' (', format(round(Lower_estimate,0), big.mark = ',', trim = TRUE), '-', format(round(Upper_estimate,0), big.mark = ',', trim = TRUE), ')'))
+
+se <- top_ten_ts %>% 
+  filter(Area == 'South East England') %>% 
+  rename(se_Estimate = Estimate,
+         se_Lower_estimate = Lower_estimate,
+         se_Upper_estimate = Upper_estimate)
+
+eng <- top_ten_ts %>% 
+  filter(Area == 'England') %>% 
+  rename(eng_Estimate = Estimate,
+         eng_Lower_estimate = Lower_estimate,
+         eng_Upper_estimate = Upper_estimate)
+
+wsx <- top_ten_ts %>% 
+  filter(Area == Area_x) %>% 
+  left_join(se[c('string_code','se_Estimate','se_Lower_estimate', 'se_Upper_estimate')], by = 'string_code') %>% 
+  left_join(eng[c('string_code','eng_Estimate','eng_Lower_estimate', 'eng_Upper_estimate')], by = 'string_code') %>% 
+  mutate(compare_se = ifelse(Lower_estimate > se_Upper_estimate, 'Significantly higher', ifelse(Upper_estimate < se_Lower_estimate, 'Significantly lower', 'Similar'))) %>% 
+  mutate(compare_eng = ifelse(Lower_estimate > eng_Upper_estimate, 'Significantly higher', ifelse(Upper_estimate < eng_Lower_estimate, 'Significantly lower', 'Similar')))
+
+
+
+wsx %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_top_ten_ts.json'))
+

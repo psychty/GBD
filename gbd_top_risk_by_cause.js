@@ -180,10 +180,10 @@ var y_top_ten = d3.scaleBand()
 .range([0, height_top_ten])
 .padding([0.2]);
 
-var yAxis_top_risks = top_ten_risks_svg
-.append("g")
-.attr("class", "myYaxis")
-.call(d3.axisLeft(y_top_ten))
+// var yAxis_top_risks = top_ten_risks_svg
+// .append("g")
+// .attr("class", "myYaxis")
+// .call(d3.axisLeft(y_top_ten))
 
 // Add X axis label:
 top_ten_risks_svg
@@ -253,6 +253,11 @@ bars_fig_top_ten
 .attr("fill", function(d) { return color_risk_group(d.Risk_colour); })
 .on("mousemove", showTooltip_risk_factors)
 .on('mouseout', mouseleave_top_risk_factors);
+
+var yAxis_top_risks = top_ten_risks_svg
+.append("g")
+.attr("class", "myYaxis")
+.call(d3.axisLeft(y_top_ten))
 
 update_top_risk = function(){
 
@@ -328,6 +333,12 @@ top_ten_risks_svg
 .attr('opacity', 0)
 .remove();
 
+top_ten_risks_svg
+.selectAll("#number_negative_risks_2")
+.transition()
+.duration(750)
+.attr('opacity', 0)
+.remove();
 
 if(top_risk_selected[0].Number_of_negative_risks != 1) {
 
@@ -341,6 +352,15 @@ top_ten_risks_svg
 .attr("y", height_top_ten - 105)
 .text(function(d) { return 'There are ' + d.Number_of_negative_risks + ' risks associated with an'});
 
+top_ten_risks_svg
+.append("text")
+.attr("text-anchor", "left")
+.attr('class', 'remember_overlap_text')
+.attr('id', 'number_negative_risks_2')
+.attr("x", (width / 100) * 80 + 100)
+.attr("y", height_top_ten - 92)
+.text('increase in burden for this cause.');
+
 }
 
 // Grab the highest number of value
@@ -353,15 +373,7 @@ x_top_ten
 y_top_ten
 .domain(top_risk_selected.map(function(d) { return d.Risk; })) // update the yaxis based on 'data' - so if you run update on data1, this will look at data1, get any new/unique groups and add them to the list of groups.
 
-yAxis_top_risks
-.transition()
-.duration(1000)
-.call(d3.axisLeft(y_top_ten))
 
-xAxis_top_risks
-.transition()
-.duration(1000)
-.call(d3.axisBottom(x_top_ten))
 
 var bars_fig_top_ten = top_ten_risks_svg
 .selectAll("rect")
@@ -386,6 +398,16 @@ bars_fig_top_ten
 bars_fig_top_ten
 .exit()
 .remove()
+
+yAxis_top_risks
+.transition()
+.duration(1000)
+.call(d3.axisLeft(y_top_ten))
+
+xAxis_top_risks
+.transition()
+.duration(1000)
+.call(d3.axisBottom(x_top_ten))
 
 if(top_risk_selected[0].Number_of_negative_risks === 0) {
 

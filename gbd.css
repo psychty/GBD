@@ -1,13 +1,18 @@
 *{
   font-family: 'Open Sans', sans-serif;
-  font-size: .85rem;
+  /* font-size: .85rem; */
   }
+
+p {
+  font-size: .9rem;
+}
 
 * {-webkit-font-smoothing: antialiased;}
 
 div {
     display: inline-block;
 }
+
 
 .liquidFillGaugeText {
   font-family: Helvetica;
@@ -17,24 +22,6 @@ div {
   display: flex;
   justify-content: center;
 }
-
-/* .select-css {
-	display: block;
-	font-size: 10px;
-	font-family: sans-serif;
-	color: #444;
-	line-height: 1;
-	padding: .6em 1.4em .5em .8em;
-	box-sizing: border-box;
-	margin: 0;
-	border: 1px solid #aaa;
-	box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
-	border-radius: .5em;
-	-moz-appearance: none;
-	-webkit-appearance: none;
-	appearance: none;
-	background-color: #fa673d;
-} */
 
 .summary {
   padding-top: 15px;

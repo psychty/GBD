@@ -313,7 +313,6 @@
       <div class="content" >
         <p>You can see that the number of deaths is highest from ages 85 to 89. However, when you take into account disability and premature mortality, the overall burden of disease (DALYs) is highest among 70 to 74 year olds.</p>
         <p>The figure below shows the same data but this time condition group is along the bottom so the burden for a particular disease is all in one stack which allows you to see the distrubution of ages experiencing the burden of a disease.</p>
-        <!-- <p>The first figure shows the number of deaths (or YLLs, YLDs, and DALYs) although distribution of burden experienced by different age groups is best explored in the second figure which shows burden as a percentage rather than a number (notice that cardiovascular diseases and neoplasms have the highest number of deaths by far and this makes seeing patterns for less common diseases difficult.</p> -->
         <div class="switch-field switch-field-fg-age_2">
         <button onclick="update_condition()" data-filter="deaths_condition" id="radio-twelve" name="switch-age_2">
           Deaths
@@ -330,8 +329,7 @@
         </div>
 
             <div id='my_condition_lifecourse_dataviz'></div>
-            <!-- <div id='my_condition_lifecourse_proportion_dataviz'></div>
-            <p>Stacks where the rectangles are similar sizes indicates that each age group in 2017 experienced about the same amount of burden from a condition group. Stacks where some rectangles are larger indicate an unequal distribution. Take for example cardiovascular disease deaths, you can see that people in three age groups (85 to 89, 90 to 94 and 95+) experienced more than half (52%) of the deaths for cardiovascular diseases in West Sussex in this year.</p> -->
+
           </div>
           <div class="right-sidebar">
             <h3>Age groups</h3>
@@ -375,19 +373,29 @@
           (in terms of demographics) neighbouring areas.</p>
       <p>You can also choose whether to compare the estimate with the South East region or England overall.</p>
       <div class='row'>
-
         <p>
-            <span class="mr-1">Area</span>
+            <span class="mr-1">Area:</span>
             <select id='selectAreaButton'></select>
             <span class="ml-3 mr-1">Comparator:</span>
             <select id='selectReferenceAreaButton'></select>
         </p>
-
       </div>
       <div id="deaths_over_time_nn_rate_datavis"></div>
 
-      <h3>Change in age standardised rate per 100,000 population; 2012 - 2017;<br>West Sussex; persons</h3>
+<p>The next figure shows the change in rate for the top five causes of burden in West Sussex, between 1990 and 2017.</p>
+      <h3>Top five causes of burden; West Sussex; 1990 - 2017</h3>
+      <div class='row'>
+        <p>
+          <span class="ml-3 mr-1">Measure:</span>
+          <select id='selectMeasure_ts_Button'></select>
+          <span class="mr-1">Sex:</span>
+          <select id='selectSex_ts_Button'></select>
+        </p>
+      </div>
+      <div id="over_time_top_five_rate_datavis"></div>
 
+
+      <h3>Change in age standardised rate per 100,000 population; 2012 - 2017;<br>West Sussex; persons</h3>
       <div class="switch-field switch-field-fg-change">
       <button onclick="update_level_2_rate_change()" data-filter="deaths_level_2_rank_change" id="radio-twenty" name="switch-change">
         Deaths
@@ -537,9 +545,14 @@
             <div class="row" id = 'section-exploring'>
                 <div class="content">
                   <h2>Exploring conditions in more detail</h2>
-                  <p>It is not possible to discuss all conditions in the GBD data set. However, you can explore combinations of measures and causes for West Sussex by sex in 2017.</p>
-                  <p>As you change the selections below, the table will be redrawn with updated information.</p>
-                    <p>
+                  <p>It is not possible to discuss all conditions in the GBD data set. However, you can explore a number of combinations of measures and causes for West Sussex by sex in 2017 using the table below. As you change the selections, the table will be redrawn with updated information. The table shows each level three cause for the cause group selected (e.g. the HIV/AIDS and sexually transmitted infections has two rows).</p>
+                  <p>The first value is the estimated number for the measure (e.g. deaths) in 2017 and the number in brackets is the lower and upper estimate bounds. The second value is the 2017 age-standardised rate per 100,000 population again with lower and upper estimates given in brackets. The third value is the proportion and this gives an idea of how much of the total burden in 2017 is estimated to be associated with the particular cause.</p>
+                  <p>The last two columns give an indication on the change over the past five years by giving the estimated number in 2012 as well as the percentage change between 2012 and 2017. A positive number (denoted by a +) indicates that the estimated burden has increased and a negative (-) value indicates that the burden has gone down.</p>
+                </div>
+                <div class="right-sidebar"></div>
+              </div>
+                <div class = 'row'>
+                  <div class = 'content'>
                           <span class="mr-1">Condition group:</span>
                           <select id='selectExplore_CauseButton'></select>
                           <span class="mr-1">Measure:</span>
@@ -563,7 +576,9 @@
                   </div>
                   </div> -->
                 </div>
-                <div class="right-sidebar"></div>
+                <div class="right-sidebar">
+                <p class = 'side_important'>Note that rounding has been applied differently in this table. True zeros are marked as 'none' and values below 1 are rounded to decimal points. This is to provide more useful data in this reference table. For exact values head to the <a href="http://ghdx.healthdata.org/gbd-results-tool" target="_blank">GBD online results tool</a href>.</p>
+                  </div>
             </div>
 
         </div>
@@ -589,6 +604,7 @@
   <script src = 'gbd_bubbles.js'></script>
   <script src = 'gbd_burden_by_age.js'></script>
   <script src = 'gbd_line_chart.js'></script>
+  <script src = 'gbd_top_five_conditions_ts.js'></script>
   <script src = 'gbd_over_time.js'></script>
   <script src = 'gbd_risk_accounted_for_guage.js'></script>
   <script src = 'gbd_risk.js'></script>

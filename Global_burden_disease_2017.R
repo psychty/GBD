@@ -662,8 +662,6 @@ Age_standardised_NN_ts_data %>%
 #   toJSON() %>% 
 #   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_level_2_1990_2017_', gsub(" ", "_", tolower(Area_x)), '_region_england.json'))
 
-# My thoughts are to do the analysis here, include columns for % change compared to 5 years (2012), 10 years (2007), and compared to 20 years (1997).
-
 Age_standardised_change_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("7d0121c1", list.files("~/Documents/GBD_data_download/")) == TRUE]) %>% 
   map_df(~read_csv(paste0("~/Documents/GBD_data_download/",.), col_types = cols(age = col_character(), cause = col_character(), location = col_character(), lower = col_double(), measure = col_character(), metric = col_character(), sex = col_character(), upper = col_double(), val = col_double(), year = col_number()))) %>%
   filter(age == 'Age-standardized') %>%
@@ -767,6 +765,36 @@ Change_over_time %>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_change_over_time_level_2_', gsub(" ", "_", tolower(Area_x)), '.json'))
 
+# Top ten causes (deaths, ylls, ylds, dalys) time series west sussex (NN - SE and England)
+
+top_ten_wsx_level_2 <- Age_standardised_NN_ts_data %>% 
+  filter(Level == 2) %>%
+  filter(Area == 'West Sussex') %>% 
+  filter(Year == 2017) %>% 
+  filter(!(measure %in% c('Incidence', 'Prevalence'))) %>% 
+  group_by(Sex, measure) %>% 
+  mutate(Rank = rank(-Estimate)) %>% 
+  filter(Rank <= 10) %>% 
+  mutate(string_code = gsub(' ', '_', paste(Sex, Cause, measure, sep = '_')))
+
+unique(top_ten_wsx_level_2$string_code)
+
+top_ten_ts <- Age_standardised_NN_ts_data %>% 
+  filter(Level == 2) %>% 
+  mutate(Cause = factor(Cause, levels = c("HIV/AIDS and sexually transmitted infections", "Respiratory infections and tuberculosis", "Enteric infections", "Neglected tropical diseases and malaria", "Other infectious diseases", "Maternal and neonatal disorders", "Nutritional deficiencies", "Neoplasms", "Cardiovascular diseases", "Chronic respiratory diseases", "Digestive diseases", "Neurological disorders", "Mental disorders", "Substance use disorders", "Diabetes and kidney diseases", "Skin and subcutaneous diseases", "Sense organ diseases", "Musculoskeletal disorders", "Other non-communicable diseases", "Transport injuries", "Unintentional injuries", "Self-harm and interpersonal violence"))) %>% 
+  mutate(string_code = gsub(' ', '_', paste(Sex, Cause, measure, sep = '_'))) %>% 
+  filter(string_code %in% c(top_ten_wsx_level_2$string_code)) %>% 
+  select(Area, Sex, Year, Cause, Estimate, Lower_estimate, Upper_estimate, measure)
+
+top_ten_ts %>% 
+  filter(Area %in% c(Area_x, 'South East England', 'England')) %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_top_ten_ts.json'))
+
+
+# read_csv('https://gist.github.com/dianaow/0da76b59a7dffe24abcfa55d5b9e163e/raw/0892481142937672adbc801281ffb61466e612e7/coe-results.csv') %>% 
+#   toJSON() %>% 
+#   write_lines(paste0('/Users/richtyler/Documents/Repositories/testies/coe-results.json'))
 
 # Condition focus ####
 
@@ -789,13 +817,12 @@ Condition_data <- unique(list.files("~/Documents/GBD_data_download/")[grepl("5f7
   mutate(metric = ifelse(metric == 'Rate per 100,000 population', 'Age-standardised rate per 100,000', ifelse(metric == 'Number', 'Number (all ages)', NA))) %>% 
   select(Sex, metric, Year, Cause, `Cause group`,Estimate,Lower_estimate,Upper_estimate, measure)
 
-
 Condition_table_part_a <- Condition_data %>% 
   filter(Year == 2017) %>% 
-  mutate(Estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Estimate,1),big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
-  mutate(Lower_estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Lower_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Lower_estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
-  mutate(Upper_estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Upper_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Upper_estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
-  mutate(Estimate = paste0(Estimate, ' (', Lower_estimate, '-', Upper_estimate, ')')) %>% 
+  mutate(Estimate = ifelse(Estimate == 0, 'None', ifelse(Estimate <0.1, round(Estimate, 2), ifelse(Estimate <1, round(Estimate,1), ifelse(metric == 'Age-standardised rate per 100,000', format(round(Estimate,1),big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)' & Estimate > 1, format(round(Estimate,0), big.mark = ',', trim = TRUE), NA)))))) %>% 
+  mutate(Lower_estimate = ifelse(Lower_estimate == 0, 'None', ifelse(Lower_estimate <0.1, round(Lower_estimate, 2), ifelse(Lower_estimate <1, round(Lower_estimate,1), ifelse(metric == 'Age-standardised rate per 100,000', format(round(Lower_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)'& Lower_estimate > 1, format(round(Lower_estimate,0), big.mark = ',', trim = TRUE), NA)))))) %>% 
+  mutate(Upper_estimate = ifelse(Upper_estimate == 0, 'None', ifelse(Upper_estimate <0.1, round(Upper_estimate, 2), ifelse(Upper_estimate <1, round(Upper_estimate,1), ifelse(metric == 'Age-standardised rate per 100,000', format(round(Upper_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)'& Upper_estimate > 1, format(round(Upper_estimate,0), big.mark = ',', trim = TRUE), NA)))))) %>% 
+  mutate(Estimate = paste0(Estimate, ' (', Lower_estimate, ' - ', Upper_estimate, ')')) %>% 
   select(-c(Lower_estimate, Upper_estimate)) %>% 
   spread(metric, value = Estimate) %>% 
   select(-Year)
@@ -814,26 +841,27 @@ Condition_table_part_c <- Condition_data %>%
   filter(metric == 'Number (all ages)') %>% 
   spread(Year, value = Estimate) %>% 
   mutate(`Percentage change 2012 - 2017 (based on number)` = paste0(ifelse((`2017`-`2012`)/`2012` > 0, '+', ''), round((`2017`-`2012`)/`2012`*100,1), '%')) %>% 
+  mutate(`Percentage change 2012 - 2017 (based on number)` = gsub('NANaN%', 'No change', `Percentage change 2012 - 2017 (based on number)`)) %>% 
   select(-c(`2012`,`2017`,metric)) 
 
 Condition_table_part_d <- Condition_data %>% 
   filter(Year == 2012) %>% 
-  mutate(Estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Estimate,1),big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
-  mutate(Lower_estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Lower_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Lower_estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
-  mutate(Upper_estimate = ifelse(metric == 'Age-standardised rate per 100,000', format(round(Upper_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)', format(round(Upper_estimate,0), big.mark = ',', trim = TRUE), NA))) %>% 
-  mutate(Estimate = paste0(Estimate, ' (', Lower_estimate, '-', Upper_estimate, ')')) %>% 
+  mutate(Estimate = ifelse(Estimate == 0, 'None', ifelse(Estimate <0.1, round(Estimate, 2), ifelse(Estimate <1, round(Estimate,1), ifelse(metric == 'Age-standardised rate per 100,000', format(round(Estimate,1),big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)' & Estimate > 1, format(round(Estimate,0), big.mark = ',', trim = TRUE), NA)))))) %>% 
+  mutate(Lower_estimate = ifelse(Lower_estimate == 0, 'None', ifelse(Lower_estimate <0.1, round(Lower_estimate, 2), ifelse(Lower_estimate <1, round(Lower_estimate,1), ifelse(metric == 'Age-standardised rate per 100,000', format(round(Lower_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)'& Lower_estimate > 1, format(round(Lower_estimate,0), big.mark = ',', trim = TRUE), NA)))))) %>% 
+  mutate(Upper_estimate = ifelse(Upper_estimate == 0, 'None', ifelse(Upper_estimate <0.1, round(Upper_estimate, 2), ifelse(Upper_estimate <1, round(Upper_estimate,1), ifelse(metric == 'Age-standardised rate per 100,000', format(round(Upper_estimate,1), big.mark = ',', trim = TRUE), ifelse(metric == 'Number (all ages)'& Upper_estimate > 1, format(round(Upper_estimate,0), big.mark = ',', trim = TRUE), NA)))))) %>% 
+  mutate(Estimate = paste0(Estimate, ' (', Lower_estimate, ' - ', Upper_estimate, ')')) %>% 
   select(-c(Lower_estimate, Upper_estimate)) %>% 
   spread(metric, value = Estimate) %>% 
   select(-c(Year, `Age-standardised rate per 100,000`)) %>%  
   rename(`Number (all ages) 2012` = `Number (all ages)`)
 
-Condition_table_part_a %>% 
+pre_table <- Condition_table_part_a %>% 
   left_join(Condition_table_part_b, by = c('Sex', 'Cause', 'Cause group', 'measure')) %>% 
   left_join(Condition_table_part_c, by = c('Sex', 'Cause', 'Cause group', 'measure')) %>%
   left_join(Condition_table_part_d, by = c('Sex', 'Cause', 'Cause group', 'measure')) %>%
   rename(`Number (all ages) 2017` = `Number (all ages)`) %>% 
   rename(`Age-standardised rate per 100,000 2017` = `Age-standardised rate per 100,000`) %>% 
-  rename(`Proportion (based on number) 2017` = `Proportion (based on number)`) %>% 
+  rename(`Proportion (based on number) 2017` = `Proportion (based on number)`) %>%
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Level_3_condition_focus_2017_', gsub(" ", "_", tolower(Area_x)), '.json'))
 

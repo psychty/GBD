@@ -35,7 +35,7 @@ d3.select("#selectExplore_SexButton")
   .attr("value", function (d) {
     return d; }) // corresponding value returned by the button
 
-var columns = ['Cause', 'Number (all ages) 2012', 'Number (all ages) 2017', 'Proportion (based on number) 2017', 'Age-standardised rate per 100,000 2017', 'Percentage change 2012 - 2017 (based on number)']
+var columns = ['Cause', 'Number (all ages) 2017', 'Age-standardised rate per 100,000 2017','Proportion (based on number) 2017', 'Number (all ages) 2012', 'Percentage change 2012 - 2017 (based on number)']
 
 // create the ajax request to grab the source JSON data
 var request = new XMLHttpRequest();
@@ -49,7 +49,6 @@ data = json.filter(function(d){
          d.measure === measure_categories[0] &
          d['Cause group'] === cause_categories[0]
 })
-
 
 // Make the table
 var table = d3.select("#condition_group_table").append("table");
@@ -94,7 +93,7 @@ rows
  .append('tr')
  .attr('id', 'exploring_conditions_rows')
  .selectAll("td")
- .data(function (d) {return [d['Cause'], d['Number (all ages) 2012'], d['Number (all ages) 2017'], d['Age-standardised rate per 100,000 2017'], d['Proportion (based on number) 2017'],  d['Percentage change 2012 - 2017 (based on number)']];})
+ .data(function (d) {return [d['Cause'], d['Number (all ages) 2017'], d['Age-standardised rate per 100,000 2017'], d['Proportion (based on number) 2017'], d['Number (all ages) 2012'], d['Percentage change 2012 - 2017 (based on number)']];})
  .enter()
  .append("td")
  .text(function(d) { return d; });
