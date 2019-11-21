@@ -179,7 +179,7 @@ top_ten_wsx_level_2 <- Age_standardised_NN_ts_data %>%
   filter(!(measure %in% c('Incidence', 'Prevalence'))) %>% 
   group_by(Sex, measure) %>% 
   mutate(Rank = rank(-Estimate)) %>% 
-  filter(Rank <= 10) %>% 
+  filter(Rank <= 5) %>% 
   mutate(string_code = gsub(' ', '_', paste(Sex, Cause, measure, sep = '_')))
 
 top_ten_ts <- Age_standardised_NN_ts_data %>% 
@@ -195,24 +195,27 @@ se <- top_ten_ts %>%
   filter(Area == 'South East England') %>% 
   rename(se_Estimate = Estimate,
          se_Lower_estimate = Lower_estimate,
-         se_Upper_estimate = Upper_estimate)
+         se_Upper_estimate = Upper_estimate,
+         se_label = label_estimate)
 
 eng <- top_ten_ts %>% 
   filter(Area == 'England') %>% 
   rename(eng_Estimate = Estimate,
          eng_Lower_estimate = Lower_estimate,
-         eng_Upper_estimate = Upper_estimate)
+         eng_Upper_estimate = Upper_estimate,
+         eng_label = label_estimate)
 
 wsx <- top_ten_ts %>% 
   filter(Area == Area_x) %>% 
-  left_join(se[c('string_code','se_Estimate','se_Lower_estimate', 'se_Upper_estimate')], by = 'string_code') %>% 
-  left_join(eng[c('string_code','eng_Estimate','eng_Lower_estimate', 'eng_Upper_estimate')], by = 'string_code') %>% 
-  mutate(compare_se = ifelse(Lower_estimate > se_Upper_estimate, 'Significantly higher', ifelse(Upper_estimate < se_Lower_estimate, 'Significantly lower', 'Similar'))) %>% 
-  mutate(compare_eng = ifelse(Lower_estimate > eng_Upper_estimate, 'Significantly higher', ifelse(Upper_estimate < eng_Lower_estimate, 'Significantly lower', 'Similar')))
-
-
+  left_join(se[c('string_code','se_Estimate','se_Lower_estimate', 'se_Upper_estimate', 'se_label')], by = 'string_code') %>% 
+  left_join(eng[c('string_code','eng_Estimate','eng_Lower_estimate', 'eng_Upper_estimate', 'eng_label')], by = 'string_code') %>% 
+  mutate(compare_se = ifelse(Lower_estimate > se_Upper_estimate, 'significantly higher than', ifelse(Upper_estimate < se_Lower_estimate, 'significantly lower than', 'statistically similar to'))) %>% 
+  mutate(compare_eng = ifelse(Lower_estimate > eng_Upper_estimate, 'significantly higher than', ifelse(Upper_estimate < eng_Lower_estimate, 'significantly lower than', 'statistically similar to'))) %>% 
+  mutate(label_1 = paste0('In West Sussex in ', Year, ' the age-standardised rate of ', ifelse(measure == 'Deaths', 'deaths', measure), ' caused by ', Cause, ' among ', ifelse(Sex == 'Both', 'both males and females', paste0(tolower(Sex), 's')), ' was ', label_estimate, ' per 100,000 population.')) %>% 
+  mutate(label_2 = paste0('The rate of ', ifelse(measure == 'Deaths', 'deaths', measure), ' for this cause is ', compare_se, ' South East region (', se_label, ') and ', compare_eng, ' England ', eng_label, '')) %>% 
+  select(Sex, Year, Cause, Estimate, measure, label_1, label_2)
 
 wsx %>% 
   toJSON() %>% 
-  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_top_ten_ts.json'))
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_top_five_ts.json'))
 

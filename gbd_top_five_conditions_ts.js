@@ -147,11 +147,56 @@ lines_tf
 
 data = tf_ts_group
 
+tf_ts_svg
+.selectAll("myDots")
+.data(tf_ts_group)
+.enter()
+.append('g')
+.attr('id', 'tf_dots_old')
+.style("fill", function(d){ return color_cause_group_tf(d.key) })
+// Second we need to enter in the 'values' part of this group
+.selectAll("myPoints")
+.data(function(d){ return d.values })
+.enter()
+.append("circle")
+  .attr("cx", function(d) { return x_tf_ts(d.Year) } )
+  .attr("cy", function(d) { return y_tf_ts(d.Estimate) } )
+  .attr("r", 5)
+  .attr("stroke", "white")
+
+tf_ts_svg
+.selectAll("myLabels")
+.data(tf_ts_group)
+.enter()
+.append('g')
+.append("text")
+.attr('id', 'tf_text_old')
+.datum(function(d) { return {key: d.key, value: d.values[0]}; })
+// .datum(function(d) { return {key: d.key, value: d.values[d.values.length / 2]}; })
+.attr("transform", function(d) { return "translate(" + x_tf_ts(d.value.Year) + "," + y_tf_ts(d.value.Estimate) + ")"; }) // Put the text at the position of the last point
+.attr('y', -10) // shift the text a bit more right
+.text(function(d) { return d.key; })
+.style("fill", function(d){ return color_cause_group_tf(d.key) })
+.style("font-size", 8)
+
+
 // This is a function to update the chart with new data (it filters the larger dataset)
 function update_fg_tf_ts(selected_measure_tf_option) {
 
 tf_ts_svg
 .selectAll("#tf_lines_old")
+.transition()
+.duration(500)
+.remove()
+
+tf_ts_svg
+.selectAll("#tf_dots_old")
+.transition()
+.duration(500)
+.remove()
+
+tf_ts_svg
+.selectAll("#tf_text_old")
 .transition()
 .duration(500)
 .remove()
@@ -202,6 +247,39 @@ lines_tf
   .y(function(d) { return y_tf_ts(+d.Estimate); })
   (d.values)
 })
+
+tf_ts_svg
+.selectAll("myDots")
+.data(new_tf_ts_group)
+.enter()
+.append('g')
+.attr('id', 'tf_dots_old')
+.style("fill", function(d){ return color_cause_group_tf(d.key) })
+// Second we need to enter in the 'values' part of this group
+.selectAll("myPoints")
+.data(function(d){ return d.values })
+.enter()
+.append("circle")
+  .attr("cx", function(d) { return x_tf_ts(d.Year) } )
+  .attr("cy", function(d) { return y_tf_ts(d.Estimate) } )
+  .attr("r", 5)
+  .attr("stroke", "white")
+
+tf_ts_svg
+.selectAll("myLabels")
+.data(new_tf_ts_group)
+.enter()
+.append('g')
+.append("text")
+.attr('id', 'tf_text_old')
+.datum(function(d) { return {key: d.key, value: d.values[0]}; })
+// .datum(function(d) { return {key: d.key, value: d.values[d.values.length / 2]}; })
+.attr("transform", function(d) { return "translate(" + x_tf_ts(d.value.Year) + "," + y_tf_ts(d.value.Estimate) + ")"; }) // Put the text at the position of the last point
+.attr('y', -10) // shift the text a bit more right
+.text(function(d) { return d.key; })
+.style("fill", function(d){ return color_cause_group_tf(d.key) })
+.style("font-size", 8)
+
 }, 500);
 
 lines_tf
