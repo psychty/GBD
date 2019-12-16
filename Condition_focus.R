@@ -9,6 +9,23 @@ libraries(c("readxl", "readr", "plyr", "dplyr", "ggplot2", "png", "tidyverse", "
 
 Area_x = 'West Sussex'
 
+read_csv('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_connectedscatter.csv') %>% 
+  toJSON() %>% 
+  write_lines(paste0('/Users/richtyler/Documents/Repositories/testies/line_point_ts.json'))
+
+install.packages('sjmisc')
+library(sjmisc)
+
+dat <- data.frame(
+  c1 = c(1, 2, 3, 1, 3, NA),
+  c2 = c(3, 2, 1, 2, NA, 3),
+  c3 = c(1, 1, 2, 1, 3, NA),
+  c4 = c(1, 1, 3, 2, 1, 2),
+  c5 = c('banana', 'dicks', 'soup', 'dicks', 'namam', 'banana'))
+
+row_count(dat, count = 'dicks', append = FALSE)
+row_count(dat, count = NA, append = FALSE)
+row_count(dat, c1:c3, count = 2, append = TRUE)
 # Incidence data published for 2017 - included in download
 # Prevalence data published for 2017
 
@@ -218,4 +235,5 @@ wsx <- top_ten_ts %>%
 wsx %>% 
   toJSON() %>% 
   write_lines(paste0('/Users/richtyler/Documents/Repositories/GBD/Rate_top_five_ts.json'))
+
 
