@@ -226,9 +226,10 @@ function update_fg_deaths(e) {
 e = e || window.event;
 var src = e.target;
 var items = document.querySelectorAll('.switch-field-fg-1 button');
-    items.forEach(function(item) {
-    item.classList.remove('active');
-    })
+
+    for(var i = 0; i < items.length; i++) {
+    items[i].classList.remove('active');
+    }
 
 src.classList.toggle('active');
 var filter = src.dataset.filter;

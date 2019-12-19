@@ -493,9 +493,10 @@ svg_le_stacked
 
  var src = e.target;
  var items = document.querySelectorAll('.switch-field-fg-hale button');
-     items.forEach(function(item) {
-     item.classList.remove('active');
-     })
+
+for (var i = 0; i < items.length; i++) {
+  items[i].classList.remove('active');
+}
 
  src.classList.toggle('active');
  var filter = src.dataset.filter;

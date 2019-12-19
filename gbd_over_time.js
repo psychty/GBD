@@ -75,9 +75,9 @@ e = e || window.event;
 
 var src = e.target;
 var items = document.querySelectorAll('.switch-field-fg-slope button');
-  items.forEach(function(item) {
-  item.classList.remove('active');
-    })
+  for(var i = 0; i < items.length; i++) {
+  items[i].classList.remove('active');
+    }
 
 src.classList.toggle('active');
 var filter = src.dataset.filter;
@@ -368,9 +368,9 @@ e = e || window.event;
 
 var src = e.target;
 var items = document.querySelectorAll('.switch-field-fg-change button');
-  items.forEach(function(item) {
-  item.classList.remove('active');
-    })
+  for(var i = 0; i < items.length; i++) {
+  items[i].classList.remove('active');
+    }
 
 src.classList.toggle('active');
 var filter = src.dataset.filter;
