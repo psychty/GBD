@@ -56,7 +56,9 @@ svg {
 
 .left-sidebar {
   float: left;
-  width: calc(20% - 40px);
+  width: 18%;
+  padding-left: 10px;
+  padding-right: 10px;
   top: 0;
 
   margin-left: 20px;
@@ -64,8 +66,10 @@ svg {
   position: sticky;
 }
 
+
+/* ie does not support calc */
 .main {
-  width: calc(80% - 40px);
+  width: 80%;
   top: 0;
   margin-left: 20px;
   margin-right: 20px;
@@ -74,13 +78,13 @@ svg {
 
 .content {
   float: none;
-  width: calc(65% - 10px);
+  width: 65%;
   margin-right: 10px;
 }
 
 .right-sidebar {
   float: right;
-  width: calc(35% - 40px);
+  width: 35%;
   color: #444;
   margin-left: 20px;
   margin-right: 20px;
@@ -411,7 +415,7 @@ p.cause_list .side_tt {
 }
 
 .infographic-placeholder img{
-    max-width: calc(100% - 60px);
+    max-width: 100%;
     height: auto;
 }
 
