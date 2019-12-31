@@ -232,8 +232,6 @@ var number_yld = yld_attributed[0].Number
 var attributed_yld = yld_attributed[0].Proportion
 var total_yld = yld_attributed[0].Total_burden
 
-
-
 var meter_yld = svg_attributed_yld.append("g")
 .attr("class", "percentage_guage");
 
