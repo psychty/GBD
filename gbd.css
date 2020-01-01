@@ -194,11 +194,9 @@ a {
     border-radius: 0 4px 4px 0;
 }
 
-p.tooltip {
+p.tooltip_b {
   font-size: .8rem;
-
   text-align: left !important;
-  color: #ccc000;
 }
 
 /* Tables */
@@ -249,11 +247,11 @@ table {
   max-width: 280px;
   padding-left: 5px;
   padding-right: 5px;
-  font-size: .8rem;
   background: #ffffff;
   color: #000000;
   border-radius: 5px;
   border: 1px solid #000;
+  text-align: left !important;
 }
 
 .tooltip_bars {

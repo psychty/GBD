@@ -153,7 +153,7 @@ tooltip_risk_factors
 .style('visibility', 'visible')
 
 tooltip_risk_factors
-.html("<h3>" + d.Risk + '</h3><p>The estimated number of ' + label_key(d.measure) + ' among ' + d.Sex.toLowerCase().replace('both', 'both males and female') + 's as a result of ' + d.Risk + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d.Estimate_label + ' ' + label_key(d.measure) + ' </b></font>per 100,000.</p><p>This is the ' + d.Rank_label + ' known risk factor at this level for this condition.</p>') // The nested .replace within .toLowerCase() replaces the string 'both' (not 'Both') with 'both males and female' and then we add the s and a line break.
+.html("<h3>" + d.Risk + '</h3><p class = "tooltip_b">The estimated number of ' + label_key(d.measure) + ' among ' + d.Sex.toLowerCase().replace('both', 'both males and female') + 's as a result of ' + d.Risk + ' in West Sussex in 2017 was <font color = "#1e4b7a"><b>' + d.Estimate_label + ' ' + label_key(d.measure) + ' </b></font>per 100,000.</p><p class = "tooltip_b">This is the ' + d.Rank_label + ' known risk factor at this level for this condition.</p>') // The nested .replace within .toLowerCase() replaces the string 'both' (not 'Both') with 'both males and female' and then we add the s and a line break.
 .style("opacity", 1)
 .style("top", (event.pageY - 10) + "px")
 .style("left", (event.pageX + 10) + "px")

@@ -1483,7 +1483,7 @@ svg_no_attrib
 svg_no_attrib
 .on("mousemove", function(d){
 tooltip_no_attrib
-.html('<p>' + d3.format(',.0f')(no_attrib[0].Number) + ' deaths not attributable to any risk factor studied in GBD 2017.' + '</p>')
+.html('<p class = "tooltip_b">' + d3.format(',.0f')(no_attrib[0].Number) + ' deaths not attributable to any risk factor studied in GBD 2017.' + '</p>')
 .style("top", (event.pageY - 10) + "px")
 .style("left", (event.pageX + 10) + "px")
 .style('opacity', 1)
@@ -2162,7 +2162,7 @@ selection
 
 .on("mousemove", function(d){
   tooltip
-  .html('<p>' + d3.format(",.0f")(d.Number) + ' ' + label_key(d.Measure) + ' ' + risk_key(d.Risk)+ '</p>')
+  .html('<p class = "tooltip_b">' + d3.format(",.0f")(d.Number) + ' ' + label_key(d.Measure) + ' ' + risk_key(d.Risk)+ '</p>')
   .style("top", (event.pageY - 10) + "px")
   .style("left", (event.pageX + 10) + "px")
   .style('opacity', 1)

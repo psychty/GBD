@@ -424,7 +424,7 @@ var le_tooltip_key = d3.scaleOrdinal()
   .range(['The number of years spent experiencing some level of disability or ill health (years in less than ideal health) ', 'The life expectancy at birth '])
 
 tooltip_le_stack
-  .html("<h3>" + le_key(subgroupName) + ' in ' + d.data.Year + '</h3><p><font color = "#1e4b7a" size = "4"><b>' + d3.format('0.1f')(subgroupValue) + ' years</b></font></p>' + d.data.label)
+  .html("<h3>" + le_key(subgroupName) + ' in ' + d.data.Year + '</h3><p> class = "tooltip_b"<font color = "#1e4b7a" size = "4"><b>' + d3.format('0.1f')(subgroupValue) + ' years</b></font></p>' + d.data.label)
   .style("opacity", 1)
   .style("top", (event.pageY - 10) + "px")
   .style("left", (event.pageX + 10) + "px")

@@ -338,7 +338,7 @@ tooltip_rate_change
 
 tooltip_rate_change
 .style("visibility", "visible")
-.html("<h3>"  + d.Cause + '</h3>' + '<p>The rate of ' + label_key(d.Measure) + ' (per 100,000 population) ' + d.Cause + ' have changed by ' + d3.format('0.1f')(d.Change_since_2012) + '% since 2012.</p>')
+.html("<h3>"  + d.Cause + '</h3>' + '<p class = "tooltip_b">The rate of ' + label_key(d.Measure) + ' (per 100,000 population) ' + d.Cause + ' have changed by ' + d3.format('0.1f')(d.Change_since_2012) + '% since 2012.</p>')
 .style("top", (event.pageY - 10) + "px")
 .style("left", (event.pageX + 10) + "px")
 .style('opacity', 1)

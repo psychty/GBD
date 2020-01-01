@@ -78,6 +78,7 @@ var tooltip_fg_2 = d3.select("#my_deaths_bubble_dataviz")
 .style("z-index", "10")
 .style("background-color", "white")
 .style("border", "solid")
+.style('font-size', '12px')
 .style("border-width", "1px")
 .style("border-radius", "5px")
 .style("padding", "10px")
@@ -85,7 +86,7 @@ var tooltip_fg_2 = d3.select("#my_deaths_bubble_dataviz")
 // This creates the function for what to do when someone moves the mouse over a circle (e.g. move the tooltip in relation to the mouse cursor).
 var showTooltip_fg_2 = function(d) {
 tooltip_fg_2
- .html("<h3>" + d.Cause + "</h3><p>In " + d.Year + ", there were <strong>" + d3.format(",.0f")(d.Value) + "</strong> " + label_key(d.Measure) + " among " + d.Sex.toLowerCase().replace('both', 'both males and female') + "s caused by " + d.Cause + ".</p><p>This is part of the " + d['Cause group'] + " disease group.</p>")
+ .html("<h3>" + d.Cause + "</h3><p class = 'tooltip_b'>In " + d.Year + ", there were <strong>" + d3.format(",.0f")(d.Value) + "</strong> " + label_key(d.Measure) + " among " + d.Sex.toLowerCase().replace('both', 'both males and female') + "s caused by " + d.Cause + ".</p><p  class = 'tooltip_b'>This is part of the " + d['Cause group'] + " disease group.</p>")
  .style("top", (event.pageY - 10) + "px")
  .style("left", (event.pageX + 10) + "px")
 .style('opacity', 1)
