@@ -158,7 +158,7 @@ a {
 .switch-field {
     display: flex;
     overflow: hidden;
-    align: centre;
+    /* align: centre; */
     float: right;
 }
 
@@ -444,10 +444,6 @@ p.cause_list .side_tt {
 fill: #E6E7E8;
 }
 
-.percentage_guage .foreground {
-/* fill: #191947; */
-}
-
 .percent-attributed {
 font-size: 35px;
 fill: #5B8BE3;
@@ -476,4 +472,14 @@ padding: 0px;
 margin-left: auto;
 margin-right: auto;
 display: block;
+}
+
+.good_to_know {
+  border: 2px solid #cc0052;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  padding-top: 5px;
+  position: sticky;
+  top: 0;
 }
